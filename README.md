@@ -1,10 +1,10 @@
-# Bienvenidos al repositorio de la Wave10 - Go
+# Bienvenidos al repositorio de la Wave2 - Go
 ---
 A continuación te explicamos como vamos a utilizar este repo!!!
 
 ---
 
-Cada uno de ustedes cuenta con una rama y su estructura ya creada, la misma esta denominada de la siguiente manera: **apellido_nombre**.
+Cada uno de ustedes deberá crear su branch de la siguiente manera **apellido_nombre** con la misma estructura de master.
 
 Esto nos permitira un mejor manejo al momento de las prácticas y los sprint.
 
