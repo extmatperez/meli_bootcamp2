@@ -8,6 +8,6 @@ func main() {
 	address := "Buenos Aires"
 
 	fmt.Println("My name is", firstName)
-	fmt.Println("My address is", address)
+	fmt.Println("\nMy address is", address)
 
 }
