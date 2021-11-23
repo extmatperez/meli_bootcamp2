@@ -4,12 +4,12 @@ import "fmt"
 
 func main() {
 	var (
-		temperatura string = "19 °C"
-		humedad     string = "54 %"
-		presion     string = "1019.6 mb"
+		temperatura int     = 19
+		humedad     int     = 54
+		presion     float64 = 1019.6
 	)
 
-	fmt.Println(temperatura)
-	fmt.Println(humedad)
-	fmt.Println(presion)
+	fmt.Printf("La temperatura en Montevideo en grados centigrados es: %d\n", temperatura)
+	fmt.Printf("La humedad es de: %d%%\n", humedad)
+	fmt.Printf("Y la presion atmosferica es: %.2f", presion)
 }
