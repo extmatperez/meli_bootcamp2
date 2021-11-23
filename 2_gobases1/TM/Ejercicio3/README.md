@@ -25,7 +25,7 @@ var apellido string
 **correcta**
 
 var int edad
-**correcta**
+**errada, orden de los parametros**
 
 1apellido := 6
 **errada, no pueden empezar por digito**
