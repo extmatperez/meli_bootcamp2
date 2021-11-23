@@ -10,6 +10,7 @@ var estatura de la persona int  INCORRECTA porque tiene espacios
 cantidadDeHijos := 2  CORRECTA
 
 */
+/*
 func main() {
 	var nombre string
 	var apellido string
@@ -19,3 +20,4 @@ func main() {
 	var estatura_de_la_persona int
 	cantidadDeHijos := 2
 }
+*/
