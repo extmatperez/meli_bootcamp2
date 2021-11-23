@@ -12,5 +12,4 @@ func main(){
 	presion = 1022
 
 	fmt.Println("La temperatura es", temperatura, "°C con una humedad del ", humedad,"%", "y la presion es", presion, "hpa")
-
 }
