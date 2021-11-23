@@ -1,18 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
 )
 
 func main() {
 	fmt.Println("Ingrese la palabra deseada:")
 	var palabraElegida string
-	reader := bufio.NewReader(os.Stdin)
-	entrada, _ := reader.ReadString('\n')
-	palabraElegida = strings.TrimSpace(entrada)
+	fmt.Scanf("%s", &palabraElegida)
 	fmt.Println("\n")
 	contarCaracteres(palabraElegida)
 	fmt.Println("\n")
