@@ -13,7 +13,7 @@ func main() {
 
 	var apellido string = "Gomez"
 	var edad int = 35
-	boolean := false
+	boolean := "false"
 	var sueldo float32 = 45857.9
 	var nombre string = "Julián"
 
