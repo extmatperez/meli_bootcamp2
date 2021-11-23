@@ -8,8 +8,8 @@ func main(){
     var apellido string = "Gomez"
     // Incorrecto, la variable edad se declara como int pero se inicializa como string, aqui sobraban las ""
     var edad int = 35
-    // Incorrecto, sobran las comillas si se desea un boolean, además no es necesario el ;
-    boolean := false
+    // Correcto,
+    boolean := "false";
     // Incorrecto, la variable sueldo se declara string, pero se inicializa con numeros, se cambia a float64
     var sueldo float64 = 45857.90
     // Correcto.
