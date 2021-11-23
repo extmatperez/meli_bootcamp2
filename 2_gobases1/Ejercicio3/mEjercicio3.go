@@ -2,7 +2,8 @@ package main
 import "fmt"
 
 
-
+// Los comentarios encima de las declaraciones indican que dichas sentacias son corregidas
+// en la linea siguiente
 
 
 func main() {
