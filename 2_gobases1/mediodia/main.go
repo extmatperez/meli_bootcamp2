@@ -32,9 +32,9 @@ func main() {
 	/* Incorrecta, el nombre de la variable empezaba con un número.
 	 * A la hora de editar se debe tener en cuenta que el nombre no coincida con la variable apellido ya declarada. Además el nombre no es descriptivo.
 	 */
-	var licencia_de_conducir bool = true //Incorrecta, falta el tipo de dato
-	var estaturaDeLaPersona int          //Incorrecta, no pueden haber espacios en el nombre de la variable.
-	cantidadDeHijos := 2                 //Correcta
+	var licencia_de_conducir = true //Correcta. Infiere el dato.
+	var estaturaDeLaPersona int     //Incorrecta, no pueden haber espacios en el nombre de la variable.
+	cantidadDeHijos := 2            //Correcta
 
 	fmt.Println("Imprimo las variables para usarlas", nombre, apellido, edad, promedio, licencia_de_conducir, estaturaDeLaPersona, cantidadDeHijos)
 
@@ -42,7 +42,7 @@ func main() {
 	//Cambio el nombre de algunas variables para que no se repitan de las declaradas en otros ejercicios.
 	var apellidoEj3 string = "Gomez" //Correcta
 	var edadEj3 int = 35             //Incorrecta, el dato a cargar no era un entero sino un string.
-	recibido := "false"              //Incorrecta, al usar el := se debe decir directamente el nombre de la variable y no el tipo de dato. Este último se difiere. Además el ; no se usa.
+	recibido := "false"              //Incorrecta, al usar el := se debe decir directamente el nombre de la variable y no el tipo de dato. Este último se infiere. Además el ; no se usa.
 	//Si bien el nombre boolean no es la palabra reservada para el tipo de dato(bool),
 	//no es correcto que la variable de información sobre su tipo en el nombre, sino que debe decir para que se va a usar.
 	var sueldo float32 = 45857.90   //Incorrecta, se intentaba guardar un flotante en un string. El tipo de dato a usar estaba mal.
