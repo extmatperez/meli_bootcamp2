@@ -8,13 +8,13 @@ func main() {
 		Es necesario realizar una aplicación que tenga estas variables y que imprima un mensaje de acuerdo a cada caso.
 	*/
 
-	edad := 23
-	empleado := true
-	antiguedad := 3
-	sueldo := 1000
+	age := 23
+	employed := true
+	antiquity := 3
+	salary := 1000
 
-	if edad > 22 && empleado && antiguedad > 1 {
-		if sueldo > 100000 {
+	if age > 22 && employed && antiquity > 1 {
+		if salary > 100000 {
 			fmt.Println("Se le otorga prestamo con interes")
 		} else {
 			fmt.Println("Se le otorga prestamo sin interes")

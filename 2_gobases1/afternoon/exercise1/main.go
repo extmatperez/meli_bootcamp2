@@ -5,11 +5,11 @@ func main() {
 	1- Crear una aplicación que tenga una variable con la palabra e imprimir la cantidad de letras que tiene la misma.
 	2- Luego imprimí cada una de las letras.
 	*/
-	palabra := "Hola"
+	word := "Hola"
 
-	println("\nLa palabra tiene: ", len(palabra), " letras\n")
+	println("\nLa palabra tiene: ", len(word), " letras\n")
 
-	for i := 0; i < len(palabra); i++ {
-		println(palabra[i : i+1])
+	for i := 0; i < len(word); i++ {
+		println(word[i : i+1])
 	}
 }
