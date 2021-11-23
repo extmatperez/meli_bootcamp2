@@ -4,10 +4,10 @@ import "fmt"
 
 func main() {
 
-	firstName := "Digneli"
+	const NAME = "Digneli"
 	address := "Buenos Aires"
 
-	fmt.Println("My name is", firstName)
+	fmt.Printf("My name is %v", NAME)
 	fmt.Println("\nMy address is", address)
 
 }
