@@ -5,6 +5,9 @@ import "fmt"
 func main(){
 	fmt.Println("Hola mundo")
 
-	var edad int
+	var edad int = 5
+
+
+	fmt.Println(edad)
 
 }
