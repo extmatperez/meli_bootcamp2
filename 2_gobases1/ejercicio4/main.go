@@ -7,9 +7,7 @@ func main() {
 	// var edad int = "35" 
 	// correcto:
 	var edad int = 35
-	// boolean := "false";
-	// correcto:
-	boolean := false
+	boolean := "false";
 	// var sueldo string = 45857.90
 	// correcto:
 	var sueldo string = "45857.90"
