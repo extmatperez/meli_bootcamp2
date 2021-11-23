@@ -15,7 +15,7 @@ func main() {
 	//   1apellido := 6 Solo se le asigna un valor a la variable apellido ya declarada anteriormente
 	apellido = "6"
 
-	//   var licencia_de_conducir = true
+	//   var licencia_de_conducir = true esta bien tambien , lo ideal seria ->
 	var licencia_de_conducir bool = true
 
 	//   var estatura de la persona int

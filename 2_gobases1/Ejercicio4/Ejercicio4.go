@@ -9,8 +9,8 @@ func main() {
 	// var edad int = "35"
 	var edad int = 35
 
-	// boolean := "false";
-	boolean := false
+	// boolean := "false"; esta bien porque el nombre es boolean asignado con un valor string igual a false
+	boolean := "false"
 
 	// var sueldo string = 45857.90
 	var sueldo float32 = 45857.90
