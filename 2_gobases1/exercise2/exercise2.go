@@ -11,7 +11,7 @@ func main() {
 	temperature = 26
 	humidity = 39
 	press = 1012.9
-	fmt.Printf("En Santiago de Chile se tiene que: \nTemperatura: %d ºC \nPresion %f hPa \nHumedad: %d", temperature, press, humidity)
+	fmt.Printf("En Santiago de Chile se tiene que: \nTemperatura: %d ºC \nHumedad: %d %% \nPresion %f hPa ", temperature, humidity, press)
 }
 
 /* Segun la app de tiempo weather tanto la temperatura como la humedad la muestra como valores enteros, y son valores pequeños, los cuales
