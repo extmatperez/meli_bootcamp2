@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func secondExcercise() {
+func secondExercise() {
 	var temperature int = 21
 	var humidity int = 50
 	var pressure int = 1015

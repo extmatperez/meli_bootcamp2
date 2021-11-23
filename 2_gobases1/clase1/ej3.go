@@ -1,6 +1,6 @@
 package main
 
-func thirdExcercise() {
+func thirdExercise() {
 
 	// var nombre string               // no puede empezar con numero
 	// var apellido string             // correcta

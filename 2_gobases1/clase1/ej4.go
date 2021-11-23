@@ -1,6 +1,6 @@
 package main
 
-func fourthExcercise() {
+func fourthExercise() {
 	// var apellido string = "Gomez" //bien
 	// var edad int = 35             // le sobraban ""
 	// boolean := false              // le sobraban ""

@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func firstExcercise() {
+func firstExercise() {
 	myName := "Jose"
 	myAddress := "Not a Real Address 123"
 	fmt.Print("Excercise 1:")
