@@ -12,7 +12,7 @@ func main() {
 
 	lapellido := 6 // Es correcta la asignación, pero no corresponde con el nombre antes definido (apellido) ni su tipo string.
 
-	//var licencia_de_conducir = true -- Falta boolean, sino no sabe que tipo es.
+	//var licencia_de_conducir = true -- Falta boolean, pero en realidad cuando se asigna un valor Go ya sabe que tipo de valor es. Si no se asigna si es necesario asignarsele un tipo.
 	licencia_de_conducir := true // o var licencia_de_conducir boolean = true
 
 	//var estatura de la persona int -- Aca se toman varios nombres, cuando deberia ser snake o camel case. Ademas de que la estatura se debe tratar de un flotante.
