@@ -1,0 +1,7 @@
+  var 1nombre string                MAL No se puede iniciar una variable con un nùmero (var nombre string)
+  var apellido string               BIEN 
+  var int edad                      MAL primero se declara el nombre y luego el tipo (var edad int)
+  1apellido := 6					MAL No se puede iniciar una varaible con numero
+  var licencia_de_conducir = true	BIEN
+  var estatura de la persona int	MAL (var estatura_de_la_persona int)
+  cantidadDeHijos := 2				BIEN
