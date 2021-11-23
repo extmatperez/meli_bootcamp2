@@ -13,7 +13,7 @@ func main() {
 
 	fmt.Printf("Temperatura: %.2fº", temperatura)
 	fmt.Printf("\nHumedad: %.2f%%", humedad)
-	fmt.Printf("\nPresión: %.2f%%", presion)
+	fmt.Printf("\nPresión: %.2f mmHg", presion)
 }
 
 /*
