@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func main() {
 	//Las variables correctas son: apellido (la primera vez), y cantidadDeHijos
 	//Las variables mal declaradas son las siguientes:
