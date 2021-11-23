@@ -17,7 +17,7 @@ func main () {
 	humedad = 53
 	presion = 1017.4
 
-	fmt.Printf("La temperatura actual es: %dº \n La humedad es de: %d%% \n La presion: %1f hPa", temperatura, humedad, presion)
+	fmt.Printf("La temperatura actual es: %dº \n La humedad es de: %d%% \n La presion: %.1f hPa", temperatura, humedad, presion)
 	
 
 }
