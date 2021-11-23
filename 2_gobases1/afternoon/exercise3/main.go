@@ -10,10 +10,10 @@ func main() {
 
 	age := 23
 	employed := true
-	antiquity := 3
+	years := 3
 	salary := 1000
 
-	if age > 22 && employed && antiquity > 1 {
+	if age > 22 && employed && years > 1 {
 		if salary > 100000 {
 			fmt.Println("Se le otorga prestamo con interes")
 		} else {

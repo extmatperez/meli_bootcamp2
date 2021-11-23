@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+var employees = map[string]int{"Benjamin": 20, "Nahuel": 26, "Brenda": 19, "Darío": 44, "Pedro": 30}
+
 func main() {
 	/*
 		Un empleado de una empresa quiere saber el nombre y edad de uno de sus empleados. Según el siguiente mapa, ayuda  a imprimir la edad de Benjamin.
@@ -15,7 +17,6 @@ func main() {
 		- Eliminar a Pedro del mapa.
 	*/
 
-	var employees = map[string]int{"Benjamin": 20, "Nahuel": 26, "Brenda": 19, "Darío": 44, "Pedro": 30}
 	counter := 0
 
 	fmt.Println(employees["Benjamin"])
