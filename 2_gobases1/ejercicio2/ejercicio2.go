@@ -14,3 +14,13 @@ func main() {
 
 	fmt.Println("La temperatura es: ", temperatura, "ºC, la humedad es: ", humedad, "%, la presion es: ", presion, "hPa")
 }
+
+/*
+
+punto 3:
+
+	- temperatura: float64
+	-humedad: int
+	-presion: float64
+
+*/
