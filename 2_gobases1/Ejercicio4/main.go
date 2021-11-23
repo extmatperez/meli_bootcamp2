@@ -12,13 +12,13 @@ func main() {
 
 	var apellido string = "Gomez"
 	var edad int = 35
-	//boolean := "false";
+	boolean := false
 	var sueldo float64 = 45857.90
 	var nombre string = "Julián"
 
 	fmt.Println(apellido)
 	fmt.Println(edad)
-	//fmt.Println()
+	fmt.Println(boolean)
 	fmt.Println(sueldo)
 	fmt.Println(nombre)
 
