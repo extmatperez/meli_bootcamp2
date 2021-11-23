@@ -1,0 +1,11 @@
+var apellido string = "Gomez"
+var edad int = "35"
+boolean := "false";
+var sueldo string = 45857.90
+var nombre string = "Julián"
+
+1)Ok
+2)NO // var edad int =35
+3)OK // Declara una variable de tipo string
+4)NO // var sueldo string = "45857.90"
+5)OK

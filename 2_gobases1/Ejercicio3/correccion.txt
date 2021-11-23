@@ -1,0 +1,15 @@
+var 1nombre string
+var apellido string
+var int edad
+1apellido := 6
+var licencia_de_conducir = true
+var estatura de la persona int
+cantidadDeHijos := 2
+
+1)no // var nombre1 string
+2)Ok
+3)no // var edad int
+4)no // apellido1 :=6
+5)Ok
+6)Ok
+7)Ok
