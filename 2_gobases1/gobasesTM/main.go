@@ -32,7 +32,7 @@ func main() {
 
 	//var apellido string ="Gomez"  // OK
 	// var edad int = "35" // tiene que ser un tipo de dato integer 35, se le asigno un string
-	//boolean := "false"; // debe ser boolean:= false    booleano no es string y no se usa el ;
+	//boolean := "false"; // OK
 	// var sueldo string = 45857.90 // esto debe ser un float64 el tipo de numero ya que tiene decimales
 	// var nombre string = "Julian" // OK
 }
