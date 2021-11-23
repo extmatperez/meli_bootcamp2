@@ -8,5 +8,5 @@ var students = []string{"Benjamin", "Nahuel", "Brenda", "Marcos", "Pedro", "Axel
 
 func main() {
 	students = append(students, "Gabriela")
-	fmt.Println(students)
+	fmt.Println("Alumnos: ", students)
 }
