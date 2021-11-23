@@ -30,5 +30,16 @@ func main() {
 	cantidadDeHijos := 2
 
 	fmt.Println(nombre, apellido, edad, licencia_de_conducir, estatura_de_la_persona, cantidadDeHijos)
+
+	/* EJercicio 4 */
+
+	var apellido_4 string = "Gomez"
+	var edad_4 int = 35
+	boolean := false
+	var sueldo float64 = 45857.90
+	var nombre_4 string = "Julián"
+
+	fmt.Println(apellido_4, edad_4, boolean, sueldo, nombre_4)
+  
   
 }
