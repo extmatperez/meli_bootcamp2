@@ -6,14 +6,14 @@ func main() {
 
 	var temperature int
 	var humidity float64
-	var pressure int
+	var pressure float64
 
 	temperature = 22
 	humidity = 42.1111
-	pressure = 730
+	pressure = 730.00
 
 	fmt.Printf("Temperatuere: %d", temperature)
 	fmt.Printf("\nHumidity: %.2f", humidity)
-	fmt.Printf("\nPressure: %d", pressure)
+	fmt.Printf("\nPressure: %.2f", pressure)
 
 }
