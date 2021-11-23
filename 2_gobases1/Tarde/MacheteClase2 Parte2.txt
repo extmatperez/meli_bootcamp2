@@ -1,0 +1,386 @@
+--------------------------------------
+OPERADORES 
+El operador es un simbolo que le dice al compilador que le dice que operaciones tiene que realizar
+Esto es para matematicas o logicas especificas
+
+Hay distintos tipos de operadores para distintas cosas 
+
+    Operadores Aritmeticos 
+        "+" Suma
+        "-" Resta 
+        "*" Multiplicacion 
+        "/" Division 
+        "%" Modulo (resultado de una division)
+        "++" Incremento (aumenta el valor en uno)
+        "--" Decremento (disminuye el valor en uno)
+
+    Operadores de Asignacion 
+        "=" Asignacion Simple
+            x = y
+            x toma el valor de y 
+        "+=" Suma y asignacion 
+            x += y 
+            x toma el valor de x+y
+        "-=" Resta y asignacion 
+            x -= y 
+            x toma el valor de x-y
+        "*=" Multiplicacion y asignacion 
+            x *= y 
+            x toma el valor de x*y 
+        "/=" Division y asignacion 
+            x /= y 
+            x toma el valor de x/y 
+        "%="
+            x %= y 
+            x toma el valor del resto de x/y 
+
+    Operadores de Comparacion 
+        "==" Retorna true si son iguales 
+        "!=" Retorna false si son diferentes 
+        ">" Retorna true si el izquierdo es mayor 
+        ">=" Retorna true si el izquierdo es mayor o igual 
+        "<" Retorna true si el derecho es mayor
+        "<=" Retorna true si el derecho es igual o mayor 
+
+    Operadores Logicos
+        "&&" Devuelve true si ambos son verdaderos 
+        "||" Devuelve true si uno es verdadero
+        "!" Revierte el estado de true a false o viceversa 
+
+    Operadores Logicos a nivel de Bits 
+        "&" Conjuncion(AND)
+            Verdadero si ambos son 1
+        "|" Disyuncion(OR)
+            Verdadero si alguno de los dos o ambos es 1
+        "^" Disyuncion Exclusiva(XOR)
+            Verdadero si alguno de los dos es 1. Solo uno, NO AMBOS 
+        "<<" Corrimiento de bits a la izquierda
+            Todos los bits se mueven lo que se indique a la izquierda 
+            0011 0011 << 2 => 1100 1100 
+        ">>" Corrimiento de bits a la derecha 
+            Todos los bits se mueven lo que se indique a la derecha 
+            0011 0011 >> 2 => 0000 1100 
+
+    Operadores de Direccion 
+        "&" Regresa la direccion en memoria 
+        "*" Apunta a una variable 
+
+        func main(){
+            text := "Hola Mundo"
+            var pText *string 
+
+            pText = &text 
+
+            fmt.Println(ptext) // 0xc0000a0a0 Da la direccion en memoria 
+            fmt.Println(*ptext) // "Hola Mundo" Da el contenido en esa direccion 
+        }
+
+Precedencia de operadores 
+Esto se refiere a el orden en el que se leen los operadores
+Funciona en relacion a mayor su precedencia se leen primero 
+    Ejemplo: 
+        x = 7 + 3 * 2
+    Esto da 13 y no 20 porque primero se hace la multiplicacion y luego la suma 
+
+
+
+--------------------------------------
+ARRAYS Y SLICES 
+Los arrays y los slices son tipos de datos donde podemos almacenar datos homogeneos
+Con homogeneos se refiere a que sean del mismo tipo 
+
+ARRAYS 
+La forma de declarar un array es muy simple 
+    
+    var a [2]string 
+    Este array va a tener un tamaño de 2 y el contenido van a ser strings 
+
+    a[0] = "Hello"
+    a[1] = "World"
+    Asi vamos a poder asignarle valores a esas posiciones 
+
+    fmt.Println(a[0], a[1]) // "Hello World"
+    fmt.Println(a) // [ "Hello" "World"]
+
+    La longitud (tamaño) del array no se puede cambiar
+    a[2] = "Extra"
+    Esto daria error
+
+SLICES 
+Los slices se declaran igual que un array 
+Pero cuentan con el beneficio de que no hay que especificar el tamaño
+
+    Aca definimos un Slice que va a tener booleanos
+    El primero es true y el segundo es false
+    var s = []bool{true, false}
+
+    fmt.Println(s[0]) // true 
+    fmt.Println(s[1]) // false 
+
+Tambien se puede hacer un slice usando la funcion "make()"
+
+    a := make([]int, 5) 
+
+Hay una forma de trabajar con el slie en rangos
+Si queremos desde un punto o hasta cierto punto 
+
+    primes := []int{2, 3, 5, 7, 11, 13}
+    fmt.Println(primes[1:4]) 
+    Esto va a dar de la posicion 1 a la 3
+    Incluye donde empieza pero no donde termina 
+    TAMBIEN ES VALIDO PARA ARRAYS 
+
+LONGITUD Y CAPACIDAD
+Dentro de un slice contamos con dos propiedades distintass 
+
+    Longitud: Es el numero de elementos que tiene 
+    Capacidad: Es el numero de elementos del array subyacente 
+
+Ambas propiedades se pueden obtener utilizando las funciones len y cap 
+
+APPEND
+Cuando uno quiere agregar un elemento nuevo dentro de un Slice entra la funcion Append
+El primer parametro es el slice y desde el segundo en adelante todo lo que agrega 
+Es muy importante que no modifica el Slice existente sino que genera uno nuevo 
+
+    var s[]int
+    s = append(s, 2, 3, 4, 5)
+    Al genera uno nuevo hay que sobreescribir la variable 
+
+En resumen los arrays cuentan con un tamaño predeterminado cuando se definen 
+Los Slice manejan el tamaño de manera dinamica 
+
+
+
+--------------------------------------
+MAPS 
+Los Maps son la forma de trabajar con variables de forma clave-valor 
+Formas de instanciar un Map 
+
+    En este caso string va a ser el tipo de key e int del value
+    myMap := map[string]int{}
+    myMap := make(map[string]string)
+
+Si queremos saber cuantos elementos tiene un map podemos usar la misma funcion que los slices 
+
+    var myMap = map[string]int{}
+    fmt.Println(len(myMap))
+    Esto devuelve 0 porque no esta inicializado 
+
+Accediendo a los datos del Map
+
+    var alumnos = map[string]int{"Benjamin": 20, "Nahuel":26}
+    fmt.Println(alumnos["Benjamin"])
+    Esto va a devolver 20
+    El nombre es su key y su edad el valor relacionado 
+
+Agregando elementos en el Map
+
+    var alumnos = map[string]int{"Benjamin": 20, "Nahuel":26}
+    Aca inicializamos el map con dos elementos
+    alumnos["Patricio"] = 23
+    alumnos["Pedro"] = 19
+    Ahora ya agregamos otros 2
+
+Actualizar valores de elementos 
+
+    var alumnos = map[string]int{"Benjamin": 20, "Nahuel":26}
+    alumnos["Benjamin"] = 22
+    Ahora "Benjamin" tiene valor 22 
+
+Eliminar elementos 
+
+    var alumnos = map[string]int{"Benjamin": 20, "Nahuel":26}
+    En este caso queremos borrar a uno de los alumnos 
+    delete(alumnos, "Benjamin")
+    La funcion delete tiene como parametros el map y la key del value para borrar 
+
+Reccoriendo un map 
+
+    var alumnos = map[string]int{"Benjamin": 20, "Nahuel":26}
+    Para recorrer se usa un tipo de ciclo "for" accediendo al key y al valor de cada elemento 
+
+    for key, element := range alumnos {
+        fmt.Println("La Key es", key, "y el element es:", element) 
+    }
+    De esta forma imprime uno por uno todos los key con su valor 
+
+
+
+--------------------------------------
+BUCLES 
+
+FOR 
+El bucle for se utiliza con la intencion de repetir un bloque de codigo 
+Generalmente recorriendo un array, un slice, un map o un string 
+
+Contamos con 4 formas distintas de utilizarlo 
+
+    STANDARD FOR 
+    Tiene tres partes  
+        for i := 0; i < 100; i++ {
+            sum += 1
+        }
+    Declara una variable, pone una condicion y que hacer despues de cada vuelta 
+
+    FOR RANGE 
+    Con range podemos iterar sobre elementos en la mayoria de las estructuras 
+    En los casos de arreglos o slices se obtiene el valor del elemento 
+
+        frutas := []string{"manzana", "banana", "pera"}
+        for i, fruta := range frutas {
+            fmt.Println(i, fruta)
+        }
+        Aca genera i que es el index o posicion 
+        Y luego fruta que es el elemento a medida que recorre 
+
+    BUCLE INFINITO 
+    Este se vera mas adelante pero es para repetir algo eternamente 
+
+        sum := 0
+        for {
+            sum++
+        }
+        Este ciclo se va a repetir eternamente siempre sumando 
+    
+    BUCLE "WHILE" 
+    Es una forma relativa de simular un while de otros lenguajes 
+
+        sum := 1 
+        for sum < 10 {
+            sum += sum 
+        }
+        Se va a repetir hasta que se cumpla la condicion 
+
+ROMPER UN BUCLE 
+Algo muy util es saber romper un bucle, es decir cortar su ciclo antes de tiempo 
+Para eso se usa la palabra reservada break
+
+    En este caso contamos con un bucle infinito pero vamos a poner una condicion para cortarlo 
+    sum := 0
+    for {
+        sum ++
+        if sum >= 1000 {
+            break
+        }
+    }
+    fmt.Println(sum)
+    En este caso rompemos el ciclo si llega a 1000 
+
+SALTAR VUELTAS EN EL CICLO 
+Otra herramienta util es saltear una vuelta antes de que termine de ejecutar el codigo 
+En este caso se usa la palabra reservada continue 
+
+    for i := 0; i < 10; i++ {
+        if i % 2 == 0 {
+            continue
+        }
+        fmt.Println(i, "es un numero impar")
+    }
+    En este caso siempre que entre en el if va a ejecutar el continue
+    Esto va a interrumpir esa vuelta del ciclo sin llegar al Print 
+
+
+
+
+--------------------------------------
+CONDICIONALES (IF, ELSE, SWITCH)
+
+La palabra reservada if nos permite ejecutar un pedazo de codigo cuando una funcion se cumple 
+
+    sueldo := 4500
+    if sueldo > 3000 {
+        fmt.Println("Usted tiene que pagar impuestos") 
+    }
+    Solo se entra cuando es true la condicion 
+
+Cuando uno quiere tambien tener un codigo para el otro caso entra en juego el else 
+
+    sueldo := 4500
+    if sueldo > 3000 {
+        fmt.Println("Usted tiene que pagar impuestos") 
+    } else {
+        fmt.Println("Usted NO tiene que pagar")
+    }
+
+En caso de querer encadenar entra en juego else if
+Este nos deja plantear una segunda condicion 
+
+    if condicion1 {
+        Entramos si la condicion 1 es true
+    } else if condicion2 {
+        Entramos si la condicion 2 es true 
+    } else {
+        Entramos si no se cumple ninguna de las 2 condiciones 
+    }
+
+Despues entra el condicional switch 
+Para lo que sirve es para ver muchos casos de manera mas prolija 
+
+    switch expresion {
+        case condicion:
+            Que se ejecuta cuando se cumple la condicion 
+        case condicion2:
+            Que se ejecuta cuando se cumple la condicion2
+        default:
+            Se ejecuta cuando no se cumple ningun caso 
+    }
+Tambien en caso de que se pueda repetir una condicion existe la palabra break 
+Eso sirve para los casos que mas abajo tambien pueda coincidir 
+
+Un ejemplo para ver que dia es
+
+    day := 1
+    switch day {
+        case 0:
+            fmt.Println("Lunes")
+        case 1:
+            fmt.Println("Martes")
+        case 2:
+            fmt.Println("Miercoles")
+        case 3:
+            fmt.Println("Jueves")
+        case 4:
+            fmt.Println("Viernes")
+        case 5:
+            fmt.Println("Sabado")
+        case 6:
+            fmt.Println("Domingo")
+        defaul:
+            fmt.Println("Desconocido")
+    }
+    En este caso va a recibir un numero y va a devolver el dia 
+
+Otra funcionalidad muy importante con la que cuenta el switch es comparar directamente en los casos
+Esto es llamado Switch sin Condicion 
+
+    var edad uint8 = 18 
+    switch {
+        case edad >= 150:
+            fmt.Println("Sos inmortal?")
+        case edad >= 18:
+            fmt.Println("Sos mayor de 18")
+        default:
+            fmt.Println("Sos menor de edad")
+    }
+
+Otro tipo de Switch es cuando se agrupan multiples casos para ahorrar codigo 
+
+    day := "domingo"
+
+    switch day {
+        case "lunes", "martes", "miercoles", "jueves", "viernes":
+            fmt.Printf("%s es un dia de la semana", day)
+        default:
+            fmt.Printf("%s es un dia del fin de semana", day)
+    }
+
+Lo mismo se puede aplicar con la version corta que se define dentro del switch 
+
+    switch day := "domingo"; day {
+        case "lunes", "martes", "miercoles", "jueves", "viernes":
+            fmt.Printf("%s es un dia de la semana", day)
+        default:
+            fmt.Printf("%s es un dia del fin de semana", day)
+    }
+    En este caso se define a day dentro del mismo switch 
