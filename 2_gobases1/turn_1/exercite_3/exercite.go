@@ -24,7 +24,7 @@ func main() {
 	//4.
 	//bad: 1apellido := 6
 	//correct form:
-	apellidoUno := 6
+	apellidoUno := "Gonzalez"
 	fmt.Println("Apellido uno:", apellidoUno)
 	//5.
 	//bad: var licencia_de_conducir = true
