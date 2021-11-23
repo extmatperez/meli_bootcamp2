@@ -16,16 +16,18 @@ func main()  {
 	//No puede arrancar con un numero
 	var nombre string
 	var apellido string
+	//No estaba en el orden correcto las cosas
 	var edad int
+	//No esta bien que empiece con numero
 	//Si se usan los := no es necesario definirlo antes
 	apellido = "Pallua"
 	//Se puede definir directamente usando :=
+	//Esta forma igual es valida
 	licencia_de_conducir := true
-	//Si se va a definir se tiene que usar
 	//No pueden ser palabras sueltas
 	var estatura_de_la_persona int
 	estatura_de_la_persona = 175
-
+	//Esta esta bien
 	cantidadDeHijos := 2
 
 	fmt.Println("Correccion")

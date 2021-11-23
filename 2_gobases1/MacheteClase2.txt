@@ -1,0 +1,197 @@
+Codigo organizado
+A la hora de organizar un proyecto en GO vamos atraves de Packages y Modulos
+
+--------------------------------------
+PACKAGES
+Los programas de Go estan organizados en packages
+Son una coleccion de archivos en un mismo directorio que se compilan juntos
+Todos los archvios de GO pertenecen a un Package 
+En la carpeta donde estan todos los archivos se tiene que llamar como el Package 
+La declaracion del package anterior debe ser la primera lina del archivo main.go en el package
+Los nombres de los package deben ser una sola palabra y en minuscula
+
+PACKAGE MAIN 
+Todos los programas de Go comienzan a ejecutarse en el package main 
+Por convencion los programas ejecutables en el package main se llaman Comandos 
+Y el resto se llaman Packages
+
+FUNCION MAIN 
+La funcion main() es donde va a arrancar el programa ejecutable 
+ 
+ func main(){
+
+ }
+
+Si queremos usar mas packages en Go estos se van a importar usando 
+
+    De a uno 
+    import "fmt"
+    import "time
+
+    O muchos juntos
+    import(
+        "fmt"
+        "time"
+    )
+
+--------------------------------------
+MODULOS 
+Un Modulo es la coleccion de Packages relacionados
+Go permite tener mas de un Modulo por prepositorio
+Sin embargo se utiliza uno por cada uno en su carpeta raiz (go.mod)
+
+La relacion entre repositorios, modulos y packages termina siendo 
+
+    - Un repositorio tiene uno o mas modulos Go(Generalmente uno solo)
+    - Cada Modulo tiene uno o mas Packages 
+    - Cada Package cuenta con uno omas archivos .go 
+
+
+Inicializando un Modulo de Go
+Cuando uno va a crear un modulo necesita ya tener un repositorio nuevo en GitHub
+Y a la hora de iniciar el Modulo de Go se usa este comando 
+
+    go mod init github.com/extmatperez/meli_bootcamp2/tree/patricio_pallua
+
+Este comando crea el go.mod en la raiz de tu proyecto
+Una vez que se inicio el modulo y se creó el archivo go.mod ahi van a estar todas las dependencias que se utilizan
+
+
+Agregando dependencias
+
+Se puede agregar dependencias a la aplicacion
+Para eso se usa el comando "go get"
+Por ejemplo si esta en GitHub seria algo asi 
+
+    go get -u github.com/gin-gonic/gin 
+
+La flag "-u" te permite descargar o actualizar la dependencia 
+Luego de eso ya se puede usar la dependencia importando como se vio antes 
+    
+    import(
+        "fmt"
+        "github/gin-gonic/gin"
+    )
+
+
+Mi primer programa en GO
+Vamos a hacer el "Hola Mundo"
+Primero vamos a crear una carpeta donde va a estar llamada "hola-mundo"
+Dentro de la carpeta vamos a tener un main.go 
+En nuestro proyecto vamos a estar en el package principal por lo que la primer linea de main.go va a ser
+
+    package.main 
+
+Y entre los package standar que queremos usar va a estar "fmt"
+
+    import "fmt"
+
+Ahora lo que nos toca es definir la funcion main() que correra el programa 
+
+    func main(){
+        fmt.Println("Hola mundo!")
+    }
+
+Ahora para correr nuestro proyecto y ver como funciona nos toca pararnos en el directorio
+Y una vez ahi correr el comando run
+
+    go run main.go
+
+Y eso nos deberia mostrar en consola el print que pusimos 
+
+
+--------------------------------------
+VARIABLES
+Una variable es una porcion de almacenamiento en memoria que contiene datos guardados temporalmente
+Esto se hace con la intencion de trabajar con ellos 
+
+Declarando una variable 
+Para declarar una variable se usa la palabra clave "var" 
+
+    var nombre string 
+
+El orden es el nombre de la variable y despues el tipo de dato 
+En este caso el nombre es tipo string 
+
+Asignando valor a las variables 
+Una vez que la variable fue creada hay que asignarle un valor 
+
+    //Creamos una variable que espera un int
+    var horas int 
+    //Definimos el valor
+    horas = 20
+    //Esto daria un error 
+    horas = "Hola" 
+
+Otra forma de hacerlo es con una declaracion corta 
+Para hacer esto se usa el operador ":=" 
+En este caso Go se encarga por adentro de declarar la variable y asignarle un tipo 
+
+    horas := 20
+
+Aca ya crea la variable horas, dice que va a ser int y le asigna el valor 
+No es necesario var ni declarar el tipo de variable 
+
+Otra cosa que se puede hacer es declarar multiples variables en una sola linea 
+
+    producto, precio := "Jeans", 10.5
+
+Aca se crean dos variables con sus valores juntos 
+
+IMPROTANTE!!!
+Cuando se define o se crea una variable pero NO se usa GO no te va a permitir compilar 
+Eso te obliga a usar todas las variables e importar solo lo necesario 
+
+
+CONSTANTES
+Las constantes se van a utilizar en los casos en los que almacenamos valores que no deben ser modificados
+Su declaracion es casi igual a la de una variable 
+
+    const nombre = "Patricio"
+
+Los nombres de las constantes siguen las mismas reglas que en una variable 
+
+    Debe comenzar con una letra o guion bajo 
+    Puede contar con numeros en el medio
+    NO puede comenzar con un numero
+
+    Por convension los nombre de constantes empiezan con mayuscula 
+
+
+--------------------------------------
+TIPOS DE DATOS 
+Go es un lenguaje de programacion tipado estatico
+Es por eso que las variables tienen un tipo de dato asignado 
+
+    Integers
+    Los integer representan a los numeros enteros 
+    Hay dos formas distintas 
+
+        int: Con signo(positivos o negativos)
+        uint: Sin signo(solo positivos)
+
+    Floats
+    Son los numeros con coma.
+    Pueden ser float32 o float64
+
+    Strings
+    Valores de tipo texto en cadena.
+    Hay distintos caracteres que funcionan dentro de un string 
+
+        \\ Representa \
+        \´ Representa ´
+        \" Representa "
+        \n Representa un salto de linea
+        \t Representa una tabulacion 
+
+    Boolean 
+    Esta compuesto por true y false 
+        var myBool bool 
+        myBool = true 
+        myBool = false 
+    Funcionan para realizar comparaciones 
+
+    Bytes 
+    Es para trabajar directamente con bytes 
+    Son similares a los string 
+
