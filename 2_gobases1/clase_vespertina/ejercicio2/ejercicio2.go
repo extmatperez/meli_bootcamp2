@@ -5,7 +5,11 @@ import (
 )
 
 func main() {
-	precio, descuento := 858.21, 18.0
+	var precio, descuento float64
+	fmt.Println("Ingrese el precio:")
+	fmt.Scanf("%f", &precio)
+	fmt.Println("Ingrese el descuento (%):")
+	fmt.Scanf("%f", &descuento)
 	calcDescuento(precio, descuento)
 }
 
