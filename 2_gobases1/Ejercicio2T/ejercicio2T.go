@@ -9,10 +9,9 @@ func main() {
 
 	precio = 250000
 	descuento = 10
-	fmt.Println("precio:", precio, "-- descuento:", descuento, "%")
-
 	totalDescuento := precio * (descuento / 100)
 	precio -= totalDescuento
+	fmt.Println("precio:", precio, "-- descuento:", descuento, "%")
 	fmt.Println("total con descuento:", precio)
 
 }
