@@ -1,0 +1,5 @@
+FUNCIONES
+Una funcion es un bloque de codigo que realiza una tarea especifica
+Las funciones pueden recibir uno, muchos o ningun parametro 
+Tambien pueden retornar o no valores.
+Todas las variables definidas dentro de una funcion solo viven dentro de ella

@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-func main()  {
-	
+func main() {
+
 	var temperatura float32
 	var humedad int
 	var presion int
@@ -11,5 +11,7 @@ func main()  {
 	temperatura = 25.3
 	humedad = 39
 
-	fmt.printf("")
+	fmt.Println("La temperatura es", temperatura)
+	fmt.Println("La humedad es", humedad)
+	fmt.Println("La presion es", presion)
 }
