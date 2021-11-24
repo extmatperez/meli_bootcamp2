@@ -2,11 +2,6 @@ package main
 
 import "fmt"
 
-// Realizar una aplicación que contenga una variable con el número del mes.
-// Según el número, imprimir el mes que corresponda en texto.
-// ¿Se te ocurre si se puede resolver de más de una manera? ¿Cuál elegirías y por qué?
-// Ej: 7, Julio
-
 func main() {
 	/*Se me ocurren dos maneras de realizarlo. La primera es utilizando 12 if para ver cual es el mes, y la otra es utilizando
 	  un mapa que asocie cada número del mes con su nombre */
