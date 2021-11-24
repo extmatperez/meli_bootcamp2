@@ -108,9 +108,9 @@ func animal(name string) (func(int) float64, error) {
 
 func main() {
 	taxes := calculateTaxes(200000.0)
-
+	fmt.Println("EJ1")
 	fmt.Printf("El impuesto a pagar es de %v\n", taxes)
-
+	fmt.Println("EJ2")
 	avg, err := average(1, 2, 3, 4, 5)
 	fmt.Println(avg)
 	fmt.Println(err)
@@ -119,13 +119,16 @@ func main() {
 	fmt.Println(avg)
 	fmt.Println(err)
 
+	fmt.Println("EJ3")
 	fmt.Println(calculateSalary("C", 203020202))
+	fmt.Println("EJ4")
 
 	getAverage := getStatFunc("promedio")
 
 	avg = getAverage(1, 2, 3, 4, 5)
 	fmt.Println(avg)
 
+	fmt.Println("EJ5")
 	getPerro, _ := animal("perro")
 
 	comidaPerro := getPerro(2)
