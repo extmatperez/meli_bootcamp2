@@ -5,11 +5,12 @@ import "fmt"
 func main() {
 
 	fmt.Printf("Ejercicio 2\n")
+	fmt.Println("Ingrese precio del producto a comprar")
+	var precio int
+	fmt.Scanf("%d", &precio)
+	var descuento float64 = 0.3
+	var precioFinal = float64(precio) - (float64(precio) * descuento)
 
-	var precio int = 1000
-	var descuento int = 30
-	var precioFinal = precio - (precio * (descuento / 100))
-
-	fmt.Printf("el precio del articulo es %d el descuento es del %d por ciento y en total te queda en %d", precio, descuento, precioFinal)
+	fmt.Println("el precio del articulo es", precio, "el descuento es del", descuento*100, "por ciento y en total te queda en", precioFinal)
 
 }
