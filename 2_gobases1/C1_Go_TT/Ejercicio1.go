@@ -24,5 +24,10 @@ func main() {
 		x = i
 	}
 
+	for _, letter := range palabra {
+		//fmt.Println(string(letter))
+		fmt.Printf("\n%c", letter)
+	}
+
 	fmt.Printf("La palabra tiene: %d letras\n", x)
 }
