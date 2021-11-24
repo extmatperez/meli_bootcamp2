@@ -11,4 +11,11 @@ func main() {
 	for _, r := range word {
 		fmt.Printf("%c\n", r)
 	}
+
+	/*
+		// Opcion 2
+		for i := 0; i < len(word); i++ {
+			fmt.Println(word[i], i+1)
+		}
+	*/
 }
