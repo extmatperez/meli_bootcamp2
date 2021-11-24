@@ -14,4 +14,10 @@ func main() {
 		}
 	}
 	fmt.Println("La cantidad de empleados mayores a 21 años son: ", count)
+
+	fmt.Println("Actual canidad de empleados: ", len(employees), " se agregara a Federico.")
+	employees["Federico"] = 25
+	fmt.Println("Actual canidad de empleados: ", len(employees), " se eliminara a Pedro.")
+	delete(employees, "Pedro")
+	fmt.Println("Actual canidad de empleados: ", len(employees))
 }
