@@ -1,22 +1,6 @@
 package main
 
-import "fmt"
-
 func main() {
-	//ejercicio 1
-
-	var nombre string = "Rodrigo Romero"
-	var direccion string = "Vergani 463"
-
-	fmt.Println("mi nombre es: " + nombre + " y mi direccion es :" + direccion)
-
-	// ejercicio 2
-
-	var temperatura int = 24
-	var humedad int = 43
-	var presionAtmosferica int = 1019
-
-	fmt.Println("la temperatura es: ", temperatura, " y humedad es :", humedad, "%  y la presion atmosferica es: ", presionAtmosferica, "hPa")
 
 	//ejercio 3
 
