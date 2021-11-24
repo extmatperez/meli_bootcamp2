@@ -56,9 +56,9 @@ func calcular_salario_por_horas_trabajadas(minutos_trabajados int, categoria str
 	if categoria == "C" {
 		return calcular_sueldo_por_categoria(float64(minutos_trabajados)/60.0, 1000.0, 0.0)
 	} else if categoria == "B" {
-		return calcular_sueldo_por_categoria(float64(minutos_trabajados), 1500.0, 20.0)
+		return calcular_sueldo_por_categoria(float64(minutos_trabajados)/60.0, 1500.0, 20.0)
 	} else if categoria == "A" {
-		return calcular_sueldo_por_categoria(float64(minutos_trabajados), 3000.0, 50.0)
+		return calcular_sueldo_por_categoria(float64(minutos_trabajados)/60.0, 3000.0, 50.0)
 	} else {
 		return 0
 	}
@@ -109,7 +109,7 @@ func main() {
 	fmt.Println("IMPUESTO: ", calcular_impuesto_salario(1000000))
 	promediiio, _ := calcular_promedio_calificaciones(2, 3, 4, 5, 5)
 	fmt.Println("promedio calificaciones: ", promediiio)
-	fmt.Println("sueldo de categoria: ", calcular_salario_por_horas_trabajadas(3600, "A"))
+	fmt.Println("sueldo de categoria: ", calcular_salario_por_horas_trabajadas(480, "A"))
 	minFunc, _ := operacion(minimo)
 	// promFunc, _ := operacion(promedio)
 	// maxFunc, _ := operacion(maximo)
