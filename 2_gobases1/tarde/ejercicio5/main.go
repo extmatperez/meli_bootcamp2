@@ -17,6 +17,7 @@ func main() {
 	estudiantes = append(estudiantes, "Leandro")
 	estudiantes = append(estudiantes, "Eduardo")
 	estudiantes = append(estudiantes, "Duvraschka")
+	estudiantes = append(estudiantes, "Gabriela")
 
 	fmt.Println(estudiantes)
 }
