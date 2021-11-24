@@ -5,6 +5,12 @@ import (
 	"fmt"
 )
 
+const (
+	minimo   = "minimo"
+	promedio = "promedio"
+	maximo   = "maximo"
+)
+
 func getMin(numbers []float64) float64 {
 	var min float64 = numbers[0]
 	for _, number := range numbers {
@@ -37,11 +43,11 @@ func getErr(numbers []float64) float64 {
 func calcType(data string) (func(numbers []float64) float64, error) {
 
 	switch data {
-	case "minimo":
+	case minimo:
 		return getMin, nil
-	case "maximo":
+	case maximo:
 		return getMax, nil
-	case "promedio":
+	case promedio:
 		return getAvg, nil
 	default:
 		return getErr, errors.New("Valor incorrecto")
