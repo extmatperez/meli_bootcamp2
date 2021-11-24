@@ -8,12 +8,10 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strings" // Needed to use split
 )
 
-// Needed to use split
-
-var word string = "Edgar"
+var word string = "Edgar Eduardo Montenegro"
 
 func main() {
 	fmt.Printf("The word has %v letters. \n", len(word))
