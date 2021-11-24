@@ -18,7 +18,11 @@ func main() {
 
 	cadena := strings.Split(palabra, "")
 
+	x := 0
 	for i, letra := range cadena {
 		fmt.Println(i, letra)
+		x = i
 	}
+
+	fmt.Printf("La palabra tiene: %d letras\n", x)
 }
