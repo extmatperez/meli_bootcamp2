@@ -9,7 +9,7 @@ type Fecha struct {
 type Alumno struct {
 	nombre   string
 	apellido string
-	DNI      uint32
+	DNI      int
 	fechaIng Fecha
 }
 
@@ -38,6 +38,6 @@ func main() {
 
 	alumno1 := Alumno{"Facundo", "Bouza", 41332191, Fecha{21, 3, 2016}}
 
-	alumno1.
+	alumno1.detalle()
 
 }
