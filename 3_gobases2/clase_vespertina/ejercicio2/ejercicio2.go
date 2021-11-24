@@ -38,3 +38,7 @@ func calcularPromedio(notas []float64) {
 	total := totalNotas / float64(cantidad)
 	fmt.Printf("El promedio es de %v \n", total)
 }
+
+/*
+	Si no se hace asi, se podria hacer con una funcion que le pase N numeros y los reciba en calcularPromedio(notas ...float64)
+*/
