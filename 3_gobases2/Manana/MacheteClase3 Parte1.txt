@@ -3,3 +3,142 @@ Una funcion es un bloque de codigo que realiza una tarea especifica
 Las funciones pueden recibir uno, muchos o ningun parametro 
 Tambien pueden retornar o no valores.
 Todas las variables definidas dentro de una funcion solo viven dentro de ella
+
+PARAMETROS
+A la hora de trabajar con parametros que recibe una funcion GO nos pide que se aclare el tipo
+Por ejemplo una funcion que recibe un numero int va a verse asi 
+
+    func numeroPar(numero int) {
+        if numero % 2 == 0 {
+            fmt.Println("El numero es par")
+        } else {
+            fmt.Println("El numero no es par")
+        }
+    }
+
+En este caso se pone el nombre del parametro y al lado el tipo 
+
+En caso de tener una funcion que reciba multiples parametros de un tipo hay dos formas de trabajar 
+
+    func sumarNumeros(numero1 int, numero2 int)
+
+    func sumarNumeros(numero1, numero2 int)
+
+GO va a saber en este caso que ambos parametros son int 
+
+
+RETURN
+La mayoria de las veces nuestras funciones van a retornar un valor
+Una factor importante de GO es que en las funciones pide que se aclare el tipo de dato que retorna 
+
+    func sumarNumeros(numero1 int, numero2 int) int {
+        return numero1 + numero2
+    }
+
+En esta funcion el int fuera de los parametros va a aclarar el tipo de dato que retorna 
+Por el otro lado fuera de la funcion siempre va a tener que haber una variable que "atrape" lo que retorna 
+
+    s := sumarNumeros(3,4)
+
+En este caso s va a pasar a valer 7
+
+SCOPE
+El scope es el "alcance" que van a tener las variables dentro de la funcion durante el programa 
+La direccion de los scopes es siempre de padre a hijo
+Un hijo puedea cceder a una variable del padre pero no viceversa. Las funciones del hijo no las puede usar el padre 
+
+ELLIPSIS 
+Un beneficio de GO es que podemos hacer funciones que no sabemos cuantos parametros van a recibir 
+Para estos casos se usa "..." para aclarar 
+
+    func recibeParametros(valores ...int) int {}
+
+    recibeParametros(1,2,3,4,5,6,4,3,2,1,3)
+
+En esta funcion sabemos que vamos a recibir multiples int pero no sabemos cuantos 
+
+Un dato importante es que si quisieramos usar multiples parametros el Ellipsis SIEMPRE debe ir ultimo 
+
+    func muchosParametros(valor1 string, valor2 string, valores ...int){}
+
+Los datos que recibe dentro de un Ellipsis pueden ser manipulados como un Slice 
+Es por eso que si queremos recorrerlos podemos usar un ciclo "for"
+
+    func muchosValores(valores ...int) {
+        for i, valor := range valores {
+            fmt.Println(valor)
+        }
+    }
+
+Con esta funcion podemos pasarle muchos datos y los iria imprimiendo uno por uno 
+
+MULTI RETORNO 
+Otro beneficio que tiene GO es que podemos crear funciones que retornan mas de un valor 
+En los casos donde una funcion retorna multiples cosas se deben aclarar los multiples tipos 
+
+    func nuevaFuncion(valor1 float64, valor2 float64) (float64, string, bool) {}
+
+Esta funcion va a retornar un float, un string y un booleano EN ESE ORDEN!!!
+Es MUY IMPORTANTE que en el return esten en el orden que se declaro 
+
+ERRORS
+Usando GO contamos con un paquete llamado "errors" que nos permite generar errores
+Un ejemplo de eso es cuando trabajamos con divisiones y el divisor es 0 
+En ese caso vamos a generar un error para que retorne
+ 
+    func division(dividendo, divisor float64) (float64, error){
+        if divisor == 0 {
+            return 0, errors.New("El divisor no puede ser 0")
+        } else {
+            return dividendo/divisor, nil
+        }
+    }
+
+En este caso si hay un error se retorna un 0 por la division y luego el error 
+En caso de que funcione se retorna el resultado y luego un "nil" que es lo mismo que "nulo"
+Es muy importante que en ambos casos se retornen ambos 
+
+Luego va a haber del lado del receptor un "if" para ver que no haya habido error 
+
+    func main() {
+        res, err := division(2,0)
+
+        if err != nil {
+            HUBO ERROR 
+        } else {
+            TODO BIEN
+        }
+    }
+
+RETORNAR VALORES NOMBRADOS 
+Otra particularidad de GO es que podemos retornar los valores ya con su nombre 
+
+    func calculos(valor1, valor2 float64) (suma float64, resta float64, multi float 64, divis float64) {
+
+    }
+
+Dentro de la funcion ya van a existir esas variables por lo que solo se les va a asignar el valor 
+
+    func calculos(valor1, valor2 float64) (suma float64, resta float64, multi float 64, divis float64) {
+
+        suma = valor1 + valor2
+        resta = valor1 - valor2 
+        multi = valor1 * valor2
+
+        if valor2 != 0 {
+            divis = valor1 / valor2
+        }
+        return
+    }
+
+En este caso ya va a retornar todas las variables que estaban definidas que se retornaban 
+
+RETORNANDO FUNCIONES 
+Otra cosa que se puede retornar en GO es otra funcion 
+Para eso se debe aclarar que se retorna una funcion con los parametros que recibe y que retorna esa funcion 
+
+    func dameUnaFunc(valor string) func(valor1, valor2 float64) float64 {
+
+    }
+
+Esta funcion recibe un string y retorna otra funcion que recibe dos float64 y retorna otro float64 
