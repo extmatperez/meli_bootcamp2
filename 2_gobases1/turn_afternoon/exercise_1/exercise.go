@@ -13,4 +13,7 @@ func main() {
 		fmt.Println(string(c))
 	}
 
+	for i := 0; 1 < len(word); i++ {
+		fmt.Println(string(word[i]))
+	}
 }
