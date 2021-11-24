@@ -31,7 +31,7 @@ func calcularAlimento(mascota string, cantidad int) (float64, error) {
 	case "hamster":
 		return comidaHam(cantidad), nil
 	default:
-		return 0, errors.New("No existe ese animal en la tienda")
+		return 0, errors.New("no existe ese animal en la tienda")
 	}
 }
 
