@@ -13,9 +13,6 @@ var empleados = map[string]uint8{
 }
 
 func main() {
-
-	//var punteroEmpleados *map[string]uint8
-	//punteroEmpleados = &empleados
 	imprimirMenu()
 }
 
