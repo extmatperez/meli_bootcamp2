@@ -16,11 +16,7 @@ func main() {
 }
 
 func contarCaracteres(palabraElegida string) {
-	contador := 0
-	for indice := range palabraElegida {
-		contador = indice + 1
-	}
-	fmt.Println("La palabra", palabraElegida, "tiene", contador, "caracteres")
+	fmt.Printf("La palabra '%v' tiene %v caracteres", palabraElegida, len(palabraElegida))
 }
 
 func imprimirCaracteres(palabraElegida string) {

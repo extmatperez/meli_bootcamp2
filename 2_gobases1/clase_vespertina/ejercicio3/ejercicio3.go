@@ -7,6 +7,10 @@ func main() {
 	validarAccesibilidadPrestamo(personas)
 }
 
+/*
+	Una solucion sin utilizar estructura, puede ser crear un mapa string slice (string uint32) (si el sueldo es 0, no tiene trabajo)
+*/
+
 type persona struct {
 	Nombre            string
 	Edad              uint8
