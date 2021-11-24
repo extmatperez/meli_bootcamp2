@@ -19,4 +19,8 @@ func main() {
 	}
 
 	fmt.Println("La palabra", palabra, "tiene", contador, "letras")
+
+	for _, letter := range palabra {
+		fmt.Println(string(letter))
+	}
 }
