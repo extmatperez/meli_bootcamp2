@@ -13,6 +13,6 @@ func main() {
 	for i := 0; i < len(palabra); i++ {
 
 		array := strings.Split(palabra, "")
-		fmt.Printf("\n%v", array[i])
+		fmt.Printf("%v\n", array[i])
 	}
 }
