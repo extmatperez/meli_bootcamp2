@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+//Una forma alternativa seria hacer un switch, o varios ifs, aunque se pierde un poco de eficiencia
+
 func main() {
 	fmt.Println("Ingrese el numero del mes:")
 	var numeroMes uint8 = 0
