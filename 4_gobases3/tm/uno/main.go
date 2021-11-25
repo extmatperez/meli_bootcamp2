@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -19,17 +18,15 @@ func main() {
 	stock = append(stock, Product{2, 8.99, 7})
 	stock = append(stock, Product{3, 15.50, 4})
 
-	stock_file, err1 := json.Marshal(stock)
-
-	if err1 == nil {
-		err2 := os.WriteFile("./store_stock.txt", stock_file, 0644)
-		if err2 == nil {
-			fmt.Println("archivo cargado con exito")
-		} else {
-			fmt.Println("no pudo cargarse el archivo")
-		}
-	} else {
-		fmt.Println("la conversion fallo")
+	stock_string := "ID;Price;Amount\n"
+	for _, product := range stock {
+		stock_string += fmt.Sprintf("%v;%v;%v;\n", product.ID, product.Price, product.Amount)
 	}
 
+	err := os.WriteFile("./stock.csv", []byte(stock_string), 0644)
+	if err == nil {
+		fmt.Println("archivo cargado con exito")
+	} else {
+		fmt.Println("no pudo cargarse el archivo")
+	}
 }

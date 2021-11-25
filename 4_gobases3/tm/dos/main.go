@@ -1,9 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type Product struct {
@@ -12,25 +12,20 @@ type Product struct {
 	Amount int
 }
 
-var stock []Product
-
 func main() {
 
-	stock_file, err1 := os.ReadFile("../uno/store_stock.txt")
-	if err1 == nil {
-		err2 := json.Unmarshal(stock_file, &stock)
-		if err2 == nil {
-			fmt.Println("archivo leido con exito")
-			fmt.Printf("%-10s %10s %s\n", "ID", "Precio", "Cantidad")
-			for _, product := range stock {
-				fmt.Printf("%-10v", product.ID)
-				fmt.Printf("%10v", product.Price)
-				fmt.Printf("%10v\n", product.Amount)
-			}
-		} else {
-			fmt.Println("no puso leerse el archivo")
-		}
+	stock_file, err := os.ReadFile("../uno/stock.csv")
+	stock := string(stock_file)
+	if err == nil {
+		fmt.Println("archivo leido con exito")
+		newStr := strings.Replace(string(stock), ";", "\t", -1)
+		fmt.Println(newStr)
+		//for _, product := range stock {
+		//	fmt.Printf("%-10v", product.ID)
+		//	fmt.Printf("%10v", product.Price)
+		//	fmt.Printf("%10v\n", product.Amount)
+		//}
 	} else {
-		fmt.Println("no pudo recuperarse el archivo")
+		fmt.Println("no puso leerse el archivo")
 	}
 }
