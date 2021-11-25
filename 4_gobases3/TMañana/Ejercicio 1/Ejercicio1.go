@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"os"
 )
 
@@ -9,7 +9,7 @@ import (
 type Producto struct {
 	Id int
 	Precio float64
-	Cantidad int
+	Cantidad float64
 }
 
 
@@ -22,11 +22,7 @@ func main() {
 	list := make([]Producto,0)
 	list = append(list, p1, p2)
 
-	var str string
-	
-	for i := 0; i < len(list); i++ {
-	str += fmt.Sprintf("%v %v %v;\n", list[i].Id, list[i].Precio, list[i].Cantidad)
-	}
+	u, _ := json.Marshal(list)
 
-	_ = os.WriteFile("Productos.txt", []byte(str), 0644)
+	_ = os.WriteFile("Productos.txt", u, 0667)
 }
