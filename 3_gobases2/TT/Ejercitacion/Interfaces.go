@@ -72,6 +72,7 @@ func getDetails(g geometry) {
 	fmt.Println(g.perimeter())
 }
 
+// No olvidarse del metodo newGeometry, repasar a la tarde lo ultimo de la clase.
 func main() {
 	r := rectangle{height: 5, width: 10}
 	c := circle{radius: 4}
