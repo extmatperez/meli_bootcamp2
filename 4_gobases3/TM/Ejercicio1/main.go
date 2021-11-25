@@ -27,11 +27,18 @@ func main() {
 	//fmt.Println(string(data))
 
 	p1 := Products{1, 200, 3}
-	p1formateado, err := json.Marshal(p1)
+	p2 := Products{2, 500, 5}
+	var lista []Products
+	lista = append(lista, p1, p2)
+	listaFormateado, err := json.Marshal(lista)
 
-	err = os.WriteFile("./productos.txt", p1formateado, 0644)
+	err = os.WriteFile("./productos.txt", listaFormateado, 0644)
 	data, err := os.ReadFile("./productos.txt")
 	fmt.Println(err)
 	fmt.Println(string(data))
+
+	var listRead []Products
+	json.Unmarshal(data, &listRead)
+	fmt.Printf("El archivo contiene:\n %v\n", listRead)
 
 }
