@@ -16,7 +16,7 @@ func main() {
 	prod2 := Producto{111, 1771.20, 4}
 	prod3 := Producto{222, 143.22, 1}
 	stringCompleto := escribirProductos(prod1, prod2, prod3)
-	err := os.WriteFile("./productos.csv", []byte(stringCompleto), 0644)
+	err := os.WriteFile("./ejercicio1/productos.csv", []byte(stringCompleto), 0644)
 	if err != nil {
 		fmt.Println(err)
 	} else {
