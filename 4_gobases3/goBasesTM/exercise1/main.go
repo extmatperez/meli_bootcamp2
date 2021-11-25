@@ -1,15 +1,17 @@
 package main
 
 import (
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func main() {
-	producto := Producto{1122, 300.10, 5}
-	producto1 := Producto{1123, 303.10, 10}
-	producto2 := Producto{1124, 333.10, 15}
+	producto := Producto{1122, 300.5, 5}
+	producto1 := Producto{1123, 303.3, 10}
+	producto2 := Producto{1124, 333.9, 15}
 
 	/* 	var lista []Producto
 	   	lista = append(lista, producto, producto1, producto2) */
@@ -21,9 +23,9 @@ func main() {
 }
 
 type Producto struct {
-	IdProd   int     `json:"ID"`
+	IdProd   int64   `json:"ID"`
 	Precio   float64 `json:"PRECIO"`
-	Cantidad int     `json:"CANTIDAD"`
+	Cantidad int64   `json:"CANTIDAD"`
 }
 
 func guardarArchivo(prod ...Producto) {
@@ -49,5 +51,28 @@ func guardarArchivo(prod ...Producto) {
 	} else {
 		fmt.Println("El archivo no existe...")
 	}
+
+	// Unmarshal JSON data
+	var d []Producto
+	err = json.Unmarshal([]byte(data), &d)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// Create a csv file
+	f, err := os.Create("./fileE.csv")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer f.Close()
+	// Write Unmarshaled json data to CSV file
+	w := csv.NewWriter(f)
+	for _, obj := range d {
+		var record []string
+		record = append(record, strconv.FormatInt(obj.IdProd, 10))
+		record = append(record, strconv.FormatFloat(obj.Precio, 'f', -1, 32))
+		record = append(record, strconv.FormatInt(obj.Cantidad, 10))
+		w.Write(record)
+	}
+	w.Flush()
 
 }
