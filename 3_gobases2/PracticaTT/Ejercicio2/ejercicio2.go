@@ -17,26 +17,61 @@ type Matrix struct {
 	alto       int
 	ancho      int
 	cuadratica bool
-	max        int
+	max        float64
 }
 
 func (m *Matrix) Set(valores ...float64) {
 	m.valores = valores
-	//falta setear el max acá
+
+	//Verifico si es cuadratica
+	if m.ancho == m.alto {
+		m.cuadratica = true
+	} else {
+		m.cuadratica = false
+	}
+
+	//Seteo el maximo
+	m.max = m.valores[0]
+	for _, valor := range m.valores {
+		if valor > m.max {
+			m.max = valor
+		}
+	}
 }
 
 func (m Matrix) Print() {
-	for i := 0; i < m.alto; i++{
-		for j := 0; j < m.ancho, j++
-			
+	alturaAct := 0
+	anchoAct := 0
+	for _, valor := range m.valores {
+		fmt.Printf("%v\t", valor)
+		if m.comprobarLimites(&alturaAct, &anchoAct) == -1 {
+			break
+		}
 	}
+}
+
+func (m Matrix) comprobarLimites(alturaAct *int, anchoAct *int) int {
+	//Verifico el ancho para hacer el salto de linea en el print
+	//Tambien verifico el alto. Si me paso del alto dejo de imprimir
+	*anchoAct++
+	if *anchoAct == m.ancho {
+		fmt.Printf("\n")
+		*alturaAct++
+		*anchoAct = 0
+		if *alturaAct == m.alto {
+			return -1
+		}
+	}
+	return 0
 }
 
 func main() {
 
 	matriz1 := Matrix{alto: 3,
-		ancho:      3,
-		cuadratica: true}
-	matriz1.Set(1, 2, 3, 4)
-	fmt.Printf("%v", matriz1)
+		ancho: 3,
+	}
+	matriz1.Set(100, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3)
+	fmt.Printf("%v\n", matriz1)
+	matriz1.Print()
+
 }
