@@ -24,7 +24,7 @@ func (t tienda) Total() float64 {
 	}
 	return montoTodal
 }
-func (t tienda) Agregar(p producto) {
+func (t *tienda) Agregar(p producto) {
 	t.ListaProductos = append(t.ListaProductos, p)
 }
 
@@ -61,7 +61,7 @@ func nuevoProducto(tipo, nombre string, precio float64) producto {
 }
 func nuevaTienda() Ecommerce {
 	eco := tienda{}
-	return eco
+	return &eco
 }
 
 func main() {
