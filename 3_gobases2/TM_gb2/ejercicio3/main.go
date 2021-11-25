@@ -11,33 +11,49 @@ import "fmt"
 
 // Se solicita generar una función que reciba por parámetro la cantidad de minutos trabajados por mes y la categoría, y que devuelva su salario.
 
-func calculate_total (minutes int, rate int) int {
+
+func calculate_parcial (minutes float64, rate float64) float64 {
 	return minutes * rate
-
-}
-
-func category_rate (category string) int {
-	
 }
 
 
-func final_income (category string, total int) int {
+func category_rate (category string) float64 {
 	switch category {
-	case category == "C":
-		return total
-	case category == "B":
-		return total + total*0.2
-	case category == "A":
-		return total + total*0.5
+		case "C":
+			return 1000
+		case "B":
+			return 1500
+		case "A":
+			return 3000
 	} 
 	return 0
 
 }
+
+func calculate_total_income (employee_category string, minutes float64) float64 {
+
+		switch employee_category {
+			case "C":
+				return calculate_parcial(category_rate(employee_category), minutes)
+
+			case "B":
+				parcial := calculate_parcial(category_rate(employee_category), minutes) 
+				return parcial + parcial*0.2	
+
+			case "A":
+				parcial := calculate_parcial(category_rate(employee_category), minutes) 
+				return parcial + parcial*0.5	
+			} 
+		return 0
+
+}
+
+
  
 
 
 func main () {
 
-	// func income_calculator(minutes int, category string) int
+	fmt.Println(calculate_total_income("A", 120))
 
 }
