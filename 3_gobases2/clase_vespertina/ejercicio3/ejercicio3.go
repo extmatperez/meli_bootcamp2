@@ -11,13 +11,14 @@ func main() {
 	prod3 := producto{tipoChico, "Celular", 67692}
 
 	productosTienda := []producto{prod1, prod2, prod3}
-	tienda1 := tienda{productosTienda}
+	tienda1 := nuevaTienda(productosTienda, "tienda1") //tienda{productosTienda}
 	fmt.Printf("El costo total de los productos es de: $ %.2f\n", tienda1.Total())
 
 	prod4 := producto{tipoGrande, "Lavarropas", 9785.99}
 
 	tienda1.Agregar(prod4)
 	fmt.Printf("El costo total de los productos es de: $ %.2f\n", tienda1.Total())
+
 }
 
 type tienda struct {
@@ -53,7 +54,7 @@ type Producto interface {
 
 type Ecommerce interface {
 	Total() float64
-	Agregar(producto Producto)
+	Agregar(producto producto)
 }
 
 type Tipo interface {
@@ -85,4 +86,13 @@ func (n Chico) CalcularAdicional() func(precio float64) float64 {
 		return precio
 	}
 	return fun
+}
+
+func nuevaTienda(productosTienda []producto, tipo string) Ecommerce {
+	switch tipo {
+	case "tienda1":
+		return &tienda{productosTienda}
+		//case "tienda2": return &tienda2{productosTienda}
+	}
+	return nil
 }
