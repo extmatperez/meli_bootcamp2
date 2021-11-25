@@ -30,8 +30,6 @@ func (m *Matrix) Print() {
 	var altura uint16
 	var anchura uint16
 	for _, val := range m.Valores {
-		//fmt.Println(altura)
-		//fmt.Println(anchura)
 		if anchura == m.Ancho {
 			fmt.Printf("\n")
 			anchura = 0
