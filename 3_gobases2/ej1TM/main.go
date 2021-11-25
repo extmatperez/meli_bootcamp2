@@ -104,7 +104,35 @@ func Prom(valores ...int) float64 {
 }
 
 //EJERCICIO 5
+func Animal(animal string) (func(int) float64, error) {
 
+	switch animal {
+	case "tarantula":
+		return comidaParaTarantula, nil
+	case "perro":
+		return comidaParaPerro, nil
+	case "gato":
+		return comidaParaGato, nil
+	case "hamster":
+		return comidaParaHamster, nil
+	default:
+		return nil, errors.New("animal no especificado")
+	}
+
+}
+func comidaParaHamster(cantidad int) float64 {
+	return float64(cantidad) * 0.25
+}
+
+func comidaParaPerro(cantidad int) float64 {
+	return float64(cantidad) * 10.0
+}
+func comidaParaGato(cantidad int) float64 {
+	return float64(cantidad) * 5.0
+}
+func comidaParaTarantula(cantidad int) float64 {
+	return float64(cantidad) * 0.15
+}
 func main() {
 	fmt.Println("IMPUESTO: ", calcular_impuesto_salario(1000000))
 	promediiio, _ := calcular_promedio_calificaciones(2, 3, 4, 5, 5)
@@ -116,4 +144,6 @@ func main() {
 
 	valorMinimo := minFunc(2, 3, 3, 4, 1, 2, 4, 5)
 	fmt.Println("Minimo: ", valorMinimo)
+	a, _ := Animal("perro")
+	fmt.Println("ANIMAL: ", a(5))
 }
