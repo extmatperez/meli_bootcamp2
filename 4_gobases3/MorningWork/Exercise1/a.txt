@@ -1,1 +1,1 @@
-[{"id":1,"precio":90.9,"cantidad":10},{"id":2,"precio":250.2,"cantidad":4},{"id":3,"precio":50.31,"cantidad":80}]
+"ID;Price;Quantity\n1;90.9;10\n2;250.2;4\n3;50.31;80\n"

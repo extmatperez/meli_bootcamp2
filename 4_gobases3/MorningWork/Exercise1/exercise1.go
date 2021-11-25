@@ -8,7 +8,6 @@ separados por punto y coma (csv).
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -20,15 +19,21 @@ type Product struct {
 }
 
 func saveFileTXT(productList []Product) {
-
+	convCSV := "ID;Price;Quantity\n"
 	// productListTransformer = productList
-	productListByte, err := json.Marshal(productList)
-	if err != nil {
-		fmt.Println("No se pudo escribir")
+	for _, prod := range productList {
+		convCSV += fmt.Sprintf("%v;%v;%v \n", prod.IdProduct, prod.Price, prod.Quantity)
 	}
-	fmt.Print(productListByte)
-	err2 := os.WriteFile("a.txt", productListByte, 0644)
-	if err2 != nil {
+	/*
+		// Marshal no reconoce el salto de linea \n por lo que no se puede ocupar en este caso
+		productListByte, err2 := json.Marshal(convCSV)
+		if err2 != nil {
+			fmt.Println("No se pudo escribir")
+		}
+		fmt.Print(productListByte)
+	*/
+	err := os.WriteFile("a.csv", []byte(convCSV), 0644)
+	if err != nil {
 		fmt.Println("No se pudo escribir")
 	}
 
@@ -46,14 +51,5 @@ func main() {
 	productList = append(productList, producto3)
 
 	saveFileTXT(productList)
-
-	//Read File
-	// data, err := os.ReadFile("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/4_gobases3/a.txt")
-	// if err == nil {
-	// 	file := string(data)
-	// 	fmt.Println(file)
-	// } else {
-	// 	fmt.Println("El archivo no existe")
-	// }
 
 }
