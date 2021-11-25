@@ -14,18 +14,17 @@ import "fmt"
 
 func calcularSueldo(categoria string, minutos int) float64 {
 
-	cant_horas := float64(minutos / 60)
 	salario := 0.00
 
 	switch categoria {
 	case "A":
-		salario = 3000.0 * cant_horas
+		salario = (3000.0 / 60) * float64(minutos)
 		salario += salario * 0.5
 	case "B":
-		salario = 1500.0 * cant_horas
+		salario = (1500.0 / 60) * float64(minutos)
 		salario += salario * 0.2
 	case "C":
-		salario = 1000.0 * cant_horas
+		salario = (1000.0 / 60) * float64(minutos)
 	default:
 		salario = 0
 	}
@@ -39,10 +38,12 @@ func main() {
 	categoria := ""
 
 	fmt.Println("Ingrese la categoría: ")
-	fmt.Scanf("%f", &categoria)
+	fmt.Scanf("%s", &categoria)
 
 	fmt.Println("Ingrese los minutos trabajados: ")
 	fmt.Scanf("%f", &minutos)
 
-	fmt.Println("El sueldo correspondiente es: ", calcularSueldo(categoria, minutos))
+	sueldo := calcularSueldo("C", 120)
+
+	fmt.Println("El sueldo correspondiente es: ", sueldo)
 }
