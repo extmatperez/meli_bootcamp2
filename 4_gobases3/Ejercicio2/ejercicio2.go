@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 	"strconv"
 )
 
@@ -48,4 +49,5 @@ func main() {
 			fmt.Printf("%-10v%-10.2f%-10v\n", list.id, list.precio, list.cantidad)
 		}
 	}
+	fmt.Println(runtime.NumCPU())
 }
