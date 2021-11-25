@@ -18,25 +18,24 @@ func main() {
 	mediumProduct, errMedium := newProduct(MEDIUM, "Pelota de futbol", 1300.0)
 	bigProduct, errBig := newProduct(BIG, "Heladera", 50000.0)
 
-	if errSmall != nil {
-		fmt.Println(errSmall)
+	if errSmall != nil || errMedium != nil || errBig != nil {
+		if errSmall != nil {
+			fmt.Println(errSmall)
+		}
+		if errMedium != nil {
+			fmt.Println(errSmall)
+		}
+		if errBig != nil {
+			fmt.Println(errSmall)
+		}
+
 	} else {
 		store.AddProduct(smallProduct)
-	}
-
-	if errMedium != nil {
-		fmt.Println(errSmall)
-	} else {
 		store.AddProduct(mediumProduct)
-	}
-
-	if errBig != nil {
-		fmt.Println(errSmall)
-	} else {
 		store.AddProduct(bigProduct)
-	}
 
-	fmt.Println(store.Total())
+		fmt.Println(store.Total())
+	}
 }
 
 type Store struct {
@@ -52,8 +51,10 @@ func (s Store) Total() float64 {
 	return total
 }
 
-func (s *Store) AddProduct(productInterface ProductInterface) {
-	s.Products = append(s.Products, productInterface)
+func (s *Store) AddProduct(productInterfaces ...ProductInterface) {
+	for i := 0; i < len(productInterfaces); i++ {
+		s.Products = append(s.Products, productInterfaces[i])
+	}
 }
 
 type Product struct {
