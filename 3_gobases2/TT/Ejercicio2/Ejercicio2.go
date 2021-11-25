@@ -44,7 +44,7 @@ func (m *Matrix) Set(values ...float64) {
 
 func (m Matrix) Print() {
 	var a, b int = 0, m.Ancho
-	for i := 0; i < m.Alto; i++ {
+	for i := 1; i < m.Alto; i++ {
 		fmt.Printf("Fila %d: %v\n", i, m.Values[a:b])
 		a = b
 		b = b + m.Ancho
