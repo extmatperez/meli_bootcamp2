@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 )
 
 const rutaArchivo = "/Users/aghione/Desktop/repositorios/bootcamp/practicas/meli_bootcamp2/4_gobases3/a.txt"
@@ -18,6 +19,7 @@ func main() {
 	for _, producto := range productos {
 		producto.Guardar()
 	}
+	producto1.LeerProductos()
 }
 
 type Producto struct {
@@ -44,6 +46,28 @@ func (p Producto) Guardar() {
 	}
 }
 
+func (p Producto) LeerProductos() {
+	fmt.Printf("ID\t\tPrecio\tCantidad")
+	productosStr, err := os.ReadFile(rutaArchivo)
+
+	if err != nil {
+		fmt.Println("Algo salio mal al leer el archivo.")
+	} else {
+		productos := strings.Split(string(productosStr), ";")
+		for _, producto := range productos {
+			fmt.Printf("El producto individual dentro del for es: %v\n", producto)
+			var productoObtenido Producto
+			fmt.Printf("El slice de bytes es: %v\n", []byte(producto))
+			prod := json.Unmarshal([]byte(producto), &productoObtenido)
+			fmt.Printf("El producto convertido es: %v\n", prod)
+			/*if err == nil {
+				fmt.Printf("%v\t\t%v\t%v", )
+			}*/
+		}
+	}
+}
+
 type Fichero interface {
 	Guardar()
+	LeerProductos()
 }
