@@ -41,5 +41,7 @@ func main() {
 	fmt.Println(usuario1, &pUsuario1)
 
 	setConFunc("12345678", &usuario1)
+	fmt.Println(usuario1, &pUsuario1)
+
 	fmt.Println()
 }
