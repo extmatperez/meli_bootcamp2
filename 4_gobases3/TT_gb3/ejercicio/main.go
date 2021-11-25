@@ -33,10 +33,16 @@ import "fmt"
 		u.Mail = new_mail
 	}
 
-	func (u *User) change_password(new_password string) {
-		u.Password = new_password
-	}
+	// func (u *User) change_password(new_password string) {
+	// 	u.Password = new_password
+	// }
 
+
+	//OPCION CON FUNCION Y PUNTERO
+
+	func change_password(new_password string, u *User) {
+		(*u).Password = new_password
+	}
 
 func main () {
 
@@ -49,7 +55,12 @@ func main () {
 
 	fmt.Println(new_user1)
 
+	
+	//OPCION CON FUNCION Y PUNTERO
 
+	change_password("3333", &new_user1)
+
+	fmt.Println(new_user1)
 
 
 }
