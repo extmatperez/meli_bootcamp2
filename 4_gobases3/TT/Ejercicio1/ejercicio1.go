@@ -31,19 +31,19 @@ type User struct {
 	Password string
 }
 
-func (p *User) SetFullName(name, lastname string) {
-	p.Name = name
-	p.Lastname = lastname
+func (u *User) SetFullName(name, lastname string) {
+	u.Name = name
+	u.Lastname = lastname
 }
 
-func (p *User) SetAge(age int) {
-	p.Age = age
+func (u *User) SetAge(age int) {
+	u.Age = age
 }
 
-func (p *User) SetEmail(email string) {
-	p.Email = email
+func (u *User) SetEmail(email string) {
+	u.Email = email
 }
 
-func (p *User) SetPassword(password string) {
-	p.Password = password
+func (u *User) SetPassword(password string) {
+	u.Password = password
 }
