@@ -51,12 +51,12 @@ func leerArchivo(file string) {
 
 func formatoPrint(lista []producto) {
 	var total float64
-	fmt.Printf("ID\t Precio Cantidad")
+	fmt.Printf("%-10v%10v%10v", "ID", "Precio", "Cantidad")
 	for i := 0; i < len(lista); i++ {
 		total += lista[i].Precio * float64(lista[i].Cantidad)
-		fmt.Printf("\n%v\t %v\t %v", lista[i].Id, lista[i].Precio, lista[i].Cantidad)
+		fmt.Printf("\n%-10v%10v%10v", lista[i].Id, lista[i].Precio, lista[i].Cantidad)
 	}
-	fmt.Printf("\n\t %v\n", total)
+	fmt.Printf("\n%20v\n", total)
 }
 
 func main() {
