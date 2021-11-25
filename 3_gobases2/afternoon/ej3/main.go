@@ -29,6 +29,10 @@ func (s *store) Add(p Product) {
 }
 
 func (s store) Total() float64 {
+	var sum float64 = 0.0
+	for _, p := range s.Products {
+		sum = sum + p.CostCalculation()
+	}
 	return 0.0
 }
 
@@ -45,8 +49,8 @@ type product struct {
 func (p product) CostCalculation() float64 {
 	var typesCalc = map[string]float64{
 		"sm": p.Price,
-		"md": p.Price * 0.03,
-		"bg": (p.Price * 0.06) + 2500,
+		"md": p.Price * 1.03,
+		"bg": (p.Price * 1.06) + 2500,
 	}
 
 	return typesCalc[p.TypeN]
