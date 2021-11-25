@@ -132,6 +132,6 @@ func newProduct(productType, name string, price float64) (ProductInterface, erro
 	}
 }
 
-func newStore() Store {
-	return Store{}
+func newStore() EcommerceInterface {
+	return &Store{}
 }
