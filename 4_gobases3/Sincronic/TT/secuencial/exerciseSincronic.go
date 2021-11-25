@@ -25,13 +25,24 @@ func main() {
 	//*********************************************************************
 
 	//Forma Secuencial:
-	ini := time.Now()
+	iniS := time.Now()
 	proceso(1)
 	proceso(2)
 	proceso(3)
 	proceso(4)
-	fin := time.Now()
-	tiempo := fin.Sub(ini)
+	finS := time.Now()
+	tiempoS := finS.Sub(iniS)
 
-	fmt.Println("El tiempo demorado es de: ", tiempo.Seconds())
+	fmt.Println("El tiempo demorado de forma secuencial es: ", tiempoS.Seconds())
+
+	//Forma Thread:
+	iniA := time.Now()
+	go proceso(1)
+	go proceso(2)
+	go proceso(3)
+	go proceso(4)
+	finA := time.Now()
+	tiempoA := finA.Sub(iniA)
+
+	fmt.Println("El tiempo demorado de forma paralela es: ", tiempoA.Seconds())
 }
