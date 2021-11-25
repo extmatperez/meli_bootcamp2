@@ -15,11 +15,11 @@ func main() {
 	var apellido string
 	var edad int
 	apellido1 := 6
-	var licencia_de_conducir = true
+	var licencia_de_conducir = true //tipo bool
 	var estatura_de_la_persona int
 	cantidadDeHijos := 2
-	nombre = ""
-	apellido = ""
+	nombre = "a"
+	apellido = "b"
 	estatura_de_la_persona = 0
 
 	Println(nombre, apellido, edad, apellido1, licencia_de_conducir, estatura_de_la_persona, cantidadDeHijos)
