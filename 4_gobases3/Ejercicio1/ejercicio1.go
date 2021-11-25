@@ -19,13 +19,12 @@ func main() {
 	producto3 := Producto{3, 3000.0, 4}
 	productos = append(productos, producto1, producto2, producto3)
 	var datos string
+	datos += "ID;Precio;Cantidad\n"
 	for _, p := range productos {
 		datos += fmt.Sprintf("%d;%.2f;%d \n", p.id, p.precio, p.cantidad)
 	}
 	d1 := []byte(datos)
-
 	err := os.WriteFile("./archivos/datos.csv", d1, 0644)
-
 	if err == nil {
 		fmt.Println("Guardado correctamente")
 	} else {
