@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 type Product struct {
 	name  string
 	price float64
@@ -28,13 +24,12 @@ func addProduct(product *Product, user *User, count int) {
 
 func removeProducts(user *User) {
 	user.products = user.products[:0]
-	fmt.Printf("%v\n", user)
-	fmt.Printf("%p\n", user)
 }
 
 func main() {
-	var u = new(User)
-	fmt.Printf("%v\n", u)
-	removeProducts(u)
-
+	var products []Product
+	var u = User{"Federico", "Archuby", "federico.archuby@mercadolibre.com", products}
+	product := newProduct("Alfajor", 65.5)
+	addProduct(product, &u, 900)
+	removeProducts(&u)
 }
