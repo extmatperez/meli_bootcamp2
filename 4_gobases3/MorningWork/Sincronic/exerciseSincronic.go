@@ -43,4 +43,6 @@ func main() {
 		fmt.Println("El archivo no existe")
 	}
 
+	// WriteFile
+
 }
