@@ -20,7 +20,7 @@ func main() {
 	productos = append(productos, Producto{5, 28.4, 20})
 
 	var prodActual, stringProductos string
-	stringProductos = ""
+	stringProductos = "ID;Precio;Cantidad"
 	for _, producto := range productos {
 		prodActual = fmt.Sprintf("%v;%v;%v\n", producto.Id, producto.Precio, producto.Cantidad)
 		stringProductos += prodActual
