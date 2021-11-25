@@ -1,5 +1,1 @@
-1;156.99;5
-2;171;2
-3;92.99;1
-4;15.5;7
-5;1563;1
+{"id":1,"precio":156.99,"cantidad":5};{"id":2,"precio":171,"cantidad":2};{"id":3,"precio":92.99,"cantidad":1};{"id":4,"precio":15.5,"cantidad":7};{"id":5,"precio":1563,"cantidad":1};

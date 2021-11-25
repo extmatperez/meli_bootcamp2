@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -26,7 +27,9 @@ type Producto struct {
 }
 
 func (p Producto) Guardar() {
-	textoFormateado := fmt.Sprintf("%v;%v;%v\n", p.Id, p.Precio, p.Cantidad)
+	prodFormateado, err := json.Marshal(p)
+	textoFormateado := fmt.Sprintf("%v;", string(prodFormateado))
+
 	archivo, err := os.OpenFile(rutaArchivo, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		fmt.Println("Algo salio mal al abrir el archivo.")
