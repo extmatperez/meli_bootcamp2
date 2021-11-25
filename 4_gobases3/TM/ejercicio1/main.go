@@ -6,9 +6,9 @@ import (
 )
 
 type Producto struct {
-	Id       int     `json:id`
-	Precio   float64 `json:precio`
-	Cantidad int     `json:cantidad`
+	Id       int
+	Precio   float64
+	Cantidad int
 }
 
 func main() {
