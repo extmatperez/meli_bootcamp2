@@ -41,7 +41,11 @@ func sumarProductos(productos []Producto, c chan float64) {
 func sumarServicios(servicios []Servicios, c chan float64) {
 	precioTotal := 0.0
 	for _, servicio := range servicios {
-		precioTotal += servicio.Precio * float64(servicio.MinTrabajados) / 30
+		if servicio.MinTrabajados < 30 {
+			precioTotal += servicio.Precio
+		} else {
+			precioTotal += servicio.Precio * float64(servicio.MinTrabajados) / 30
+		}
 	}
 	c <- precioTotal
 }
