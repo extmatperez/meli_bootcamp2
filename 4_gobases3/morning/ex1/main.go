@@ -26,13 +26,13 @@ func main() {
 
 	newCompany := Company{prodSlice}
 
-	stringToWriteInFile := "ID;Price;Quantity\n"
+	HeadersInFile := "ID;Price;Quantity\n"
 
 	for _, prod := range newCompany.Products {
-		stringToWriteInFile += fmt.Sprintf("%v;%10.2f;%v\n", prod.ID, prod.Price, prod.Quantity)
+		HeadersInFile += fmt.Sprintf("%v;%10.2f;%v\n", prod.ID, prod.Price, prod.Quantity)
 	}
 
-	os.WriteFile("./prods_comprados.csv", []byte(stringToWriteInFile), 0644)
+	os.WriteFile("./prods_comprados.csv", []byte(HeadersInFile), 0644)
 
 	fmt.Println(newCompany)
 }
