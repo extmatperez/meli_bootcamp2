@@ -36,7 +36,7 @@ cantidad += animalPerro(5)
 cantidad += animalGato(8)
 */
 
-func animal(animal string, quantity int) string {
+func animal(animal string, quantity int) {
 	function, err := funcTuUse(animal)
 
 	if err != nil {

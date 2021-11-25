@@ -1,3 +1,5 @@
+package main
+
 /*
 Varias tiendas de ecommerce necesitan realizar una funcionalidad en Go para administrar productos y retornar el valor del precio total.
 Las empresas tienen 3 tipos de productos:
@@ -22,4 +24,3 @@ Interface Ecommerce:
  - El método “Total” debe retornar el precio total en base al costo total de los productos y los adicionales si los hubiera.
  - El método “Agregar” debe recibir un producto y añadirlo a la lista de la tienda
 */
-
