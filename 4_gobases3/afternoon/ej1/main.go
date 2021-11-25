@@ -26,8 +26,7 @@ func (u *User) setPassword(password string) {
 }
 
 func main() {
-	var u = User{}
-	fmt.Println(u)
+	var u = new(User)
 	u.setName("Federico Archuby")
 	u.setAge(31)
 	u.setMail("federico.archuby@mercadolibre.com")
