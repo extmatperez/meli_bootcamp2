@@ -10,7 +10,7 @@ type Usuarios struct {
 	Contrasena string `json:"contrasena"`
 }
 
-func (u *Usuarios) cambiarNombre() {
+func cambiarNombre(u *Usuarios) {
 	var nombre string
 	var apellido string
 	fmt.Println("Ingrese el nuevo nombre: ")
@@ -20,19 +20,19 @@ func (u *Usuarios) cambiarNombre() {
 	u.Nombre = nombre
 	u.Apellido = apellido
 }
-func (u *Usuarios) cambiarEdad() {
+func cambiarEdad(u *Usuarios) {
 	var edad int
 	fmt.Println("Ingrese la nueva edad: ")
 	fmt.Scanln(&edad)
 	u.Edad = edad
 }
-func (u *Usuarios) cambiarCorreo() {
+func cambiarCorreo(u *Usuarios) {
 	var correo string
 	fmt.Println("Ingrese el nuevo correo: ")
 	fmt.Scanln(&correo)
 	u.Correo = correo
 }
-func (u *Usuarios) cambiarContrasena() {
+func cambiarContrasena(u *Usuarios) {
 	var contrasena string
 	fmt.Println("Ingrese la nueva contraseña: ")
 	fmt.Scanln(&contrasena)
@@ -55,12 +55,12 @@ func main() {
 	fmt.Println("Usuario 1: ", usuario1)
 	fmt.Println("Usuario 2: ", usuario2)
 
-	usuario1.cambiarNombre()
-	usuario1.cambiarEdad()
-	usuario1.cambiarCorreo()
-	usuario1.cambiarContrasena()
+	cambiarNombre(&usuario1)
+	cambiarEdad(&usuario1)
+	cambiarCorreo(&usuario1)
+	cambiarContrasena(&usuario1)
 
-	usuario2.cambiarNombre()
+	cambiarNombre(&usuario2)
 
 	fmt.Println("Usuario 1: ", usuario1)
 	fmt.Println("Usuario 2: ", usuario2)
