@@ -97,7 +97,7 @@ type ProductInterface interface {
 
 type EcommerceInterface interface {
 	Total() float64
-	Add() float64
+	AddProduct(productInterfaces ...ProductInterface)
 }
 
 func newProduct(productType, name string, price float64) (ProductInterface, error) {
