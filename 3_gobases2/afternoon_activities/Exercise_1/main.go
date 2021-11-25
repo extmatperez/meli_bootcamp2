@@ -1,5 +1,6 @@
 /* Ejercicio 1 - Registro de estudiantes
-Una universidad necesita registrar a los/as estudiantes y generar una funcionalidad para imprimir el detalle de los datos de cada uno de ellos/as, de la siguiente manera:
+Una universidad necesita registrar a los/as estudiantes y generar una funcionalidad para imprimir el detalle de los datos de cada uno de ellos/as,
+de la siguiente manera:
 
 Nombre: [Nombre del alumno]
 Apellido: [Apellido del alumno]
