@@ -9,11 +9,18 @@ import (
 
 const file = "/Users/rovega/Documents/GitHub/meli_bootcamp2/4_gobases3/TM/Ejercicio1/a.txt"
 
-func Write(p Producto) {
+func Write(p []Producto) {
 	var textoFormateado string
-	prodFormateado, err := json.Marshal(p)
-	if err == nil {
-		textoFormateado = fmt.Sprintf("%v;", string(prodFormateado))
+
+	for _, element := range p {
+		prodFormateado, err := json.Marshal(element)
+		// Esta diferenciacion es porque el ultimo no deberia tener ; porque sino falla la lectura.
+		if err == nil && element != p[len(p)-1] {
+			textoFormateado += fmt.Sprintf("%v;", string(prodFormateado))
+		}
+		if err == nil && element == p[len(p)-1] {
+			textoFormateado += fmt.Sprintf("%v", string(prodFormateado))
+		}
 	}
 
 	archivo, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
@@ -93,10 +100,7 @@ func main() {
 		Precio:   465.67,
 		Cantidad: 4}
 
-	Write(p0)
-	Write(p1)
-	Write(p2)
-	Write(p3)
+	Write([]Producto{p0, p1, p2, p3})
 	fmt.Printf("%s\t\t%s\t%s\n", "ID", "Precio", "Cantidad")
 	Read()
 	fmt.Printf("\t\t%.2f\t", Total_Calculate())
