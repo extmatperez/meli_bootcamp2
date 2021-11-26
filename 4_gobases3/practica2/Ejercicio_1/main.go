@@ -24,41 +24,22 @@ func main() {
 	*/
 	//setting User
 	user := Users{}
-	user.setFirstName()
-	user.setLastName()
-	user.setAge()
-	user.setEmail()
-	user.setPassword()
+	updateName("Juan", "Soza", &user)
+	updateAge(18, &user)
+	updateEmail("Benjamin@gmail.com", &user)
+	updatePassword("1234", &user)
 	fmt.Println(user)
 }
-
-func (u *Users) setFirstName() {
-	var name string
-	fmt.Println("Porfavor Ingrese el nombre: ")
-	fmt.Scan(&name)
+func updateName (name string, lastName string, u *Users) {
 	u.firstName = name
-}
-func (u *Users) setLastName() {
-	var lastName string
-	fmt.Println("Porfavor Ingrese el apellido: ")
-	fmt.Scan(&lastName)
 	u.lastName = lastName
 }
-func (u *Users) setAge() {
-	var age int
-	fmt.Println("Porfavor Ingrese la Edad: ")
-	fmt.Scan(&age)
+func updateAge (age int, u *Users){
 	u.age = age
 }
-func (u *Users) setEmail() {
-	var email string
-	fmt.Println("Porfavor Ingrese la direccion de correo: ")
-	fmt.Scan(&email)
+func updateEmail (email string, u *Users){
 	u.email = email
 }
-func (u *Users) setPassword() {
-	var password string
-	fmt.Println("Porfavor Ingrese la Contraseña: ")
-	fmt.Scan(&password)
+func updatePassword (password string, u *Users){
 	u.password = password
 }
