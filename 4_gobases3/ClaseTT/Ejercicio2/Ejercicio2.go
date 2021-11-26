@@ -31,6 +31,9 @@ func main() {
 	fmt.Printf("%+v \n", p1)
 
 	agregarProducto(&user, &p1, 2)
+	p2 := nuevoProducto("Cargador", 22.50)
+
+	agregarProducto(&user, &p2, 2)
 
 	fmt.Printf("%+v \n", user)
 
