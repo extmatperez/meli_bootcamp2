@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 type Productos struct {
@@ -70,8 +69,6 @@ func main() {
 	list3 := make([]Mantenimiento, 0)
 	list3 = append(list3,m1,m2)
 
-	begins := time.Now()
-
 	c := make(chan float64)
 	c1 := make(chan float64)
 	c2 := make(chan float64)
@@ -87,10 +84,5 @@ func main() {
 	variable2 := <- c2
 
 	fmt.Printf("La suma de los totales es: %v", variable+variable1+variable2)
-
-	ends := time.Now()
-
-	total := ends.Sub(begins)
-	fmt.Println(total.Milliseconds())
 
 }
