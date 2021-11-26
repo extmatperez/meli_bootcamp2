@@ -60,28 +60,45 @@ func main() {
 	variable2 := rand.Perm(1000)
 	variable3 := rand.Perm(10000)
 
+	variable1Copy := make([]int, len(variable1))
+	copy(variable1Copy, variable1)
+
 	c := make(chan []int)
 
 	fmt.Println("Tiempos para ordenamiento de 100 elementos:")
-	go ordenamientoBurbujeo(variable1, c)
-	go ordenamientoInsercion(variable1, c)
-	go ordenamientoSeleccion(variable1, c)
+	go ordenamientoBurbujeo(variable1Copy, c)
+	copy(variable1Copy, variable1)
+	go ordenamientoInsercion(variable1Copy, c)
+	copy(variable1Copy, variable1)
+	go ordenamientoSeleccion(variable1Copy, c)
+
 	for i := 0; i < 3; i++ {
 		<-c
 	}
 
 	fmt.Println("Tiempos para ordenamiento de 1000 elementos:")
-	go ordenamientoBurbujeo(variable2, c)
-	go ordenamientoInsercion(variable2, c)
-	go ordenamientoSeleccion(variable2, c)
+
+	variable2Copy := make([]int, len(variable2))
+	copy(variable2Copy, variable2)
+	go ordenamientoBurbujeo(variable2Copy, c)
+	copy(variable2Copy, variable2)
+	go ordenamientoInsercion(variable2Copy, c)
+	copy(variable2Copy, variable2)
+	go ordenamientoSeleccion(variable2Copy, c)
+
 	for i := 0; i < 3; i++ {
 		<-c
 	}
 
 	fmt.Println("Tiempos para ordenamiento de 10000 elementos:")
-	go ordenamientoBurbujeo(variable3, c)
-	go ordenamientoInsercion(variable3, c)
-	go ordenamientoSeleccion(variable3, c)
+
+	variable3Copy := make([]int, len(variable3))
+	copy(variable3Copy, variable3)
+	go ordenamientoBurbujeo(variable3Copy, c)
+	copy(variable3Copy, variable3)
+	go ordenamientoInsercion(variable3Copy, c)
+	copy(variable3Copy, variable3)
+	go ordenamientoSeleccion(variable3Copy, c)
 	for i := 0; i < 3; i++ {
 		<-c
 	}
