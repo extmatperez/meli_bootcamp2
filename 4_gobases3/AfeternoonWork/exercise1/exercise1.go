@@ -21,14 +21,15 @@ import (
 
 type Users struct {
 	Name     string
-	LastName string
+	Lastname string
 	Age      int
 	Email    string
 	Password string
 }
 
-func (user *Users) changeName(newName string) {
+func (user *Users) changeName(newName, newLastname string) {
 	user.Name = newName
+	user.Lastname = newLastname
 }
 func (user *Users) changeAge(newAge int) {
 	user.Age = newAge
@@ -41,10 +42,10 @@ func (user *Users) changePassword(newPassword string) {
 }
 
 func main() {
-	usuario1 := Users{"Jose", "Rios", 28, "1111111", "passJose"}
+	usuario1 := Users{"Juan", "Soto", 32, "1111111", "passJose"}
 	fmt.Println(usuario1)
-	usuario1.changeName("Juan")
-	usuario1.changeAge(32)
+	usuario1.changeName("Jose", "Rios")
+	usuario1.changeAge(28)
 	usuario1.changeEmail("joserios@mercadolibre.cl")
 	usuario1.changePassword("123OLVIDARpass")
 	fmt.Println(usuario1)
