@@ -26,9 +26,6 @@ func getPromedio(notas []float64) (float64,error){
 			}
 			return sum/float64(cantidadNotas),nil
 		}
-		
-
 	
-
 
 }
