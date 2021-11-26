@@ -72,21 +72,35 @@ func main() {
 	c10000_bub := make(chan time.Duration)
 	c10000_sel := make(chan time.Duration)
 
-	variable1 := rand.Perm(100)
-	variable2 := rand.Perm(1000)
-	variable3 := rand.Perm(10000)
+	variable1_1 := rand.Perm(100)
+	copy1_2 := make([]int, len(variable1_1))
+	copy(copy1_2, variable1_1)
+	copy1_3 := make([]int, len(variable1_1))
+	copy(copy1_3, variable1_1)
 
-	go insertion_sort(c100_ins, variable1)
-	go bubble_sort(c100_bub, variable1)
-	go selection_sort(c100_sel, variable1)
+	variable2_1 := rand.Perm(1000)
+	copy2_2 := make([]int, len(variable2_1))
+	copy(copy2_2, variable2_1)
+	copy2_3 := make([]int, len(variable2_1))
+	copy(copy2_3, variable2_1)
 
-	go insertion_sort(c1000_ins, variable2)
-	go bubble_sort(c1000_bub, variable2)
-	go selection_sort(c1000_sel, variable2)
+	variable3_1 := rand.Perm(10000)
+	copy3_2 := make([]int, len(variable3_1))
+	copy(copy3_2, variable3_1)
+	copy3_3 := make([]int, len(variable3_1))
+	copy(copy3_3, variable3_1)
 
-	go insertion_sort(c10000_ins, variable3)
-	go bubble_sort(c10000_bub, variable3)
-	go selection_sort(c10000_sel, variable3)
+	go insertion_sort(c100_ins, variable1_1)
+	go bubble_sort(c100_bub, copy1_2)
+	go selection_sort(c100_sel, copy1_3)
+
+	go insertion_sort(c1000_ins, variable2_1)
+	go bubble_sort(c1000_bub, copy2_2)
+	go selection_sort(c1000_sel, copy2_3)
+
+	go insertion_sort(c10000_ins, variable3_1)
+	go bubble_sort(c10000_bub, copy3_2)
+	go selection_sort(c10000_sel, copy3_3)
 
 	var exec_c100_ins = <-c100_ins
 	var exec_c100_bub = <-c100_bub
