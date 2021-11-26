@@ -5,8 +5,6 @@ en base a 2 variables, su precio y el descuento en porcentaje. Espera obtener co
 Crear la aplicación de acuerdo a los requerimientos.
 */
 
-/* precio y descuento en porcentaje, resultado con el valor del descuento aplicado */
-
 package main
 
 import "fmt"
