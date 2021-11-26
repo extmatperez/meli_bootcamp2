@@ -1,0 +1,71 @@
+Existe el metodo Error()
+Nos permite generar nuestros errores 
+
+En GO los errores los podemos manejar como querramos 
+Incluso dentro de un if 
+En otros lenguajes tenemos el "try catch" o cosas asi 
+En GO no tenemos eso 
+
+En GO tenemos tres formas de crear y personalizas errores 
+
+    //Funcion nativa
+    Error()
+
+    //Paquete "errors"
+    errors.New()
+
+    //Paquete "fmt"
+    fmt.Errorf()
+
+Ejemplo con "Error()"
+
+    type myError struct {
+        status int
+        msg string
+    }
+
+    func (e *myError) Error() string {
+        return fmt.Sprintf("%d - %v", e.status, e.msg)
+    }
+
+    func devolverError() error {
+        return errors.New("Esto es un errror")
+    }
+
+    func main() {
+        err := devolverError()
+        fmt.Println(err)
+    }
+
+
+------------------------------
+errors.New()
+
+Para devolver un error se hace 
+
+    erros.New("mensaje")
+
+
+----------------------------
+fmt.Errorf()
+Este nos permite modificar los errores y hacerlos personalizados 
+Nos deja usar los verbos de formateo 
+Va a devolver un error de formato error 
+
+
+____________________________
+Package errors
+Tiene distitnas funciones 
+
+    As()
+    Nos deja darle un tipo al error 
+
+    func main(){
+
+        e := &myError{"Nuevo error", "404"}
+
+        var err *myError
+
+        
+
+    }

@@ -1,0 +1,156 @@
+PANIC
+Es una interrupcion de la ejecucion del programa 
+El ebenficio es que FRENA el proceso y da el error 
+
+Sirve para poder encontrar lo que esta rompiendo dentro de nuestro codigo 
+
+panic() es una funcion nativa de GO 
+Por lo que para usarla no hay que importar paquetes 
+
+Una forma de usarlo es combinandolo con los errores 
+Entonces si una funcion retorna un error se puede hacer 
+
+    if err != nil {
+        panic(err)
+    }
+
+Eso va a frenar el proceso pero tambien va a decir archivo y linea donde paso 
+Hace mucho mas sencillo encontrar el problema 
+Otra cosa que va a decir es el error en si que sucedio 
+
+Caso de nil 
+
+    type Dog struct {
+        name string
+    }
+
+    func (d Dog) WoofWoof (){
+        fmt.Println("woof woof")
+    }
+
+    func main(){
+        s := &Dog{"Athos"}
+        s = nil
+        s.WoofWoof()
+    }
+    En este caso el panic va a generar que se frene a causa de ese error 
+
+MUY IMPORTANTE 
+LOS PANICS SON SOLO PARA PRODUCCION, ES DECIR NO PARA LA APLICACION 
+Los errores hay que saber manejarlos, NUNCA dejar que se corte la aplicacion 
+
+Manejando un panic()
+Dos sentencias para controlar los efectos del panic() son "defer" y "recover"
+Se deben usar ya que la naturaleza del panic es destructiva 
+Ambas se usan en conjunto. Si existe un defer entonces existe un recover 
+
+DEFER 
+Defer sirve para ejecutar funciones necesarias en caso de un panic 
+Cosas que tienen que pasar antes de cortar todo 
+Un ejemplo es cerrar recursos que no queremos que queden abiertos 
+
+    func main(){
+
+        defer func(){
+            fmt.println("Esta ejecucion solo se ejecuta en caso de Panic")
+        }()
+        //Los parentesis del final ejecutan la funcion en el momento
+
+        panic("SE ROMPIO TODO")
+
+    }
+
+Las funciones defer siempre se van a ejecutar
+Si tenemos muchas que serian la funcion 1, 2, 3 y 4 como defer 
+En caso de que todo funcione se van a ejecutar en el orden 1, 2, 3 y 4 
+Sin embargo en el defer se va a ejecutar 4, 3, 2, 1 
+
+RECOVER 
+Es una funcion que se combina con defer 
+Lo que hace al ejecutarla es retornar el error que da panic 
+Entonces mientras haya un panic en algun momento recover va a retornar algo 
+
+    func isPair(num int){
+
+        defer func(){
+            err := recover()
+
+            if err != nil {
+                fmt.Println(err)
+            } else {
+                fmt.Println("NO HAY ERROR")
+            }
+        }()
+
+        if (num % 2) != 0 {
+            panic("No es un numero par")
+        } 
+
+        fmt.Printf("%v es un numero par", num)
+    }
+    Aca se puede ver como el panic() genera un mensaje 
+    Ese mensaje lo toma el recover() y lo guarda en err 
+    Entonces el defer solo hace algo si hay un err 
+    
+    En el caso de que el panic() nunca se ejecutara err queda nil 
+    Si no hay err entonces en el defer entra a "NO HAY ERROR" 
+
+    Otra cosa que puede generar un panic es usar mal un array 
+
+        arr := [5](1,2,3,4,5)
+        fmt.Println(arr[6])
+        Esto generaria un panic 
+
+
+PACKAGE CONTEXT 
+Conetxt nos de funciones que nos pueden resultar utiles durante el tiempo de ejecucion 
+
+Es una convencion que al momento de ejecutar funciones que usan contexto que sea el primer parametro 
+
+
+BACKGROUND
+Es una funcion .Background() que nos genera un contexto vacio 
+
+    import(
+        "fmt"
+        "context"
+    )
+
+    func main(){
+
+        ctx := context.Background()
+
+    }
+
+WITHVALUE 
+Es una funcion WithValue() toma como argumentos un par key,value 
+Devuelve un nuevo contexto con los valores nuevos 
+
+    func main(){
+
+        ctx := context.Background()
+
+        ctx = context.WithValue(ctx, "saludo", "hola a todos!!!")
+
+    }
+
+WITHDEADLINE 
+Es una funcion WithDeadline() que recibe un tiempo 
+Y despues de ese tiempo si no hizo nada corta el proceso ese 
+
+    func main(){
+
+        ctx := context.Background()
+        deadline := time.Now().add(time.Second * 5)
+
+        ctx = context.WithValue(ctx, "saludo", "hola a todos!!!")
+        ctx, _ := context.WithDeadline(ctx, deadline)
+
+        <-ctx.Done()
+
+    }
+
+    Esto le genera al contexto un tiempo 
+    En este caso solo 5 segundos
+
+WITHTIMEOUT

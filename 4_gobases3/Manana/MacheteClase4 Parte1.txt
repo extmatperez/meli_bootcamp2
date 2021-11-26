@@ -1,0 +1,108 @@
+Package fmt 
+Es un paquete que nos permite trabajar con valores y formatearlos
+Esto sirve para imprimirlos en pantalla como tambien para recolectar la entrada 
+
+CARACTERES DE ESCAPE 
+Los caracteres son utilizados para "escapar del string"
+Un ejemplo es \n que hace un salto de linea 
+
+    CARACTERES 
+    \n -> Salto de linea 
+    \\ -> Barra invertida 
+    \t -> Tab horizontal 
+    \v -> Tab vertical 
+
+VERBOS DE IMPRESION 
+Algunas funciones dentro del paquete aceptan verbos de impresion 
+Estos verbos permiten incluir una variable dentro del string 
+Y ademas elegir de que forma se va a incluir 
+
+    %v -> Valor de forma estandar 
+    %T -> Tipo de dato del valor 
+    %t -> bool 
+    %s -> string 
+    %f -> punto flotante 
+    %d -> entero decimal
+    %o -> octal 
+    %c -> imprime caracteres
+    %p -> direccion de memoria
+
+    nombre, edad := "Pato", 23
+    fmt.Printf("%s tiene %d años de edad", nombre, edad)
+
+    Tambien podemos definir que tenga una cantidad X de caracteres para imprimir 
+    Eso puede ser para un lado como para otro 
+
+    fmt.Printf("%10d", 122222)
+    fmt.Printf("%10d", "aa")
+    En los casos en los que los espacios son mas se imprimiran vacios 
+
+    Tambien en esos casos se puede recortar los decimales de dos formas distintas 
+    fmt.Printf("%10.2f" \n", 12222222,123123123)
+    fmt.Printf("%.2f \n", 1222222,1232132213)
+    Ambas formas funcionan para cortar los decimales 
+
+.Sprint()
+Esta funcion es muy util para generar un string concatenando muchas cosas 
+Recibe multiples parametros y retorna el string 
+
+    nombre, edad := "Pato", 23
+    res := fmt.Sprint(nombre, " tiene ", edad, " años de edad. \n")
+    fmt.Print(res)
+
+    Esto genera el string que nosotros guardamos en res 
+    Y luego lo imprimimos
+
+.Sprintf()
+Esta funcion hace lo mimso que .Sprint() que es retornar un string 
+Pero con la posibilidad de usar los verbos de impresion pasando parametros 
+Como puede ser %v entre otros.
+
+
+-------------------------------
+PACKAGE OS 
+Gracias al paquete "os" podemos usar funcionalidades del Sistema Operativo 
+
+.Setenv()
+Esta funcion setea una variable de entorno 
+Recibe el nombre de la variable y su valor (key, value)
+
+    err := os.Setenv("NAME", "Pato")
+    Solo retorna un error en caso de que falle algo 
+
+.Getenv()
+Esta funcion nos permite acceder a esas variables de entorno 
+Su unico parametro es el nombre de la variable 
+
+    value := os.Getenv("NAME")
+    Esta funcion si no existe la variable retorna ""
+
+.LookupEnv()
+Esta funcion realiza lo mismo que .Getenv() pero retorna dos cosas 
+Primero el valor y luego un booleano de si existe o no 
+
+    value, ok := os.LookupEnv("NAME")
+    value va a ser el valor si existe o "" si no
+    ok va a ser true si existe o false si no 
+
+.ReadDir()
+Lee toda la info que esta dentro del directorio y lo devuelve 
+
+    files, err := os.ReadDir(".")
+    Si surge un error va devolver todas las entradas hasta antes del error 
+
+.ReadFiles()
+La funcion recibe como parametro la direccion y nombre del archivo 
+Y devuelve el contenido del archivo en bytes 
+O un error en caso de que pase algo 
+
+    data, err := os.ReadFile("./myFile.txt")
+
+.WriteFile()
+Esta funcion recibe un string con la ubicacion del archivo y el contenido en bytes con un codigo 
+El codigo es para permisos. La mayoria de las veces es 0644 
+
+    d1 := []byte("Linea nueva!!!")
+    err := os.WriteFile("./archivo.txt", d1, 0644)
+
+    
