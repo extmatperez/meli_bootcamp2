@@ -17,11 +17,11 @@ func main() {
 	p2 := producto{2, 562, 10}
 	p3 := producto{3, 985, 25}
 	p4 := producto{4, 345, 32}
+	p5 := producto{0, 345, 0}
 
 	var lista []producto
 
-	lista = append(lista, p1, p2, p3, p4)
-	//[]byte(lista)
+	lista = append(lista, p1, p2, p3, p4, p5)
 
 	productoFormated, err := json.Marshal(lista)
 
@@ -34,18 +34,11 @@ func main() {
 	if err != nil {
 		fmt.Printf("\nSe encontro el archivo: \n")
 	} else {
-		// file := string(data)
-		//fmt.Println()
-		// fmt.Println(file)
 		fmt.Printf("\n%s %18s %10s\n", Id, Precio, Cantidad)
 		for i := range pListaLeida {
-			// persona := string(p)
-			// fmt.Printf("\n %T\n", p)
 			fmt.Printf("%-10d %10.1f %10d\n", pListaLeida[i].Id, pListaLeida[i].Precio, pListaLeida[i].Cantidad)
 		}
 	}
-
-	// fmt.Printf("\n%+v", pListaLeida)
 
 }
 
@@ -53,4 +46,9 @@ type producto struct {
 	Id       int
 	Precio   float64
 	Cantidad int
+}
+
+func (p *producto) calc_total(precio float64, cantidad int) {
+	//for
+	//return p.Precio * p.Cantidad
 }
