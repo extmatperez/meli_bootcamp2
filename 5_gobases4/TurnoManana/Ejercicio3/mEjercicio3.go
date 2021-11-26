@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -9,7 +8,7 @@ import (
 func ProcesSalary(salary int) (error) {
 
 	if salary < 150000 {
-		return errors.New("400 - el salario ingresado no alcanza el mínimo imponible")
+		return fmt.Errorf("400 - el mínimo imponible es de 150.000 y el salario ingresado es de: %v" ,salary)
 		}
 	return nil
 }
