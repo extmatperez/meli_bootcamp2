@@ -12,14 +12,14 @@ import "fmt"
 
 var age int
 var employee bool
-var antiquity int
+var antiquity float64
 var salary float64
 
 func main() {
 
 	age = 23
 	employee = true
-	antiquity = 3
+	antiquity = 1.5
 	salary = 143000
 
 	if age > 22 {
