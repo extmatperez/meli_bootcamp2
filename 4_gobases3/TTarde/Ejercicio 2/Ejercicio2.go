@@ -4,7 +4,7 @@ import(
 	"fmt"
 )
 
-type Producto{
+type Producto struct{
 	Nombre string
 	Precio float64
 	Cantidad int
@@ -24,13 +24,14 @@ func nuevoProducto(nombre string, precio float64) Producto{
 
 func (u *Usuario)agregarProducto(p *Producto, cantidad int){
 	p.Cantidad = cantidad
-	u.Productos = append(u.Productos, p)
+	u.Productos = append(u.Productos, *p)
 }
 
 func (u *Usuario) borrarProducto(){
-	u.Productos = []
+	u.Productos = []Producto{}
 }
 
 
 func main(){
+	fmt.Println("Terminado")
 }
