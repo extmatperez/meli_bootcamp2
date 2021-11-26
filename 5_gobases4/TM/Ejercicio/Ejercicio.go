@@ -61,12 +61,15 @@ func main() {
 	fmt.Scanf("%d", &salary)
 	if salary < 150000 {
 		// Punto 1.
-		// err1 := devolver_custom_error()
+		err1_1 := devolver_custom_error()
 		// Punto 2.
-		err1 := devolver_error()
+		err1_2 := devolver_error()
 		// Punto 3.
-		// err1 := devolver_error_errorf()
-		fmt.Println(err1)
+		err1_3 := devolver_error_errorf()
+		fmt.Println(err1_2)
+		fmt.Println(errors.Unwrap(err1_1))
+		fmt.Println(errors.Unwrap(err1_2))
+		fmt.Println(errors.Unwrap(err1_3))
 	} else {
 		fmt.Println("Debe pagar impuesto.")
 	}
