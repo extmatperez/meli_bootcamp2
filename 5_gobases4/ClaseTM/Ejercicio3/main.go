@@ -1,20 +1,19 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 )
 
 func crearError(salario int) (string, error) {
 	if salario < 150000 {
-		return "", errors.New("error: el salario ingresado no alcanza el mínimo imponible")
+		return "", fmt.Errorf("error: el salario ingresado no alcanza el mínimo imponible : %d", salario)
 	} else {
 		return "Debe pagar impuesto", nil
 	}
 }
 
 func main() {
-	var salario int = 200220
+	var salario int = 2000
 
 	ok, err := crearError(salario)
 
