@@ -22,29 +22,32 @@ type Mantenimiento struct {
 	Precio float64
 }
 
-func sumarProductos(p []Productos) float64 {
+func sumarProductos(p []Productos, c chan float64){
 	var sum float64
 	for i := 0; i < len(p); i++ {
 		sum += p[i].Precio*p[i].Cantidad
 	}
-	return sum
+	fmt.Println("Listo")
+	c<-sum
 }
 
-func sumarServicios(s []Servicios) float64 {
+func sumarServicios(s []Servicios, c chan float64) {
 	var sum, conv float64
 	for i := 0; i < len(s); i++ {
 		conv += s[i].Minutos_tr / 30
 		sum += s[i].Precio * conv
 	}
-	return sum
+	fmt.Println("Listo")
+	c<-sum
 }
 
-func sumarMantenimiento(m []Mantenimiento) float64 {
+func sumarMantenimiento(m []Mantenimiento, c chan float64){
 var sum float64
 for i := 0; i < len(m);i++ {
 	sum += m[i].Precio
 }
-return sum
+	fmt.Println("Listo")
+	c<-sum
 }
 
 
@@ -68,13 +71,26 @@ func main() {
 	list3 = append(list3,m1,m2)
 
 	begins := time.Now()
-	go sumarProductos(list)
-	go sumarServicios(list2)
-	go sumarMantenimiento(list3)
+
+	c := make(chan float64)
+	c1 := make(chan float64)
+	c2 := make(chan float64)
+
+	
+
+
+	go sumarProductos(list, c)
+	variable := <- c
+	go sumarServicios(list2, c1)
+	variable1 := <- c1
+	go sumarMantenimiento(list3, c2)
+	variable2 := <- c2
+
+	fmt.Printf("La suma de los totales es: %v", variable+variable1+variable2)
 
 	ends := time.Now()
 
 	total := ends.Sub(begins)
-	fmt.Println(total)
+	fmt.Println(total.Milliseconds())
 
 }
