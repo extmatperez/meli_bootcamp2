@@ -1,9 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type producto struct {
@@ -15,7 +15,17 @@ type producto struct {
 func read() {
 	var prodSalida []producto
 	data, _ := os.ReadFile("./myfile.txt")
-	json.Unmarshal([]byte(data), &prodSalida)
+	s := strings.Split(string(data), "\n")
+
+	for i := 0; i < len(s); i++ {
+		s2 := strings.Split(s[i], ";")
+
+		pr1 := &producto{Id: s2[0], Precio: s2[1], Cantidad: s2[2]}
+
+		prodSalida = append(prodSalida, *pr1)
+	}
+
+	fmt.Println("data  ", prodSalida)
 	fmt.Printf("\n %-15v", "ID")
 	fmt.Printf(" %15v", "Precio")
 	fmt.Printf(" %10v", "Cantidad")
