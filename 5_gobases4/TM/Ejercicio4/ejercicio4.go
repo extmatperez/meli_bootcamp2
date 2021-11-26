@@ -34,10 +34,7 @@ func (e *SalaryError) Error() string {
 
 func calculateSalary(hoursWorked int, pricePerHour float64) (float64, error) {
 	if hoursWorked < 80 {
-		return 0.0, &SalaryError{
-			Status:  500,
-			Message: "El trabajador no puede ser haber trabajado menos de 80 horas",
-		}
+		return 0.0, errors.New("error: el trabajador no puede ser haber trabajado menos de 80 horas")
 	}
 	if pricePerHour <= 0 {
 		return 0.0, fmt.Errorf("error: el salario por hora no puede ser negativo o 0. Precio ingresado: %.2f", pricePerHour)
