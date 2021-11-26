@@ -17,52 +17,17 @@ ID                            Precio  Cantidad
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 )
 
-type Product struct {
-	IdProduct int     `json:"id"`
-	Price     float64 `json:"precio"`
-	Quantity  int     `json:"cantidad"`
-}
-
-func saveFileTXT(productList []Product) {
-
-	// productListTransformer = productList
-	productListByte, err := json.Marshal(productList)
-	if err != nil {
-		fmt.Println("No se pudo escribir")
-	}
-	fmt.Print(productListByte)
-	err2 := os.WriteFile("a.txt", productListByte, 0644)
-	if err2 != nil {
-		fmt.Println("No se pudo escribir")
-	}
-
-}
-
 func main() {
-	producto1 := Product{IdProduct: 1, Price: 90.90, Quantity: 10}
-	producto2 := Product{IdProduct: 2, Price: 250.20, Quantity: 4}
-	producto3 := Product{IdProduct: 3, Price: 50.31, Quantity: 80}
+	data, err := os.ReadFile("a.csv")
+	if err != nil {
+		fmt.Print("Error Read file")
+	}
+	newStr := strings.Replace(string(data), ";", "\t", -1)
 
-	var productList []Product
-
-	productList = append(productList, producto1)
-	productList = append(productList, producto2)
-	productList = append(productList, producto3)
-
-	saveFileTXT(productList)
-
-	//Read File
-	// data, err := os.ReadFile("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/4_gobases3/a.txt")
-	// if err == nil {
-	// 	file := string(data)
-	// 	fmt.Println(file)
-	// } else {
-	// 	fmt.Println("El archivo no existe")
-	// }
-
+	fmt.Println(newStr)
 }
