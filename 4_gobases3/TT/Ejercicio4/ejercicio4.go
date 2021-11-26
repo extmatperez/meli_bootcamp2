@@ -15,9 +15,16 @@ func main() {
 	selectionSortChanArr := make(chan int64)
 	bubbleSortChanArr := make(chan int64)
 
-	go InsertionSort(arr1, insertionSortChanArr)
-	go SelectionSort(arr1, selectionSortChanArr)
-	go BubbleSort(arr1, bubbleSortChanArr)
+	copy1 := make([]int, len(arr1))
+	copy2 := make([]int, len(arr1))
+	copy3 := make([]int, len(arr1))
+	copy(copy1, arr1)
+	copy(copy2, arr1)
+	copy(copy3, arr1)
+
+	go InsertionSort(copy1, insertionSortChanArr)
+	go SelectionSort(copy2, selectionSortChanArr)
+	go BubbleSort(copy3, bubbleSortChanArr)
 
 	fmt.Println("=================")
 	fmt.Println("Resultados 'arr1'")
@@ -26,9 +33,16 @@ func main() {
 	fmt.Printf("Ordenamiento por selección: %d microsegundos\n", <-selectionSortChanArr)
 	fmt.Printf("Ordenamiento por burbuja: %d microsegundos\n", <-bubbleSortChanArr)
 
-	go InsertionSort(arr2, insertionSortChanArr)
-	go SelectionSort(arr2, selectionSortChanArr)
-	go BubbleSort(arr2, bubbleSortChanArr)
+	copy1 = make([]int, len(arr2))
+	copy2 = make([]int, len(arr2))
+	copy3 = make([]int, len(arr2))
+	copy(copy1, arr2)
+	copy(copy2, arr2)
+	copy(copy3, arr2)
+
+	go InsertionSort(copy1, insertionSortChanArr)
+	go SelectionSort(copy2, selectionSortChanArr)
+	go BubbleSort(copy3, bubbleSortChanArr)
 
 	fmt.Println()
 	fmt.Println("=================")
@@ -38,9 +52,16 @@ func main() {
 	fmt.Printf("Ordenamiento por selección: %d microsegundos\n", <-selectionSortChanArr)
 	fmt.Printf("Ordenamiento por burbuja: %d microsegundos\n", <-bubbleSortChanArr)
 
-	go InsertionSort(arr3, insertionSortChanArr)
-	go SelectionSort(arr3, selectionSortChanArr)
-	go BubbleSort(arr3, bubbleSortChanArr)
+	copy1 = make([]int, len(arr3))
+	copy2 = make([]int, len(arr3))
+	copy3 = make([]int, len(arr3))
+	copy(copy1, arr3)
+	copy(copy2, arr3)
+	copy(copy3, arr3)
+
+	go InsertionSort(copy1, insertionSortChanArr)
+	go SelectionSort(copy2, selectionSortChanArr)
+	go BubbleSort(copy3, bubbleSortChanArr)
 
 	fmt.Println()
 	fmt.Println("=================")
