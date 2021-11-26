@@ -8,13 +8,26 @@ package main
 
 import (
 	"fmt"
-	"strings" // Needed to use split
 )
+
+/* import "strings" // Needed to use split */
 
 var word string = "Edgar Eduardo Montenegro"
 
 func main() {
-	fmt.Printf("The word has %v letters. \n", len(word))
+	/* fmt.Printf("The sentence has %v letters. \n", len(word))
 	split := strings.Split(word, "")
-	fmt.Println(split)
+	fmt.Println(split) */
+
+	/* fmt.Printf("The sentence has %v letters. \n", len(word))
+
+	for _, letter := range word {
+		fmt.Println(string(letter))
+	} */
+
+	fmt.Printf("The sentence has %v letters. \n", len(word))
+
+	for i := 0; i < len(word); i++ {
+		fmt.Println(string(word[i]))
+	}
 }
