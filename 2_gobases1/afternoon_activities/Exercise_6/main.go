@@ -1,5 +1,5 @@
 /* Ejercicio 6 - Qué edad tiene...
-Un empleado de una empresa quiere saber el nombre y edad de uno de sus empleados. Según el siguiente mapa, ayuda  a imprimir la edad de Benjamin.
+Una empresa quiere saber el nombre y edad de uno de sus empleados. Según el siguiente mapa, ayuda  a imprimir la edad de Benjamin.
 
   var employees = map[string]int{"Benjamin": 20, "Nahuel": 26, "Brenda": 19, "Darío": 44, "Pedro": 30}
 
@@ -13,5 +13,17 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello World!")
+	var employees = map[string]int{"Benjamin": 20, "Nahuel": 26, "Brenda": 19, "Darío": 44, "Pedro": 30}
+	counter := 0
+	fmt.Println("The Benjamin's age is: ", employees["Benjamin"])
+	for _, employee := range employees {
+		if employee > 21 {
+			counter++
+		}
+	}
+	fmt.Println("The quantity of employees older than 21 are: ", counter)
+	employees["Federico"] = 25
+	fmt.Println(employees)
+	delete(employees, "Pedro")
+	fmt.Println(employees)
 }
