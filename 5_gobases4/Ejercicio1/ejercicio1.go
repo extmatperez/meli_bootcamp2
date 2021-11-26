@@ -7,7 +7,6 @@ type myCustomError struct {
 }
 
 func (e *myCustomError) Error() string {
-
 	return fmt.Sprintf(e.msn)
 }
 
@@ -18,11 +17,12 @@ func myCustomErrorTest(sal float64) (string, error) {
 	return "debe pagar impuestos", nil
 }
 func main() {
-
-	salary, err := myCustomErrorTest(150.000)
-	if err != nil { // si err no es nulos
+	fmt.Println()
+	salary, err := myCustomErrorTest(160.000)
+	if err != nil { // si err no es nulos es por que existe un error
 		fmt.Println(err)
 	} else {
 		fmt.Println(salary)
 	}
+	fmt.Println()
 }
