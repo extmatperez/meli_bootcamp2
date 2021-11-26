@@ -29,9 +29,9 @@ func main() {
 	channel3 := make(chan int64)
 	go Seleccion(&a3, channel3)
 
-	fmt.Printf("Burbuja - Nanosegundos: %v\n", <-channel1)
-	fmt.Printf("Insercion - Nanosegundos: %v\n", <-channel2)
-	fmt.Printf("Seleccion - Nanosegundos: %v\n", <-channel3)
+	fmt.Printf("Burbuja - Milisegundos: %v\n", <-channel1)
+	fmt.Printf("Insercion - Milisegundos: %v\n", <-channel2)
+	fmt.Printf("Seleccion - Milisegundos: %v\n", <-channel3)
 
 }
 
