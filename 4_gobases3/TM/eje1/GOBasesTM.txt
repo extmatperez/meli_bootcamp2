@@ -1,0 +1,1 @@
+[{"id":1,"precio":550.25,"cantidad":20},{"id":2,"precio":2550.25,"cantidad":10},{"id":3,"precio":800,"cantidad":2},{"id":4,"precio":15000,"cantidad":100},{"id":5,"precio":300,"cantidad":6}]
