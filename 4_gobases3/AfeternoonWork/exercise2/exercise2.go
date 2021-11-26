@@ -51,6 +51,13 @@ func addProduct(user *UsersNew, product Product, quantity int) {
 	user.Product = listProd
 }
 
+func deleteAllProduct(user *UsersNew) {
+	productEmpty := Product{}
+	var listEmpty []Product
+	listEmpty = append(listEmpty, productEmpty)
+	user.Product = listEmpty
+}
+
 func main() {
 
 	producto1 := newProduct("Mouse", 70.99)
@@ -58,8 +65,16 @@ func main() {
 	producto3 := newProduct("MAC", 999.99)
 
 	usuario1 := UsersNew{Name: "Jose", LastName: "Rios", Email: "joserios@mercadolibre.cl"}
+	usuario2 := UsersNew{Name: "Paula", LastName: "Isabel", Email: "paulaisabel@mercadolibre.cl"}
 	addProduct(&usuario1, producto1, 5)
 	addProduct(&usuario1, producto2, 3)
+	addProduct(&usuario2, producto1, 5)
+	addProduct(&usuario2, producto2, 10)
 	addProduct(&usuario1, producto3, 1)
 	fmt.Println(usuario1)
+
+	deleteAllProduct(&usuario1)
+	fmt.Println(usuario2)
+	fmt.Println(usuario1)
+
 }
