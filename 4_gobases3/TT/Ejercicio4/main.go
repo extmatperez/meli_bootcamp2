@@ -81,31 +81,39 @@ func main() {
 	variable1 := rand.Perm(100)
 	variable2 := rand.Perm(1000)
 	variable3 := rand.Perm(10000)
+
+	var copia1 []int
+	var copia2 []int
+	var copia3 []int
 	//array100 := []float64{}
 	//array1000 := []float64{}
 	//array10000 := []float64{}
+	copy(copia1, variable1)
+	copy(copia2, variable2)
+	copy(copia3, variable3)
 
-	go insercion(variable1, c100)
-	go burbuja(variable1, c100)
-	go seleccion(variable1, c100)
+	go insercion(copia1, c100)
+	go burbuja(copia1, c100)
+	go seleccion(copia1, c100)
 
 	for i := 0; i < 3; i++ {
 		variable := <-c100
 		fmt.Println(variable)
 	}
+	fmt.Println(variable1)
 
-	go insercion(variable2, c1000)
-	go burbuja(variable2, c1000)
-	go seleccion(variable2, c1000)
+	go insercion(copia2, c1000)
+	go burbuja(copia2, c1000)
+	go seleccion(copia2, c1000)
 
 	for i := 0; i < 3; i++ {
 		variable := <-c1000
 		fmt.Println(variable)
 	}
 
-	go insercion(variable3, c10000)
-	go burbuja(variable3, c10000)
-	go seleccion(variable3, c10000)
+	go insercion(copia3, c10000)
+	go burbuja(copia3, c10000)
+	go seleccion(copia3, c10000)
 
 	for i := 0; i < 3; i++ {
 		variable := <-c10000

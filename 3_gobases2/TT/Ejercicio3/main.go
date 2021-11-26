@@ -24,13 +24,18 @@ type producto struct {
 }
 
 type Tienda struct {
-	prod producto
+	prod []producto
 }
 
 func nuevoProducto(tipo, nombre string, precio float64) (p producto) {
 	p = producto{tipo, nombre, precio}
 	return
 }
+
+// func nuevaTienda() (e Tienda){
+// 	t := Tienda{}
+// 	return
+// }
 
 func main() {
 	fmt.Println(nuevoProducto(pequeño, "chocolate", 750))
