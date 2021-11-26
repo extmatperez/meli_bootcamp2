@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
+
 )
 
 type Matrix struct {
@@ -29,6 +31,7 @@ func (m *Matrix) Set(valores ... float64) {
 func (m Matrix)  Print() {
 	contadorColumna := 0
 
+
 	fmt.Println("Matrix representada")
 	for i :=0; i < len(m.Valores); i++{
 		contadorColumna++
@@ -41,12 +44,13 @@ func (m Matrix)  Print() {
 	}
 	fmt.Printf("\n")
 	fmt.Println("Matrix Datos")
-	fmt.Printf("%v\n",m)
+	jsonR,_ := json.Marshal(m)
+	fmt.Printf("%v\n",string(jsonR))
 
 }
 
 func main() {
-	matriz1 := Matrix{Alto: 0,Ancho: 0}
+	matriz1 := Matrix{Alto: 5,Ancho: 3}
 	matriz1.Set(100, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3,1000,12,15,8)
 	matriz1.Print()
 }
