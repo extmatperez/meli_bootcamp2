@@ -2,6 +2,9 @@ package main
 
 import "fmt"
 
+// CON LAS LINEAS COMENTADAS SE HARIA EL PROBLEMA
+// CALCULANDO INDIVIDUALMENTE CADA SERVICIO, PRESTAMO Y MANTENIMIENTO
+
 type Producto struct {
 	Nombre   string  `json:"nombre"`
 	Precio   float64 `json:"precio"`
@@ -46,13 +49,14 @@ func sumarMantenimientos(mantenimientos []Mantenimiento, c chan float64) {
 	c <- sumatoria
 
 }
-func calcularSumaTotal(valores ...float64) float64 {
-	sum := 0.0
-	for _, val := range valores {
-		sum += val
-	}
-	return sum
-}
+
+// func calcularSumaTotal(valores ...float64) float64 {
+// 	sum := 0.0
+// 	for _, val := range valores {
+// 		sum += val
+// 	}
+// 	return sum
+// }
 
 func main() {
 	producto1 := Producto{"Producto1", 56.00, 6.0}
@@ -77,18 +81,21 @@ func main() {
 	servicios := []Servicio{servicio1, servicio2, servicio3, servicio4, servicio5}
 	mantenimientos := []Mantenimiento{mantenimiento1, mantenimiento2, mantenimiento3, mantenimiento4, mantenimiento5}
 	a := make(chan float64)
-	b := make(chan float64)
-	c := make(chan float64)
+	// b := make(chan float64)
+	// c := make(chan float64)
 	go sumarProductos(productos, a)
-	go sumarServicios(servicios, b)
-	go sumarMantenimientos(mantenimientos, c)
+	go sumarServicios(servicios, a)
+	go sumarMantenimientos(mantenimientos, a)
 
 	total_productos := <-a
-	total_servicios := <-b
-	total_mantenimientos := <-c
+	total_productos += <-a
+	total_productos += <-a
+
+	// total_servicios := <-b
+	// total_mantenimientos := <-c
 	fmt.Println("suma parcial productos:", total_productos)
-	fmt.Println("suma parcial servicios:", total_servicios)
-	fmt.Println("suma parcial mantenimientos:", total_mantenimientos)
-	suma_total := calcularSumaTotal(total_productos, total_servicios, total_mantenimientos)
-	fmt.Println("total:", suma_total)
+	// fmt.Println("suma parcial servicios:", total_servicios)
+	// fmt.Println("suma parcial mantenimientos:", total_mantenimientos)
+	// suma_total := calcularSumaTotal(total_productos, total_servicios, total_mantenimientos)
+	// fmt.Println("total:", suma_total)
 }
