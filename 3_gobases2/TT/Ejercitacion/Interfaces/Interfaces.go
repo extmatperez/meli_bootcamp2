@@ -5,9 +5,30 @@ import (
 	"math"
 )
 
+const (
+	rectType     = "RECT"
+	circleType   = "CIRCLE"
+	squareType   = "SQUARE"
+	triangleType = "TRIANGLE"
+)
+
 type geometry interface {
 	area() float64
 	perimeter() float64
+}
+
+func newGeometry(geoType string, values ...float64) geometry {
+	switch geoType {
+	case rectType:
+		return rectangle{width: values[0], height: values[1]}
+	case circleType:
+		return circle{radius: values[0]}
+	case squareType:
+		return square{arist: values[0]}
+	case triangleType:
+		return triangle{base: values[0], height: values[1]}
+	}
+	return nil
 }
 
 // Para rectangulos.
@@ -78,4 +99,12 @@ func main() {
 	c := circle{radius: 4}
 	getDetails(r)
 	getDetails(c)
+
+	s := newGeometry(squareType, 4)
+	fmt.Println(s.area())
+	fmt.Println(s.perimeter())
+
+	t := newGeometry(triangleType, 3, 6)
+	fmt.Println(t.area())
+	fmt.Println(t.perimeter())
 }
