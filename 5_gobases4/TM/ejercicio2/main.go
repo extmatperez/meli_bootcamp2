@@ -10,13 +10,28 @@ import (
 	"fmt"
 )
 
-func main() {
+type myError struct {
+	msg string
+}
 
-	salary := 100000
+func myErrorTest(salary int) (string, error) {
 
 	if salary < 150000 {
-		fmt.Println(errors.New("error: el salario ingresado no alcanza el mínimo imponible"))
+		return "", errors.New("error: el salario ingresado no alcanza el mínimo imponible")
 	} else {
-		fmt.Println(errors.New("debe pagar impuesto"))
+		return "Debe pagar impuestos", nil
+	}
+}
+
+func main() {
+
+	salary := 16000
+
+	msg, err := myErrorTest(salary)
+
+	if err != nil {
+		fmt.Printf("%v\n", err)
+	} else {
+		fmt.Printf("%v\n", msg)
 	}
 }
