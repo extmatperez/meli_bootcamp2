@@ -40,6 +40,7 @@ func main() {
 		}
 	}
 
+	fmt.Printf("%20.1f", Total(pListaLeida))
 }
 
 type producto struct {
@@ -48,7 +49,15 @@ type producto struct {
 	Cantidad int
 }
 
-func (p *producto) calc_total(precio float64, cantidad int) {
-	//for
-	//return p.Precio * p.Cantidad
+func Total(pListaLeida []producto) float64 {
+	total := 0.0
+	for _, producto := range pListaLeida {
+		total += producto.calc_total()
+	}
+	return total
+}
+
+func (p *producto) calc_total() float64 {
+	tot_prod := p.Precio * float64(p.Cantidad)
+	return tot_prod
 }
