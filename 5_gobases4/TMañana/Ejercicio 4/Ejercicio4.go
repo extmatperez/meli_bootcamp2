@@ -39,6 +39,7 @@ func medioAguinaldo(mejor int, meses int) (int, error) {
 	return salary, nil
 	
 }
+}
 
 func main(){
 	var salary int
