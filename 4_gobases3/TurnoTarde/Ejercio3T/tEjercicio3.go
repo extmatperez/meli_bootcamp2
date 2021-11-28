@@ -5,90 +5,106 @@ import (
 
 )
 
-type Producto interface {
-	CalcularCosto() float64
-}
-
-type Ecommerce interface {
-	Total() float64
-	Agregar(p producto) tienda
-}
-
-
-type tienda struct {
-	productos []producto
-
-} 
-type producto struct {
-	Tipo,Nombre string
+type Mantenimiento struct {
+	Nombre string
 	Precio float64
 } 
+type Servicio struct {
+	Nombre string
+	Precio float64
+	MinutosTrabajados float64
 
-func (p *producto) NuevoProducto(tipo,nombre string, precio float64) producto{
-	p.Nombre = nombre
-	p.Precio= precio
-	p.Tipo= tipo
-	return *p
-}
+} 
+type Producto struct {
+	Nombre string
+	Precio float64
+	Cantidad int
+} 
 
-func (t tienda) NuevaTienda(productos ...producto) tienda{
-	t.productos=productos
-	return t;
-}
-
-func (p *producto) CalcularCosto() float64{
-	switch p.Tipo{
-	case "lacteo": 
-	return p.Precio * 1.2
-	default:
-	return p.Precio
+func SumarProductos(c chan float64,productos... Producto) float64{
+	var  precioTotal float64
+	z:=0
+	fmt.Println("Ejecutando SumarProductos")
+	for _,producto := range productos{
+		fmt.Println("SumandoProd",z)
+		z++
+		precioTotal += producto.Precio * float64(producto.Cantidad)
 	}
+	fmt.Println("Terminado SumarProductos")
+	c <- precioTotal
+	return precioTotal
+
 }
 
-func(t *tienda) Total() float64{
-	 total := 0.0
+func SumarMantenimieto(c chan float64,mantinimientos... Mantenimiento) float64{
+	var  precioTotal float64
+	z:=0
+	fmt.Println("Ejecutando Sumar Mantenimiento")
+	for _,mantenimiento := range mantinimientos{
+		fmt.Println("SumandoMan",z)
+		z++
+		precioTotal += mantenimiento.Precio 
+	}
+	fmt.Println("Terminado Sumar Mantenimiento")
+	c <- precioTotal
+	return precioTotal
 
-	 for _, producto := range t.productos{
-		total += producto.CalcularCosto()
-	 }
-
-	 return total
 }
 
-func(t *tienda) Agregar(p producto) tienda{
-	t.productos = append(t.productos, p)
 
-	return *t
+func SumarServicos(c chan float64,servicios... Servicio) float64{
+	var  precioTotal float64
+	z:=0
+	fmt.Println("Ejecutando SumarServicios")
+	for _,servicio := range servicios{
+		fmt.Println("SumandoServ",z)
+		z++
+		if(servicio.MinutosTrabajados > 30){
+			precioTotal += servicio.Precio * servicio.MinutosTrabajados
+		}else{
+			precioTotal += servicio.Precio * 30
+		}
+		
+	}
+	fmt.Println("Terminado SumarServicios")
+	c <- precioTotal
+	return precioTotal
+
 }
-
-
 
 func main() {
+	
 
-	producto1 := producto{Nombre: "leche",Precio: 100.0,Tipo: "lacteo"}
-	producto2 := producto{Nombre: "queso",Precio: 100.0,Tipo: "lacteo"}
-	producto3 := producto{Nombre: "galleta",Precio: 70.0,Tipo: "comestible"}
+	
+	servicio1 := Servicio{Nombre: "Construccion",Precio: 100, MinutosTrabajados: 80}
+	servicio2 := Servicio{Nombre: "Repacion baño",Precio: 50, MinutosTrabajados: 50}
 
-	tienda1 := tienda{}
 
-	tienda1.Agregar(producto1)
-	tienda1.Agregar(producto2)
-	tienda1.Agregar(producto3)
+	producto1 := Producto{Nombre: "leche",Precio: 50,Cantidad: 4}
+	producto2 := Producto{Nombre: "carne",Precio: 500,Cantidad: 4}
 
-	fmt.Println(tienda1)
-	fmt.Println(tienda1.Total())
+	mantimiento1 := Mantenimiento {Nombre: "Casas",Precio: 1000}
+	mantimiento2 := Mantenimiento {Nombre: "Edficios",Precio: 2000}
+	mantimiento3 := Mantenimiento {Nombre: "Edficios",Precio: 8000}
+	mantimiento4 := Mantenimiento {Nombre: "Edficios",Precio: 9000}
+	mantimiento5 := Mantenimiento {Nombre: "Edficios",Precio: 10000}
+	mantimiento6 := Mantenimiento {Nombre: "Edficios",Precio: 11000}
+	mantimiento7 := Mantenimiento {Nombre: "Edficios",Precio: 20200}
+	mantimiento8 := Mantenimiento {Nombre: "Edficios",Precio: 200520}
 
-	producto4 := producto{Nombre: "yogut",Precio: 100.0,Tipo: "lacteo"}
-	producto5 := producto{Nombre: "queso crema",Precio: 100.0,Tipo: "lacteo"}
-	producto6 := producto{Nombre: "papas",Precio: 70.0,Tipo: "comestible"}
+	c := make(chan float64)
+	go SumarMantenimieto(c,mantimiento1,mantimiento2,mantimiento3,mantimiento4,mantimiento5,mantimiento6,mantimiento7,mantimiento8)
+	go SumarServicos(c,servicio1,servicio2)
+	go SumarProductos(c,producto1,producto2)
+	go SumarProductos(c,producto1,producto2)
+	go SumarProductos(c,producto1,producto2)
+	go SumarProductos(c,producto1,producto2)
 
-	tienda2 := tienda{}
-	tienda2.Agregar(producto4)
-	tienda2.Agregar(producto5)
-	tienda2.Agregar(producto6)
+	fmt.Println(<-c+<-c+<-c+<-c+<-c+<-c)
 
-	fmt.Println(tienda2)
-	fmt.Println(tienda2.Total())
+
+
+	
 
 }
 
