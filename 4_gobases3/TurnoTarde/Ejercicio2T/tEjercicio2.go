@@ -1,57 +1,62 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"sort"
 
 )
-
-type Matrix struct {
-	Valores []float64
-	Alto int
-	Ancho int
-	IsCudratica bool
-	ValorMaximo float64
+type Producto struct {
+	Nombre string 
+	Precio float64
+	Cantidad int
 } 
-func (m *Matrix) Set(valores ... float64) {
-	m.Valores=valores
-	
-	if(m.Alto == m.Ancho){
-		m.IsCudratica = true
-	}else{
-		m.IsCudratica = false
-	}
-	sort.Float64s(valores)
-	m.ValorMaximo = valores[len(valores)-1]
+type Usuario struct {
+	Prodcutos [] Producto
+	Nombre,Apellido,Correo string 
+} 
 
 
+
+func (m *Producto) NewProduct(nombre string, precio float64) Producto{
+	m.Nombre=nombre
+	m.Precio=precio
+	return *m
+}
+func (m *Usuario) AddProducto(prod Producto,cantidad int) {
+	prod.Cantidad=cantidad
+	m.Prodcutos = append(m.Prodcutos,prod)
 }
 
-func (m Matrix)  Print() {
-	contadorColumna := 0
-
-
-	fmt.Println("Matrix representada")
-	for i :=0; i < len(m.Valores); i++{
-		contadorColumna++
-		fmt.Printf("%v\t", m.Valores[i])		
-		if(contadorColumna == m.Ancho){
-			fmt.Printf("\n")
-			contadorColumna=0
-		}
-			
-	}
-	fmt.Printf("\n")
-	fmt.Println("Matrix Datos")
-	jsonR,_ := json.Marshal(m)
-	fmt.Printf("%v\n",string(jsonR))
-
+func (m *Usuario) DeleteProducto(u Usuario) {
+	m.Prodcutos = nil
 }
 
 func main() {
-	matriz1 := Matrix{Alto: 5,Ancho: 3}
-	matriz1.Set(100, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3,1000,12,15,8)
-	matriz1.Print()
+
+	prod1 := Producto{Nombre: "Carne", Precio: 55.8 }
+	prod2 := Producto{Nombre: "Leche", Precio: 80.8 }
+	prod3 := Producto{Nombre: "Papa", Precio: 15.8 }
+
+	usuario := Usuario{Nombre: "Francisco",Apellido: "Palacio",Correo: "123456@yahoo.com"}
+	usuario2 := Usuario{Nombre: "Carlos",Apellido: "Palaciossss",Correo: "123456@yahoo.com"}
+	usuario.AddProducto(prod1,5)
+	usuario.AddProducto(prod2,10)
+
+	fmt.Println(usuario)
+
+	usuario.DeleteProducto(usuario)
+
+	fmt.Println(usuario)
+
+
+	usuario2.AddProducto(prod1,5)
+	usuario2.AddProducto(prod2,80)
+	usuario2.AddProducto(prod3,50)
+
+	fmt.Println(usuario2)
+
+	usuario2.DeleteProducto(usuario2)
+
+	fmt.Println(usuario2)
+
 }
 
