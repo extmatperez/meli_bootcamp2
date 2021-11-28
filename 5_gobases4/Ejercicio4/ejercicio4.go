@@ -17,13 +17,32 @@ func calcSalary(h int, s float64) (float64, error) {
 	}
 	return total, nil
 }
+func halftBonus(s float64, m int) (float64, error) {
+	total := float64(m) * (s / 12)
+	if m <= 0 || s <= 0 {
+		err := errors.New("error: los datos no pueden ser negativos")
+		return 0.0, err
+	}
+	return total, nil
+}
 func main() {
 	fmt.Println()
+	// punto a
 	salary, err := calcSalary(81, 160.000)
 	if err != nil { // si err no es nulos es por que existe un error
 		fmt.Println(err)
 	} else {
 		fmt.Printf("El salario a pagar es: %.3f", salary)
 	}
+	// fin punto a
+	fmt.Println()
+	// punto b
+	bonus, e := halftBonus(salary, -1)
+	if e != nil {
+		fmt.Println(e)
+	} else {
+		fmt.Printf("El bono a pagar es: %.3f", bonus)
+	}
+	// fin punto b
 	fmt.Println()
 }
