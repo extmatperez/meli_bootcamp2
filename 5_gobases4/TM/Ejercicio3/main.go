@@ -11,23 +11,12 @@ func funcError(salary int) error {
 	return nil
 }
 
-func salarioMensual(horas int, valor_hora float64) (float64, error) {
-	if horas < 80 {
-		return 0, fmt.Errorf("error: el trabajador no puede haber trabajado menos de 80 hs mensuales")
-	}
-
-	salario := float64(horas) * valor_hora
-
-	return salario, nil
-}
-
 func main() {
-	horas := 150
-	valor := 150.0
-	salario, err := salarioMensual(horas, valor)
+	salary := 1500
+	err := funcError(salary)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		fmt.Println(salario)
+		fmt.Println("Debe pagar impuesto")
 	}
 }
