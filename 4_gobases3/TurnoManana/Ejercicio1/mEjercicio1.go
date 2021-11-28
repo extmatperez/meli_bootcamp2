@@ -1,70 +1,44 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 	
 )
 
-type Product struct {
-	Id int `json:"id"`
-	Precio float64 `json:"precio"`
-	Cantidad int `json:"cantidad"`
+type Usuario struct {
+	Nombre,Apellido,Correo,Contraseña string 
+	Edad int 
+
 }
+
+func (user *Usuario) SetName(nombre, apellido string){
+	user.Apellido=apellido
+	user.Nombre=nombre
+}
+func (user *Usuario) SetEdad(edad int){
+	user.Edad= edad
+}
+func (user *Usuario) SetCorreo(correo string){
+	user.Correo= correo
+}
+func (user *Usuario) SetPasswrod(contrasena string){
+	user.Contraseña= contrasena
+}
+
+
 
 
 
 func main() {
-	Product1 := Product{Id: 1,Precio: 15.5,Cantidad: 10}
-	Product2 := Product{Id: 2,Precio: 25.5,Cantidad: 8}
+	usuario := Usuario{Nombre: "Pepe",Apellido: "Castro",Edad: 15,Correo: "safñjasf@gmail.com", Contraseña: "123456"}
+	fmt.Println("Usuario original",usuario)
 
-
-	 ListProductos := [] Product{Product1,Product2}
-	 encjson, _ := json.Marshal(ListProductos)
-	ruta := "./archivo.csv"
-	 ruta, err :=SaveDocument(encjson,ruta)
-	if(err != nil){
-
-		fmt.Printf("Ocurrio un error %w",err)
-	}else{
-		fmt.Printf("El archivo %s se guardo con exito",ruta)
-	}
-
-	ReadDocument(ruta)
+	usuario.SetName("pancho","palacio")
+	usuario.SetCorreo("luis@yahoo.com.ar")
+	usuario.SetEdad(88)
+	usuario.SetPasswrod("654321")
+	fmt.Println("Usuario cambiado",usuario)
 
  }
 
 
-func SaveDocument (archivo []byte, ruta string) (string,error){
-	
-	err := os.WriteFile(ruta, archivo,0644)
-
-	if(err != nil) {
-		return "",err
-	}
-
-	return ruta,nil
-
-}
-
-func ReadDocument (ruta string) (error){
-
-	data,err := os.ReadFile(ruta)
-	var ListProductos  []Product
-	if(err != nil){
-		return err
-	}
-		json.Unmarshal(data, &ListProductos)
-		fmt.Printf("\n%v\t%v\t%v", "Id", "Precio", "Cantidad")
-		for _,product := range ListProductos{
-			fmt.Printf("\n")
-			
-			fmt.Printf("%v,\t%.2f,\t%v",product.Id,product.Precio,product.Cantidad)
-			
-
-		}
-		return nil
-	
-
-}
