@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,29 +30,53 @@ type User struct {
 	CrationDate string `json:"cration_date"`
 }
 
+func (u *User) getFirstName() string {
+	return u.FirstName
+}
+
 func salute(c *gin.Context) {
-	name := "Jose"
+	name := c.Param("name")
 	// name := c.DefaultQuery("name", "Jose")
 	c.JSON(http.StatusOK, gin.H{
 		"mensaje": "Hello " + name,
 	})
 }
 
-func getAllUsers(c *gin.Context) {
+func saluteUser(c *gin.Context) {
 	data, err := os.ReadFile("users.json")
 	var pUsersRead []User
 	json.Unmarshal(data, &pUsersRead)
 	if err != nil {
 		fmt.Print("Error Read file")
 	}
+	num := c.Param("numUser")
+	numFormat, _ := strconv.Atoi(num)
+	fmt.Printf("num: %v - numFormat: %v\n", num, numFormat)
+	name := string(pUsersRead[numFormat].FirstName)
 	c.JSON(http.StatusOK, gin.H{
-		"mensaje": pUsersRead,
+		"mensaje": "hello " + name,
+	})
+}
+
+func getAllUsers(c *gin.Context) {
+	bytes, err := os.ReadFile("users.json")
+	var pUsers []User
+	json.Unmarshal(bytes, &pUsers)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "Error parseando el JSON de productos",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"users": pUsers,
 	})
 }
 
 func main() {
 	router := gin.Default()
-	router.GET("/hello", salute)
+	router.GET("/hello/:name", salute)
 	router.GET("/users", getAllUsers)
+	router.GET("/helloUser/:numUser", saluteUser)
 	router.Run()
 }
