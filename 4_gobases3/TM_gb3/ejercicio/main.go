@@ -76,7 +76,7 @@ func main() {
 	var productInfo string
 
 	for _, product := range list_products {
-		productInfo = fmt.Sprintf("%v;%v;%v\n", product.Id, product.Price, product.Quantity)
+		productInfo += fmt.Sprintf("%v;%.2f;%v\n", product.Id, product.Price, product.Quantity)
 	}
 
 	os.WriteFile("./products_stock.txt", []byte(productInfo), 0644)
