@@ -61,10 +61,18 @@ func nuevaTienda() Ecommerce {
 	return tienda{}
 }
 
-func (p producto) calcularCosto() float64 {
+func (p pequeño) calcularCosto() float64 {
+	return p.p.precio
+}
 
+func (p mediano) calcularCosto() float64 {
+	return p.p.precio * 1.03
+}
+
+func (p grande) calcularCosto() float64 {
+	return p.p.precio*1.06 + 2500
 }
 
 func main() {
-
+	producto1 := producto{}
 }
