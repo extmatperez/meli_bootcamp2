@@ -9,18 +9,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type greeting struct {
-	Name string `json:"message"`
+type Greeting struct {
+	Message string `json:"message"`
 }
 
-type transaction struct {
-	Id          int    `json:"id"`
-	Transaction string `json:"transactionCode"`
-	Currency    string `json:"currency"`
-	Amount      int    `json:"amount"`
-	Sender      string `json:"sender"`
-	Receiver    string `json:"receiver"`
-	Date        string `json:"date"`
+func (g *Greeting) setMessage(name string) {
+	g.Message = fmt.Sprintf("Hola %v", name)
+}
+
+type Transaction struct {
+	Id              int    `json:"id"`
+	TransactionCode string `json:"transactionCode"`
+	Currency        string `json:"currency"`
+	Amount          int    `json:"amount"`
+	Sender          string `json:"sender"`
+	Receiver        string `json:"receiver"`
+	Date            string `json:"date"`
 }
 
 func main() {
@@ -29,9 +33,9 @@ func main() {
 	router.GET("/hello/:name", func(c *gin.Context) {
 		name := c.Param("name")
 
-		newGreeting := greeting{}
+		newGreeting := Greeting{}
 
-		newGreeting.Name = fmt.Sprintf("Hola %v", name)
+		newGreeting.setMessage(name)
 
 		c.JSON(http.StatusOK, newGreeting)
 	})
@@ -44,7 +48,7 @@ func main() {
 			c.AbortWithStatus(http.StatusInternalServerError)
 		}
 
-		var transactions = []transaction{}
+		var transactions = []Transaction{}
 
 		unmarshalErr := json.Unmarshal(data, &transactions)
 		if unmarshalErr != nil {
