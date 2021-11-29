@@ -10,7 +10,7 @@ func main() {
 	data, err := os.ReadFile("./newArchive.csv")
 
 	if err != nil {
-		fmt.Println("Error while reading file")
+		fmt.Println(err)
 	}
 
 	newStr := strings.Replace(string(data), ";", "\t", -1)
