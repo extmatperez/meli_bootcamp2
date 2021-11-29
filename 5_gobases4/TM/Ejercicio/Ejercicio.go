@@ -14,10 +14,9 @@ func (e *myError) Error() string {
 }
 
 // Punto 1. Uso de custom errors.
-func devolver_custom_error() error {
-	var e myError
+func (e *myError) devolver_custom_error() error {
 	e.msg = "El salario ingresado no alcanza el minimo imponible."
-	return &e
+	return e
 }
 
 // Punto 2. Uso de errors.New.
@@ -57,23 +56,25 @@ func devolver_medio_aguinaldo(max_salary float64, months_work int) (float64, err
 func main() {
 	var salary_calc, hs_price, max_salary, aguinaldo float64
 	var salary, hs_work, months_work int
+	var err1 myError
+
 	fmt.Println("Ingresa el salario:")
 	fmt.Scanf("%d", &salary)
 	if salary < 150000 {
 		// Punto 1.
-		err1_1 := devolver_custom_error()
+		err1_1 := err1.devolver_custom_error()
 		// Punto 2.
 		err1_2 := devolver_error()
 		// Punto 3.
 		err1_3 := devolver_error_errorf()
-		fmt.Println(err1_2)
+		fmt.Println(err1_1)
 		fmt.Println(errors.Unwrap(err1_1))
 		fmt.Println(errors.Unwrap(err1_2))
 		fmt.Println(errors.Unwrap(err1_3))
 	} else {
 		fmt.Println("Debe pagar impuesto.")
 	}
-	fmt.Println("================================================================")
+	fmt.Println("\n================================================================")
 	fmt.Println("Ingrese cantidad de horas trabajadas: ")
 	fmt.Scanf("%d", &hs_work)
 	fmt.Println("Ingrese el precio de las horas trabajadas: ")
