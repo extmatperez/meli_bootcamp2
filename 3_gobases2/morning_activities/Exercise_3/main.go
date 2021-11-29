@@ -12,48 +12,32 @@ package main
 
 import "fmt"
 
-func category_a(minutes float64) float64 {
-	hours := minutes / 60
-	salary := hours * 3000
-	response := salary + (salary * 0.5)
-	fmt.Printf("The corresponding salary to the employee category A is:  $%.2f \n", response)
-	return response
-}
-
-func category_b(minutes float64) float64 {
-	hours := minutes / 60
-	salary := hours * 1500
-	response := salary + (salary * 0.2)
-	fmt.Printf("The corresponding salary to the employee category B is: $%.2f \n", response)
-	return response
-}
-func category_c(minutes float64) float64 {
-	hours := minutes / 60
-	salary := hours * 1000
-	response := salary
-	fmt.Printf("The corresponding salary to the employee category C is: $%.2f \n", response)
-	return response
-}
-
-func main() {
-	var category string
-	var minutes float64
-	fmt.Printf("Enter the employee category: ")
-	fmt.Scanf("%f\n", &category)
-	fmt.Printf("Enter the employee minutes worked: ")
-	fmt.Scanf("%f\n", &minutes)
-
-	/* Fix the bug in switch statement */
+func salary(minutes float64, category string) float64 {
+	var hours float64
+	var salary_total float64
+	hours = minutes / 60
 
 	switch category {
 	case "a":
-		fmt.Println(category_a(minutes))
+		salary_total = (hours * 3000) * 1.50
 	case "b":
-		fmt.Println(category_b(minutes))
+		salary_total = (hours * 1500) * 1.20
 	case "c":
-		fmt.Println(category_c(minutes))
+		salary_total = (hours * 1000)
 	default:
 		fmt.Println("Something went wrong, please try again!")
 	}
+	return salary_total
+}
 
+func main() {
+	/* var category string */
+	/* var minutes float64 */
+
+	/* fmt.Printf("Enter the employee category: ")
+	fmt.Scanf("%f\n", &category) */
+	/* fmt.Printf("Enter the employee minutes worked: ")
+	fmt.Scanf("%f\n", &minutes) */
+
+	fmt.Println(salary(600, "a"))
 }
