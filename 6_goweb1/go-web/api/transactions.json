@@ -1,0 +1,10 @@
+[{"id":1,"transactionCode":"509PNZ497","currency":"CNY","amount":1314.31,"sender":"596-77-7144","receiver":"576-23-4473","transactionDate":"10/15/2021"},
+    {"id":2,"transactionCode":"475LZJ364","currency":"ARS","amount":4784.99,"sender":"236-70-9697","receiver":"515-40-5480","transactionDate":"4/3/2021"},
+    {"id":3,"transactionCode":"940ZVD968","currency":"EUR","amount":1285.98,"sender":"565-14-7359","receiver":"858-62-6075","transactionDate":"3/5/2021"},
+    {"id":4,"transactionCode":"707RPC875","currency":"JPY","amount":4801.14,"sender":"393-28-5309","receiver":"783-21-9885","transactionDate":"3/16/2021"},
+    {"id":5,"transactionCode":"494CFF620","currency":"CZK","amount":4784.83,"sender":"448-64-9862","receiver":"602-87-1574","transactionDate":"10/25/2021"},
+    {"id":6,"transactionCode":"628PSW503","currency":"ARS","amount":4187.75,"sender":"861-15-3970","receiver":"375-75-3243","transactionDate":"11/12/2021"},
+    {"id":7,"transactionCode":"914QZE223","currency":"PHP","amount":3368.13,"sender":"646-43-2488","receiver":"487-70-4932","transactionDate":"9/4/2021"},
+    {"id":8,"transactionCode":"763YJG886","currency":"CNY","amount":2435.81,"sender":"851-05-1085","receiver":"140-74-0362","transactionDate":"8/10/2021"},
+    {"id":9,"transactionCode":"668NKH484","currency":"PHP","amount":745.39,"sender":"788-85-5106","receiver":"837-25-4151","transactionDate":"2/9/2021"},
+    {"id":10,"transactionCode":"324XFY771","currency":"UAH","amount":4039.6,"sender":"721-90-7101","receiver":"800-30-6102","transactionDate":"9/25/2021"}]
