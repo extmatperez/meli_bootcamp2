@@ -1,0 +1,44 @@
+{
+    "transactions": [
+        {
+            "id": 0,
+            "transactionCode": "123abc",
+            "coin": "ARS",
+            "amount": 15753.00,
+            "from": "0",
+            "to": "1"
+        },
+        {
+            "id": 1,
+            "transactionCode": "124abd",
+            "coin": "ARS",
+            "amount": 13547.00,
+            "from": "1",
+            "to": "2"
+        },
+        {
+            "id": 2,
+            "transactionCode": "125abe",
+            "coin": "ARS",
+            "amount": 12753.00,
+            "from": "2",
+            "to": "3"
+        },
+        {
+            "id": 3,
+            "transactionCode": "126abf",
+            "coin": "ARS",
+            "amount": 15753.00,
+            "from": "4",
+            "to": "0"
+        },
+        {
+            "id": 4,
+            "transactionCode": "126abg",
+            "coin": "ARS",
+            "amount": 15753.00,
+            "from": "0",
+            "to": "4"
+        }
+    ]
+}

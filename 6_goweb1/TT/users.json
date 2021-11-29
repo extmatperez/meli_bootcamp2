@@ -1,0 +1,49 @@
+{
+    "users": [
+        {
+            "id": 0,
+            "firstName": "Leandro",
+            "lastName": "Nicolau",
+            "email": "lean.nic@gmail.com",
+            "age": 24,
+            "height": 1.71,
+            "active": true
+        },
+        {
+            "id": 1,
+            "firstName": "Julian",
+            "lastName": "Mondaca",
+            "email": "juli.mond@gmail.com",
+            "age": 21,
+            "height": 1.78,
+            "active": true
+        },
+        {
+            "id": 2,
+            "firstName": "Rocio",
+            "lastName": "Ottavianelli",
+            "email": "ro.ott@gmail.com",
+            "age": 23,
+            "height": 1.68,
+            "active": true
+        },
+        {
+            "id": 3,
+            "firstName": "Colo",
+            "lastName": "Mustaine",
+            "email": "colo.must@gmail.com",
+            "age": 28,
+            "height": 1.80,
+            "active": true
+        },
+        {
+            "id": 4,
+            "firstName": "Luciano",
+            "lastName": "Nicolau",
+            "email": "luc.nic@gmail.com",
+            "age": 22,
+            "height": 1.73,
+            "active": true
+        }
+    ]
+}
