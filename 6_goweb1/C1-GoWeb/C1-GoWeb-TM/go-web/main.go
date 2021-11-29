@@ -9,6 +9,12 @@ Dentro del mismo escribí un JSON que permita tener un array de productos, usuar
 */
 package main
 
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
 type User struct {
 	ID          int    `json:"id"`
 	FirstName   string `json:"first_name"`
@@ -20,6 +26,13 @@ type User struct {
 	CrationDate string `json:"cration_date"`
 }
 
+func salute(c *gin.Context) {
+	name := c.DefaultQuery("name", "Jose")
+	c.String(http.StatusOK, "Hello %s", name)
+}
 func main() {
+	router := gin.Default()
+	router.GET("/hello", salute)
 
+	router.Run()
 }
