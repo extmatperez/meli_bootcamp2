@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 
@@ -19,6 +20,19 @@ type Transaccion struct {
 	Emisor         string  `json:"emisor"`
 	Receptor       string  `json:"receptor"`
 	FechaTrans     string  `json:"fecha_trans"`
+}
+
+func buscarTransaccion(c *gin.Context) {
+	var transac Transaccion
+
+	if c.BindJSON(&transac) == nil {
+		log.Println("Bind por JSON")
+		log.Println("ID de transaccion: ", transac.Id)
+		log.Println("Codigo de transaccion: ", transac.CodTransaccion)
+		c.String(http.StatusOK, "(Query JSON) - Transaccion: %s, ID: %s\n", transac.CodTransaccion, transac.Id)
+	} else {
+		c.String(404, "La transaccion no existe")
+	}
 }
 
 func main() {
@@ -48,6 +62,8 @@ func main() {
 			"GetAll": transacciones,
 		})
 	})
+
+	router.GET("/transacciones/:id", buscarTransaccion)
 
 	router.Run()
 }
