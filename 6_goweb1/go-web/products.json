@@ -1,0 +1,136 @@
+[{
+    "id": 1,
+    "name": "Beef Wellington",
+    "color": "Yellow",
+    "price": "$3.72",
+    "stock": "274",
+    "code": "3b9ffef8-0e84-4f3f-923e-103bd8f6e190",
+    "published": false,
+    "creation_date": "17.11.2021"
+  }, {
+    "id": 2,
+    "name": "Foam Espresso Cup Plain White",
+    "color": "Mauv",
+    "price": "$0.61",
+    "stock": "398",
+    "code": "163c3ff1-9085-4478-a003-bf1a2d3b2ac5",
+    "published": false,
+    "creation_date": "22.04.2021"
+  }, {
+    "id": 3,
+    "name": "Juice - Propel Sport",
+    "color": "Blue",
+    "price": "$9.24",
+    "stock": "3",
+    "code": "d4d61855-9abb-4015-ac3e-f6e6fc4b41ac",
+    "published": true,
+    "creation_date": "01.08.2021"
+  }, {
+    "id": 4,
+    "name": "Bread - Roll, Whole Wheat",
+    "color": "Indigo",
+    "price": "$6.05",
+    "stock": "04",
+    "code": "c7135a4d-6be8-4fed-b343-90e2afa108cd",
+    "published": true,
+    "creation_date": "19.10.2021"
+  }, {
+    "id": 5,
+    "name": "Rosemary - Primerba, Paste",
+    "color": "Puce",
+    "price": "$3.33",
+    "stock": "622",
+    "code": "6285d3f7-3da8-475a-b336-a7eeacef2414",
+    "published": false,
+    "creation_date": "26.03.2021"
+  }, {
+    "id": 6,
+    "name": "Mushroom Morel Fresh",
+    "color": "Turquoise",
+    "price": "$6.28",
+    "stock": "8",
+    "code": "c99c888a-52ad-4d17-a034-911cd32109f8",
+    "published": true,
+    "creation_date": "31.08.2021"
+  }, {
+    "id": 7,
+    "name": "Sugar - Brown",
+    "color": "Yellow",
+    "price": "$4.72",
+    "stock": "332",
+    "code": "6d7f1d0a-ca24-44e0-89ab-295fbdd4ebd3",
+    "published": true,
+    "creation_date": "25.09.2021"
+  }, {
+    "id": 8,
+    "name": "Cheese - Bocconcini",
+    "color": "Red",
+    "price": "$4.84",
+    "stock": "8902",
+    "code": "7c9dd8ca-952b-4781-9270-41ac1f6acc12",
+    "published": true,
+    "creation_date": "26.12.2020"
+  }, {
+    "id": 9,
+    "name": "Beef - Short Ribs",
+    "color": "Aquamarine",
+    "price": "$0.36",
+    "stock": "73",
+    "code": "77552408-148d-4b96-bf15-4dcf8f14c0e0",
+    "published": false,
+    "creation_date": "17.11.2021"
+  }, {
+    "id": 10,
+    "name": "Cocktail Napkin Blue",
+    "color": "Maroon",
+    "price": "$1.60",
+    "stock": "27312",
+    "code": "4ff6f817-1608-41bc-a3b3-8da2042553c2",
+    "published": false,
+    "creation_date": "09.02.2021"
+  }, {
+    "id": 11,
+    "name": "Eggwhite Frozen",
+    "color": "Turquoise",
+    "price": "$6.47",
+    "stock": "68",
+    "code": "5d04b347-7943-4d94-8d9e-6aabdfdd2e6f",
+    "published": false,
+    "creation_date": "15.02.2021"
+  }, {
+    "id": 12,
+    "name": "Cactus Pads",
+    "color": "Orange",
+    "price": "$0.07",
+    "stock": "56",
+    "code": "a9bf2c8c-c3ef-4d26-a5b3-6c84f2b8e81d",
+    "published": false,
+    "creation_date": "28.04.2021"
+  }, {
+    "id": 13,
+    "name": "Banana - Green",
+    "color": "Pink",
+    "price": "$7.27",
+    "stock": "13",
+    "code": "8082af02-46c4-4114-a909-78481bf9aa64",
+    "published": true,
+    "creation_date": "05.03.2021"
+  }, {
+    "id": 14,
+    "name": "Chinese Foods - Chicken Wing",
+    "color": "Purple",
+    "price": "$9.47",
+    "stock": "7950",
+    "code": "7e7ce14d-8685-4476-876b-84ff6703ee34",
+    "published": true,
+    "creation_date": "11.06.2021"
+  }, {
+    "id": 15,
+    "name": "Green Tea Refresher",
+    "color": "Indigo",
+    "price": "$0.18",
+    "stock": "24",
+    "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+    "published": false,
+    "creation_date": "21.01.2021"
+  }]
