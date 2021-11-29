@@ -26,7 +26,7 @@ func main() {
 
 	newData := string(data)
 
-	newData = newData + "; 4030062.50 ;"
+	newData = newData + "; 4030062.50;"
 
 	newStr := strings.Replace(newData, ";", "\t", -1)
 
