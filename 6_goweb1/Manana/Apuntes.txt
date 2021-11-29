@@ -1,0 +1,150 @@
+GO WEB 1
+API
+Que es una API y para que sirve
+Es un conjunto de protocolos y definiciones para desarrollar e integrar el software de la aplicacion 
+No son la parte visible sino todo lo interno que va por detras 
+
+PARA QUE SIRVE 
+La funcion de una API es mas que nada facilitar el trabajo 
+Hacer que la interaccion entre la app y el servidor sea sencillo 
+
+HTTP 
+Es un protocolo de transferencia que permite comunicarse entre cliente y servidor 
+Al ser estandarizado facilita el trabajo 
+
+ARQUITECTURA WEB 
+
+Roy Fielding definio 6 estructuras/arquitecturas
+
+    -cliente-servidor 
+        Uno solicita y el otro le responde 
+    -Interfaz uniforme 
+        Todos los recursoso tienen un nombre en forma de URL 
+        Los servicios REST estan implementados en HTTP
+    -Sistema de capas 
+        Se delegan responsabilidades 
+        Un intermediario intercepta la comunicacion con un proposito especifico 
+        Son los que se conocen como  middlewares por ejemplo 
+    -Cache
+
+    -Sin estado(stateless)
+        Todas las interacciones cliente-servidor son tratadas como nuevas 
+        De manera independiente sin guardar estado 
+    -Codigo a demanda
+        Es un acoplamiento entre servidores web y clientes 
+        El cliente debe ser capaz de comprender y ejecutar el codigo que recibe bajo demanda 
+
+QUE ES REST?
+Representational State Transfer es cuando se cumplen las 6 claves 
+
+JSON 
+Es un formato de intercambio de datos super conveniente por su interoperabilidad con otros lenguajes 
+Es un formato para el intercambio de datos 
+
+Su sintaxis se basa en la de Javascript para crear objetos 
+    Una coleccion de pares "nombre -> valor"
+    Es una lista ordenada de valores
+
+TIPOS DE DATOS
+Dentro de un JSON podemos tener distintos tipos de datos  
+    Numeros
+    Cadenas
+    Booleanos 
+    null -> En GO usamos nil pero JSON lo va a pasar a null
+    Array
+Un JSON debe tener como minomo la estructura de un objeto vacio( {} )
+
+PACKAGE JSON 
+El package "json" es una libreria que nos permite transformas estructuras 
+Estas son de json a go y viceversa 
+
+.Marshal()
+La funcion Marshal toma como parametro un valor de cualquier tipo 
+Retorna un slice de bytes pero al recibir como parametro un interfaz puede recibir cualquier cosa 
+
+En los struct de GO si estan con minuscula las key no las toma 
+Esto se debe a que son "PRIVADAS" 
+Es por eso que si queres usar el "encoding/json"  
+
+.Unmarshal()
+La funcion recibe como parametro un array de bytes  y como segundo parametro un puntero a un struct 
+
+
+PACKAGE NET/HTTP 
+Este packagage permite generar servidores web de manera simple 
+
+    package main 
+
+    import(
+        "fmt"
+        "net/http"
+    )
+
+    func holaHandler(w http.ResponseWriter, req *http.Request){
+        fmt.Fprintf(w, "Hola\n")
+    }
+
+    func main() {
+        http.HandleFunc("/hola", holaHabdler)
+        https.ListenAndServe(":8080", nil)
+    }
+
+En este caso ponemos con la ruta handleFunc una ruta y que funcion ejecutar 
+La funcion holaHandler recibe una ruta(w) y un request 
+La funcion ListenAndServe genera la ruta donde corre nuestro servidor 
+
+Una vez que se ejecute la aplicacion va a quedar corriendo 
+
+
+GIN WEB FRAMEWORK 
+Uno puede crear un servidor con "net/http"
+Sin embargo vamos a usar "Gin" que es un framework 
+
+El comando para traer gin a tu proyecto es:
+go get -u github.com/gin-gonic/gin
+Esto va a guardar todas las dependencias en el go.mod
+
+Una vez que tenemos instalado GIN creamos un web router
+
+Ya podemos desde aca crear nuestro Handler que tiene dos parametros 
+
+    router.GET("endpoint", Handler)
+
+Al Router se le pone el verbo (GET) que va a usar
+El primer parametro (el endpoint) es la ruta relativa 
+El segundo parametro (el handler) es la funcion que toma el *gin.Context 
+
+Con Gin para correr el servidor tenemos la funcion Run()
+Por defecto corre en el servidor 8080
+Sin embargo podemos modificar con comillas (router.Run(":3000"))
+
+En el router.GET se le esta pasando una funcion anonima actualmente 
+Pero podriamos pasarle una funcion definida en otra parte 
+    router.get("Hola-hola", saludar)
+En este caso la funcion saludar podria estar en otra parte y queda mas limpio 
+
+
+    package main 
+
+    import "github.com/gin-gonic/gin
+
+    func main(){
+
+        router := gin.Default()
+
+        router.GET("/hello", func(c *gin.Context){
+            c.JSON(200, "HOLA")
+        })
+
+        router.GET("/hello-world", func(c *gin.Context){
+            c.JSON(200, gin.H{
+                "message": "Hello world",
+            })
+        })
+
+        router.Run()
+
+    }
+
+
+

@@ -102,14 +102,21 @@ Entonces mientras haya un panic en algun momento recover va a retornar algo
         Esto generaria un panic 
 
 
+
+--------------------------------------
 PACKAGE CONTEXT 
 Conetxt nos de funciones que nos pueden resultar utiles durante el tiempo de ejecucion 
 
 Es una convencion que al momento de ejecutar funciones que usan contexto que sea el primer parametro 
 
+Muchas veces nos va a pasar con GO que queramos llamar una funcion que puede tardar en retornar 
+Este paquete nos permite crear contextos que podemos pasar entre funciones y de padre a hijo 
+En caso de que se cancele el contexto en alguna parte esta cancelacion se va a propagar a todas las funciones con ese context 
+
 
 BACKGROUND
 Es una funcion .Background() que nos genera un contexto vacio 
+Es la base para despues ir expandiendo nuestro context 
 
     import(
         "fmt"
@@ -133,6 +140,24 @@ Devuelve un nuevo contexto con los valores nuevos
         ctx = context.WithValue(ctx, "saludo", "hola a todos!!!")
 
     }
+Sobreescribimos el contexto viejo con su nueva version que incluye los valores  
+Con este contexto vamos a poder pasar este "clave -> valor" atraves de distintas funciones 
+
+    func main(){
+        ctx := context.Background()
+
+        ctx := context.WithValue(ctx, "saludo", "Hola a todos")
+        saludoWrapper(ctx)
+    }
+
+    func saludoWrapper(ctx context.Context) {
+        saludar(ctx)
+    }
+
+    func saludar(ctx contxt.Context){
+        fmt.Println(ctx.Value("saludo"))
+    }
+En este ejemplo se puede ver que para acceder a el value de esa clave se usa la funcion Value()
 
 WITHDEADLINE 
 Es una funcion WithDeadline() que recibe un tiempo 
