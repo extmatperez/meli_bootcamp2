@@ -10,7 +10,10 @@ Dentro del mismo escribí un JSON que permita tener un array de productos, usuar
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,9 +36,22 @@ func salute(c *gin.Context) {
 		"mensaje": "Hello " + name,
 	})
 }
+
+func getAllUsers(c *gin.Context) {
+	data, err := os.ReadFile("users.json")
+	var pUsersRead []User
+	json.Unmarshal(data, &pUsersRead)
+	if err != nil {
+		fmt.Print("Error Read file")
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"mensaje": pUsersRead,
+	})
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/hello", salute)
-
+	router.GET("/users", getAllUsers)
 	router.Run()
 }
