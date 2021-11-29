@@ -30,7 +30,6 @@ func maximum(values ...float64) float64 {
 		}
 	}
 	return max
-
 }
 
 func promedy(values ...float64) float64 {
@@ -40,7 +39,6 @@ func promedy(values ...float64) float64 {
 	for i := 0; i < len(values); i++ {
 		add += values[i]
 	}
-
 	return add / size
 }
 
@@ -55,12 +53,10 @@ func operations(operation string) func(values ...float64) float64 {
 		return promedy
 	}
 	return nil
-
 }
 
 func main() {
 	operation := operations("promedy")
 	result := operation(8.5, 9, 9.5, 8.8, 3.2, 9.9)
 	fmt.Println(result)
-
 }
