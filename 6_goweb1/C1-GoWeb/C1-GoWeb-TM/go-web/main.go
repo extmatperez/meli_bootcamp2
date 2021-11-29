@@ -27,8 +27,11 @@ type User struct {
 }
 
 func salute(c *gin.Context) {
-	name := c.DefaultQuery("name", "Jose")
-	c.String(http.StatusOK, "Hello %s", name)
+	name := "Jose"
+	// name := c.DefaultQuery("name", "Jose")
+	c.JSON(http.StatusOK, gin.H{
+		"mensaje": "Hello " + name,
+	})
 }
 func main() {
 	router := gin.Default()
