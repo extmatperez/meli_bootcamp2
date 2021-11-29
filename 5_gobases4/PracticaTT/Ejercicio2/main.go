@@ -51,6 +51,10 @@ func verificarDatosCliente(cliente Cliente) error {
 	return nil
 }
 
+func generarLegajo(ultLegajo int) (int, error) {
+	return ultLegajo + 1, nil
+}
+
 func main() {
 	//Declaración de funciones defer para mensajes finales
 	defer func() {
@@ -64,7 +68,11 @@ func main() {
 	}()
 	//------------------------------------------------------------
 
-	cliente := Cliente{Legajo: 123456,
+	legajo, err := generarLegajo(0)
+	if err != nil {
+		panic("error en la generación del legajo")
+	}
+	cliente := Cliente{Legajo: legajo,
 		Nombre:    "Facundo",
 		Apellido:  "Bouza",
 		DNI:       41332191,
@@ -73,7 +81,7 @@ func main() {
 
 	verificarExistenciaCliente(cliente)
 
-	err := verificarDatosCliente(cliente)
+	err = verificarDatosCliente(cliente)
 	if err != nil {
 		fmt.Println(err)
 	}
