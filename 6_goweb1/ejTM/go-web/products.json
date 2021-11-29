@@ -1,0 +1,6 @@
+[
+    {"id": 1,"nombre": "cuchara", "color": "plata", "precio": 10.0, "stock": 40, "codigo": "eyrt47mvh4510", "publicado": true, "fecha_creacion":"29/11/2021"},
+    {"id": 2,"nombre": "tenedor", "color": "plata", "precio": 20.0, "stock": 5, "codigo": "765anmscid343s", "publicado": false, "fecha_creacion":"22/10/2021"},
+    {"id": 3,"nombre": "cuchillo", "color": "dorado", "precio": 45.0, "stock": 110, "codigo": "xmbch7cmdjgl4", "publicado": true, "fecha_creacion":"16/4/2021"}
+
+]
