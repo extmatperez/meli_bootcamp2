@@ -17,7 +17,7 @@ func errorControl(salary int) (int, error) {
 
 	if salary < 150000 {
 		return 0, &myError{
-			message: "error: el salario ingresado no alcanza el mínimo imponible",
+			message: "error: the salary entered does not reach the minimum available",
 			code:    400,
 		}
 	}
@@ -29,9 +29,9 @@ func main() {
 	response, err := errorControl(salary)
 
 	if err != nil {
-		error := fmt.Errorf("mensaje: %s", err)
-		fmt.Println("Get error:", error)
+		error := fmt.Errorf("Real message: %s", err)
+		fmt.Println("Get error from function:", error)
 	} else {
-		fmt.Println("El salario ingresado es: ", response)
+		fmt.Println("The salary available is: ", response)
 	}
 }
