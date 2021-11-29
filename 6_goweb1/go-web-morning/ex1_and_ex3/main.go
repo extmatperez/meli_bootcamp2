@@ -45,9 +45,9 @@ func main() {
 	router := gin.Default()
 
 	//grouping
-	v1 := router.Group("/products")
+	productsEP := router.Group("/products")
 	{
-		v1.GET("/GetAll", getAll)
+		productsEP.GET("/GetAll", getAll)
 	}
 
 	router.Run()
