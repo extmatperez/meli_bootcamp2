@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "transactionCode": "A1ASDX3313",
+        "currency": "USD",
+        "amount": 100,
+        "sender": "Juan",
+        "receiver": "Pepe",
+        "date": "01/01/2021"
+    },
+    {
+        "id": 2,
+        "transactionCode": "A1ASDX3322",
+        "currency": "USD",
+        "amount": 100,
+        "sender": "Juan",
+        "receiver": "Pepe",
+        "date": "01/01/2021"
+    },
+    {
+        "id": 3,
+        "transactionCode": "A1ASDX3323",
+        "currency": "USD",
+        "amount": 100,
+        "sender": "Juan",
+        "receiver": "Pepe",
+        "date": "01/01/2021"
+    },
+    {
+        "id": 4,
+        "transactionCode": "A1ASDX3324",
+        "currency": "USD",
+        "amount": 100,
+        "sender": "Juan",
+        "receiver": "Pepe",
+        "date": "01/01/2021"
+    },
+    {
+        "id": 5,
+        "transactionCode": "A1ASDX3325",
+        "currency": "USD",
+        "amount": 100,
+        "sender": "Juan",
+        "receiver": "Pepe",
+        "date": "01/01/2021"
+    },
+    {
+        "id": 6,
+        "transactionCode": "A1ASDX3326",
+        "currency": "USD",
+        "amount": 100,
+        "sender": "Juan",
+        "receiver": "Pepe",
+        "date": "01/01/2021"
+    }
+]
