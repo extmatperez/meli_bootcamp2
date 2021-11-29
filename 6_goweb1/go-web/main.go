@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,12 +38,119 @@ func GetAll(c *gin.Context) {
 		fmt.Println(err)
 	} else {
 		c.JSON(200, productosListo)
+		//c.String(200, productosListo)	//otra forma de devolverlo
+	}
+}
+func Ejemplo(ctx *gin.Context) {
+	contenido := ctx.Request.Body
+	header := ctx.Request.Header
+	metodo := ctx.Request.Method
+
+	fmt.Println("Recibi algo")
+	fmt.Println("Metodo ", metodo)
+	fmt.Println("Cabecera ")
+
+	for k, v := range header {
+		fmt.Println(k, ":", v)
+	}
+	fmt.Println("Contenido ", contenido)
+	//ctx.JSON(200, "Salida")
+	ctx.String(200, "Termine")
+}
+func filtraId(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var productosListo []Producto
+	var filtrados []Producto
+
+	dbproductos, _ := ioutil.ReadFile("products.json")
+	err := json.Unmarshal(dbproductos, &productosListo)
+
+	if err != nil {
+		c.String(400, "Algo salió mal")
+	} else {
+		for _, e := range productosListo {
+			if id == e.Id {
+				filtrados = append(filtrados, e)
+			}
+		}
+		if len(filtrados) > 0 {
+			c.JSON(200, filtrados)
+		} else {
+			c.String(404, "No se encontro el producto")
+		}
+	}
+
+	/* if c.BindQuery(&productos1) == nil {
+		parametro := c.Param("id")
+		for _, v := range productos1 {
+			if v.Id == parametro {
+				c.JSON(200, v)
+			}
+		}
+	} */
+
+}
+func filtraNombre(c *gin.Context) {
+	nombre := c.Query("nombre")
+	var productosListo []Producto
+	var filtrados []Producto
+
+	dbproductos, _ := ioutil.ReadFile("./products.json")
+	err := json.Unmarshal(dbproductos, &productosListo)
+
+	if err != nil {
+		c.String(400, "Algo salió mal")
+	} else {
+		for _, prod := range productosListo {
+			if strings.Contains(prod.Nombre, nombre) {
+				filtrados = append(filtrados, prod)
+			}
+		}
+		if len(filtrados) > 0 {
+			c.JSON(200, filtrados)
+		} else {
+			c.String(404, "No se encontraron coincidencias")
+		}
+	}
+}
+func filtraPrecio(c *gin.Context) {
+	max, _ := strconv.ParseFloat(c.Query("max"), 64)
+	min, _ := strconv.ParseFloat(c.Query("min"), 64)
+	var productosListo []Producto
+	var filtrados []Producto
+
+	dbproductos, _ := ioutil.ReadFile("./products.json")
+	err := json.Unmarshal(dbproductos, &productosListo)
+
+	if err != nil {
+		c.String(400, "Algo salió mal")
+	} else {
+		for _, prod := range productosListo {
+			if max >= prod.Precio && min <= prod.Precio {
+				filtrados = append(filtrados, prod)
+			}
+		}
+		if len(filtrados) > 0 {
+			c.JSON(200, filtrados)
+		} else {
+			c.String(404, "No se encontraron productos en ese rango")
+		}
 	}
 }
 func main() {
+
 	router := gin.Default()
 
 	router.GET("/hola/:nombre", saludo)
 	router.GET("/productos", GetAll)
+	router.GET("/productos/:id", filtraId)
+
+	router.GET("/ejemplo", Ejemplo)
+
+	grupoFiltrador := router.Group("/filtrar")
+	{
+		grupoFiltrador.GET("/nombre", filtraNombre)
+		grupoFiltrador.GET("/precios", filtraPrecio)
+	}
 	router.Run()
 }
