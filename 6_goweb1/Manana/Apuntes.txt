@@ -147,4 +147,91 @@ En este caso la funcion saludar podria estar en otra parte y queda mas limpio
     }
 
 
+CONTEXTO WEB 
+El contexto web esta conformado por un request y un response 
+
+    REQUEST 
+    Necesita algunas cosas 
+        Metodo(GET,POST,PUT,DELETE)
+        URL -> La ruta donde vamos a buscar informacion (endpoint)
+        Version 
+        Header -> Metadatos(cookies, sesiones, etc)
+        Body -> Donde se envia informacion 
+
+    RESPONSE 
+        Version
+        Status (200, 300, 400, 500)
+        Frase textual (200 -> "OK", 404 -> "Not found")
+        Header
+        Body -> Se mandan los JSON que usamos 
+        
+gin.Context 
+Es la parte mas importante del framework. 
+Nos permite pasar variables entre middleware.
+
+Ejemplo de funcion dentro de la ruta usando el context 
+
+    func Ejemplo(c *gin.Context){
+        
+        contenido := context.Request.Body
+        header := context.Request.Header
+        metodo := context.Request.Method
+
+        fmt.Println("Has recibido algo")
+        fmt.Printf("\t El metodo es: %s", metodo)
+        fmt.Printf("\t El contenido del header es: \n")
+
+        for key, value := range header {
+            fmt.Println("Tiene un key", key, "con un value", header[key])
+        }
+
+
+ROUTER 
+Las rutas son donde manejamos las variedades de URLs para ir usando 
+
+    func main(){
+        router := gin. Default()
+
+        router.GET("/", handleRaiz)
+
+    }
+
+AGRUPAMIENTO DE ENDPOINTS 
+Supongamos que tenemos muchas rutas en comun 
+Si quisieramos modularizar vamos a poder agrupar las que son semejantes 
+Ahi entra la funcion Group()
+
+    func main() {
+        server := gin.Default()
+
+        gopher := server.Group("/gophers")
+        {
+            gopher.GET("/", HandlerGophers)
+            gopher.GET("/get", HandlerGetGopher)
+            gopher.GET("/info", HandlerGetInfo)
+        }
+        server.GET("/about", HandlerAbout)
+    }
+
+PARAMETROS Y FILTROS 
+Suponiendo que tenemos una ruta 
+La forma de decir que es una variabel es con ":"
+Y luego para usar ese parametro en la funcion es usando Param 
+
+    server.GET("/empleados/:id", traerEmpleado)
+
+    func traerEmpleado(ctx *gin.Context){
+        idEmpleado := ctx.Param("id")
+    }
+
+
+
+    func BuscarEmpleado(ctx *gin.Context){
+        var empleado Empleado 
+
+        if ctx.BindJSON(&empleado) == nil {
+            log.Printlin("======= Bind por QUery String ======")
+
+        }
+    }
 

@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Transaccion []struct {
+type Transaccion struct {
 	ID       int    `json:"id"`
 	Codigo   string `json:"codigo"`
 	Moneda   string `json:"moneda"`
@@ -18,31 +18,18 @@ type Transaccion []struct {
 	Receptor string `json:"receptor"`
 }
 
-type Structure struct {
-	Transaccion []interface{}
-}
-
-func getAllLindo(c *gin.Context) {
-	data, err := os.ReadFile("./Transacciones.json")
-	if err != nil {
-		c.JSON(400, gin.H{
-			"mensaje": "Error en el archivo",
-		})
-	} else {
-		data := string(data)
-		decoded := &Structure{}
-		//var transacciones []Transaccion
-		if err := json.Unmarshal([]byte(data), decoded); err != nil {
-			panic(err)
-		}
-		fmt.Println(decoded)
-	}
-}
-
 func saludar(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{
 		"Saludo":    "Hola Pato",
 		"Despedida": "Chau Pato",
+	})
+}
+
+func saludar2(c *gin.Context) {
+	nombre := c.Param("nombre")
+	fmt.Println(nombre)
+	c.JSON(http.StatusOK, gin.H{
+		"Saludo": "Hola " + nombre,
 	})
 }
 
@@ -61,11 +48,37 @@ func getAllFeo(c *gin.Context) {
 	}
 }
 
+func getAllLindo(c *gin.Context) {
+
+	res, err := os.ReadFile("./Transacciones.json")
+	if err != nil {
+		c.JSON(400, gin.H{
+			"mensaje": "Error en el archivo",
+		})
+	} else {
+		str := string(res)
+		fmt.Println(str)
+		var transferencias []Transaccion
+		json.Unmarshal(res, &transferencias)
+
+		var finalText string
+
+		for _, t := range transferencias {
+			newText := fmt.Sprintf("\n La transaccion %v por un monto de %v %v la genero %v para %v \n", t.ID, t.Monto, t.Moneda, t.Emisor, t.Receptor)
+			finalText = finalText + newText
+		}
+		fmt.Println(finalText)
+		c.JSON(200, finalText)
+
+	}
+}
+
 func main() {
 
 	router := gin.Default()
 
-	router.GET("/Multiple", saludar)
+	router.GET("/saludo", saludar)
+	router.GET("/saludoLindo/:nombre", saludar2)
 	router.GET("/transaccionesFeo", getAllFeo)
 	router.GET("/transaccionesLindo", getAllLindo)
 
