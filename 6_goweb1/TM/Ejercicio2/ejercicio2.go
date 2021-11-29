@@ -9,7 +9,6 @@ func main() {
 
 	router.GET("/hello", func(c *gin.Context) {
 		name := c.Query("name")
-
 		message := "Hola"
 
 		if name != "" {
