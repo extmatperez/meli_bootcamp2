@@ -10,6 +10,46 @@ package main
 
 import "fmt"
 
+// Método Set: recibe valores float64 e inicializa valores
+// Método Print: imprime la matriz con saltos de línea entre filas
+
+type Matrix struct {
+	Values    []float64
+	High      float64
+	Width     float64
+	Quadratic bool
+	MaxValue  float64
+}
+
+func (m *Matrix) Set(high, width float64, values ...float64) {
+	m.High = high
+	m.Width = width
+
+	if m.High == m.Width {
+		m.Quadratic = true
+	}
+	m.MaxValue = m.High * m.Width
+	m.Values = values
+}
+func (m *Matrix) Print() {
+	var high float64
+	var width float64
+	for _, val := range m.Values {
+		if width == m.Width {
+			fmt.Printf("\n")
+			width = 0
+			high++
+		}
+		if high == m.High {
+			break
+		}
+		fmt.Printf("%.1f\t", val)
+		width++
+	}
+}
+
 func main() {
-	fmt.Println("Hello World!")
+	var matrix Matrix
+	matrix.Set(2, 3, 5, 7, 12, 78, 34, 4, 45, 45)
+	matrix.Print()
 }
