@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -43,12 +44,12 @@ func main() {
 	BorrarProducto(&u1)
 	fmt.Println(u1)
 
-	//usuarios := []usuario{}
-	//usrForm, err := json.Marshal(usuarios)
-	/*
-		if err != nil {
-			fmt.Println("Error")
-		} else {
-			fmt.Println(string(usrForm))
-		}*/
+	usuarios := []usuario{u1}
+	usrForm, err := json.Marshal(usuarios)
+
+	if err != nil {
+		fmt.Println("Error")
+	} else {
+		fmt.Println(string(usrForm))
+	}
 }
