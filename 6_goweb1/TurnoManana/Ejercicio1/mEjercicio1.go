@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -32,22 +33,23 @@ func GetTransactionFromFolder(fileName string) ([]Transaccion,error){
 
 }
 
-func GetAllTransactions(router *gin.Engine,filename string){
+func GetAllTransactions(c *gin.Context){
+	filename := "./6_goweb1/transactions.json"
 	transactions,err := GetTransactionFromFolder(filename)
-	
-	router.GET("/alltransaction", func(c *gin.Context){
+
+		fmt.Print(c)
 		if(err != nil){
-		 c.JSON(http.StatusForbidden,"No hay datos en el filename: "+filename)
+		 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
 		}else{
      	 c.JSON(http.StatusOK,transactions)
 		}
-	})
+	
 
 }
 func main() {
-	ruta := "./6_goweb1/transactions.json"
+
 	router := gin.Default()
-	GetAllTransactions(router,ruta)
+	router.GET("/alltransaction",GetAllTransactions)
 	router.Run()
 
  }
