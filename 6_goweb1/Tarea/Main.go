@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,8 +57,6 @@ func getAllLindo(c *gin.Context) {
 			"mensaje": "Error en el archivo",
 		})
 	} else {
-		str := string(res)
-		fmt.Println(str)
 		var transferencias []Transaccion
 		json.Unmarshal(res, &transferencias)
 
@@ -73,6 +72,41 @@ func getAllLindo(c *gin.Context) {
 	}
 }
 
+func getOne(c *gin.Context) {
+	ID := c.Param("id")
+	fmt.Println("EL ID ES", ID)
+
+	res, err := os.ReadFile("./Transacciones.json")
+	if err != nil {
+		c.JSON(400, gin.H{
+			"Mensaje": "Hubo un problema con el archivo",
+		})
+	} else {
+		var transferencias []Transaccion
+		json.Unmarshal(res, &transferencias)
+
+		var transferencia Transaccion
+
+		for _, t := range transferencias {
+			if ID == strconv.FormatInt(int64(t.ID), 10) {
+				transferencia = t
+				break
+			}
+		}
+		if transferencia.Codigo == "" {
+			c.JSON(404, gin.H{
+				"Mensaje": "No se encontro la transferencia",
+			})
+		} else {
+			c.JSON(http.StatusFound, gin.H{
+				"Mensaje":     "Transaccion encontrada con exito",
+				"Transaccion": transferencia,
+			})
+		}
+
+	}
+}
+
 func main() {
 
 	router := gin.Default()
@@ -81,6 +115,7 @@ func main() {
 	router.GET("/saludoLindo/:nombre", saludar2)
 	router.GET("/transaccionesFeo", getAllFeo)
 	router.GET("/transaccionesLindo", getAllLindo)
+	router.GET("/transaccion/:id", getOne)
 
 	router.Run()
 
