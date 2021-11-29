@@ -1,0 +1,28 @@
+[{
+    "id": 1,
+    "nombre": "Botella",
+    "color": "Azul",
+    "precio": 40.0,
+    "stock": 10,
+    "codigo": "156ujma8DA",
+    "publicado": true,
+    "fecha_creacion": { "dia":28 , "mes": 10 ,"anio":2021}
+  }, {
+    "id": 2,
+    "nombre": "Auricular",
+    "color": "Verde",
+    "precio": 450.50,
+    "stock": 12,
+    "codigo": "129UPC",
+    "publicado": true,
+    "fecha_creacion": { "dia":15 , "mes": 8 ,"anio":2021}
+  }, {
+    "id": 3,
+    "nombre": "Rueda",
+    "color": "Rojo",
+    "precio": 200.50,
+    "stock": 2,
+    "codigo": "43HSYe",
+    "publicado": false,
+    "fecha_creacion": { "dia":15 , "mes": 9 ,"anio":2021}
+  }]
