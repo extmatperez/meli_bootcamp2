@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +19,12 @@ func main() {
 
 }
 
+func String(file string) {
+	panic("unimplemented")
+}
+
+// estructura
+
 type Transaccion struct {
 	ID                int     `json:"id"`
 	CodigoTransaccion string  `json:"codigo_transaccion"`
@@ -26,6 +34,10 @@ type Transaccion struct {
 	Receptor          string  `json:"receptor"`
 	FechaCreacion     string  `json:"fecha_creacion"`
 }
+
+var transacciones []Transaccion
+
+//
 
 func saludar(c *gin.Context) {
 	//queryName := c.Request.URL.Query()  // esto devuelve un map de string string
@@ -50,4 +62,10 @@ func saludar(c *gin.Context) {
 
 func getAll(c *gin.Context) {
 
+	datos, _ := os.ReadFile("./transaccion.json")
+	json.Unmarshal(datos, &transacciones)
+
+	c.JSON(http.StatusOK, gin.H{
+		"transacciones": transacciones,
+	})
 }
