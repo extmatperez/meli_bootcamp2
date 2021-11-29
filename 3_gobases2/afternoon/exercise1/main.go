@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 )
 
 type Date struct {
@@ -19,7 +18,7 @@ type Alumnos struct {
 }
 
 func (alumno Alumnos) detalle() string {
-	return "\n" + "Nombre: " + alumno.Name + "\n" + "Apellido: " + alumno.LastName + "\n" + "DNI: " + strconv.Itoa(alumno.DNI) + "\n" + "Fecha de nacimiento: " + strconv.Itoa(alumno.admDate.day) + "/" + strconv.Itoa(alumno.admDate.month) + "/" + strconv.Itoa(alumno.admDate.year) + "\n\n----------"
+	return fmt.Sprint("\nNombre: ", alumno.Name, "\nApellido: ", alumno.LastName, "\nDNI: ", alumno.DNI, "\nFecha de nacimiento: ", alumno.admDate.day, "/", alumno.admDate.month, "/", alumno.admDate.year, "\n\n----------")
 }
 func main() {
 	/*
