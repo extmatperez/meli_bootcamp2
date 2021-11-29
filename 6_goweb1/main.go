@@ -27,31 +27,31 @@ type Transaction struct {
 	Date            string `json:"date"`
 }
 
+func getTransactions() ([]byte, error) {
+	return os.ReadFile("./transactions.json")
+}
+
 func main() {
 	router := gin.Default()
 
 	router.GET("/hello/:name", func(c *gin.Context) {
 		name := c.Param("name")
-
 		newGreeting := Greeting{}
-
 		newGreeting.setMessage(name)
-
 		c.JSON(http.StatusOK, newGreeting)
 	})
 
 	router.GET("/transactions/getAll", func(c *gin.Context) {
 
-		data, err := os.ReadFile("./transactions.json")
-
+		data, err := getTransactions()
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
 		}
 
-		var transactions = []Transaction{}
+		transactions := []Transaction{}
+		err = json.Unmarshal(data, &transactions)
 
-		unmarshalErr := json.Unmarshal(data, &transactions)
-		if unmarshalErr != nil {
+		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
 		}
 
