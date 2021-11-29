@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-///////////////////////////////////////////////////////////////////////////
+//////////////////////////////Structs/////////////////////////////////////////////
 type Transaccion struct {
 	ID                int     `json:"id"`
 	CodigoTransaccion int     `json:"codigo_transaccion"`
@@ -18,7 +18,7 @@ type Transaccion struct {
 	Receptor          string  `json:"receptor"`
 	FechaTransaccion  string  `json:"fecha_transaccion"`
 }
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////Crear Handler///////////////////////////////////////////////
 func GetAll(c *gin.Context){
 	var lista []Transaccion
 	data, _ := os.ReadFile("6_goweb1/transacciones.json")
@@ -26,7 +26,7 @@ func GetAll(c *gin.Context){
 	c.JSON(200, lista)
 }
 
-///////////////////////////////////////////////////////////////////////////
+//////////////////////////////Filtrar/////////////////////////////////////////////
 func filtrarTransacciones(ctx *gin.Context){
 	var lista []Transaccion
 	data, _ := os.ReadFile("6_goweb1/transacciones.json")
@@ -44,7 +44,7 @@ func filtrarTransacciones(ctx *gin.Context){
 		ctx.JSON(200, &filtrados)
 	}
 }
-///////////////////////////////////////////////////////////////////////////
+/////////////////////////////Buscar//////////////////////////////////////////////
 func buscarTransaccion(ctx *gin.Context){
 	parametro := ctx.Param("codigo_transaccion")
 
