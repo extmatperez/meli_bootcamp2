@@ -6,11 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	nombre := "brian"
-	s := gin.New()
-	s.GET("/saludo", func(c *gin.Context) {
-		c.String(http.StatusOK, "hola "+nombre)
+func saludo(c *gin.Context) {
+	nombre := c.Param("nombre")
+	c.JSON(http.StatusOK, gin.H{
+		"mensaje": "Hola " + nombre,
 	})
+}
+
+func main() {
+	s := gin.New()
+
+	s.GET("/hola/:nombre", saludo)
+
 	s.Run()
 }

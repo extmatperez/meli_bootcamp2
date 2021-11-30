@@ -9,41 +9,38 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Personas struct {
-	ID            string `json:"id"`
+type Users struct {
+	ID            int    `json:"id"`
 	Nombre        string `json:"nombre"`
 	Apellido      string `json:"apellido"`
 	Email         string `json:"email"`
-	Edad          string `json:"edad"`
-	Altura        string `json:"altura"`
+	Edad          int    `json:"edad"`
+	Altura        int    `json:"altura"`
 	Activo        string `json:"activo"`
 	FechaCreacion string `json:"fechaCreacion"`
 }
 
 func main() {
 
-	var prodSalida []Personas = nil
-	prodSalida = read()
-	var salida = ""
-	fmt.Println("-------", prodSalida)
-	for i := 0; i < len(prodSalida); i++ {
-		salida += string(prodSalida[i].ID)
-	}
-	s := gin.New()
-	s.GET("/personas", func(c *gin.Context) {
-		c.String(http.StatusOK, salida)
-	})
+	router := gin.Default()
+	router.GET("/users", GetAll)
 
-	s.Run()
+	router.Run()
 
 }
 
-func read() []Personas {
-	data, _ := os.ReadFile("./personas.json")
-	var prodSalida []Personas
+func GetAll(c *gin.Context) {
 
-	json.Unmarshal([]byte(string(data)), &prodSalida)
+	var userArr []Users
+	readUsers, err := os.ReadFile("./users.json")
 
-	fmt.Println(prodSalida)
-	return prodSalida
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		json.Unmarshal(readUsers, &userArr)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"users": userArr,
+	})
+
 }

@@ -23,14 +23,14 @@ type User struct {
 func main() {
 
 	router := gin.Default()
-	router.GET("/users/:val", filtrado)
+	router.GET("/users/:id", filtraId)
 
 	router.Run()
 
 }
 
-func filtrado(c *gin.Context) {
-	val := c.Param("val")
+func filtraId(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
 	var usersList []User
 	var filtrados []User
 
@@ -41,22 +41,7 @@ func filtrado(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Algo salió mal")
 	} else {
 		for _, u := range usersList {
-			switch val {
-			case strconv.Itoa(u.ID):
-				filtrados = append(filtrados, u)
-			case u.Nombre:
-				filtrados = append(filtrados, u)
-			case u.Apellido:
-				filtrados = append(filtrados, u)
-			case u.Email:
-				filtrados = append(filtrados, u)
-			case strconv.Itoa(u.Edad):
-				filtrados = append(filtrados, u)
-			case strconv.Itoa(u.Altura):
-				filtrados = append(filtrados, u)
-			case u.Activo:
-				filtrados = append(filtrados, u)
-			case u.FechaCreacion:
+			if id == u.ID {
 				filtrados = append(filtrados, u)
 			}
 		}
