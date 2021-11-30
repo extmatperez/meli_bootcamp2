@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -86,9 +87,14 @@ func addTransaccion(ctx *gin.Context) {
 			"error": err.Error(),
 		})
 	} else {
-		generarIDTransaccion(&transac)
-		transacciones = append(transacciones, transac)
-		ctx.JSON(200, transac)
+		err := verificarCampos(transac)
+		if err != nil {
+			ctx.String(400, err.Error())
+		} else {
+			generarIDTransaccion(&transac)
+			transacciones = append(transacciones, transac)
+			ctx.JSON(200, transac)
+		}
 	}
 }
 
@@ -98,6 +104,24 @@ func generarIDTransaccion(transac *Transaccion) {
 		id = valor.Id
 	}
 	transac.Id = id + 1
+}
+
+func verificarCampos(transac Transaccion) error {
+	cadError := ""
+	var campos []string
+	campos = append(campos, "CodTransaccion", "Moneda", "Monto", "Emisor", "Receptor", "FechaTrans")
+
+	for _, campo := range campos {
+		valor := reflect.ValueOf(transac).FieldByName(campo).Interface()
+		if valor == "" {
+			cadError += fmt.Sprintf("El campo %s es requerido\n", campo)
+		}
+	}
+
+	if cadError != "" {
+		return errors.New(cadError)
+	}
+	return nil
 }
 
 var transacciones []Transaccion
