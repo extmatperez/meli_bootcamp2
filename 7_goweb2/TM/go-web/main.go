@@ -59,7 +59,7 @@ func validacion(req Producto) string {
 	valores := reflect.ValueOf(req)
 	for i := 0; i < valores.NumField(); i++ {
 		valorDeCampo := valores.Field(i)
-		if fmt.Sprintf("%s", valorDeCampo) == "" {
+		if fmt.Sprintf("%s", valorDeCampo) == "" || fmt.Sprintf("%s", valorDeCampo) == "0" {
 			key := reflect.TypeOf(req).Field(i).Name
 			descr := fmt.Sprintf("El campo %s es requerido", key)
 			return descr
