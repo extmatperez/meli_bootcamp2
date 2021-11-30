@@ -137,9 +137,9 @@ func FilterByParams(c *gin.Context) {
 	}
 
 	if len(transactionsFinded) == 0 {
-		c.String(404, "No transactions found")
+		c.String(http.StatusNotFound, "No transactions found")
 	} else {
-		c.JSON(200, &transactionsFinded)
+		c.JSON(http.StatusOK, &transactionsFinded)
 	}
 }
 
