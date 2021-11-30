@@ -37,28 +37,35 @@ func crearProducto(c *gin.Context) {
 	if tokenInfo == "OK" {
 		var req Producto
 		err := c.ShouldBindJSON(&req)
-		valores := reflect.ValueOf(req)
-		for i := 0; i < valores.NumField(); i++ {
-			valorDeCampo := valores.Field(i)
-			if fmt.Sprintf("%s", valorDeCampo) == "" {
-				key := reflect.TypeOf(req).Field(i).Name
-				descr := fmt.Sprintf("El campo %s es requerido", key)
-				c.JSON(400, descr)
-				return
-			}
-		}
-
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(400, "Ha ocurrido un error")
 			return
 		}
-		productos = append(productos, req)
-		c.JSON(201, productos)
+		stringValidacion := validacion(req)
+		if stringValidacion == "OK" {
+			productos = append(productos, req)
+			c.JSON(201, productos)
+			return
+		}
+		c.JSON(400, stringValidacion)
 		return
 	}
-	c.JSON(201, tokenInfo)
+	c.JSON(401, tokenInfo)
 
+}
+
+func validacion(req Producto) string {
+	valores := reflect.ValueOf(req)
+	for i := 0; i < valores.NumField(); i++ {
+		valorDeCampo := valores.Field(i)
+		if fmt.Sprintf("%s", valorDeCampo) == "" {
+			key := reflect.TypeOf(req).Field(i).Name
+			descr := fmt.Sprintf("El campo %s es requerido", key)
+			return descr
+		}
+	}
+	return "OK"
 }
 
 func checkToken(token string) string {
