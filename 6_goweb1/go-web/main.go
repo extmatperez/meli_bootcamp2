@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,6 +39,36 @@ func getAll(c *gin.Context) {
 		"data": prodList,
 	})
 }
+
+func filterProducts(ctx *gin.Context) {
+	var filtered []*Products
+	prodList := readData()
+
+	for i, v := range prodList {
+		if ctx.Query("filter") == strconv.FormatBool(v.Published) {
+			filtered = append(filtered, &prodList[i])
+		} else if ctx.Query("filter") == v.Name {
+			filtered = append(filtered, &prodList[i])
+		} else if ctx.Query("filter") == v.Color {
+			filtered = append(filtered, &prodList[i])
+		} else if ctx.Query("filter") == v.Price {
+			filtered = append(filtered, &prodList[i])
+		} else if ctx.Query("filter") == v.Stock {
+			filtered = append(filtered, &prodList[i])
+		} else if ctx.Query("filter") == v.Code {
+			filtered = append(filtered, &prodList[i])
+		} else if ctx.Query("filter") == v.CreationDate {
+			filtered = append(filtered, &prodList[i])
+		}
+	}
+
+	if len(filtered) != 0 {
+		ctx.JSON(200, filtered)
+	} else {
+		ctx.String(400, "No results found")
+	}
+
+}
 func main() {
 	// Crea un router con gin
 	router := gin.Default()
@@ -47,6 +78,8 @@ func main() {
 			"message": "Hello Franco!",
 		})
 	})
+	//router.GET("/find/products", filterProducts)
+	router.GET("/find/products", filterProducts)
 	router.GET("/products", getAll)
 	// Corremos nuestro servidor sobre el puerto 8080
 	router.Run()
