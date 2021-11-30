@@ -81,6 +81,15 @@ func filtrarTransacciones(ctx *gin.Context) {
 func addTransaccion(ctx *gin.Context) {
 	var transac Transaccion
 
+	token := ctx.GetHeader("token")
+	if token == "" {
+		ctx.String(400, "No se ingresó el token")
+		return
+	}
+	if token != "111aaa" {
+		ctx.String(401, "No tiene permisos para realizar la petición solicitada")
+		return
+	}
 	err := ctx.ShouldBindJSON(&transac)
 	if err != nil {
 		ctx.JSON(400, gin.H{
