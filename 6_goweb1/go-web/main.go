@@ -21,6 +21,8 @@ type Producto struct {
 	FechaCreacion string  `json:"fechaCreacion"`
 }
 
+var productosListo []Producto
+
 func saludo(c *gin.Context) {
 	nombre := c.Param("nombre")
 	c.JSON(200, gin.H{
@@ -28,8 +30,6 @@ func saludo(c *gin.Context) {
 	})
 }
 func GetAll(c *gin.Context) {
-
-	var productosListo []Producto
 
 	dbproductos, _ := ioutil.ReadFile("products.json")
 	err := json.Unmarshal(dbproductos, &productosListo)
@@ -59,7 +59,7 @@ func Ejemplo(ctx *gin.Context) {
 }
 func filtraId(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	var productosListo []Producto
+
 	var filtrados []Producto
 
 	dbproductos, _ := ioutil.ReadFile("products.json")
@@ -137,12 +137,78 @@ func filtraPrecio(c *gin.Context) {
 		}
 	}
 }
+func AddPersona(c *gin.Context) {
+
+	var prod Producto
+	err := c.ShouldBind(&prod)
+	token := c.GetHeader("token")
+
+	if err != nil {
+		c.String(400, "Algo salió mal")
+		return
+	}
+
+	if token != "123" {
+		c.String(401, "no tiene permisos para realizar la petición solicitada")
+		return
+	} else {
+
+		var falla string
+		switch {
+		case prod.Nombre == "":
+			falla = "Nombre"
+		case prod.Color == "":
+			falla = "Color"
+		case prod.Precio == 0:
+			falla = "Precio"
+		case prod.Stock == 0:
+			falla = "Stock"
+		case prod.Codigo == "":
+			falla = "Codigo"
+		case prod.Publicado == false:
+			falla = "Publicado"
+		case prod.FechaCreacion == "":
+			falla = "FechaCreacion"
+		default:
+			falla = "todoBien"
+		}
+
+		if falla == "todoBien" {
+
+			ultimo := productosListo[len(productosListo)-1].Id + 1
+			prod.Id = ultimo
+			productosListo = append(productosListo, prod)
+			c.JSON(200, prod)
+		} else {
+
+		}
+	}
+
+	/* tipos := reflect.TypeOf(prod)
+	i := 0
+	for i = 0; i < tipos.NumField(); i++ {
+		// fmt.Println(i, "->", tipos.Field(i).Name)
+		if strings.ToLower(tipos.Field(i).Name) == campo {
+			break
+		}
+	}
+
+	return filtrado */
+
+}
+func GetActual(c *gin.Context) {
+
+	c.JSON(200, productosListo)
+	//c.String(200, productosListo)	//otra forma de devolverlo
+
+}
 func main() {
 
 	router := gin.Default()
 
 	router.GET("/hola/:nombre", saludo)
 	router.GET("/productos", GetAll)
+	router.GET("/productosActual", GetActual)
 	router.GET("/productos/:id", filtraId)
 
 	router.GET("/ejemplo", Ejemplo)
@@ -152,5 +218,7 @@ func main() {
 		grupoFiltrador.GET("/nombre", filtraNombre)
 		grupoFiltrador.GET("/precios", filtraPrecio)
 	}
+
+	router.POST("/productos", AddPersona)
 	router.Run()
 }
