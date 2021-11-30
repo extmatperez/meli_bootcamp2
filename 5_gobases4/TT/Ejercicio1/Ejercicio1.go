@@ -4,103 +4,169 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"math/rand"
 	"os"
-	"strings"
+	"time"
 )
 
-const file = "/Users/rovega/Documents/GitHub/meli_bootcamp2/5_gobases4/TT/customers.txt"
-
-const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-type Customer struct {
-	Legajo    string `json:"legajo"`
-	Nombre    string `json:"nombre"`
-	Apellido  string `json:"apellido"`
-	DNI       string `json:"dni"`
-	Telefono  string `json:"telefono"`
-	Direccion string `json:"direccion"`
+type Client struct {
+	FileNumber  int64  `json:"file_number"`
+	Fullname    string `json:"fullname"`
+	DNI         int    `json:"dni"`
+	PhoneNumber int    `json:"phone_number"`
+	Address     string `json:"address"`
 }
 
-func Read() {
-	var customers []string
-	data, err3 := os.ReadFile(file)
+func generateFileNumber() int64 {
+	return time.Now().Unix()
+}
 
-	if err3 != nil {
-		defer func() {
-			fmt.Println("Ejecución finalizada!")
-		}()
-	}
-
-	if err3 == nil {
-		customers = strings.Split(string(data), ";")
-		for _, element := range customers {
-			var pr = Customer{}
-			err := json.Unmarshal([]byte(element), pr)
-
-			defer func() {
-				fmt.Println("Ejecución finalizada!")
-			}()
-
-			if err != nil {
-				defer func() {
-					fmt.Println(pr)
-				}()
-				panic("El archivo no fue encontrado o se encuentra dañado. Si")
-			}
-			fmt.Printf("%s\t\t%s %s\t%s\t%s\t%s", pr.Legajo, pr.Nombre, pr.Apellido, pr.DNI, pr.Telefono, pr.Direccion)
+func clientExists(newFileNumber int64, clients []Client) bool {
+	for i := 0; i < len(clients); i++ {
+		if clients[i].FileNumber == newFileNumber {
+			return true
 		}
-	} else {
-		panic("El archivo no fue encontrado o se encuentra dañado.")
 	}
+	return false
 }
 
-func generar_legajo(n int) (string, error) {
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	if b == nil {
-		panic("No se pudo generar legajo de cliente.")
-	}
-	return string(b), nil
+func newClient(newFileNumber int64, fullname string, dni int, phoneNumber int, address string) (Client, error) {
+	return Client{
+		FileNumber:  newFileNumber,
+		Fullname:    fullname,
+		DNI:         dni,
+		PhoneNumber: phoneNumber,
+		Address:     address,
+	}, nil
 }
 
-func verificar_existencia(dni string) {
-	var existing_customers []string
-	data, err3 := os.ReadFile(file)
+func validateFieldsOfClient(fileNumber int64, fullname string, dni, phoneNumber int, address string) (bool, error) {
+	if fileNumber != 0 && fullname != "" && dni != 0 && phoneNumber != 0 && address != "" {
+		return true, nil
+	}
 
-	if err3 == nil {
-		existing_customers = strings.Split(string(data), ";")
-		for _, element := range existing_customers {
-			var pr = &Customer{}
-			err0 := pr.DNI == dni
-			err := json.Unmarshal([]byte(element), pr)
-
-			if err0 != false {
-				panic("Existe un usuario con ese DNI.")
-			}
-
-			if err != nil {
-				panic(err)
-			}
-
-			fmt.Printf("%s\t\t%s %s\t%s\t%s\t%s", pr.Legajo, pr.Nombre, pr.Apellido, pr.DNI, pr.Telefono, pr.Direccion)
+	if fileNumber == 0 {
+		return false, &ClientError{
+			Status:  500,
+			Message: "El número de legajo no puede ser 0",
 		}
-	} else {
-		panic("El archivo no fue encontrado o se encuentra dañado.")
 	}
+
+	if fullname == "" {
+		return false, &ClientError{
+			Status:  500,
+			Message: "El nombre completo no puede estar vacio",
+		}
+	}
+
+	if dni == 0 {
+		return false, &ClientError{
+			Status:  500,
+			Message: "El DNI no puede ser 0",
+		}
+	}
+
+	if phoneNumber == 0 {
+		return false, &ClientError{
+			Status:  500,
+			Message: "El número de teléfono no puede ser 0",
+		}
+	}
+
+	if address == "" {
+		return false, &ClientError{
+			Status:  500,
+			Message: "El domicilio no puede estar vacio",
+		}
+	}
+
+	return false, &ClientError{
+		Status:  500,
+		Message: "Error desconocido",
+	}
+}
+
+func readCustomersFile() []Client {
+	bytes, err := os.ReadFile("./customers.txt")
+
+	defer func() {
+		err := recover()
+
+		if err != nil {
+			fmt.Println(err)
+
+		}
+	}()
+
+	if err != nil {
+		panic("error: el archivo indicado no fue encontrado o está dañado")
+	}
+
+	clients := []Client{}
+	json.Unmarshal(bytes, &clients)
+
+	return clients
+}
+
+func writeCustomersFile(clients []Client) error {
+	clientsJson, _ := json.Marshal(clients)
+
+	errWriteFile := os.WriteFile("./customers.txt", clientsJson, 0644)
+
+	if errWriteFile != nil {
+		return errors.New("error escribiendo el archivo con clientes")
+	}
+
+	return nil
+}
+
+type ClientError struct {
+	Status  int
+	Message string
+}
+
+func (e *ClientError) Error() string {
+	return fmt.Sprintf("status: %d - message: %s", e.Status, e.Message)
 }
 
 func main() {
-	Read()
-	var legajo, dni /*nombre, apellido, telefono, direccion*/ string
-	legajo, err0 := generar_legajo(8)
-	if err0 != nil {
-		panic("No se pudo generar legajo de cliente.")
+	var clients []Client
+
+	clients = readCustomersFile()
+
+	newFileNumber := generateFileNumber()
+
+	if newFileNumber < 0 { // int cannot be nil, thats why i check if newFileNumber is 0 or negative
+		panic("El número de legajo no puede ser nil")
 	}
-	fmt.Println("Ingrese el DNI:")
-	fmt.Scanf("%s", &dni)
-	print(legajo, dni)
+
+	clientExists := clientExists(newFileNumber, clients)
+
+	if !clientExists {
+		fullname := "Nicolas Ziliotto"
+		dni := 38296195
+		phoneNumber := 2302489894
+		address := "Calle 30 Nº 964"
+
+		validated, err := validateFieldsOfClient(newFileNumber, fullname, dni, phoneNumber, address)
+
+		if err != nil || !validated {
+			fmt.Println("No se pudo validar los datos del cliente")
+			fmt.Println(err)
+		}
+
+		if validated {
+			client, _ := newClient(newFileNumber, fullname, dni, phoneNumber, address)
+			clients = append(clients, client)
+
+			err := writeCustomersFile(clients)
+
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
+
+	fmt.Println("Fin de la ejecucion")
 }
