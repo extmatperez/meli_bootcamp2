@@ -8,7 +8,7 @@ func main() {
 	var edad int
 	1apellido := 6 // estaria mal declarada es un string no un int y obvio el nombre esta mal
 	
-	var licencia_de_conducir = true // falto definir que es de tipo boolean
+	var licencia_de_conducir = true // Perfecta
 	var estatura de la persona int // el nombre debe ser con camelCase o snake style
 	cantidadDeHijos := 2 
   
