@@ -20,6 +20,25 @@ type Users struct {
 	CreationDate string  `json:"creation_date"`
 }
 
+// Return all users
+func GetAll(c *gin.Context) {
+	var users_list []Users
+	read_users, err := os.ReadFile("./users.json")
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "Users not found!",
+		})
+		//panic(err)
+	} else {
+		json.Unmarshal(read_users, &users_list)
+		c.JSON(http.StatusOK, gin.H{
+			"users": users_list,
+		})
+	}
+	fmt.Println(users_list)
+	fmt.Println(string(read_users))
+}
+
 func main() {
 	router := gin.Default()
 	// Return Hello World
@@ -34,39 +53,6 @@ func main() {
 		name := c.Param("name") // c.GetQuery
 		c.String(http.StatusOK, "Hello %s!", name)
 	}) */
-
-	// Return all users
-	router.GET("/users", func(c *gin.Context) {
-		var users_list []Users
-		read_users, err := os.ReadFile("./users.json")
-		if err != nil {
-			panic(err)
-
-		} else {
-			json.Unmarshal(read_users, &users_list)
-			c.JSON(http.StatusOK, gin.H{
-				"users": users_list,
-			})
-		}
-		fmt.Println(users_list)
-		fmt.Println(string(read_users))
-	})
-	router.Run()
-
-	// Return all users
-	/* router.GET("/users", func(ctx *gin.Context) {
-		read_users, err := os.ReadFile("./users.json")
-
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, err.Error())
-		}
-
-		var users_list Users
-		json.Unmarshal(read_users, &users_list)
-		ctx.JSON(http.StatusOK, gin.H{
-			"users": users_list,
-		})
-		fmt.Println(string(read_users))
-	})*/
+	router.GET("/users", GetAll)
 	router.Run()
 }
