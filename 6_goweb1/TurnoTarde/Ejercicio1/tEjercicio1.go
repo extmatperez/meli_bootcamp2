@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,7 +30,8 @@ type Transaccion struct {
 }
 
 
-func GetTransactionFromFolder(fileName string) ([]Transaccion,error){
+func GetTransactionFromFolder() ([]Transaccion,error){
+	fileName := "./6_goweb1/transactions.json"
 	file, _ := ioutil.ReadFile(fileName)
 	
 	var transaction []Transaccion
@@ -46,12 +46,11 @@ func GetTransactionFromFolder(fileName string) ([]Transaccion,error){
 }
 
 func GetAllTransactions(c *gin.Context){
-	filename := "./6_goweb1/transactions.json"
-	transactions,err := GetTransactionFromFolder(filename)
+	transactions,err := GetTransactionFromFolder()
 
 		fmt.Print(c)
 		if(err != nil){
-		 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
+		 c.String(http.StatusForbidden,"No hay datos en el filename.",err.Error())
 		}else{
      	 c.JSON(http.StatusOK,transactions)
 		}	
@@ -59,12 +58,11 @@ func GetAllTransactions(c *gin.Context){
 
 
 func GetTransactionById(c *gin.Context){
-	filename := "./6_goweb1/transactions.json"
-	transactions,err := GetTransactionFromFolder(filename)
+	transactions,err := GetTransactionFromFolder()
 
 		fmt.Print(c)
 		if(err != nil){
-		 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
+		c.String(http.StatusForbidden,"No hay datos en el filename.",err.Error())
 		}else{
 			idQuery,_ := strconv.Atoi(c.Param("id"))
 			var transacccion *Transaccion
@@ -77,36 +75,28 @@ func GetTransactionById(c *gin.Context){
 				}
 				
 			}
-
 			if(encontre){
 				c.JSON(http.StatusOK,transacccion)
 			}else{
 				c.String(http.StatusForbidden,"No existe la transaccion con el id ingresado")
 			}
 		}
-		
-
-
-
 }
 
 
 func FindInclusive(c *gin.Context){
-		filename := "./6_goweb1/transactions.json"
-		transactions,err := GetTransactionFromFolder(filename)
-
-		fmt.Print(c)
+		transactions,err := GetTransactionFromFolder()
 		if(err != nil){
-		 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
+			c.String(http.StatusForbidden,"No hay datos en el filename.",err.Error())
 		}
-     	var transaction Transaccion
-		body := c.BindJSON(&transaction)
-		
-		if(body != nil){
-			c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar")
-		   }
 
-		 var filtrados []Transaccion  
+     	var transaction Transaccion
+		err2 := c.BindJSON(&transaction)
+		if(err2 != nil){
+			c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar. Error: ",err2.Error())
+		}
+
+		var filtrados []Transaccion  
 
 		 for _,v := range transactions{
 			if(v.Codigo == transaction.Codigo || v.Emisor == transaction.Emisor || v.Fecha == transaction.Fecha||
@@ -124,11 +114,10 @@ func FindInclusive(c *gin.Context){
 
 
 func FindExlusive(c *gin.Context){
-	filename := "./6_goweb1/transactions.json"
-	transactions,err := GetTransactionFromFolder(filename)
+		transactions,err := GetTransactionFromFolder()
 
 		if(err != nil){
-		 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
+			c.String(http.StatusForbidden,"No hay datos en el filename.",err.Error())
 		}
 
 		var parametros Transaccion
@@ -216,7 +205,7 @@ func GetFiltros(parametros Transaccion) []string{
 	if(parametros.Receptor != ""){
 		list = append(list, Receptor)
 	}
-	
+
 	return list;
 }
 
