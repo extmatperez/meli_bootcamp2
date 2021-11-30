@@ -1,8 +1,9 @@
 package main
 
-import "fmt"
-
-var i string
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	minimo   = "minimo"
@@ -10,44 +11,31 @@ const (
 	maximo   = "maximo"
 )
 
-func calculation() {
+func operacion(operation string) (int, error) {
 
-	fmt.Println("¿Qué tipo de cálculo desea realizar?\n1.Mínimo\n2.Máximo\n3.Promedio")
-	fmt.Scanf("%s", &i)
-	operation()
+	switch operation {
+	case minimo:
+		return minFunc(2, 3, 3, 4, 1, 2, 4, 5), nil
+	case promedio:
+		return promFunc(2, 3, 3, 4, 1, 2, 4, 5), nil
+	case maximo:
+		return maxFunc(2, 3, 3, 4, 1, 2, 4, 5), nil
+	default:
+		return 0, errors.New("Operador inválido")
+	}
+
 }
 
-func operation(operacion string){
-	var notas []int
-	notas = append(notas, 5, 2, 10)
+func minFunc(num ...int) {
 
-	switch (operacion) {
-	case minimo: for k:= 0 ; k<len(notas); k++ {
-		if (k < notas[k+1] {
-			j := notas[k+1]
-		
-		}
-	}
-	case promedio:
-	case maximo:
-	default:
-		fmt.Println("El cálculo no está definido")
-	}
-
-	}
-
+}
 
 func main() {
-	
-	 minFunc, err := operacion(minimo)
-	 promFunc, err := operacion(promedio)
-	 maxFunc, err := operacion(maximo)
 
-	 
-	 valorMinimo := minFunc(2,3,3,4,1,2,4,5)
-	 valorPromedio := promFunc(2,3,3,4,1,2,4,5)
-	 valorMaximo := maxFunc(2,3,3,4,1,2,4,5)
+	resultado, err := operacion("minimo")
 
-	 calculation()
+	if err != nil {
+		fmt.Println("error")
+	}
 
 }
