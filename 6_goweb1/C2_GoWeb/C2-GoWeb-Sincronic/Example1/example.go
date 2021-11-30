@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -51,7 +54,55 @@ func GetUsers(ctx *gin.Context) {
 	} else {
 		ctx.String(401, "No ingreso un token")
 	}
+}
 
+// func filter(sliceUser []User, fields string, value string) []User {
+// 	var filtrado []User
+
+// 	var us User
+// 	types := reflect.TypeOf(user)
+
+// 	i := 0
+
+// 	for i = 0; i < types.NumField(); i++ {
+// 		if strings.ToLower(types.Field(i).Name) == fields {
+// 			break
+// 		}
+// 	}
+// 	for _, users := range sliceUser {
+// 		if strings.Contains(reflect.ValueOf(users).Field(i).Interface) == value {
+// 			filtrado = append(filtrado, users)
+// 		}
+// 	}
+
+// 	return filtrado
+// }
+
+// func FilterUsers(ctx *gin.Context) {
+// 	var tags []string
+// 	tags = append(tags, "firs_name", "last_name", "age")
+// 	// var searchedFields
+// 	var usersFileters []User
+
+// 	for _, tag := range tags {
+// 		usersFileters = filter(users, tag)
+// 	}
+
+// 	if len(usersFileters) == 0 {
+// 		ctx.String(200, "no hay coincidencias")
+// 	} else {
+// 		ctx.JSON(200, usersFileters)
+// 	}
+// }
+
+func LoadData(ctx *gin.Context) {
+	data, errReadJson := os.ReadFile("./users.json")
+	if errReadJson != nil {
+		ctx.String(400, "No se encontro el archivo")
+	} else {
+		json.Unmarshal(data, &users)
+		ctx.String(200, "Usuarios cargados")
+	}
 }
 
 func main() {
