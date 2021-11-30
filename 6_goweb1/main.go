@@ -54,19 +54,30 @@ func filterByBool(field bool, filter string) bool {
 	return true
 }
 
-func hello(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Hi Federico"})
-}
-
-func getAll(ctx *gin.Context) {
+func getUsers() ([]user, error) {
 	data, err := os.ReadFile("./users.json")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	var filteredUsers, users []user
+	var users []user
 	err = json.Unmarshal(data, &users)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func hello(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Hi Federico"})
+}
+
+func getAll(ctx *gin.Context) {
+	users, err := getUsers()
+	var filteredUsers []user
 
 	if err != nil {
 		ctx.JSON(500, gin.H{
@@ -114,6 +125,31 @@ func getAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"users": filteredUsers})
 }
 
+func getById(ctx *gin.Context) {
+	users, err := getUsers()
+
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"error": "Can't obtain users right now.",
+		})
+		return
+	}
+
+	idQuery, _ := strconv.Atoi(ctx.Param("id"))
+
+	i := 0
+	for i < len(users) && idQuery != users[i].ID {
+		i++
+	}
+
+	if i < len(users) {
+		ctx.JSON(http.StatusOK, gin.H{"user": users[i]})
+	} else {
+		ctx.JSON(http.StatusNotFound, "")
+	}
+
+}
+
 func main() {
 
 	s := gin.New()
@@ -121,6 +157,8 @@ func main() {
 	s.GET("/hi", hello)
 
 	s.GET("/users", getAll)
+
+	s.GET("/users/:id", getById)
 
 	s.Run()
 }
