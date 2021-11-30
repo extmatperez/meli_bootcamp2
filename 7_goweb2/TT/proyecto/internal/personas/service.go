@@ -1,8 +1,8 @@
 package internal
 
 type Service interface {
-	GetAll() ([]Persona, error)
-	Store(nombre, apellido string, edad int) (Persona, error)
+	GetAll() ([]Product, error)
+	Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaDeCreacion string) (Product, error)
 }
 
 type service struct {
@@ -15,23 +15,23 @@ func NewService(repo Repository) Service {
 	}
 }
 
-func (s *service) GetAll() ([]Persona, error) {
-	personas, err := s.repository.GetAll()
+func (s *service) GetAll() ([]Product, error) {
+	products, err := s.repository.GetAll()
 	if err != nil {
 		return nil, err
 	}
-	return personas, nil
+	return products, nil
 }
 
-func (s *service) Store(nombre, apellido string, edad int) (Persona, error) {
+func (s *service) Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaDeCreacion string) (Product, error) {
 	id, err := s.repository.LastId()
 	if err != nil {
-		return Persona{}, err
+		return Product{}, err
 	}
 	id++
-	pers, err := s.repository.Store(id, nombre, apellido, edad)
+	prod, err := s.repository.Store(id, nombre, color, precio, stock, codigo, publicado, fechaDeCreacion)
 	if err != nil {
-		return Persona{}, nil
+		return Product{}, nil
 	}
-	return pers, nil
+	return prod, nil
 }

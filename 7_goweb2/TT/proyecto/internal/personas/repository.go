@@ -1,19 +1,23 @@
 package internal
 
-type Persona struct {
-	ID       int    `json:"id"`
-	Nombre   string `json:"nombre"`
-	Apellido string `json:"apellido"`
-	Edad     int    `json:"edad"`
+type Product struct {
+	ID              int     `json:"id"`
+	Nombre          string  `json:"nombre"`
+	Color           string  `json:"color"`
+	Precio          float64 `json:"precio"`
+	Stock           int     `json:"stock"`
+	Codigo          string  `json:"codigo"`
+	Publicado       bool    `json:"publicado"`
+	FechaDeCreacion string  `json:"fecha_de_creacion"`
 }
 
-var personas []Persona
+var products []Product
 var lastID int
 
 type Repository interface {
-	GetAll() ([]Persona, error)
-	Store(id int, nombre string, apellido string, edad int) (Persona, error)
-	//Store2(nuevaPersona Persona)(Persona,err error)
+	GetAll() ([]Product, error)
+	Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaDeCreacion string) (Product, error)
+	//Store2(nuevoProduct Product)(Product,err error)
 	LastId() (int, error)
 }
 
@@ -23,15 +27,15 @@ func NewRepository() Repository {
 	return &repository{}
 }
 
-func (repo *repository) GetAll() ([]Persona, error) {
-	return personas, nil
+func (repo *repository) GetAll() ([]Product, error) {
+	return products, nil
 }
 
-func (repo *repository) Store(id int, nombre string, apellido string, edad int) (Persona, error) {
-	per := Persona{id, nombre, apellido, edad}
+func (repo *repository) Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaDeCreacion string) (Product, error) {
+	prod := Product{id, nombre, color, precio, stock, codigo, publicado, fechaDeCreacion}
 	lastID = id
-	personas = append(personas, per)
-	return per, nil
+	products = append(products, prod)
+	return prod, nil
 }
 
 func (repo *repository) LastId() (int, error) {
