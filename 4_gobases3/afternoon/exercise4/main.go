@@ -32,6 +32,7 @@ func bubbleSort(arr []int, c chan float64) {
 	c <- fin.Sub(ini).Seconds()
 }
 func selectionSort(arr []int, c chan float64) {
+
 	ini := time.Now()
 	for i := 0; i < len(arr); i++ {
 		min := i
@@ -48,7 +49,7 @@ func selectionSort(arr []int, c chan float64) {
 
 func main() {
 
-	variables := [][]int{rand.Perm(100), rand.Perm(1000), rand.Perm(10000), rand.Perm(100000)}
+	variables := [][]int{rand.Perm(100), rand.Perm(1000), rand.Perm(10000) /* , rand.Perm(100000) */}
 
 	chInsertion := make(chan float64)
 	chBubble := make(chan float64)
@@ -58,10 +59,15 @@ func main() {
 	fmt.Println("-------------------------------------------------------")
 
 	for i := 0; i < len(variables); i++ {
+		var arr = variables[i]
+		var copia = make([]int, len(arr))
 
-		go insertionSort(variables[i], chInsertion)
-		go bubbleSort(variables[i], chBubble)
-		go selectionSort(variables[i], chSelection)
+		copy(copia, arr)
+		go insertionSort(copia, chInsertion)
+		copy(copia, arr)
+		go bubbleSort(copia, chBubble)
+		copy(copia, arr)
+		go selectionSort(copia, chSelection)
 
 		timeInserion := <-chInsertion
 		timeBubble := <-chBubble
@@ -71,7 +77,6 @@ func main() {
 		fmt.Println("-------------------------------------------------------")
 		fmt.Println()
 	}
-
 }
 
 /*
