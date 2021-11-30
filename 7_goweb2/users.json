@@ -1,0 +1,72 @@
+[
+	{
+		"id": 1,
+		"name": "Federico",
+		"last_name": "",
+		"email": "federico.archuby@mercadolibre.com",
+		"age": 32,
+		"height": 1.72,
+		"active": true,
+		"created": "06/10/2020"
+	},
+	{
+		"id": 2,
+		"name": "Pablo",
+		"last_name": "",
+		"email": "pablo.perez@mercadolibre.com",
+		"age": 20,
+		"height": 1.92,
+		"active": false,
+		"created": "06/12/2021"
+	},
+	{
+		"id": 3,
+		"name": "Tercer",
+		"last_name": "",
+		"email": "tercer.usuario@mercadolibre.com",
+		"age": 60,
+		"height": 1.8,
+		"active": true,
+		"created": "06/12/2020"
+	},
+	{
+		"id": 4,
+		"name": "Cuarto",
+		"last_name": "",
+		"email": "cuartin@gmail.com",
+		"age": 40,
+		"height": 1.62,
+		"active": true,
+		"created": "06/10/2005"
+	},
+	{
+		"id": 5,
+		"name": "Ultimo",
+		"last_name": "",
+		"email": "ulti@hotmail.com",
+		"age": 45,
+		"height": 1.75,
+		"active": false,
+		"created": "16/12/2019"
+	},
+	{
+		"id": 6,
+		"name": "Prueba",
+		"last_name": "",
+		"email": "email@prueba.com",
+		"age": 60,
+		"height": 1.6,
+		"active": true,
+		"created": ""
+	},
+	{
+		"id": 7,
+		"name": "Prueba",
+		"last_name": "Apellido",
+		"email": "email@prueba.com",
+		"age": 60,
+		"height": 1.6,
+		"active": true,
+		"created": "30/11/2021"
+	}
+]
