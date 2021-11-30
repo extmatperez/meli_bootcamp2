@@ -1,0 +1,42 @@
+METODO POST
+Es usado para crear un nuevo registro o una nueva entidad 
+Se podria usar un GET para esto pero es mala practica 
+
+En este metodo enviamos la informacion en el Body 
+La idea de esto es que no se vean en la URL, algo que si pasaria en una query 
+
+
+HEADERS
+Son las cabeceras donde podemos enviar informacion adicional 
+Un ejemplo puede ser un token de autenticacion 
+
+CUESTIONES DE SEGURIDAD
+Nos vamos a manejar con dos cuestiones de seguridad 
+    Una es la cuestion de autenticacion 
+        Usuario y contraseña
+    El token generado de Fury 
+
+Para trabajar con los headers tenemos una forma de acceder 
+El Heeader se puede usar en todos los metodos 
+
+    c.GetHeader("mi_header")
+    c.GetHeader("token")
+
+Asi podemos acceder a los headers que son enviados dentro del request 
+
+    func getPersonas(ctx *gin.Context) {
+
+        token := ctx.GetHeader("token")
+
+        if token != "" {
+            if token !== "123" {
+                ctx.String(403, "Token no valido")
+            } else {
+
+            }
+        } else {
+            ctx.String(400, "No ingreso un token")
+        }
+
+    }
+

@@ -11,13 +11,15 @@ import (
 )
 
 type Transaccion struct {
-	ID       int    `json:"id"`
-	Codigo   string `json:"codigo"`
-	Moneda   string `json:"moneda"`
-	Monto    string `json:"monto"`
-	Emisor   string `json:"emisor"`
-	Receptor string `json:"receptor"`
+	ID       int     `json:"id"`
+	Codigo   string  `json:"codigo"`
+	Moneda   string  `json:"moneda"`
+	Monto    float64 `json:"monto"`
+	Emisor   string  `json:"emisor"`
+	Receptor string  `json:"receptor"`
 }
+
+var transaccionesTodas []Transaccion
 
 func saludar(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{
@@ -35,7 +37,6 @@ func saludar2(c *gin.Context) {
 }
 
 func getAllFeo(c *gin.Context) {
-	fmt.Println("Hola a GetAll")
 	data, err := os.ReadFile("./Transacciones.json")
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -66,7 +67,6 @@ func getAllLindo(c *gin.Context) {
 			newText := fmt.Sprintf("\n La transaccion %v por un monto de %v %v la genero %v para %v \n", t.ID, t.Monto, t.Moneda, t.Emisor, t.Receptor)
 			finalText = finalText + newText
 		}
-		fmt.Println(finalText)
 		c.String(200, finalText)
 
 	}
@@ -107,15 +107,75 @@ func getOne(c *gin.Context) {
 	}
 }
 
+func agregarTransaccion(c *gin.Context) {
+
+	token := c.GetHeader("token")
+
+	if token != "token_secreto" {
+		c.JSON(400, gin.H{
+			"error": "Aca no podes pasar!!!",
+		})
+	} else {
+		var newTran Transaccion
+		fmt.Println("Empecemos a trabajar")
+		err := c.ShouldBind(&newTran)
+		fmt.Println(newTran)
+		if err != nil {
+			fmt.Println("Entramos aca")
+			c.JSON(400, gin.H{
+				"error": err.Error(),
+			})
+		} else {
+			fmt.Println(newTran)
+			var falla string
+			switch {
+			case newTran.Codigo == "":
+				falla = "Codigo"
+			case newTran.Moneda == "":
+				falla = "Moneda"
+			case newTran.Monto == 0:
+				falla = "Monto"
+			case newTran.Emisor == "":
+				falla = "Emisor"
+			case newTran.Receptor == "":
+				falla = "Receptor"
+			default:
+				falla = "Todo bien"
+			}
+
+			if falla == "Todo bien" {
+				if len(transaccionesTodas) == 0 {
+					newTran.ID = 1
+				} else {
+					newTran.ID = len(transaccionesTodas) + 1
+				}
+				transaccionesTodas = append(transaccionesTodas, newTran)
+				fmt.Println(transaccionesTodas)
+				c.JSON(200, transaccionesTodas)
+			} else {
+				c.JSON(400, gin.H{
+					"error": "Falta " + falla,
+				})
+			}
+		}
+	}
+
+}
+
 func main() {
 
 	router := gin.Default()
 
 	router.GET("/saludo", saludar)
 	router.GET("/saludoLindo/:nombre", saludar2)
-	router.GET("/transaccionesFeo", getAllFeo)
-	router.GET("/transaccionesLindo", getAllLindo)
-	router.GET("/transaccion/:id", getOne)
+
+	transacciones := router.Group("/transacciones")
+	{
+		transacciones.GET("/lindo", getAllLindo)
+		transacciones.GET("/feo", getAllFeo)
+		transacciones.GET("/:id", getOne)
+		transacciones.POST("/", agregarTransaccion)
+	}
 
 	router.Run()
 
