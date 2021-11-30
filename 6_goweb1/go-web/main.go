@@ -40,6 +40,29 @@ func getAll(c *gin.Context) {
 	})
 }
 
+func getOne(c *gin.Context) {
+	parameter := c.Param("id")
+
+	var prodList = readData()
+
+	//var prod Products
+	prods := []Products{}
+	//is_Product := false
+
+	for _, v := range prodList {
+		if strconv.Itoa(v.ID) == parameter {
+			prods = append(prods, v)
+			//is_Product = true
+		}
+	}
+
+	if len(prods) > 0 {
+		c.JSON(200, prods)
+	} else {
+		c.String(400, "No product found")
+	}
+}
+
 func filterProducts(ctx *gin.Context) {
 	var filtered []*Products
 	prodList := readData()
@@ -80,6 +103,7 @@ func main() {
 	})
 	//router.GET("/find/products", filterProducts)
 	router.GET("/find/products", filterProducts)
+	router.GET("products/:id", getOne)
 	router.GET("/products", getAll)
 	// Corremos nuestro servidor sobre el puerto 8080
 	router.Run()
