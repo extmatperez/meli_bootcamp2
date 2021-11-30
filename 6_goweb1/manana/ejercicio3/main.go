@@ -10,19 +10,19 @@ import (
 )
 
 type Personas struct {
-	ID            int    `json:"id"`
+	ID            string `json:"id"`
 	Nombre        string `json:"nombre"`
 	Apellido      string `json:"apellido"`
 	Email         string `json:"email"`
-	Edad          int    `json:"edad"`
-	Altura        int    `json:"altura"`
+	Edad          string `json:"edad"`
+	Altura        string `json:"altura"`
 	Activo        string `json:"activo"`
 	FechaCreacion string `json:"fechaCreacion"`
 }
 
 func main() {
 
-	var prodSalida []Personas
+	var prodSalida []Personas = nil
 	prodSalida = read()
 	var salida = ""
 	fmt.Println("-------", prodSalida)
