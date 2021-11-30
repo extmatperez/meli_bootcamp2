@@ -1,0 +1,28 @@
+[{
+  "id": 1,
+  "nombre": "Appetizer - Asian Shrimp Roll",
+  "color": "Fuscia",
+  "precio": 48,
+  "stock": "0PBN3ZX",
+  "codigo": "AS",
+  "publicado": false,
+  "fecha_creacion": "8/2/2021"
+}, {
+  "id": 2,
+  "nombre": "Cumin - Whole",
+  "color": "Teal",
+  "precio": 42,
+  "stock": "0FWB4DZ",
+  "codigo": "ID",
+  "publicado": true,
+  "fecha_creacion": "8/22/2021"
+}, {
+  "id": 3,
+  "nombre": "Beer - Mill St Organic",
+  "color": "Aquamarine",
+  "precio": 5,
+  "stock": "047H3GZ",
+  "codigo": "FR",
+  "publicado": false,
+  "fecha_creacion": "1/3/2021"
+}]
