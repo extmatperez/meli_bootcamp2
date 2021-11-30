@@ -97,6 +97,7 @@ func FindInclusive(c *gin.Context){
 		   }
 
 		 var filtrados []Transaccion  
+
 		 for _,v := range transactions{
 			if(v.Codigo == transaction.Codigo || v.Emisor == transaction.Emisor || v.Fecha == transaction.Fecha||
 				v.Moneda == transaction.Moneda|| v.Monto == transaction.Monto || v.Receptor == transaction.Receptor){
@@ -112,15 +113,117 @@ func FindInclusive(c *gin.Context){
 }
 
 
+func FindExlusive(c *gin.Context){
+	filename := "./6_goweb1/transactions.json"
+	transactions,err := GetTransactionFromFolder(filename)
+
+	if(err != nil){
+	 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
+	}
+	 var parametros Transaccion
+	 body := c.BindJSON(&parametros)
+	 fmt.Println(parametros)
+	if(body != nil){
+		c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar")
+	   }
+
+	   var filtrados []Transaccion  
+	   filtros := GetFiltros(parametros)
+	   
+
+	if(len(filtros) == 0){
+		c.String(http.StatusForbidden,"Debes pasar al menos un flitro con los datos a buscar")
+	}
+
+		for _,v := range transactions{
+			flag:=false
+			numFiltros:=0
+			for _,f := range filtros{
+			
+				if(f == "Codigo" && parametros.Codigo != "" && v.Codigo == parametros.Codigo){
+					flag = true
+					numFiltros++
+					fmt.Println("Codigo",v.Codigo)
+				}else if(f == "Emisor" && parametros.Emisor != "" && v.Emisor == parametros.Emisor ){
+					flag = true
+					numFiltros++
+					fmt.Println("Emisor",v.Codigo)
+				}else if(f == "Fecha" && parametros.Fecha != "" && v.Fecha == parametros.Fecha){
+					flag = true
+				}else if(f == "Moneda" && parametros.Moneda != "" && v.Moneda == parametros.Moneda){
+					flag = true
+					numFiltros++
+					fmt.Println("Moneda",v.Codigo)
+				}else if(f == "Monto" && parametros.Monto!= "" && v.Monto == parametros.Monto){
+					flag = true
+					numFiltros++
+				}else if(f == "Receptor" && parametros.Receptor != "" && v.Receptor == parametros.Receptor){
+					flag = true
+					numFiltros++
+				}else {
+					flag = false
+					fmt.Println("Ninguno",v.Codigo)
+				}
+
+			}			
+			if flag && numFiltros == len(filtros) {
+				fmt.Println("Print",v.Codigo)
+				filtrados = append(filtrados, v)
+			}
+		
+		}
+
+	c.JSON(http.StatusOK,filtrados)
+		
+}
+
+func GetFiltros(parametros Transaccion) []string{
+	var list []string
+	if(parametros.Codigo != ""){
+		list = append(list, "Codigo")
+	}
+	if(parametros.Emisor != ""){
+		list = append(list, "Emisor")
+	}
+
+	if(parametros.Fecha != ""){
+		list = append(list, "Fecha")
+	}
+
+	if(parametros.Moneda != ""){
+		list = append(list, "Moneda")
+	}
+
+	if(parametros.Monto != ""){
+		list = append(list, "Monto")
+	}
+
+	if(parametros.Receptor != ""){
+		list = append(list, "Receptor")
+	}
+
+
+	return list;
+
+
+}
+
 
 
 func main() {
 
-	router := gin.Default()
-	router.GET("/alltransaction",GetAllTransactions)
-	router.GET("/findinclusive",FindInclusive)
-	router.GET("/transaction/:id",GetTransactionById)
-	router.Run()
+	server := gin.Default()
+
+	transaction := server.Group("/transactions")
+	{
+		transaction.GET("/findinclusive",FindInclusive)
+		transaction.GET("/findexclusive",FindExlusive)
+		transaction.GET("/:id",GetTransactionById)
+		transaction.GET("/all",GetAllTransactions)
+	}
+
+	
+	server.Run()
 
  }
 
