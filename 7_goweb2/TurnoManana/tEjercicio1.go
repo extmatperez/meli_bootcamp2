@@ -13,14 +13,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const(
-	Codigo = "Codigo"
-	Moneda = "Moneda"
-	Monto = "Monto"
-	Emisor = "Emisor"
-	Receptor = "Receptor"
-	Fecha = "Fecha"
-)
 var fileName = "./transactions.json"
 
 type Transaccion struct {
@@ -32,7 +24,6 @@ type Transaccion struct {
 	Receptor string `json:"receptor"`
 	Fecha    string `json:"fecha"`
 }
-
 
 func GetTransactionFromFolder() ([]Transaccion,error){
 	
@@ -61,6 +52,7 @@ func GetAllTransactions(c *gin.Context){
 		if(err != nil){
 		 c.String(http.StatusForbidden,"No hay datos en el filename.",err.Error())
 		}
+		
      	 c.JSON(http.StatusOK,transactions)
 		
 }
