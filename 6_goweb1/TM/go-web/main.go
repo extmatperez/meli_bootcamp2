@@ -32,7 +32,7 @@ func saludar(c *gin.Context) {
 }
 
 func getAll(c *gin.Context) {
-	productos, _ := os.ReadFile("prosductos.json")
+	productos, _ := os.ReadFile("productos.json")
 	var punteroProductos []Producto
 	err := json.Unmarshal(productos, &punteroProductos)
 	if err != nil {
