@@ -51,12 +51,12 @@ func getAllProducts(ctx *gin.Context) {
 	for i := 0; i < len(allProducts); i++ {
 		includesAllFilters := true
 		if nameQuery != "" {
-			if !strings.EqualFold(allProducts[i].Name, nameQuery) {
+			if !strings.Contains(allProducts[i].Name, nameQuery) {
 				includesAllFilters = false
 			}
 		}
 		if colorQuery != "" {
-			if !strings.EqualFold(allProducts[i].Color, colorQuery) {
+			if !strings.Contains(allProducts[i].Color, colorQuery) {
 				includesAllFilters = false
 			}
 		}
@@ -69,7 +69,7 @@ func getAllProducts(ctx *gin.Context) {
 			}
 		}
 		if codeQuery != "" {
-			if !strings.EqualFold(allProducts[i].Code, codeQuery) {
+			if !strings.Contains(allProducts[i].Code, codeQuery) {
 				includesAllFilters = false
 			}
 		}
@@ -88,7 +88,7 @@ func getAllProducts(ctx *gin.Context) {
 			}
 		}
 		if createdAtQuery != "" {
-			if !strings.EqualFold(allProducts[i].Created_at, createdAtQuery) {
+			if !strings.Contains(allProducts[i].Created_at, createdAtQuery) {
 				includesAllFilters = false
 			}
 		}
