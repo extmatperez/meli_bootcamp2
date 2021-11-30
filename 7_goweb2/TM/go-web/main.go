@@ -73,7 +73,7 @@ func checkToken(token string) string {
 		if token == "123456" {
 			return "OK"
 		}
-		return "Token incorrecto"
+		return "no tiene permisos para realizar la petición solicitada"
 	} else {
 		return "no se ha ingresado un token"
 	}
