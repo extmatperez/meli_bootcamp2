@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -215,7 +216,15 @@ func ValidarParametros(parametros Transaccion) []string{
 	
 }
 
-
+func ValidarToken(token string) error{
+	if token == "" {
+		return errors.New("Token Vacio")
+	}
+	if token != "1234" {
+		return errors.New("Token Invalido")
+	}
+	return nil
+}
 
 
 func InsertTransaction(c *gin.Context){
@@ -227,9 +236,14 @@ func InsertTransaction(c *gin.Context){
 	c.String(http.StatusBadRequest, "Se produjo un error: %v", err1.Error())
 		return
 	}
+	
+	errs := ValidarToken(c.GetHeader("token"))
+	if  errs != nil {
+		c.String(http.StatusUnauthorized,errs.Error())
+		return
+	}
 
 	validar := ValidarParametros(tran)
-	
 	if(len(validar) > 0){
 		 c.String(http.StatusBadRequest, "Faltan los campos %v", validar)
 		 return
