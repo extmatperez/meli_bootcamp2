@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
-	"strings"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -52,7 +50,7 @@ func GetAllTransactions(c *gin.Context){
 		if(err != nil){
 		 c.String(http.StatusForbidden,"No hay datos en el filename.",err.Error())
 		}
-		
+
      	 c.JSON(http.StatusOK,transactions)
 		
 }
@@ -154,7 +152,6 @@ func filtrar(sliceTransaccion[]Transaccion, campo string, valor string) []Transa
 	tipos := reflect.TypeOf(per)
 	i := 0
 	for i = 0; i < tipos.NumField(); i++ {
-		// fmt.Println(i, "->", tipos.Field(i).Name)
 		if tipos.Field(i).Name == campo {
 			break
 		}
@@ -162,8 +159,7 @@ func filtrar(sliceTransaccion[]Transaccion, campo string, valor string) []Transa
 
 	for _, v := range sliceTransaccion {
 		cadena := fmt.Sprintf("%v", reflect.ValueOf(v).Field(i).Interface())
-		if strings.Contains(cadena, valor) {
-			// if reflect.ValueOf(v).Field(i).Interface() == valor {
+		 if cadena == valor {
 			filtrado = append(filtrado, v)
 		}
 	}
