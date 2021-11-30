@@ -33,6 +33,31 @@ func handlerSaludar(c *gin.Context) {
 	})
 }
 
+func getWithId(c *gin.Context) {
+	idToSearch := c.Param("id")
+
+	data, err := os.ReadFile("/Users/nscerca/Desktop/meli_bootcamp/meli_bootcamp2/6_goweb1/Productos.json")
+
+	if err == nil {
+		var arrProductos []Producto
+		var prodFiltrados []Producto
+		json.Unmarshal(data, &arrProductos)
+
+		for i, item := range arrProductos {
+			if idToSearch == strconv.Itoa(item.ID) {
+				prodFiltrados = append(prodFiltrados, arrProductos[i])
+			}
+		}
+
+		c.JSON(200, prodFiltrados)
+
+	} else {
+		c.JSON(4040, gin.H{
+			"message": "No se encontraron los datos solicitados.",
+		})
+	}
+}
+
 func getAll(c *gin.Context) {
 	data, err := os.ReadFile("/Users/nscerca/Desktop/meli_bootcamp/meli_bootcamp2/6_goweb1/Productos.json")
 	var arrProductos []Producto
@@ -89,13 +114,21 @@ func getAllWithFilters(c *gin.Context) {
 }
 func main() {
 	router := gin.Default()
+	groupProducts := router.Group("api/Productos")
+	{
+		groupProducts.GET("/", getAll)
+		groupProducts.GET(":id", getWithId)
+		groupProducts.GET("Params", getAllWithFilters)
+	}
 
 	router.GET("api/Hello/:nombre", handlerSaludar)
 
-	router.GET("api/Productos", getAll)
+	// router.GET("api/Productos", getAll)
 
-	// EJ: http://localhost:8080/api/ProductosWithParams?nombre=Botella&color=Azul&publicado=true
-	router.GET("api/ProductosWithParams", getAllWithFilters)
+	// router.GET("api/Productos/:id", getWithId)
+
+	// // EJ: http://localhost:8080/api/ProductosWithParams?nombre=Botella&color=Azul&publicado=true
+	// router.GET("api/Productos/Params", getAllWithFilters)
 
 	router.Run()
 }
