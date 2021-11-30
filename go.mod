@@ -1,4 +1,4 @@
-module github.com/extmatperez/meli_bootcamp2
+module github.com/rossi_juancruz/meli_bootcamp2
 
 go 1.17
 
@@ -14,6 +14,7 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/shyandsy/ShyGinErrors v0.0.0-20211120171434-ea68aa69c2e4 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871 // indirect
 	golang.org/x/sys v0.0.0-20211124211545-fe61309f8881 // indirect
