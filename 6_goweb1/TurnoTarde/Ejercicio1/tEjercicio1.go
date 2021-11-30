@@ -10,6 +10,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const(
+	Codigo = "Codigo"
+	Moneda = "Moneda"
+	Monto = "Monto"
+	Emisor = "Emisor"
+	Receptor = "Receptor"
+	Fecha = "Fecha"
+)
+
+
 type Transaccion struct {
 	ID       int   `json:"id"`
 	Codigo   string `json:"codigo"`
@@ -117,52 +127,59 @@ func FindExlusive(c *gin.Context){
 	filename := "./6_goweb1/transactions.json"
 	transactions,err := GetTransactionFromFolder(filename)
 
-	if(err != nil){
-	 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
-	}
-	 var parametros Transaccion
-	 body := c.BindJSON(&parametros)
-	 fmt.Println(parametros)
-	if(body != nil){
-		c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar")
-	   }
+		if(err != nil){
+		 c.String(http.StatusForbidden,"No hay datos en el filename: "+filename)
+		}
 
-	   var filtrados []Transaccion  
-	   filtros := GetFiltros(parametros)
+		var parametros Transaccion
+		body := c.BindJSON(&parametros)
+
+		fmt.Println(parametros)
+			if(body != nil){
+			c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar")
+		}
+
 	   
+	   filtros := GetFiltros(parametros)
 
-	if(len(filtros) == 0){
+	   if(len(filtros) == 0){
 		c.String(http.StatusForbidden,"Debes pasar al menos un flitro con los datos a buscar")
-	}
+		}
+
+		filtrados := GetFiltrados(filtros,transactions,parametros)
+
+		c.JSON(http.StatusOK,filtrados)
+		
+}
+
+
+func GetFiltrados(filtros []string,transactions []Transaccion ,parametros Transaccion) []Transaccion {
+	var filtrados []Transaccion 
 
 		for _,v := range transactions{
 			flag:=false
 			numFiltros:=0
 			for _,f := range filtros{
 			
-				if(f == "Codigo" && parametros.Codigo != "" && v.Codigo == parametros.Codigo){
+				if(f == Codigo && parametros.Codigo != "" && v.Codigo == parametros.Codigo){
 					flag = true
 					numFiltros++
-					fmt.Println("Codigo",v.Codigo)
-				}else if(f == "Emisor" && parametros.Emisor != "" && v.Emisor == parametros.Emisor ){
+				}else if(f == Emisor && parametros.Emisor != "" && v.Emisor == parametros.Emisor ){
 					flag = true
 					numFiltros++
-					fmt.Println("Emisor",v.Codigo)
-				}else if(f == "Fecha" && parametros.Fecha != "" && v.Fecha == parametros.Fecha){
+				}else if(f == Fecha && parametros.Fecha != "" && v.Fecha == parametros.Fecha){
 					flag = true
-				}else if(f == "Moneda" && parametros.Moneda != "" && v.Moneda == parametros.Moneda){
-					flag = true
-					numFiltros++
-					fmt.Println("Moneda",v.Codigo)
-				}else if(f == "Monto" && parametros.Monto!= "" && v.Monto == parametros.Monto){
+				}else if(f == Moneda && parametros.Moneda != "" && v.Moneda == parametros.Moneda){
 					flag = true
 					numFiltros++
-				}else if(f == "Receptor" && parametros.Receptor != "" && v.Receptor == parametros.Receptor){
+				}else if(f == Monto && parametros.Monto!= "" && v.Monto == parametros.Monto){
+					flag = true
+					numFiltros++
+				}else if(f == Receptor && parametros.Receptor != "" && v.Receptor == parametros.Receptor){
 					flag = true
 					numFiltros++
 				}else {
 					flag = false
-					fmt.Println("Ninguno",v.Codigo)
 				}
 
 			}			
@@ -170,42 +187,37 @@ func FindExlusive(c *gin.Context){
 				fmt.Println("Print",v.Codigo)
 				filtrados = append(filtrados, v)
 			}
-		
 		}
-
-	c.JSON(http.StatusOK,filtrados)
-		
+		return filtrados
 }
+
 
 func GetFiltros(parametros Transaccion) []string{
 	var list []string
 	if(parametros.Codigo != ""){
-		list = append(list, "Codigo")
+		list = append(list, Codigo)
 	}
 	if(parametros.Emisor != ""){
-		list = append(list, "Emisor")
+		list = append(list, Emisor)
 	}
 
 	if(parametros.Fecha != ""){
-		list = append(list, "Fecha")
+		list = append(list, Fecha)
 	}
 
 	if(parametros.Moneda != ""){
-		list = append(list, "Moneda")
+		list = append(list, Moneda)
 	}
 
 	if(parametros.Monto != ""){
-		list = append(list, "Monto")
+		list = append(list, Monto)
 	}
 
 	if(parametros.Receptor != ""){
-		list = append(list, "Receptor")
+		list = append(list, Receptor)
 	}
-
-
+	
 	return list;
-
-
 }
 
 
