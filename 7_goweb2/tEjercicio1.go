@@ -153,45 +153,6 @@ func GetTransactionsExlusive(c *gin.Context){
 }
 
 
-func GetFiltrados(filtros []string,transactions []Transaccion ,parametros Transaccion) []Transaccion {
-	var filtrados []Transaccion 
-
-		for _,v := range transactions{
-			flag:=false
-			numFiltros:=0
-			for _,f := range filtros{
-			
-				if(f == Codigo && parametros.Codigo != "" && v.Codigo == parametros.Codigo){
-					flag = true
-					numFiltros++
-				}else if(f == Emisor && parametros.Emisor != "" && v.Emisor == parametros.Emisor ){
-					flag = true
-					numFiltros++
-				}else if(f == Fecha && parametros.Fecha != "" && v.Fecha == parametros.Fecha){
-					flag = true
-				}else if(f == Moneda && parametros.Moneda != "" && v.Moneda == parametros.Moneda){
-					flag = true
-					numFiltros++
-				}else if(f == Monto && parametros.Monto!= "" && v.Monto == parametros.Monto){
-					flag = true
-					numFiltros++
-				}else if(f == Receptor && parametros.Receptor != "" && v.Receptor == parametros.Receptor){
-					flag = true
-					numFiltros++
-				}else {
-					flag = false
-				}
-
-			}			
-			if flag && numFiltros == len(filtros) {
-				fmt.Println("Print",v.Codigo)
-				filtrados = append(filtrados, v)
-			}
-		}
-		return filtrados
-}
-
-
 
 func filtrar(sliceTransaccion[]Transaccion, campo string, valor string) []Transaccion {
 	var filtrado []Transaccion
@@ -218,53 +179,67 @@ func filtrar(sliceTransaccion[]Transaccion, campo string, valor string) []Transa
 }
 
 
-
-
-
-
-
-
 func GetFiltros(parametros Transaccion) []string{
 	var list []string
-	if(parametros.Codigo != ""){
-		list = append(list, Codigo)
-	}
-	if(parametros.Emisor != ""){
-		list = append(list, Emisor)
-	}
+	r := reflect.ValueOf(parametros)
 
-	if(parametros.Fecha != ""){
-		list = append(list, Fecha)
-	}
+	for i := 0; i < r.NumField(); i++ {
+		varValor := r.Field(i).Interface()
+		fmt.Println(varValor)
+		if(varValor != "" && varValor != 0){
 
-	if(parametros.Moneda != ""){
-		list = append(list, Moneda)
-	}
+			list = append(list, r.Type().Field(i).Name)
+		}
 
-	if(parametros.Monto != ""){
-		list = append(list, Monto)
 	}
-
-	if(parametros.Receptor != ""){
-		list = append(list, Receptor)
-	}
-
 	return list;
 }
 
-func InsertTransaction(c *gin.Context){
+func ValidarParametros(parametros Transaccion) []string{
+	var list []string
+	r := reflect.ValueOf(parametros)
+
+	for i := 0; i < r.NumField(); i++ {
+		varValor := r.Field(i).Interface()
+		fmt.Println(varValor)
+		if(varValor == "" || varValor == 0){
+			if(r.Type().Field(i).Name != "ID"){
+				list = append(list, r.Type().Field(i).Name)
+			}
+			
+			
+		}
+
+	}
+	return list;
 	
+}
+
+
+
+
+func InsertTransaction(c *gin.Context){
 
 	var tran Transaccion
 	err1 := c.ShouldBindJSON(&tran)
+
 	if err1 != nil {
 	c.String(http.StatusBadRequest, "Se produjo un error: %v", err1.Error())
+		return
 	}
+
+	validar := ValidarParametros(tran)
+	
+	if(len(validar) > 0){
+		 c.String(http.StatusBadRequest, "Faltan los campos %v", validar)
+		 return
+		}
 
 	transactions,err2 := GetTransactionFromFolder()
 
 	if(err2 != nil){
 		c.String(http.StatusForbidden,"No hay datos en el filename.",err2.Error())
+		return
 	}
 
 	if len(transactions) == 0 {
@@ -278,13 +253,16 @@ func InsertTransaction(c *gin.Context){
 	dataBytes, err3 := json.Marshal(transactions)
     if err3 != nil {
 		c.String(http.StatusForbidden,"Error convertir a json.",err3.Error())
+		return
     }
 
 
 	err4 := ioutil.WriteFile(fileName, dataBytes, 0644)
 	if err4 != nil {
 		c.String(http.StatusForbidden,"Error al guardar datos.",err4.Error())
+		return
     }
+	
 	c.JSON(http.StatusOK, tran)
 
 }
