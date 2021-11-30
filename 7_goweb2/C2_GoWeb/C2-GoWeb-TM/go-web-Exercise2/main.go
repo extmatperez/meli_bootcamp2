@@ -1,12 +1,11 @@
 /*
-Se debe implementar la funcionalidad para crear la entidad. pasa eso se deben seguir los
-siguientes pasos:
-1. Crea un endpoint mediante POST el cual reciba la entidad.
-2. Se debe tener un array de la entidad en memoria (a nivel global), en el cual se
-deberán ir guardando todas las peticiones que se vayan realizando.
-3. Al momento de realizar la petición se debe generar el ID. Para generar el ID se debe
-buscar el ID del último registro generado, incrementarlo en 1 y asignarlo a nuestro
-nuevo registro (sin tener una variable de último ID a nivel global).
+Se debe implementar las validaciones de los campos al momento de enviar la petición, para
+eso se deben seguir los siguientes pasos:
+1. Se debe validar todos los campos enviados en la petición, todos los campos son
+requeridos
+2. En caso que algún campo no esté completo se debe retornar un código de error 400
+con el mensaje “el campo %s es requerido”.
+(En %s debe ir el nombre del campo que no está completo).
 */
 package main
 
@@ -15,6 +14,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 
@@ -39,7 +39,7 @@ func (u *User) getFirstName() string {
 var userList = []User{}
 
 func GenerateUserList() []User {
-	bytes, err := os.ReadFile("usezrs.json")
+	bytes, err := os.ReadFile("users.json")
 	var pUsersRead []User
 
 	if err != nil {
@@ -160,6 +160,15 @@ func AddUser(ctx *gin.Context) {
 	var us User
 
 	errShoul := ctx.ShouldBind(&us)
+
+	us.ID = 1
+	val := ValidatePost(us)
+
+	if val != "" {
+		ctx.String(400, val)
+		return
+	}
+
 	if errShoul != nil {
 		ctx.JSON(400, gin.H{
 			"Error": errShoul.Error(),
@@ -173,6 +182,26 @@ func AddUser(ctx *gin.Context) {
 		userList = append(userList, us)
 		ctx.JSON(200, us)
 	}
+}
+
+func ValidatePost(req User) string {
+	r := reflect.ValueOf(req)
+
+	for i := 0; i < r.NumField(); i++ {
+		varField := r.Field(i).Interface()
+		s := reflect.TypeOf(varField).Kind()
+
+		if fmt.Sprint(s) == "string" {
+			if varField == "" {
+				return fmt.Sprintf("El campo %v no puede estar vacio", r.Type().Field(i).Name)
+			}
+		} else {
+			if varField == 0 {
+				return fmt.Sprintf("El campo %v no puede ser cero", r.Type().Field(i).Name)
+			}
+		}
+	}
+	return ""
 }
 
 func main() {
