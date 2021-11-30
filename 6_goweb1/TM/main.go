@@ -72,8 +72,9 @@ func getByPublicado(c *gin.Context) {
 	} else {
 		json.Unmarshal(datos, &products)
 		b, _ := strconv.ParseBool(c.Query("publicado"))
+		fmt.Println(b)
 		for _, p := range products {
-			if b != p.Publicado {
+			if b == p.Publicado {
 				filtrados = append(filtrados, p)
 			}
 		}
