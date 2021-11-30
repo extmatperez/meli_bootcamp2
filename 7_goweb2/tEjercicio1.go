@@ -218,10 +218,10 @@ func ValidarParametros(parametros Transaccion) []string{
 
 func ValidarToken(token string) error{
 	if token == "" {
-		return errors.New("Token Vacio")
+		return errors.New("token Vacio")
 	}
 	if token != "1234" {
-		return errors.New("Token Invalido")
+		return errors.New("no tiene permisos para realizar la petición solicitada")
 	}
 	return nil
 }
@@ -236,7 +236,7 @@ func InsertTransaction(c *gin.Context){
 	c.String(http.StatusBadRequest, "Se produjo un error: %v", err1.Error())
 		return
 	}
-	
+
 	errs := ValidarToken(c.GetHeader("token"))
 	if  errs != nil {
 		c.String(http.StatusUnauthorized,errs.Error())
