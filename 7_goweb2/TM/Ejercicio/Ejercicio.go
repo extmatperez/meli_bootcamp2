@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var all_payments []Payment = []Payment{}
+var all_payments []Payment
 
 type Payment struct {
 	Id       int     `json:"id"`
@@ -225,7 +225,7 @@ func main() {
 	payments.POST("/add", add_payment)
 	payments.GET("/", getPayments)
 	payments.GET("/load", load_payments)
-	payments.GET("/filtros", filtrar_payments)
+	payments.GET("/filter", getAllPayments)
 
 	router.Run()
 }
