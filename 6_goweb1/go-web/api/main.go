@@ -92,8 +92,8 @@ func FilterByParams(c *gin.Context) {
 	var transactionsFinded []Transaction
 
 	for _, tx := range transactions {
-		id, err := strconv.ParseInt(c.Query("ID"), 10, 64)
-		if err == nil {
+		id, errId := strconv.ParseInt(c.Query("ID"), 10, 64)
+		if errId == nil {
 			if !contains(&transactionsFinded, &tx) && tx.ID == id {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
@@ -110,8 +110,8 @@ func FilterByParams(c *gin.Context) {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
 		}
-		txAmount, err := strconv.ParseFloat(c.Query("Amount"), 64)
-		if err == nil {
+		txAmount, errAmount := strconv.ParseFloat(c.Query("Amount"), 64)
+		if errAmount == nil {
 			if !contains(&transactionsFinded, &tx) && tx.Amount == txAmount {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
@@ -133,6 +133,9 @@ func FilterByParams(c *gin.Context) {
 			if !contains(&transactionsFinded, &tx) && tx.Date == txDate {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
+		}
+		if errId != nil && txCode == "" && txCurrency == "" && errAmount != nil && txRemitter == "" && txReceptor == "" && txDate == "" {
+			transactionsFinded = transactions
 		}
 	}
 
