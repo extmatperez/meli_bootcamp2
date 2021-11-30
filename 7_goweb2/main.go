@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -183,6 +184,8 @@ func validateBodyUser(err error) string {
 	msg := ""
 
 	for _, fieldName := range requiredFields {
+		field, validated := validateRequiredField(fieldName, strings.ToLower(err.Error()))
+
 		if !validated {
 			fmt.Println(field)
 			msg = fmt.Sprintf("%s %s", msg, field)
@@ -192,7 +195,27 @@ func validateBodyUser(err error) string {
 	return msg
 }
 
+func validateToken(ctx *gin.Context) error {
+	token := ctx.GetHeader("token")
+
+	if token != "123456" {
+		return errors.New("Invalid Token")
+	}
+
+	return nil
+}
+
 func save(ctx *gin.Context) {
+
+	errToken := validateToken(ctx)
+
+	if errToken != nil {
+		ctx.JSON(401, gin.H{
+			"error": fmt.Sprintf("%s", errToken),
+		})
+		return
+	}
+
 	var newUser user
 	err := ctx.ShouldBindJSON(&newUser)
 	if err != nil {

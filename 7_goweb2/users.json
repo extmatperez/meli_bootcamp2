@@ -68,5 +68,15 @@
 		"height": 1.6,
 		"active": true,
 		"created": "30/11/2021"
+	},
+	{
+		"id": 8,
+		"name": "Prueba",
+		"last_name": "Apellido",
+		"email": "email@prueba.com",
+		"age": 60,
+		"height": 1.6,
+		"active": true,
+		"created": "30/11/2021"
 	}
 ]
