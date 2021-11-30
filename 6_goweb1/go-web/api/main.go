@@ -26,13 +26,13 @@ func main() {
 }
 
 type Transaction struct {
-	ID              int64   `json:"id"`
-	TransactionCode string  `json:"transactionCode"`
-	Currency        string  `json:"currency"`
-	Amount          float64 `json:"amount"`
-	Sender          string  `json:"sender"`
-	Receiver        string  `json:"receiver"`
-	TransactionDate string  `json:"transactionDate"`
+	ID       int64   `json:"id"`
+	Code     string  `json:"code"`
+	Currency string  `json:"currency"`
+	Amount   float64 `json:"amount"`
+	Remitter string  `json:"remitter"`
+	Receptor string  `json:"receptor"`
+	Date     string  `json:"date"`
 }
 
 func GetAll(c *gin.Context) {
@@ -89,32 +89,48 @@ func GetByID(c *gin.Context) {
 
 func FilterByParams(c *gin.Context) {
 	var transactions []Transaction = ObtainTransactions()
-	//var filters map[string]interface{} = make(map[string]interface{})
 	var transactionsFinded []Transaction
-
-	/*
-		Amount          float64 `json:"amount"`
-		Sender          string  `json:"sender"`
-		Receiver        string  `json:"receiver"`
-		TransactionDate
-	*/
 
 	for _, tx := range transactions {
 		id, err := strconv.ParseInt(c.Query("ID"), 10, 64)
 		if err == nil {
-			if tx.ID == id {
+			if !contains(&transactionsFinded, &tx) && tx.ID == id {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
 		}
-		txCode := c.Query("TransactionCode")
+		txCode := c.Query("Code")
 		if txCode != "" {
-			if tx.TransactionCode == txCode {
+			if !contains(&transactionsFinded, &tx) && tx.Code == txCode {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
 		}
 		txCurrency := c.Query("Currency")
 		if txCurrency != "" {
-			if tx.Currency == txCurrency {
+			if !contains(&transactionsFinded, &tx) && tx.Currency == txCurrency {
+				transactionsFinded = append(transactionsFinded, tx)
+			}
+		}
+		txAmount, err := strconv.ParseFloat(c.Query("Amount"), 64)
+		if err == nil {
+			if !contains(&transactionsFinded, &tx) && tx.Amount == txAmount {
+				transactionsFinded = append(transactionsFinded, tx)
+			}
+		}
+		txRemitter := c.Query("Remitter")
+		if txRemitter != "" {
+			if !contains(&transactionsFinded, &tx) && tx.Remitter == txRemitter {
+				transactionsFinded = append(transactionsFinded, tx)
+			}
+		}
+		txReceptor := c.Query("Receptor")
+		if txReceptor != "" {
+			if !contains(&transactionsFinded, &tx) && tx.Receptor == txReceptor {
+				transactionsFinded = append(transactionsFinded, tx)
+			}
+		}
+		txDate := c.Query("Date")
+		if txDate != "" {
+			if !contains(&transactionsFinded, &tx) && tx.Date == txDate {
 				transactionsFinded = append(transactionsFinded, tx)
 			}
 		}
@@ -125,4 +141,13 @@ func FilterByParams(c *gin.Context) {
 	} else {
 		c.JSON(200, &transactionsFinded)
 	}
+}
+
+func contains(transactions *[]Transaction, element *Transaction) bool {
+	for _, a := range *transactions {
+		if a.ID == element.ID {
+			return true
+		}
+	}
+	return false
 }
