@@ -92,6 +92,12 @@ func createProduct(c *gin.Context) {
 	etiquetas = append(etiquetas, "id", "name", "color", "price", "stock", "code", "Publish", "date")
 	err := c.ShouldBindJSON(&pro)
 	var faltantes []string
+	token := c.GetHeader("token")
+
+	if token != "12345" {
+		c.String(401, "no tiene permisos para realizar la petición solicitada")
+		return
+	}
 
 	for i := range etiquetas {
 		var cadena string
@@ -100,7 +106,6 @@ func createProduct(c *gin.Context) {
 		if cadena == "" || cadena == "0" {
 			println(cadena)
 			cadena2 := fmt.Sprintf("%v", etiquetas[i])
-			//c.String(401, "Falta el campo :"+cadena2)
 			faltantes = append(faltantes, cadena2)
 
 		}
