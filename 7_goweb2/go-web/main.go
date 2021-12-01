@@ -188,10 +188,16 @@ func addTransaccion(c *gin.Context) {
 				c.String(400, "se produjo un error: %v", err.Error())
 				return
 			} else {
-				if trans.Monto == 0.0 || trans.Emisor == "" || trans.Moneda == "" || trans.Receptor == "" {
-					c.String(http.StatusBadGateway, " no puede dejar campos sin llenar ")
-					return
-				} else {
+				switch {
+				case trans.Monto == 0.0:
+					c.String(http.StatusBadGateway, " no puede el monto vacio")
+				case trans.Emisor == "":
+					c.String(http.StatusBadGateway, " no puede estar el emisor vacio")
+				case trans.Moneda == "":
+					c.String(http.StatusBadGateway, " no puede dejar de especificar la moneda")
+				case trans.Receptor == "":
+					c.String(http.StatusBadGateway, " no puede estar el receptor vacio")
+				default:
 					if len(transacciones) == 0 {
 						trans.ID = 1
 					} else {
