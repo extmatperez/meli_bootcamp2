@@ -5,21 +5,27 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	datos, _ := os.ReadFile("./transaccion.json")
-	json.Unmarshal(datos, &transacciones)
 
 	router := gin.Default()
-
-	router.GET("/saludar/:name", saludar)
-	router.GET("/saludar", saludar)
-	router.GET("/transacciones", getAll)
-	router.GET("/transacciones/:id", getById)
+	transacciones := router.Group("/transacciones")
+	{
+		transacciones.GET("/filtros", filterTrans)
+		transacciones.GET("/find/:id", getById)
+		transacciones.GET("/", getAll)
+	}
+	saludar := router.Group("/saludar")
+	{
+		saludar.GET("/:name", saludo)
+		saludar.GET("/", saludo)
+	}
 
 	router.Run()
 
@@ -31,7 +37,7 @@ func String(file string) {
 
 // estructura
 
-type Transaccion struct {
+type transaccion struct {
 	ID                int     `json:"id"`
 	CodigoTransaccion string  `json:"codigo_transaccion"`
 	Moneda            string  `json:"moneda"`
@@ -41,13 +47,11 @@ type Transaccion struct {
 	FechaCreacion     string  `json:"fecha_creacion"`
 }
 
-var transacciones []Transaccion
-var filtrados []Transaccion
+var transacciones []transaccion
 
 //
 
-func saludar(c *gin.Context) {
-	//queryName := c.Request.URL.Query()  // esto devuelve un map de string string
+func saludo(c *gin.Context) {
 	queryName := c.Query("name")
 	paramName := c.Param("name")
 
@@ -69,7 +73,7 @@ func saludar(c *gin.Context) {
 
 func getById(c *gin.Context) {
 	filterId := c.Param("id")
-	var filtId Transaccion
+	var filtId transaccion
 
 	if filterId != "" {
 		for _, v := range transacciones {
@@ -93,146 +97,62 @@ func getById(c *gin.Context) {
 }
 
 func getAll(c *gin.Context) {
-	filterId := c.Query("id")
-	filterCodTrans := c.Query("codigo_transaccion")
-	filterMoneda := c.Query("moneda")
-	filterMonto := c.Query("monto")
-	filterEmisor := c.Query("emisor")
-	filterReceptor := c.Query("receptor")
-	filterFecha := c.Query("fecha_creacion")
-
-	if filterId != "" {
-
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("id") == strconv.Itoa(v.ID) {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("id") == strconv.Itoa(v.ID) {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-
-	}
-	if filterCodTrans != "" {
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("filterCodTrans") == v.CodigoTransaccion {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("filterCodTrans") == v.CodigoTransaccion {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-	}
-	if filterMoneda != "" {
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("filterMoneda") == v.Moneda {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("filterMoneda") == v.Moneda {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-	}
-	if filterMonto != "" {
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("filterMonto") == fmt.Sprint(v.Monto) {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("filterMonto") == fmt.Sprint(v.Monto) {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-	}
-	if filterEmisor != "" {
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("filterEmisor") == v.Emisor {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("filterEmisor") == v.Emisor {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-	}
-	if filterReceptor != "" {
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("filterReceptor") == v.Receptor {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("filterReceptor") == v.Receptor {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-	}
-	if filterFecha != "" {
-		if len(filtrados) == 0 {
-			for i, v := range transacciones {
-				if c.Query("filterFecha") == v.FechaCreacion {
-					filtrados = append(filtrados, transacciones[i])
-				}
-			}
-
-		} else {
-			for i, v := range filtrados {
-				if c.Query("filterFecha") == v.FechaCreacion {
-					filtrados = append(filtrados, filtrados[i])
-				}
-			}
-
-		}
-
-	}
-
-	if len(filtrados) != 0 && (filterId != "" || filterCodTrans != "" || filterMoneda != "" || filterMonto != "" || filterEmisor != "" || filterReceptor != "" || filterFecha != "") {
-		c.JSON(http.StatusOK, gin.H{
-			"transacciones": filtrados,
-		})
+	datos, err := os.ReadFile("./transaccion.json")
+	if err != nil {
+		c.String(400, "no se puede abrir el archivo")
 	} else {
+		json.Unmarshal(datos, &transacciones)
 		c.JSON(http.StatusOK, gin.H{
 			"transacciones": transacciones,
 		})
 
+	}
+}
+
+func filtrar(sliceTransacciones []transaccion, campo string, valor string) []transaccion {
+	var filtrado []transaccion
+	var trans transaccion
+
+	tipos := reflect.TypeOf(trans)
+	i := 0
+	for i = 0; i < tipos.NumField(); i++ {
+		if strings.ToLower(tipos.Field(i).Name) == campo {
+			break
+		}
+	}
+	for _, v := range sliceTransacciones {
+		var cadena string
+		cadena = fmt.Sprintf("%v", reflect.ValueOf(v).Field(i).Interface())
+		if strings.Contains(cadena, valor) {
+			filtrado = append(filtrado, v)
+		}
+
+	}
+
+	return filtrado
+
+}
+
+// los filtros andan todos menos con fecha_creacion y codigo_transaccion . y tira un error de que no puede importar C
+
+func filterTrans(c *gin.Context) {
+	var etiquetas []string
+	etiquetas = append(etiquetas, "moneda", "emisor", "receptor", "fecha_creacion", "codigo_transaccion")
+	var transaccionesFiltradas []transaccion
+
+	transaccionesFiltradas = transacciones
+
+	for _, v := range etiquetas {
+		if len(c.Query(v)) != 0 && len(transaccionesFiltradas) != 0 {
+			transaccionesFiltradas = filtrar(transacciones, v, c.Query(v))
+
+		}
+	}
+
+	if len(transaccionesFiltradas) == 0 {
+		c.String(200, "no hay coincidencias")
+	} else {
+		c.JSON(200, transaccionesFiltradas)
 	}
 
 }
