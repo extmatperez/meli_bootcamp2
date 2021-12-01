@@ -1,7 +1,7 @@
 package handler
 
 import (
-	producto "github.com/extmatperez/meli_bootcamp2/tree/arguello_nico/7_goweb2/TT/proyecto/internal/productos"
+	producto "github.com/extmatperez/meli_bootcamp2/7_goweb2/TT/proyecto/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,7 +42,7 @@ func (controller *Producto) Store() gin.HandlerFunc {
 		if err != nil {
 			c.String(400, "Hubo un error al querer cargar un producto %v", err)
 		} else {
-			response, err := controller.service.Store(prod.Nombre, prod.Codigo, prod.Color, prod.Fecha_de_creacion, prod.Precio, prod.Publicado, prod.Stock)
+			response, err := controller.service.Store(prod.Stock, prod.Nombre, prod.Codigo, prod.Color, prod.Fecha_de_creacion, prod.Precio, prod.Publicado)
 
 			if err != nil {
 				c.String(400, "No se pudo cargar el producto: %v", err)
