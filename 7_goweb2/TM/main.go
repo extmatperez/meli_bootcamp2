@@ -109,7 +109,6 @@ func validarUsuario(usuario Usuario) error {
 	for i := 1; i < user.NumField(); i++ {
 		nombre := user.Field(i).Name
 		valor := reflect.ValueOf(usuario).FieldByName(fields[i]).Interface()
-		fmt.Println(valor, " ++++ ", nombre)
 		if valor == "" || valor == 0 {
 			message += "El campo " + nombre + " es requerido\n"
 		}
@@ -122,26 +121,33 @@ func validarUsuario(usuario Usuario) error {
 }
 
 func registrarUsuario(ctx *gin.Context) {
-	var user Usuario
-	err := ctx.ShouldBindJSON(&user)
-	if err != nil {
-		fmt.Println(err)
+	token := ctx.GetHeader("token")
+	fmt.Println(token)
+	if token != "12345" {
+		ctx.String(401, "No tiene permisos para realizar la petición solicitada.")
 	} else {
-		fmt.Println(len(usuarios_global))
-		if len(usuarios_global) == 0 {
-			user.ID = 1
-		} else {
-			user.ID = usuarios_global[len(usuarios_global)-1].ID + 1
-		}
-		err := validarUsuario(user)
+		var user Usuario
+		err := ctx.ShouldBindJSON(&user)
 		if err != nil {
-			ctx.String(200, err.Error())
+			fmt.Println("----", err)
 		} else {
-			usuarios_global = append(usuarios_global, user)
-		}
+			fmt.Println(len(usuarios_global))
+			if len(usuarios_global) == 0 {
+				user.ID = 1
+			} else {
+				user.ID = usuarios_global[len(usuarios_global)-1].ID + 1
+			}
+			err := validarUsuario(user)
+			if err != nil {
+				ctx.String(200, err.Error())
+			} else {
+				usuarios_global = append(usuarios_global, user)
+			}
 
-		ctx.JSON(http.StatusOK, user)
+			ctx.JSON(http.StatusOK, user)
+		}
 	}
+
 }
 
 func main() {
