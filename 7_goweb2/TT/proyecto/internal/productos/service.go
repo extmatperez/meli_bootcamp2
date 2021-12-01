@@ -42,7 +42,7 @@ func (s *service) Store(nombre string, color string, precio string, stock int, c
 		return Producto{}, err
 	}
 
-	nuevoProducto, err := s.repository.Store(lastId, nombre, color, precio, stock, codigo, publicado, fechaCreacion)
+	nuevoProducto, err := s.repository.Store(lastId + 1, nombre, color, precio, stock, codigo, publicado, fechaCreacion)
 
 	if err != nil {
 		return Producto{}, err

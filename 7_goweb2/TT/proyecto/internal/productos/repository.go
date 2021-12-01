@@ -46,7 +46,7 @@ func NewRepository() Repository {
 
 func obtenerProductos() []Producto {
 
-	data, _ := os.ReadFile("7_goweb2/productos.json")
+	data, _ := os.ReadFile("/Users/beconti/Desktop/meli_bootcamp2/7_goweb2/productos.json")
 
 	var lista []Producto
 
@@ -59,7 +59,7 @@ func escribirJSON(nuevaLista []Producto) error {
 
 	nuevaListaFormateada, _ := json.Marshal(nuevaLista)
 
-	err := os.WriteFile("7_goweb2/productos.json", nuevaListaFormateada, 0644)
+	err := os.WriteFile("/Users/beconti/Desktop/meli_bootcamp2/7_goweb2/productos.json", nuevaListaFormateada, 0644)
 
 	if err != nil {
 		return err
@@ -79,8 +79,6 @@ func (r *repository) Store(id int, nombre string, color string, precio string, s
 
 	nuevoProducto := Producto{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
 
-	lastId = id
-
 	productos = append(productos, nuevoProducto)
 
 	err := escribirJSON(productos)
@@ -93,5 +91,8 @@ func (r *repository) Store(id int, nombre string, color string, precio string, s
 }
 
 func (r *repository) LastId() (int, error) {
+
+	lastId = productos[len(productos)-1].ID
+
 	return lastId, nil
 }
