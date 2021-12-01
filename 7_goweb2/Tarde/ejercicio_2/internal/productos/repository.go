@@ -22,9 +22,9 @@ type Repository interface {
 
 type repository struct{}
 
-// func NewRepository() Repository {
-// 	return &repository{}
-// }
+func NewRepository() Repository {
+	return &repository{}
+}
 
 func (repo *repository) GetAll() ([]Product, error) {
 	return products, nil
