@@ -13,6 +13,7 @@ type Service interface {
 	FilterProducts(allProducts []Product, queryParams map[string]string) []Product
 	LoadProducts() error
 	Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error)
+	Delete(id int64) error
 }
 
 type service struct {
@@ -112,6 +113,10 @@ func (s *service) LoadProducts() error {
 
 func (s *service) Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error) {
 	return s.repository.Update(id, name, color, price, stock, code, published, created_at)
+}
+
+func (s *service) Delete(id int64) error {
+	return s.repository.Delete(id)
 }
 
 func NewService(r Repository) Service {

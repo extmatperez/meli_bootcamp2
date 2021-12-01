@@ -233,6 +233,41 @@ func (p *Product) Update() gin.HandlerFunc {
 	}
 }
 
+func (p *Product) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
+
+		if !tokenValidated {
+			ctx.JSON(code, gin.H{
+				"message": message,
+			})
+			return
+		}
+
+		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+		if errParse != nil {
+			ctx.JSON(400, gin.H{
+				"message": "ID invalido",
+			})
+			return
+		}
+
+		err := p.service.Delete(productId)
+
+		if err != nil {
+			ctx.JSON(404, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(200, gin.H{
+			"message": fmt.Sprintf("Product %d deleted", productId),
+		})
+	}
+}
+
 func validateToken(tokenHeader string) (bool, int, string) {
 	if tokenHeader == "" {
 		return false, 400, "Missing token"
