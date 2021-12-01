@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -92,12 +94,39 @@ func filterProducts(ctx *gin.Context) {
 	}
 
 }
+func validation(req Products) string {
+	reqValue := reflect.ValueOf(req)
+	for i := 0; i < reqValue.NumField(); i++ {
+		value := reqValue.Field(i).Interface()
+		tipe := reflect.TypeOf(value).Kind()
+
+		if fmt.Sprint(tipe) == "string" {
+			if value == "" {
+				return fmt.Sprintf("El campo %v no puede estar vacío", reqValue.Type().Field(i).Name)
+			}
+		} else if fmt.Sprint(tipe) == "int64" {
+			if value.(int64) == 0 {
+				return fmt.Sprintf("El campo %v no puede estar vacío", reqValue.Type().Field(i).Name)
+			}
+		}
+
+	}
+	return ""
+}
 
 func addProduct(ctx *gin.Context) {
 	var prod Products
 	prodList := readData()
 	err := ctx.ShouldBindJSON(&prod)
 	lenthProds := len(prodList)
+	//tipes := reflect.TypeOf(prodList)
+	prodValidate := validation(prod)
+	//token := ctx.GetHeader("token")
+	if prodValidate != "" {
+		ctx.String(400, prodValidate)
+		return
+	}
+
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error": err.Error(),
