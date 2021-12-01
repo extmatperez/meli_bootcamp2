@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -36,6 +38,54 @@ func readData() {
 
 }
 
+func validateKeys(req Products) string {
+
+	r := reflect.ValueOf(req)
+
+	for i := 0; i < r.NumField(); i++ {
+		varValor := r.Field(i).Interface()
+
+		fmt.Printf("ESTO ES VARVALOR!!! %T", varValor)
+		s := reflect.TypeOf(varValor).Kind()
+
+		if fmt.Sprint(s) == "string" {
+			if varValor == "" {
+				return fmt.Sprintf("El campo %v no puede estar vacío", r.Type().Field(i).Name)
+			}
+		} else if fmt.Sprint(s) == "int64" {
+
+			if varValor.(int64) == 0 {
+				return fmt.Sprintf("El campo %v no puede estar vacío", r.Type().Field(i).Name)
+			}
+		}
+
+	}
+	return ""
+
+	// elements := reflect.ValueOf(req).NumField()
+
+	// for i := 0; i < elements; i++ {
+	// 	typeinfo := reflect.ValueOf(req).Field(i).Type().Name()
+	// 	valueInfo := reflect.ValueOf(req).Field(i).Interface()
+
+	// 	if fmt.Sprint(typeinfo) == "string" {
+	// 		if valueInfo == "" {
+	// 			return fmt.Sprintf("El campo %v no puede estar vacío", reflect.TypeOf(req).Field(i).Name)
+	// 		}
+	// 	} else {
+	// 		if valueInfo == 0 {
+	// 			return fmt.Sprintf("El campo %v no puede estar vacío", reflect.TypeOf(req).Field(i).Name)
+	// 		}
+	// 	}
+
+	// }
+	// return ""
+}
+
+func parseInt(varValor interface{}, i1, i2 int) {
+	panic("unimplemented")
+}
+
 ///// HANDLERS ///////
 
 func sayHello(c *gin.Context) {
@@ -48,16 +98,33 @@ func sayHello(c *gin.Context) {
 func addProduct(c *gin.Context) {
 	var req Products
 
+	// receive := make([]byte, 2048)
+	// info, _ := c.Request.Body.Read(receive)
+	// bodycontent := string(receive[0:info])
+
+	// fmt.Printf("info is: %v", bodycontent)
+	// // for i, v := range bodycontent {
+
+	// // }
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
-	lastID++
-	req.ID = lastID
-	prodList = append(prodList, req)
-	c.JSON(200, req)
+
+	validRequest := validateKeys(req)
+	if validRequest != "" {
+		c.JSON(400, validRequest)
+		return
+	} else {
+		lastID++
+		req.ID = lastID
+		prodList = append(prodList, req)
+		c.JSON(200, req)
+
+	}
 }
 
 ///// GET HANDLERS ///////
