@@ -52,7 +52,7 @@ type Producto struct {
 
 func generarListaProductos() []Producto {
 
-	data, _ := os.ReadFile("./productos.json")
+	data, _ := os.ReadFile("../productos.json")
 
 	var lista []Producto
 
