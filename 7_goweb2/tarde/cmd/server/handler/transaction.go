@@ -1,7 +1,7 @@
 package handler
 
 import (
-	transactions "github.com/extmatperez/meli_bootcamp2/tree/soto_jose/7_goweb2/internal/transactions"
+	transactions "github.com/extmatperez/meli_bootcamp2/tree/soto_jose/7_goweb2/tarde/internal/transactions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +18,7 @@ type Transaction struct {
 	service transactions.Service
 }
 
-func newTransaction(ser transactions.Service) *Transaction {
+func NewTransaction(ser transactions.Service) *Transaction {
 	return &Transaction{service: ser}
 }
 
