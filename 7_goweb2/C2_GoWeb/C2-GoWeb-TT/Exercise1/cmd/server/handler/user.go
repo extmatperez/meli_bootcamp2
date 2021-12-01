@@ -1,14 +1,18 @@
 package handler
 
 import (
-	users "github.com/extmatperez/meli_bootcamp2/7_goweb2/C2_GoWeb/C2-GoWeb-Sincronic/ExampleTT/internal/users"
+	users "github.com/extmatperez/meli_bootcamp2/7_goweb2/C2_GoWeb/C2-GoWeb-TT/Exercise1/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
 type request struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Age       int    `json:"age"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	Age         int    `json:"age"`
+	Height      int    `json:"height"`
+	Active      bool   `json:"active"`
+	CrationDate string `json:"cration_date"`
 }
 
 type User struct {
@@ -40,7 +44,7 @@ func (controller *User) Store() gin.HandlerFunc {
 		if err != nil {
 			ctx.String(400, "Hubo un error al querer cargar una persona: %v", err)
 		} else {
-			controller.service.Store(user.FirstName, user.LastName, user.Age)
+			controller.service.Store(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate)
 		}
 	}
 }
