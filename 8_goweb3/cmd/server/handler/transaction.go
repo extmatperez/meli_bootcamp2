@@ -31,9 +31,9 @@ func (per *Transaction) GetAll() gin.HandlerFunc {
 		transactions, err := per.service.GetAll()
 
 		if err != nil {
-			ctx.String(400, "Hubo un error %v", err)
+			ctx.String(http.StatusBadRequest, "Hubo un error %v", err)
 		} else {
-			ctx.JSON(200, transactions)
+			ctx.JSON(http.StatusOK, transactions)
 		}
 	}
 }
@@ -46,13 +46,13 @@ func (controller *Transaction) Store() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&t)
 
 		if err != nil {
-			ctx.String(400, "Hubo un error al querer cargar una persona %v", err)
+			ctx.String(http.StatusBadRequest, "Hubo un error al querer cargar una persona %v", err)
 		} else {
 			response, err := controller.service.Store(t.Code, t.Currency, t.Amount, t.Sender, t.Receiver, t.Date)
 			if err != nil {
-				ctx.String(400, "No se pudo cargar la persona %v", err)
+				ctx.String(http.StatusBadRequest, "No se pudo cargar la persona %v", err)
 			} else {
-				ctx.JSON(200, response)
+				ctx.JSON(http.StatusOK, response)
 			}
 		}
 
@@ -76,7 +76,7 @@ func (controller *Transaction) Update() gin.HandlerFunc {
 		if err != nil {
 			ctx.AbortWithError(http.StatusNotFound, err)
 		} else {
-			ctx.JSON(200, response)
+			ctx.JSON(http.StatusOK, response)
 		}
 
 	}
@@ -99,5 +99,26 @@ func (controller *Transaction) Delete() gin.HandlerFunc {
 			return
 		}
 		ctx.Writer.WriteHeader(http.StatusNoContent)
+	}
+}
+
+func (controller *Transaction) Patch() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var body request
+
+		err := ctx.ShouldBindJSON(&body)
+		paramId := ctx.Param("id")
+		id, parseErr := strconv.Atoi(paramId)
+
+		if err != nil || parseErr != nil {
+			ctx.AbortWithError(http.StatusBadRequest, err)
+		}
+
+		response, err := controller.service.UpdateCodeAndAmount(id, body.Code, body.Amount)
+		if err != nil {
+			ctx.AbortWithError(http.StatusNotFound, err)
+		}
+		ctx.JSON(http.StatusOK, response)
 	}
 }

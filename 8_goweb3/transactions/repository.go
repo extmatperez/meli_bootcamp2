@@ -19,6 +19,7 @@ type Repository interface {
 	GetAll() ([]Transaction, error)
 	Store(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
 	Update(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
+	UpdateCodeAndAmount(id int, code string, amount int) (Transaction, error)
 	Delete(id int) error
 	LastId() (int, error)
 }
@@ -42,14 +43,23 @@ func (repo *repository) Store(id int, code string, currency string, amount int, 
 
 func (repo *repository) Update(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error) {
 
+	newData := Transaction{id, code, currency, amount, sender, receiver, date}
+
+	for i, transaction := range transactions {
+		if transaction.Id == id {
+			transactions[i] = newData
+			return transactions[i], nil
+		}
+	}
+	return Transaction{}, fmt.Errorf("Transaction with id: %v not found", id)
+}
+
+func (repo *repository) UpdateCodeAndAmount(id int, code string, amount int) (Transaction, error) {
+
 	for i, transaction := range transactions {
 		if transaction.Id == id {
 			transactions[i].Code = code
-			transactions[i].Currency = currency
 			transactions[i].Amount = amount
-			transactions[i].Sender = sender
-			transactions[i].Receiver = receiver
-			transactions[i].Date = date
 			return transactions[i], nil
 		}
 	}
