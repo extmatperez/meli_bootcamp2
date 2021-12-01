@@ -3,6 +3,7 @@ package internal
 type Service interface {
 	GetAll() ([]Producto, error)
 	Store(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error)
+	Edit(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error)
 }
 type service struct {
 	repository Repository
@@ -37,4 +38,12 @@ func (s *service) Store(id int, nombre, color, precio string, stock int, codigo 
 	}
 
 	return producto, nil
+}
+
+func (s *service) Edit(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error) {
+	productoEditado, err := s.repository.Edit(id, nombre, color, precio, stock, codigo, publicado, creado)
+	if err != nil {
+		return Producto{}, err
+	}
+	return productoEditado, nil
 }

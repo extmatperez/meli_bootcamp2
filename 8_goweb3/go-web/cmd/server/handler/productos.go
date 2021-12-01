@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strconv"
+
 	productos "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/go-web/internal/productos"
 	"github.com/gin-gonic/gin"
 )
@@ -62,6 +64,29 @@ func (c *Product) Store() gin.HandlerFunc {
 			return
 		}
 		p, err := c.service.Store(req.ID, req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.Creado)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, p)
+	}
+}
+
+func (c *Product) Edit() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var req request
+		id, existeId := ctx.GetQuery("id")
+		if !existeId {
+			ctx.JSON(400, gin.H{"error": "Especifique ID"})
+			return
+		}
+		parsedId, _ := strconv.Atoi(id)
+		err := ctx.ShouldBind(&req)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		p, err := c.service.Edit(parsedId, req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.Creado)
 		if err != nil {
 			ctx.JSON(404, gin.H{"error": err.Error()})
 			return

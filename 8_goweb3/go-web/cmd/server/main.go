@@ -12,8 +12,9 @@ func main() {
 	p := handler.NewProduct(service)
 
 	r := gin.Default()
-	pr := r.Group("/products")
+	pr := r.Group("/productos")
 	pr.POST("/", p.Store())
 	pr.GET("/", p.GetAll())
+	pr.PUT("/", p.Edit())
 	r.Run()
 }
