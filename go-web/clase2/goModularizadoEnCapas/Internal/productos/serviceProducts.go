@@ -1,8 +1,9 @@
 package internal
 
 type Service interface {
-	GetAll() ([]Persona, error)
-	Store(nombre, apellido string, edad int) (Persona, error)
+	GetAll() ([]Product, error)
+	Store(productoAux Product) (Product, error)
+	Update(varID int, productoAux Product) (Product, error)
 }
 
 type service struct {
@@ -13,7 +14,7 @@ func NewService(repository Repository) Service {
 	return &service{repository: repository}
 }
 
-func (ser *service) GetAll() ([]Persona, error) {
+func (ser *service) GetAll() ([]Product, error) {
 	personas, err := ser.repository.GetAll()
 	if err != nil {
 		return nil, err
@@ -21,18 +22,24 @@ func (ser *service) GetAll() ([]Persona, error) {
 	return personas, nil
 }
 
-func (ser *service) Store(nombre, apellido string, edad int) (Persona, error) {
+func (ser *service) Store(productoAux Product) (Product, error) {
 	ultimoId, err := ser.repository.LastId()
-
 	if err != nil {
-		return Persona{}, err
+		return Product{}, err
 	}
-
-	per, err := ser.repository.Store(ultimoId+1, nombre, apellido, edad)
-
+	productoAux.Id = ultimoId + 1
+	producto, err := ser.repository.Store(productoAux)
 	if err != nil {
-		return Persona{}, err
+		return Product{}, err
 	}
+	return producto, nil
+}
 
-	return per, nil
+func (ser *service) Update(varID int, producto Product) (Product, error) {
+	producto, err := ser.repository.Update(varID, producto)
+	if err != nil {
+		return Product{}, err
+	} else {
+		return producto, nil
+	}
 }
