@@ -6,23 +6,20 @@ descontará además un 10%.
 
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-func tax(salary float64) {
+func tax(salary float64) float64 {
 	if salary > 50000 {
 		salary = salary * 0.83
 	} else if salary > 150000 {
 		salary = salary * 0.73
 	}
-	fmt.Println("El sueldo del empleado es de ", salary)
+	return salary
 
 }
 
 func main() {
-	var salary float64
-	salary = 70000
-	tax(salary)
+	var salary float64 = 70000.5
+	fmt.Printf("El sueldo del empleado es de %.2f\n", tax(salary))
 
 }

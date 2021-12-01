@@ -27,7 +27,6 @@ func main() {
 	nota2 = 10
 	nota3 = 7
 	nota4 = 1
-	fmt.Printf("El promedio es: ")
-	fmt.Println(promedio(nota1, nota2, nota3, nota4))
+	fmt.Printf("El promedio es: %v\n", promedio(nota1, nota2, nota3, nota4))
 
 }

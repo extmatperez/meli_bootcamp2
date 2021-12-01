@@ -16,7 +16,7 @@ import (
 
 var salario float64
 
-func salary(categoria string, minutos float64) float64 {
+func salary(categoria string, minutos float64) {
 	if categoria == "a" {
 		salario = minutos * 50.00 * 1.50
 		fmt.Printf("Su salario es de %f\n", salario)
@@ -28,7 +28,7 @@ func salary(categoria string, minutos float64) float64 {
 		fmt.Printf("Su salario es de %f\n", salario)
 	}
 
-	return salario
+	//return salario
 }
 
 func main() {
@@ -39,10 +39,8 @@ func main() {
 	minutos = 50*/
 	fmt.Println("Indique la categoría del trabajador:")
 	fmt.Scanf("%s", &categoria)
-	fmt.Println(categoria)
 	fmt.Println("Indique los minutos trabajados")
 	fmt.Scanf("%f", &minutos)
-	fmt.Println(minutos)
 	salary(categoria, minutos)
 
 }
