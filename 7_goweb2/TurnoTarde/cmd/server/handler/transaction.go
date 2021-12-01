@@ -134,11 +134,15 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 				return
 			} 
 
-			// validamos que esten todos los monto y codigo en el request
-			if(transactionRecived.Codigo == "" || transactionRecived.Monto == "") {
-				c.String(http.StatusBadRequest, "mal parametros")
+			parametrosRequired := []string{"Codigo","Monto"}
+			parametrosFromBody := GetParamsFromBody(transactionRecived)
+			differences	:= ValidParms(parametrosFromBody,parametrosRequired)
+
+			if len(differences) > 0 {
+				c.String(http.StatusBadRequest, "Hubo un error %v", differences)
 				return
-			}
+			} 
+
 
 			tranUpdate,err := tran.service.UpdateCodigoAndMonto(idTransaction,transactionRecived.Codigo,
 																transactionRecived.Monto)
@@ -176,11 +180,47 @@ func (tran Transaction) Delete() gin.HandlerFunc{
 }
 
 
+func ValidParms(parametrosFromBody,parametrosRequired []string) []string{
+	var diff []string
 
+ 
+    for i := 0; i < 2; i++ {
+        for _, s1 := range parametrosRequired {
+            found := false
+            for _, s2 := range parametrosFromBody {
+                if s1 == s2 {
+                    found = true
+                    break
+                }
+            }
+           
+            if !found {
+                diff = append(diff, s1)
+            }
+        }
+    
+        if i == 0 {
+            parametrosFromBody, parametrosRequired = parametrosRequired, parametrosFromBody
+        }
+    }
 
+    return diff
+}
 
+func GetParamsFromBody(parametros request) []string{
+	var list []string
+	r := reflect.ValueOf(parametros)
 
+	for i := 0; i < r.NumField(); i++ {
+		varValor := r.Field(i).Interface()
+		if(varValor != "" && varValor != 0){
 
+			list = append(list, r.Type().Field(i).Name)
+		}
+
+	}
+	return list;
+}
 
 
 func InValidParams(parametros request) []string{
