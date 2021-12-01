@@ -28,6 +28,10 @@ func NewUser(ser users.Service) *User {
 
 func (us *User) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// errLoad := us.service.LoadUser()
+		// if errLoad != nil {
+		// 	fmt.Printf("Error loading user")
+		// } else {
 		users, err := us.service.GetAll()
 
 		if err != nil {
@@ -35,6 +39,7 @@ func (us *User) GetAll() gin.HandlerFunc {
 		} else {
 			ctx.JSON(200, users)
 		}
+		// }
 	}
 }
 
@@ -51,7 +56,6 @@ func (controller *User) Store() gin.HandlerFunc {
 				ctx.String(400, "No se pudo cargar la persona %v", err)
 			} else {
 				ctx.JSON(200, response)
-				// controller.service.Store(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate)
 			}
 		}
 	}
@@ -60,20 +64,52 @@ func (controller *User) Store() gin.HandlerFunc {
 func (controller *User) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var us request
+		var req request
 
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if err != nil {
-			ctx.String(400, "El id es invalido")
+			ctx.String(400, "Error invalid id: %v", id)
+			return
 		}
 
-		err = ctx.ShouldBindJSON(&us)
+		err = ctx.ShouldBindJSON(&req)
+
+		if req.FirstName == "" {
+			ctx.JSON(400, gin.H{"error": "First Name is required"})
+			return
+		}
+		if req.LastName == "" {
+			ctx.JSON(400, gin.H{"error": "Last Name is required"})
+			return
+		}
+		if req.Email == "" {
+			ctx.JSON(400, gin.H{"error": "Email is required"})
+			return
+		}
+		if req.Age == 0 {
+			ctx.JSON(400, gin.H{"error": "The Age cannot be zero"})
+			return
+		}
+		if req.Height == 0 {
+			ctx.JSON(400, gin.H{"error": "The Height cannot be zero"})
+			return
+		}
+		if req.CrationDate == "" {
+			ctx.JSON(400, gin.H{"error": "Creation date is required"})
+			return
+		}
+		p, err := controller.service.Update(int(id), req.FirstName, req.LastName, req.Email, req.Age, req.Height, req.Active, req.CrationDate)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, p)
 
 		if err != nil {
-			ctx.String(400, "Error en el body")
+			ctx.String(404, "Error in the body")
 		} else {
-			usuarioUpdate, err := controller.service.Update(int(id), us.FirstName, us.LastName, us.Email, us.Age, us.Height, us.Active, us.CrationDate)
+			usuarioUpdate, err := controller.service.Update(int(id), req.FirstName, req.LastName, req.Email, req.Age, req.Height, req.Active, req.CrationDate)
 			if err != nil {
 				ctx.JSON(400, err.Error())
 			} else {

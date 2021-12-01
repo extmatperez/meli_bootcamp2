@@ -10,7 +10,11 @@ Repositorio, debe tener el acceso a la variable guardada en memoria.
 */
 package internal
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
 
 type User struct {
 	ID          int    `json:"id"`
@@ -30,14 +34,11 @@ type Repository interface {
 	GetAll() ([]User, error)
 	Store(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 	LastId() (int, error)
+	LoadUser() error
 	Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 }
 
 type repository struct{}
-
-func NewRepository() Repository {
-	return &repository{}
-}
 
 func (repo *repository) GetAll() ([]User, error) {
 	return users, nil
@@ -51,7 +52,28 @@ func (repo *repository) Store(id int, first_name string, last_name string, email
 }
 
 func (repo *repository) LastId() (int, error) {
-	return lastID, nil
+	if len(users) == 0 {
+		return 0, nil
+	}
+	return users[len(users)-1].ID, nil
+}
+
+func (r *repository) LoadUser() error {
+	// bytes, err := os.ReadFile("../../Exercise1/internal/users/users.json")
+	bytes, err := os.ReadFile("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/8_goweb3/C3_GoWeb/C3-GoWeb-TM/Exercise1/internal/users/users.json")
+	if err != nil {
+		return err
+	}
+
+	var allUsers []User
+
+	errUnmarshall := json.Unmarshal(bytes, &allUsers)
+	if errUnmarshall != nil {
+		return err
+	}
+
+	users = allUsers
+	return nil
 }
 
 func (repo *repository) Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {
@@ -68,4 +90,8 @@ func (repo *repository) Update(id int, first_name string, last_name string, emai
 		return User{}, fmt.Errorf("Usuario %d no encontrado", id)
 	}
 	return us, nil
+}
+
+func NewRepository() Repository {
+	return &repository{}
 }
