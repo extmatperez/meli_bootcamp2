@@ -23,7 +23,7 @@ func (ser *service) Store(nombre, color string, precio int, stock, codigo string
 	if err != nil {
 		return Product{}, err
 	}
-	p, err := ser.repository.Store(lasid, nombre, color, precio, stock, codigo, publicado, fechaCreacion)
+	p, err := ser.repository.Store(lasid+1, nombre, color, precio, stock, codigo, publicado, fechaCreacion)
 	if err != nil {
 		return Product{}, err
 	}
