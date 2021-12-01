@@ -3,24 +3,29 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
+	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Product struct {
-	ID            string `json:"id"`
-	Nombre        string `json:"nombre"`
-	Color         string `json:"color"`
-	Precio        int    `json:"precio"`
-	Stock         int    `json:"stock"`
-	Codigo        string `json:"codigo"`
+	ID            int    `json:"id"`
+	Nombre        string `json:"nombre" binding:"required"`
+	Color         string `json:"color" binding:"required"`
+	Precio        int    `json:"precio" binding:"required"`
+	Stock         int    `json:"stock" binding:"required"`
+	Codigo        string `json:"codigo" binding:"required"`
 	Publicado     bool   `json:"publicado"`
-	FechaCreacion string `json:"fechaCreacion"`
+	FechaCreacion string `json:"fechaCreacion" binding:"required"`
 }
 
-func LoadData() []Product {
+var products []Product
+
+func LoadData() {
 	content, err := os.ReadFile("products.json")
 
 	if err != nil {
@@ -32,26 +37,22 @@ func LoadData() []Product {
 
 	json.Unmarshal(content, &p)
 
-	return p
+	products = p
 }
 func GetAll(c *gin.Context) {
-
-	p := LoadData()
-	c.JSON(200, p)
+	c.JSON(200, products)
 }
 
 func Filter(c *gin.Context) {
-
-	products := LoadData()
 
 	var filtrados []*Product
 
 	for i := 0; i < len(products); i++ {
 		var coincide []bool
 
-		if c.Query("id") == "" || c.Query("id") == products[i].ID {
+		/*if c.Query("id") == "" || c.Query("id") == products[i].ID {
 			coincide = append(coincide, true)
-		}
+		}*/
 		if c.Query("nombre") == "" || c.Query("nombre") == products[i].Nombre {
 			coincide = append(coincide, true)
 		}
@@ -104,10 +105,11 @@ func Filter(c *gin.Context) {
 
 func FindById(c *gin.Context) {
 
-	products := LoadData()
 	finded := false
+	id, err := strconv.Atoi(c.Param("id"))
 	for _, value := range products {
-		if value.ID == c.Param("id") {
+
+		if err == nil && value.ID == id {
 			c.JSON(200, value)
 			finded = true
 			break
@@ -124,11 +126,60 @@ func FindById(c *gin.Context) {
 
 }
 
-func main() {
-	router := gin.Default()
+func Register(c *gin.Context) {
 
-	router.GET("/products", GetAll)
-	router.GET("/products/filter", Filter)
-	router.GET("/products/:id", FindById)
+	token := c.GetHeader("token")
+	if token != "1234" {
+		c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		return
+	}
+
+	var newProd Product
+	err := c.ShouldBindJSON(&newProd)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "required") {
+			tipos := reflect.TypeOf(newProd)
+			i := 0
+			var errores []string
+			for i = 0; i < tipos.NumField(); i++ {
+				if strings.Contains(err.Error(), tipos.Field(i).Name) {
+					errores = append(errores, fmt.Sprintf("Error: el campo %s es requerido", tipos.Field(i).Name))
+				}
+			}
+			if len(errores) == 1 {
+				c.JSON(400, gin.H{
+					"error": errores[0],
+				})
+			} else {
+				c.JSON(400, errores)
+			}
+		} else {
+			c.JSON(400, gin.H{
+				"error": err.Error(),
+			})
+		}
+
+		return
+	}
+
+	if len(products) == 0 {
+		newProd.ID = 1
+	} else {
+		newProd.ID = products[len(products)-1].ID + 1
+	}
+	products = append(products, newProd)
+	c.JSON(http.StatusOK, newProd)
+
+}
+
+func main() {
+	LoadData()
+	router := gin.Default()
+	productsRoute := router.Group("products")
+	productsRoute.GET("", GetAll)
+	productsRoute.GET("/filter", Filter)
+	productsRoute.GET("/:id", FindById)
+	productsRoute.POST("", Register)
 	router.Run()
 }
