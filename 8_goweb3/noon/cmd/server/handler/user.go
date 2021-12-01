@@ -126,6 +126,54 @@ func (u *User) Update() gin.HandlerFunc {
 	}
 }
 
+func (u *User) UpdateLastNameAge() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "123456" {
+			ctx.JSON(401, gin.H{
+				"error": "Invalid token",
+			})
+			return
+		}
+
+		id, errId := strconv.Atoi(ctx.Param("id"))
+		if errId != nil {
+			ctx.JSON(400, gin.H{
+				"error": "Invalid ID",
+			})
+		}
+
+		var user request
+		err := ctx.ShouldBindJSON(&user)
+
+		if err != nil {
+			ctx.JSON(400, gin.H{
+				"error": "There was an error when storing the user: " + err.Error(),
+			})
+			return
+		}
+
+		checkMsg := validatePatchFields(user)
+		if checkMsg != "" {
+			ctx.JSON(400, gin.H{
+				"error": fmt.Sprintf("Required field/s missing: %s", checkMsg),
+			})
+
+			return
+		}
+
+		updatedUser, errStore := u.service.UpdateLastNameAge(id, user.LastName, user.Age)
+		if errStore != nil {
+			ctx.JSON(404, gin.H{
+				"Error": "There was an error when storing the user: " + errStore.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(200, updatedUser)
+	}
+}
+
 func (u *User) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
@@ -159,30 +207,35 @@ func (u *User) Delete() gin.HandlerFunc {
 }
 
 func validateUpdateFields(u request) string {
-	msg := ""
+	msg := validatePatchFields(u)
 
 	if u.Name == "" {
-		msg = fmt.Sprintf("%s %s", "name")
-	}
-
-	if u.LastName == "" {
-		msg = fmt.Sprintf("%s %s", "last_name")
+		msg = fmt.Sprintf("%s %s", msg, "name")
 	}
 
 	if u.Email == "" {
-		msg = fmt.Sprintf("%s %s", "email")
-	}
-
-	if u.Age == 0 {
-		msg = fmt.Sprintf("%s %s", "age")
+		msg = fmt.Sprintf("%s %s", msg, "email")
 	}
 
 	if u.Height == 0.0 {
-		msg = fmt.Sprintf("%s %s", "height")
+		msg = fmt.Sprintf("%s %s", msg, "height")
 	}
 
 	if u.Created == "" {
-		msg = fmt.Sprintf("%s %s", "created")
+		msg = fmt.Sprintf("%s %s", msg, "created")
+	}
+
+	return msg
+}
+
+func validatePatchFields(u request) string {
+	msg := ""
+	if u.LastName == "" {
+		msg = fmt.Sprintf("%s %s", msg, "last_name")
+	}
+
+	if u.Age == 0 {
+		msg = fmt.Sprintf("%s %s", msg, "age")
 	}
 
 	return msg

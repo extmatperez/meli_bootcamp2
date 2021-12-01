@@ -4,6 +4,7 @@ type Service interface {
 	GetAll() ([]User, error)
 	Store(name, lastName, email string, age int, height float64, active bool, created string) (User, error)
 	Update(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error)
+	UpdateLastNameAge(id int, lastName string, age int) (User, error)
 	Delete(id int) error
 }
 
@@ -42,7 +43,16 @@ func (ser *service) Store(name, lastName, email string, age int, height float64,
 }
 
 func (ser *service) Update(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error) {
-	user, err := ser.repository.Update(lastID, name, lastName, email, age, height, active, created)
+	user, err := ser.repository.Update(id, name, lastName, email, age, height, active, created)
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}
+
+func (ser *service) UpdateLastNameAge(id int, lastName string, age int) (User, error) {
+	user, err := ser.repository.UpdateLastNameAge(id, lastName, age)
 	if err != nil {
 		return User{}, err
 	}
@@ -51,5 +61,10 @@ func (ser *service) Update(id int, name, lastName, email string, age int, height
 }
 
 func (ser *service) Delete(id int) error {
-	return ser.repository.Delete(id)
+	err := ser.repository.Delete(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

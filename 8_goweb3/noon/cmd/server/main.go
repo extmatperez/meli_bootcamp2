@@ -16,6 +16,7 @@ func main() {
 	group.POST("", hand.Store())
 	group.GET("", hand.GetAll())
 	group.PUT("/:id", hand.Update())
+	group.PATCH("/:id", hand.UpdateLastNameAge())
 	group.DELETE("/:id", hand.Delete())
 
 	router.Run()
