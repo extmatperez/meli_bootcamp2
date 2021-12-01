@@ -1,6 +1,9 @@
 package internal
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type Transaction struct {
 	ID                  int     `json:"id"`
@@ -16,6 +19,9 @@ type Repository interface {
 	GetAll() ([]Transaction, error)
 	GetTransactionByID(id int) (Transaction, error)
 	Store(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error)
+	Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error)
+	UpdateCodigoYMonto(id int, codigo_de_transaccion string, monto float64) (Transaction, error)
+	Delete(id int) error
 	LastId() int
 	ExistsTransaction(id int) bool
 }
@@ -48,6 +54,42 @@ func (repo *repository) Store(id int, codigo_de_transaccion, moneda string, mont
 	lastID = id
 	transactions = append(transactions, transac)
 	return transac, nil // TODO: Manejar errores
+}
+
+func (repo *repository) Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error) {
+	transac := Transaction{id, codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion}
+
+	for i, t := range transactions {
+		if t.ID == id {
+			transactions[i] = transac
+			return transac, nil
+		}
+	}
+	return Transaction{}, fmt.Errorf("transaction %d doesn't exist", id)
+}
+
+func (repo *repository) UpdateCodigoYMonto(id int, codigo_de_transaccion string, monto float64) (Transaction, error) {
+
+	for i, t := range transactions {
+		if t.ID == id {
+			transactions[i].CodigoDeTransaccion = codigo_de_transaccion
+			transactions[i].Monto = monto
+			return transactions[i], nil
+		}
+	}
+	return Transaction{}, fmt.Errorf("transaction %d doesn't exist", id)
+}
+
+func (repo *repository) Delete(id int) error {
+
+	for i, t := range transactions {
+		if t.ID == id {
+			transactions = append(transactions[:i], transactions[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("transaction %d doesn't exist", id)
+
 }
 
 func (repo *repository) LastId() int {

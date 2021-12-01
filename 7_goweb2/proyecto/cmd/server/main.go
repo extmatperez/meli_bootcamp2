@@ -17,11 +17,14 @@ func main() {
 	router.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "pong")
 	})
-	routerTransactions := router.Group("/transactions")
+	routerTransactions := router.Group("/transactions", controller.ValidateToken())
 	{
-		routerTransactions.GET("/get", controller.GetAll())
-		routerTransactions.GET("/get/:id", controller.GetTransactionByID())
-		routerTransactions.POST("/add", controller.Store())
+		routerTransactions.GET("/", controller.GetAll())
+		routerTransactions.GET("/:id", controller.GetTransactionByID())
+		routerTransactions.POST("/", controller.Store())
+		routerTransactions.PUT("/:id", controller.Update())
+		routerTransactions.DELETE("/:id", controller.Delete())
+		routerTransactions.PATCH("/:id", controller.UpdateCodigoYMonto())
 	}
 	router.Run()
 
