@@ -45,10 +45,21 @@ func addPersona(c *gin.Context) {
 	c.JSON(http.StatusCreated, per)
 }
 
+func tokenValid(tk string) bool {
+    switch tk {
+    case
+        "123456",
+        "444444",
+        "555555":
+        return true
+    }
+    return false
+}
+
 func getPersonas(c *gin.Context){
 	token := c.GetHeader("token")
 
-	if token == "123456" {
+	if tokenValid(token) {
 		if len(personas) == 0 {
 			c.JSON(http.StatusNotFound, gin.H{
 				"message":"no people found",
