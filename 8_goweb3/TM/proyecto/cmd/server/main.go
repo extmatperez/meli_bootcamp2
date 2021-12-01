@@ -45,12 +45,14 @@ func main() {
 	service := productos.NewService(repository)
 	controller := handler.NewProducto(service)
 
-	router.GET("/productos", controller.GetAll())
-	router.POST("/productos", controller.Store())
-	router.PUT("/productos/:id", controller.Update())
-	router.DELETE("/productos/:id", controller.Delete())
-	router.PATCH("/productos/:id", controller.UpdateNombrePrecio())
+	productos := router.Group("/productos")
+	{
+		productos.GET("/", controller.GetAll())
+		productos.POST("/", controller.Store())
+		productos.PUT("/:id", controller.Update())
+		productos.DELETE("/:id", controller.Delete())
+		productos.PATCH("/:id", controller.UpdateNombrePrecio())
+	}
 
 	router.Run("localhost:8080")
-
 }
