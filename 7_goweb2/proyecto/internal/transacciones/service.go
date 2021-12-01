@@ -5,6 +5,7 @@ type Service interface {
 	Store(codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
 	Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
 	UpdateEmisor(id int, emisor string)(Transaccion, error)
+	Delete(id int) error
 }
 
 type service struct{
@@ -48,4 +49,8 @@ func(s *service) Update(id int, codigo int, moneda string, monto float64, emisor
 
 func(s *service) UpdateEmisor(id int, emisor string)(Transaccion, error){
 	return s.repository.UpdateEmisor(id, emisor)
+}
+
+func(s *service) Delete(id int) error{
+	return s.repository.Delete(id)
 }

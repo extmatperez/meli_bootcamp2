@@ -9,14 +9,15 @@ import (
 func main() {
 	repo := transacciones.NewRepository()
 	service := transacciones.NewService(repo)
-	p:=handler.NewTransaccion(service)
+	t:=handler.NewTransaccion(service)
 
 	r:=gin.Default()
 	tr := r.Group("/transacciones")
-	tr.POST("/", p.Store())
-	tr.GET(("/"), p.GetAll())
-	tr.PUT(":/id", p.Update())
-	tr.PATCH("/id", p.UpdateEmisor())
+	tr.POST("/", t.Store())
+	tr.GET(("/"), t.GetAll())
+	tr.PUT(":/id", t.Update())
+	tr.PATCH(":/id", t.UpdateEmisor())
+	tr.DELETE(":/id", t.Delete())
 
 	r.Run()
 

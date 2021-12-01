@@ -118,5 +118,28 @@ func (t *Transaccion) UpdateEmisor() gin.HandlerFunc {
 }
 
 
+func (t *Transaccion) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "secure"{
+			ctx.JSON(401, gin.H{"error": "Token invalido"})
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(401, gin.H{"error": "ID invalido"})
+			return
+		}
+		err = t.service.Delete(int(id))
+
+		if err != nil {
+		ctx.JSON(404, gin.H{"error": err.Error()})
+		return
+		}
+
+		ctx.JSON(200, gin.H{"data": "El producto ha sido eliminado"})
+	}
+}
+
 
 
