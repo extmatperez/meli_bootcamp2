@@ -94,3 +94,24 @@ func (c *Product) Edit() gin.HandlerFunc {
 		ctx.JSON(200, p)
 	}
 }
+
+func (c *Product) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		if id == "" {
+			ctx.JSON(400, gin.H{"error": "No se ha seleccionado un producto"})
+			return
+		}
+		parsedId, err := strconv.Atoi(id)
+		if err != nil {
+			ctx.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		err = c.service.Delete(parsedId)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, nil)
+	}
+}

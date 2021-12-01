@@ -24,6 +24,7 @@ type Repository interface {
 	Store(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error)
 	Edit(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error)
 	LastID() (int, error)
+	Delete(id int) error
 }
 
 type repository struct{}
@@ -57,4 +58,16 @@ func (r *repository) Edit(id int, nombre, color, precio string, stock int, codig
 	}
 	errText := fmt.Sprintf("El usuario %d no existe", id)
 	return Producto{}, errors.New(errText)
+}
+
+func (r *repository) Delete(id int) error {
+	index := 0
+	for i, v := range ps {
+		if v.ID == id {
+			index = i
+			ps = append(ps[:index], ps[index+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("la persona %d no existe", id)
 }
