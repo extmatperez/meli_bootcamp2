@@ -1,5 +1,8 @@
 package main
 
+/*
+	2da parte: Este ejercicio puede ser resuelto mediante slices y también mediante un array, sin embargo la clave valor que nos genera el map se adecua mejor a la necesidad.
+*/
 import "fmt"
 
 func main() {
