@@ -12,13 +12,14 @@ type Transaction struct {
 	Date     string `json:"date"`
 }
 
-var transactions []Transaction
+var transactions []Transaction = []Transaction{}
 var lastID int
 
 type Repository interface {
 	GetAll() ([]Transaction, error)
 	Store(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
 	Update(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
+	Delete(id int) error
 	LastId() (int, error)
 }
 
@@ -53,6 +54,18 @@ func (repo *repository) Update(id int, code string, currency string, amount int,
 		}
 	}
 	return Transaction{}, fmt.Errorf("Transaction with id: %v not found", id)
+}
+
+func (repo *repository) Delete(id int) error {
+
+	for i, transaction := range transactions {
+		if transaction.Id == id {
+			transactions = append(transactions[:i], transactions[i+1:]...)
+			return nil
+		}
+	}
+
+	return fmt.Errorf("Transaction with id %v not found", id)
 }
 
 func (repo *repository) LastId() (int, error) {

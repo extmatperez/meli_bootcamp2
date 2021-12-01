@@ -18,6 +18,7 @@ func main() {
 	transactions.GET("", controller.GetAll())
 	transactions.POST("", controller.Store())
 	transactions.PUT("/:id", controller.Update())
+	transactions.DELETE("/:id", controller.Delete())
 
 	router.Run()
 }

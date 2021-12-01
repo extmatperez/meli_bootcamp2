@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -78,5 +79,25 @@ func (controller *Transaction) Update() gin.HandlerFunc {
 			ctx.JSON(200, response)
 		}
 
+	}
+}
+
+func (controller *Transaction) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		paramId := ctx.Param("id")
+		id, err := strconv.Atoi(paramId)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, errors.New("not valid id"))
+			return
+		}
+
+		err = controller.service.Delete(id)
+		if err != nil {
+			ctx.JSON(http.StatusNotFound, errors.New("transaction not found"))
+			return
+		}
+		ctx.Writer.WriteHeader(http.StatusNoContent)
 	}
 }
