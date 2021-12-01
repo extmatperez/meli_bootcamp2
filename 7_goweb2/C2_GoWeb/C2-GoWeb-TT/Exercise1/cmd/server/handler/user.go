@@ -44,7 +44,13 @@ func (controller *User) Store() gin.HandlerFunc {
 		if err != nil {
 			ctx.String(400, "Hubo un error al querer cargar una persona: %v", err)
 		} else {
-			controller.service.Store(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate)
+			response, err := controller.service.Store(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate)
+			if err != nil {
+				ctx.String(400, "No se pudo cargar la persona %v", err)
+			} else {
+				ctx.JSON(200, response)
+				// controller.service.Store(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate)
+			}
 		}
 	}
 }

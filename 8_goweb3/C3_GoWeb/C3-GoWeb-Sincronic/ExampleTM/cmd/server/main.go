@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/7_goweb2/C2_GoWeb/C2-GoWeb-TT/Exercise1/cmd/server/handler"
-	users "github.com/extmatperez/meli_bootcamp2/7_goweb2/C2_GoWeb/C2-GoWeb-TT/Exercise1/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/C3_GoWeb/C3-GoWeb-Sincronic/ExampleTM/cmd/server/handler"
+	users "github.com/extmatperez/meli_bootcamp2/8_goweb3/C3_GoWeb/C3-GoWeb-Sincronic/ExampleTM/internal/users"
 	"github.com/gin-gonic/gin"
 )
 

@@ -15,6 +15,6 @@ func main() {
 	controller := handler.NewUser(service)
 
 	router.GET("/users/get", controller.GetAll())
-	router.POST("/users/add", controller.GetAll())
+	router.POST("/users/add", controller.Store())
 	router.Run()
 }
