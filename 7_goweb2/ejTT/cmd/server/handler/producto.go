@@ -117,7 +117,9 @@ func (p *Producto) UpdateNombrePrecio() gin.HandlerFunc {
 		id, _ := strconv.Atoi(ctx.Param("id"))
 		err := ctx.ShouldBindJSON(&prod)
 		if err != nil {
-			ctx.JSON(400, err)
+			ctx.JSON(400, gin.H{
+				"error": err.Error(),
+			})
 			return
 		}
 		if prod.Nombre == "" || prod.Precio == 0.0 {
@@ -128,7 +130,9 @@ func (p *Producto) UpdateNombrePrecio() gin.HandlerFunc {
 		}
 		productoActualizado, e := p.service.UpdateNombrePrecio(id, prod.Nombre, prod.Precio)
 		if e != nil {
-			ctx.JSON(400, e)
+			ctx.JSON(400, gin.H{
+				"error": err.Error(),
+			})
 			return
 		}
 		ctx.JSON(200, productoActualizado)
