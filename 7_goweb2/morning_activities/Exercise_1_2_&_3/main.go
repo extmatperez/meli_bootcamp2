@@ -30,8 +30,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,6 +50,8 @@ type Users struct {
 }
 
 var user []Users
+
+/* var user_id Users */
 
 // Return all users
 func get_users(c *gin.Context) {
@@ -69,17 +73,47 @@ func get_users(c *gin.Context) {
 		})
 	}
 }
+
+// Validate fields function
+func validate_fields(user_id Users) string {
+	r := reflect.ValueOf(user_id)
+	fmt.Println(user_id)
+	fmt.Println(r)
+	for i := 0; i < r.NumField(); i++ {
+		var_value := r.Field(i).Interface()
+		s := reflect.TypeOf(var_value).Kind()
+
+		if fmt.Sprint(s) == "string" {
+			if var_value == "" {
+				return fmt.Sprintf("Missing information in %v field", r.Type().Field(i).Name)
+			}
+		} else {
+			if var_value == 0 {
+				return fmt.Sprintf("The %v field can't be 0", r.Type().Field(i).Name)
+			}
+		}
+	}
+	return ""
+}
+
+// Add new user to json file
 func post_users(c *gin.Context) {
 	var user_id Users
 
 	err := c.ShouldBindJSON(&user_id)
+	last_id := user[len(user)-1].ID + 1
+	user_id.ID = last_id
+	validate := validate_fields(user_id)
+
+	if validate != "" {
+		c.String(http.StatusBadRequest, validate)
+		return
+	}
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 	} else {
-		last_id := user[len(user)-1].ID + 1
-		user_id.ID = last_id
 		user = append(user, user_id)
 		c.JSON(http.StatusOK, user_id)
 	}
