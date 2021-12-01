@@ -14,5 +14,8 @@ func main () {
 	for position, letter := range word {
 		fmt.Printf("Letra %d: %s\n", position, string(letter))
 	}
+	for position, letter := range word {
+		fmt.Printf("Letra %d: %c\n", position, letter)
+	}
 
 }

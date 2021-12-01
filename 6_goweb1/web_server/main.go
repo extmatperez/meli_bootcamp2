@@ -25,7 +25,7 @@ func readData() []Products {
 	var list []Products
 	readProducts, _ := os.ReadFile("./products.json")
 
-	if err := json.Unmarshal([]byte(readProducts), &list); err != nil {
+	if err := json.Unmarshal(readProducts, &list); err != nil {
 		log.Fatal(err)
 	}
 	return list
@@ -43,8 +43,17 @@ func getAll(c *gin.Context) {
 
 	var prodList = readData()
 
+	page, _ := strconv.ParseInt(c.Request.URL.Query().Get("page"), 10, 64)
+	limit, _ := strconv.ParseInt(c.Request.URL.Query().Get("limit"), 10, 64)
+
+	startIndex := (page - 1) * limit
+	endIndex := page * limit
+
+	var paginatedResults []Products
+	paginatedResults = prodList[startIndex:endIndex]
+
 	c.JSON(200, gin.H{
-		"data": prodList,
+		"data": paginatedResults,
 	})
 }
 func getbyFilter(c *gin.Context) {
