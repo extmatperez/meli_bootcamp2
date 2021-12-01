@@ -35,7 +35,7 @@ func (ser *service) Store(codigo, moneda , monto, emisor, receptor,fecha string)
 	if(err != nil){
 		return Transaction{},err
 	}
-
+	
 	lastID++
 	transcation, err1 := ser.repository.Store(lastID,codigo,moneda,monto,emisor,receptor,fecha)
 	

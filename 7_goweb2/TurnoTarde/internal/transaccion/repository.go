@@ -51,15 +51,14 @@ func (repo *repository) Store(id int, codigo, moneda , monto, emisor, receptor,f
 		return Transaction{},err
 	}
 
+
 	transactions = append(transactions, tran)
 
-	dataBytes, err := json.Marshal(transactions)
-    if err != nil {
-		return Transaction{},err
-    }
+
+	err = UpdateJson(transactions)
+	
 
 
-	err = ioutil.WriteFile(fileName, dataBytes, 0644)
 	if err != nil {
 		return Transaction{},err
     }
@@ -68,7 +67,17 @@ func (repo *repository) Store(id int, codigo, moneda , monto, emisor, receptor,f
 }
 
 func (repo *repository) LastId() (int, error) {
-	return lastID, nil
+	transactions,err := GetAllTransactionFromFolder()
+
+	if(err != nil){
+		return 0,err
+	}
+	if len(transactions) == 0 {
+		return 1,nil
+	} else {
+		return transactions[len(transactions)-1].ID ,nil
+	}
+
 }
 
 func (repo *repository) Update(id int, codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error){
@@ -83,9 +92,9 @@ func (repo *repository) Update(id int, codigo, moneda , monto, emisor, receptor,
 
 	for i,t := range transactions {
 		if t.ID == tran.ID {
-			transactions[i] = t
-			return t,nil
-
+			transactions[i] = tran
+			UpdateJson(transactions)
+			return tran,nil
 		}
 		
 	} 
@@ -106,7 +115,8 @@ func (repo *repository) UpdateCodigoAndMonto(id int, codigo,monto string ) (Tran
 		if t.ID == id {
 			transactions[i].Codigo = codigo
 			transactions[i].Monto = monto
-			return t,nil
+			UpdateJson(transactions)
+			return transactions[i],nil
 		}
 		
 	} 
@@ -124,7 +134,8 @@ func (repo *repository) Delete(id int) error {
 
 	for i,t := range transactions {
 		if t.ID == id {
-			RemoveIndex(transactions,i)
+			transactions = RemoveIndex(transactions,i)
+			UpdateJson(transactions)
 			return nil
 		}
 		
@@ -153,4 +164,19 @@ func GetAllTransactionFromFolder() ([]Transaction,error){
 
 func RemoveIndex(s []Transaction, index int) []Transaction {
     return append(s[:index], s[index+1:]...)
+}
+
+
+func UpdateJson(transactions [] Transaction) error{
+
+	dataBytes, err := json.Marshal(transactions)
+    if err != nil {
+		return err
+    }
+	err = ioutil.WriteFile(fileName, dataBytes, 0644)
+	if err != nil {
+		return err
+    }
+
+	return nil
 }
