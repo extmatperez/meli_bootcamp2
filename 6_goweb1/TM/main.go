@@ -10,15 +10,17 @@ import (
 )
 
 type Product struct {
-	ID          int64   `json:"id"`
+	ID          int64   `json:"id" binding:"required,min=1,max=16"`
 	Name        string  `json:"name"`
 	Color       string  `json:"color"`
 	Price       float64 `json:"price"`
 	Stock       int     `json:"stock"`
-	Code        int     `json:"code"`
+	Code        string  `json:"code"`
 	IsPublished bool    `json:"isPublished"`
 	CreatedAt   string  `json:"createdAt"`
 }
+
+var products []Product
 
 func getAll(c *gin.Context) {
 	products := []Product{}
@@ -63,11 +65,31 @@ func getById(c *gin.Context) {
 	}
 }
 
+func AddPersona(ctx *gin.Context) {
+	var pro Product
+	err := ctx.ShouldBindJSON(&pro)
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+
+	} else {
+
+		/*if len(products) == 0 {
+			pro.ID = 1
+		} else {
+			pro.ID = products[len(products)-1].ID + 1
+		}*/
+		//products = append(products, pro)
+		//ctx.JSON(200, pro)
+	}
+}
+
 func main() {
 	router := gin.Default()
 
 	//ruta que devuelve un listado de productos
 	router.GET("products", getAll)
-
+	router.POST("add", AddPersona)
 	router.Run()
 }
