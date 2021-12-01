@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strconv"
+
 	transacciones "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
@@ -57,6 +59,34 @@ func (t *Transaccion) Store() gin.HandlerFunc{
 	}
 }
 
+}
+
+func (t *Transaccion) Update() gin.HandlerFunc{
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "secure"{
+			ctx.JSON(401, gin.H{"error": "Token invalido"})
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(401, gin.H{"error": "ID invalido"})
+			return
+		}
+		var req request
+		err = ctx.ShouldBind(&req)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+
+		t, err := t.service.Update(int(id), req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaTransaccion)
+		if err != nil {
+		ctx.JSON(404, gin.H{"error": err.Error()})
+		return
+		}
+		ctx.JSON(200, t)
+	}
 }
 
 

@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -22,6 +23,7 @@ type Repository interface {
 	GetAll() ([]Transaccion, error)
 	Store(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string) (Transaccion, error)
 	LastID() (int, error)
+	Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
 }
 
 type repository struct{}
@@ -47,4 +49,16 @@ func (r *repository) Store(id int, codigo int, moneda string, monto float64, emi
 	trID = t.ID
 
 	return t, nil
+}
+
+func (r *repository) Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string) (Transaccion, error) {
+	t := Transaccion{id, codigo, moneda, monto, emisor, receptor, fecha}
+	for i := range ts{
+		if ts[i].ID == id{
+			t.ID = id
+			ts[i] = t
+			return t, nil
+		}
+	}
+	return Transaccion{}, fmt.Errorf("Producto %v no encontrado", id)
 }

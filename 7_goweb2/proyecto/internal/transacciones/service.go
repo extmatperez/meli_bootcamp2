@@ -3,6 +3,7 @@ package internal
 type Service interface {
 	GetAll() ([]Transaccion, error)
 	Store(codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
+	Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
 }
 
 type service struct{
@@ -39,3 +40,7 @@ func (s *service) Store(codigo int, moneda string, monto float64, emisor string,
 	return transaccion, nil
 }
 
+
+func(s *service) Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error){
+	return s.repository.Update(id, codigo, moneda, monto, emisor, receptor, fecha)
+}
