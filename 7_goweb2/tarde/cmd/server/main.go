@@ -1,20 +1,22 @@
 package main
 
 import (
-	"github.com/extmatperez/w2GoPrueba/GoWeb/Clase2TT/proyecto/cmd/server/handler"
-	personas "github.com/extmatperez/w2GoPrueba/GoWeb/Clase2TT/proyecto/internal/personas"
+	"github.com/extmatperez/meli_bootcamp2/tree/soto_jose/7_goweb2/tarde/cmd/server/handler"
+	transactions "github.com/extmatperez/meli_bootcamp2/tree/soto_jose/7_goweb2/tarde/internal/transactions"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
 
-	repo := personas.NewRepository()
-	service := personas.NewService(repo)
-	controller := handler.NewPersona(service)
+	repo := transactions.NewRepository()
+	service := transactions.NewService(repo)
+	controller := handler.NewTransaction(service)
 
-	router.GET("/personas/get", controller.GetAll())
-	router.POST("/personas/add", controller.Store())
+	transactions := router.Group("/transactions")
+
+	transactions.GET("/transactions", controller.GetAll())
+	transactions.POST("/transactions", controller.Store())
 
 	router.Run()
 }

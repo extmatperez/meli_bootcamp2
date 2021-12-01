@@ -3,6 +3,7 @@ module github.com/extmatperez/meli_bootcamp2/tree/soto_jose
 go 1.17
 
 require (
+	github.com/extmatperez/meli_bootcamp2 v0.0.0-20211123150845-b51b5da86ca8 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
