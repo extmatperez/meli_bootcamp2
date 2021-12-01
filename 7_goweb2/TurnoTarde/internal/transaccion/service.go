@@ -1,8 +1,8 @@
 package internal
 
 type Service interface{
-	GetAll() ([]Transaccion, error)
-	Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaccion, error)
+	GetAll() ([]Transaction, error)
+	Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error)
 }
 
 type service struct{
@@ -14,7 +14,7 @@ func NewService(repo Repository) Service{
 }
 
 
-func (ser *service) GetAll() ([]Transaccion, error) {
+func (ser *service) GetAll() ([]Transaction, error) {
 
 	transactions,err := ser.repository.GetAll()
 
@@ -25,19 +25,19 @@ func (ser *service) GetAll() ([]Transaccion, error) {
 	return transactions,nil
 }
 
-func (ser *service) Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaccion, error) {
+func (ser *service) Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error) {
 	
 	lastID,err := ser.repository.LastId()
 
 	if(err != nil){
-		return Transaccion{},err
+		return Transaction{},err
 	}
 
 	lastID++
 	transcation, err1 := ser.repository.Store(lastID,codigo,moneda,monto,emisor,receptor,fecha)
 	
 	if(err1 != nil){
-		return Transaccion{},err
+		return Transaction{},err
 	}
 
 
