@@ -40,3 +40,27 @@ Asi podemos acceder a los headers que son enviados dentro del request
 
     }
 
+
+
+------------------------------------
+CAPAS DE UNA APLICACION WEB
+
+Las capas son distintos niveles donde cada capa tiene una funcion 
+La division mas comun es en 3 capas el modelo MVC o Modelo Vista Controlador 
+
+    -Controlador: Se contacta con el cliente y recibe la peticion 
+    -Servicio: Se encarga de administrar los recursos  
+    -Repositorio: Tiene el control de acceso a los datos 
+
+
+ENTIDAD
+Es donde se encapsulan las reglas del negocio 
+Como son las estructuras y metodos 
+
+
+ESTRUCTURA DE NUESTRO PROYECTO 
+
+
+
+
+
