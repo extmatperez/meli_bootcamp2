@@ -16,6 +16,7 @@ func main() {
 	tr.POST("/", p.Store())
 	tr.GET(("/"), p.GetAll())
 	tr.PUT(":/id", p.Update())
+	tr.PATCH("/id", p.UpdateEmisor())
 
 	r.Run()
 

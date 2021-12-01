@@ -24,6 +24,7 @@ type Repository interface {
 	Store(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string) (Transaccion, error)
 	LastID() (int, error)
 	Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
+	UpdateEmisor(id int, emisor string)(Transaccion, error)
 }
 
 type repository struct{}
@@ -57,6 +58,18 @@ func (r *repository) Update(id int, codigo int, moneda string, monto float64, em
 		if ts[i].ID == id{
 			t.ID = id
 			ts[i] = t
+			return t, nil
+		}
+	}
+	return Transaccion{}, fmt.Errorf("Producto %v no encontrado", id)
+}
+
+func(r *repository) UpdateEmisor(id int, emisor string)(Transaccion, error){
+	var t Transaccion
+	for i := range ts{
+		if ts[i].ID == id{
+			ts[i].Emisor = emisor
+			t = ts[i]
 			return t, nil
 		}
 	}

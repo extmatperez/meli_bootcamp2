@@ -89,6 +89,34 @@ func (t *Transaccion) Update() gin.HandlerFunc{
 	}
 }
 
+func (t *Transaccion) UpdateEmisor() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "secure"{
+			ctx.JSON(401, gin.H{"error": "Token invalido"})
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(401, gin.H{"error": "ID invalido"})
+			return
+		}
+		var req request
+		err = ctx.ShouldBind(&req)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+
+		t, err := t.service.UpdateEmisor(int(id), req.Emisor)
+		if err != nil {
+		ctx.JSON(404, gin.H{"error": err.Error()})
+		return
+		}
+		ctx.JSON(200, t)
+	}
+}
+
 
 
 
