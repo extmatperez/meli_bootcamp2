@@ -2,14 +2,14 @@ package internal
 
 type Service interface {
 	GetAll() ([]Product, error)
-	Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string)
+	Store(Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
 }
 
 type service struct {
 	repository Repository
 }
 
-func NewService(repository Repository) service {
+func NewService(repository Repository) Service {
 	return &service{repository: repository}
 }
 func (ser *service) GetAll() ([]Product, error) {
@@ -20,7 +20,7 @@ func (ser *service) GetAll() ([]Product, error) {
 	return products, nil
 }
 
-func (ser *service) Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error) {
+func (ser *service) Store(Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error) {
 	ultimoId, err := ser.repository.LastId()
 	if err != nil {
 		return Product{}, err

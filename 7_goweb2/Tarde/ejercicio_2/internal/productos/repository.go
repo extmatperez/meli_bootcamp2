@@ -17,7 +17,7 @@ var lastId int
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
-	LastId(int, error)
+	LastId() (int, error)
 }
 
 type repository struct{}
