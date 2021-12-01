@@ -16,5 +16,6 @@ func main() {
 
 	router.GET("/users/get", controller.GetAll())
 	router.POST("/users/add", controller.Store())
+	router.PUT("/users/", controller.Update())
 	router.Run()
 }

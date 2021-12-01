@@ -3,6 +3,7 @@ package internal
 type Service interface {
 	GetAll() ([]User, error)
 	Store(first_name string, last_name string, age int) (User, error)
+	Update(id int, first_name string, last_name string, age int) (User, error)
 }
 
 type service struct {
@@ -34,4 +35,8 @@ func (ser *service) Store(first_name string, last_name string, age int) (User, e
 	}
 
 	return us, nil
+}
+
+func (ser *service) Update(id int, first_name string, last_name string, age int) (User, error) {
+	return ser.repository.Update(id, first_name, last_name, age)
 }
