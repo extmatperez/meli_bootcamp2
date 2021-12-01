@@ -1,8 +1,8 @@
 package handler
 
 import (
+	users "github.com/extmatperez/meli_bootcamp2/7_goweb2/C2-GoWeb/C2-GoWeb-Sincronic/ExampleTT/internal/users"
 	"github.com/gin-gonic/gin"
-	users "github.com/meli_bootcamp2/7_goweb2/C2-GoWeb/C2-GoWeb-Sincronic/ExampleTT/internal/users"
 )
 
 type request struct {
