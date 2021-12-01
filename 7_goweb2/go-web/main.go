@@ -8,24 +8,27 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 )
 
 func main() {
 
 	router := gin.Default()
 	transacciones := router.Group("/transacciones")
-	{
-		transacciones.GET("/filtros", filterTrans)
-		transacciones.GET("/find/:id", getById)
-		transacciones.GET("/", getAll)
-	}
+
+	transacciones.GET("/filtros", filterTrans)
+	transacciones.GET("/find/:id", getById)
+	transacciones.GET("/", load)
+	transacciones.GET("/get", getTrans)
+	transacciones.POST("/add", addTransaccion)
+
 	saludar := router.Group("/saludar")
-	{
-		saludar.GET("/:name", saludo)
-		saludar.GET("/", saludo)
-	}
+
+	saludar.GET("/:name", saludo)
+	saludar.GET("/", saludo)
 
 	router.Run()
 
@@ -45,8 +48,7 @@ type transaccion struct {
 
 var transacciones []transaccion
 
-//
-
+// ==========================================================GET======================================================//
 func saludo(c *gin.Context) {
 	queryName := c.Query("name")
 	paramName := c.Param("name")
@@ -92,7 +94,7 @@ func getById(c *gin.Context) {
 
 }
 
-func getAll(c *gin.Context) {
+func load(c *gin.Context) {
 	datos, err := os.ReadFile("./transaccion.json")
 	if err != nil {
 		c.String(400, "no se puede abrir el archivo")
@@ -146,9 +148,69 @@ func filterTrans(c *gin.Context) {
 	}
 
 	if len(transaccionesFiltradas) == 0 {
-		c.String(200, "no hay coincidencias")
+		c.String(http.StatusOK, "no hay coincidencias")
 	} else {
-		c.JSON(200, transaccionesFiltradas)
+		c.JSON(http.StatusOK, transaccionesFiltradas)
+	}
+
+}
+
+func getTrans(c *gin.Context) {
+
+	token := c.GetHeader("token")
+	if token != "" {
+		if token == "39470939" {
+			if len(transacciones) > 0 {
+				c.JSON(http.StatusOK, transacciones)
+			} else {
+				c.String(http.StatusOK, "no hay transacciones cargadas")
+			}
+
+		} else {
+			c.String(401, "token incorrecto")
+		}
+
+	} else {
+		c.String(http.StatusBadGateway, " no ingreso token ")
+	}
+}
+
+// ==========================================================POST======================================================//
+
+func addTransaccion(c *gin.Context) {
+	var trans transaccion
+	token := c.GetHeader("token")
+
+	if token != "" {
+		if token == "39470939" {
+			err := c.ShouldBindJSON(&trans)
+			if err != nil {
+				c.String(400, "se produjo un error: %v", err.Error())
+				return
+			} else {
+				if trans.Monto == 0.0 || trans.Emisor == "" || trans.Moneda == "" || trans.Receptor == "" {
+					c.String(http.StatusBadGateway, " no puede dejar campos sin llenar ")
+					return
+				} else {
+					if len(transacciones) == 0 {
+						trans.ID = 1
+					} else {
+						trans.ID = transacciones[len(transacciones)-1].ID + 1
+					}
+					currentTime := time.Now().Format("02-01-2006")
+					trans.FechaCreacion = fmt.Sprintf(currentTime)
+					trans.CodigoTransaccion = uuid.NewV4().String()
+					transacciones = append(transacciones, trans)
+					c.JSON(http.StatusOK, trans)
+				}
+			}
+
+		} else {
+			c.String(401, "token incorrecto")
+		}
+
+	} else {
+		c.String(http.StatusBadGateway, " no ingreso token ")
 	}
 
 }
