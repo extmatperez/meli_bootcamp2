@@ -194,28 +194,15 @@ func (p *Product) Update() gin.HandlerFunc {
 			return
 		}
 
-		// TODO: aca se valida o arriba del ShouldBindJSON?
 		var requiredFields []string
 		requiredFields = append(requiredFields, "name", "color", "price", "stock", "code", "published", "created_at")
 
-		productTypeOf := reflect.TypeOf(productRequest)
+		validated, message := validateRequiredData(productRequest, requiredFields)
 
-		for _, field := range requiredFields {
-			fieldIndex := 0
-
-			for fieldIndex = 0; fieldIndex < productTypeOf.NumField(); fieldIndex++ {
-				if strings.ToLower(productTypeOf.Field(fieldIndex).Name) == field {
-					break
-				}
-			}
-
-			// send to validateRequiredField the field type and the value of the field in string format
-			if !validateRequiredField(fmt.Sprint(productTypeOf.Field(fieldIndex).Type.Kind()), fmt.Sprintf("%v", reflect.ValueOf(productRequest).Field(fieldIndex).Interface())) {
-				ctx.JSON(404, gin.H{
-					"error": "Field '" + field + "' is required",
-				})
-				return
-			}
+		if !validated {
+			ctx.JSON(404, gin.H{
+				"error": message,
+			})
 		}
 
 		product, err := p.service.Update(productId, productRequest.Name, productRequest.Color, productRequest.Price, productRequest.Stock, productRequest.Code, productRequest.Published, productRequest.Created_at)
@@ -298,28 +285,16 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 			return
 		}
 
-		// TODO: aca se valida o arriba del ShouldBindJSON?
 		var requiredFields []string
 		requiredFields = append(requiredFields, "name", "price")
 
-		productTypeOf := reflect.TypeOf(productRequest)
+		validated, message := validateRequiredData(productRequest, requiredFields)
 
-		for _, field := range requiredFields {
-			fieldIndex := 0
-
-			for fieldIndex = 0; fieldIndex < productTypeOf.NumField(); fieldIndex++ {
-				if strings.ToLower(productTypeOf.Field(fieldIndex).Name) == field {
-					break
-				}
-			}
-
-			// send to validateRequiredField the field type and the value of the field in string format
-			if !validateRequiredField(fmt.Sprint(productTypeOf.Field(fieldIndex).Type.Kind()), fmt.Sprintf("%v", reflect.ValueOf(productRequest).Field(fieldIndex).Interface())) {
-				ctx.JSON(404, gin.H{
-					"error": "Field '" + field + "' is required",
-				})
-				return
-			}
+		if !validated {
+			ctx.JSON(404, gin.H{
+				"error": message,
+			})
+			return
 		}
 
 		product, err := p.service.UpdateNameAndPrice(productId, productRequest.Name, productRequest.Price)
@@ -349,6 +324,44 @@ func validateToken(tokenHeader string) (bool, int, string) {
 	return true, 0, ""
 }
 
+/*
+	Params:
+		-struct to validate
+		-slice of required fields to validate
+	Return:
+		-bool: if everything was validated ok or not
+		-string: required field error message
+*/
+func validateRequiredData(productRequest request, requiredFields []string) (bool, string) {
+	productTypeOf := reflect.TypeOf(productRequest)
+
+	for _, field := range requiredFields {
+		fieldIndex := 0
+
+		for fieldIndex = 0; fieldIndex < productTypeOf.NumField(); fieldIndex++ {
+			if strings.ToLower(productTypeOf.Field(fieldIndex).Name) == field {
+				break
+			}
+		}
+
+		typeOfVField := fmt.Sprint(productTypeOf.Field(fieldIndex).Type.Kind())
+		valueOfField := fmt.Sprintf("%v", reflect.ValueOf(productRequest).Field(fieldIndex).Interface())
+
+		if !validateRequiredField(typeOfVField, valueOfField) {
+			return false, "Field '" + field + "' is required"
+		}
+	}
+
+	return true, ""
+}
+
+/*
+	Params:
+		-field type: "string", "int", etc.
+		-value of field in string format: "this is a string", "2005.50", "true", etc.
+	Return:
+		-bool: if field was validated ok or not
+*/
 func validateRequiredField(fieldType, value string) bool {
 	switch fieldType {
 	case "string":
