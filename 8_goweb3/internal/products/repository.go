@@ -28,6 +28,7 @@ type Repository interface {
 	LoadProducts() error
 	Update(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error)
 	Delete(id int64) error
+	UpdateNameAndPrice(id int64, name string, price float64) (Product, error)
 }
 
 type repository struct{}
@@ -134,6 +135,19 @@ func (r *repository) Delete(id int64) error {
 	products = append(products[:i], products[i+1:]...)
 
 	return nil
+}
+
+func (r *repository) UpdateNameAndPrice(id int64, name string, price float64) (Product, error) {
+	for i := 0; i < len(products); i++ {
+		if products[i].Id == id {
+			products[i].Name = name
+			products[i].Price = price
+
+			return products[i], nil
+		}
+	}
+
+	return Product{}, fmt.Errorf("Product %d not found", id)
 }
 
 func NewRepository() Repository {

@@ -14,6 +14,7 @@ type Service interface {
 	LoadProducts() error
 	Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error)
 	Delete(id int64) error
+	UpdateNameAndPrice(id int64, name string, price float64) (Product, error)
 }
 
 type service struct {
@@ -113,6 +114,10 @@ func (s *service) LoadProducts() error {
 
 func (s *service) Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error) {
 	return s.repository.Update(id, name, color, price, stock, code, published, created_at)
+}
+
+func (s *service) UpdateNameAndPrice(id int64, name string, price float64) (Product, error) {
+	return s.repository.UpdateNameAndPrice(id, name, price)
 }
 
 func (s *service) Delete(id int64) error {

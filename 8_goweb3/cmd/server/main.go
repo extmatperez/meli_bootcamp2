@@ -21,6 +21,7 @@ func main() {
 		products.POST("/", productsController.Store())
 		products.PUT("/:id", productsController.Update())
 		products.DELETE("/:id", productsController.Delete())
+		products.PATCH("/:id", productsController.UpdateNameAndPrice())
 	}
 
 	router.Run()
