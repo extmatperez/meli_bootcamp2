@@ -47,7 +47,7 @@ func showData(c *gin.Context) {
 }
 func add(c *gin.Context) {
 	var p Products
-	err := c.ShouldBindJSON(&p)
+	err := c.ShouldBindJSON(&p) // se usa cuando viene del body
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
@@ -95,7 +95,7 @@ func FiltrarProductos(ctx *gin.Context) {
 	var val string
 	var productosFiltrados []Products
 	productosFiltrados = products
-	err := ctx.ShouldBind(&p)
+	err := ctx.ShouldBind(&p) // este se usa cuando viene de form
 	etiquetas = append(etiquetas, "nombre", "color", "stock", "codigo", "fecha_creacion", "precio", "publicado")
 
 	if err != nil {
