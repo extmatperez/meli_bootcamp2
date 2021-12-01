@@ -126,6 +126,38 @@ func (u *User) Update() gin.HandlerFunc {
 	}
 }
 
+func (u *User) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "123456" {
+			ctx.JSON(401, gin.H{
+				"error": "Invalid token",
+			})
+			return
+		}
+
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.JSON(400, gin.H{
+				"error": "Invalid ID",
+			})
+			return
+		}
+
+		err = u.service.Delete(id)
+		if err != nil {
+			ctx.JSON(404, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(200, gin.H{
+			"data": fmt.Sprintf("The user %d has been deleted", id),
+		})
+	}
+}
+
 func validateUpdateFields(u request) string {
 	msg := ""
 

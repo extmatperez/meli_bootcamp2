@@ -21,6 +21,7 @@ type Repository interface {
 	Store(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error)
 	LastID() (int, error)
 	Update(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error)
+	Delete(id int) error
 }
 
 type repository struct{}
@@ -57,4 +58,18 @@ func (r *repository) Update(id int, name, lastName, email string, age int, heigh
 
 	users[i] = u
 	return u, nil
+}
+
+func (r *repository) Delete(id int) error {
+	i := 0
+	for i < len(users) && users[i].ID != id {
+		i++
+	}
+
+	if i == len(users) {
+		return fmt.Errorf("User %d not found", id)
+	}
+
+	users = append(users[:i], users[i+1:]...)
+	return nil
 }
