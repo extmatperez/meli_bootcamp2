@@ -1,0 +1,5 @@
+[{"id":1,"nombre":"Ida","apellido":"Tieman","email":"itieman0@npr.org","edad":82,"altura":187,"activo":true,"fecha_creacion":"06/15/2021"},
+{"id":2,"nombre":"Law","apellido":"Lafee","email":"llafee1@barnesandnoble.com","edad":70,"altura":142,"activo":true,"fecha_creacion":"07/12/2021"},
+{"id":3,"nombre":"Bathsheba","apellido":"McInteer","email":"bmcinteer2@plala.or.jp","edad":74,"altura":176,"activo":false,"fecha_creacion":"01/01/2021"},
+{"id":4,"nombre":"Kial","apellido":"Gransden","email":"kgransden3@dot.gov","edad":49,"altura":180,"activo":false,"fecha_creacion":"05/15/2021"},
+{"id":5,"nombre":"Heall","apellido":"Cheavin","email":"hcheavin4@wsj.com","edad":22,"altura":177,"activo":false,"fecha_creacion":"01/23/2021"}]
