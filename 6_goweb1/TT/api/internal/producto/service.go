@@ -1,9 +1,9 @@
 package internal
 
 type Service interface {
-	getAll() ([]Product, error)
-	store(name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error)
-	loadFile() error
+	GetAll() ([]Product, error)
+	Store(name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error)
+	LoadFile() error
 }
 
 type service struct {
@@ -15,8 +15,8 @@ func NewService(repository Repository) Service {
 }
 
 //servicio para obtener todos los productos
-func (ser *service) getAll() ([]Product, error) {
-	products, err := ser.repository.getAll()
+func (ser *service) GetAll() ([]Product, error) {
+	products, err := ser.repository.GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -24,11 +24,11 @@ func (ser *service) getAll() ([]Product, error) {
 }
 
 //Servicio para agregar un nuevo producto
-func (ser *service) store(name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error) {
+func (ser *service) Store(name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error) {
 
-	ultimoId := ser.repository.getLastID()
+	ultimoId := ser.repository.GetLastID()
 
-	product, err := ser.repository.store(ultimoId+1, name, color, price, stock, code, isPublished, createdAt)
+	product, err := ser.repository.Store(ultimoId+1, name, color, price, stock, code, isPublished, createdAt)
 
 	if err != nil {
 		return Product{}, err
@@ -38,7 +38,7 @@ func (ser *service) store(name string, color string, price float64, stock int64,
 }
 
 //Servicio para cargar el archivo de productos en memoria
-func (ser *service) loadFile() error {
-	err := ser.repository.loadFile()
+func (ser *service) LoadFile() error {
+	err := ser.repository.LoadFile()
 	return err
 }

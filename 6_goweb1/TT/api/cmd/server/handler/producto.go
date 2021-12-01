@@ -19,13 +19,13 @@ type Request struct {
 	CreatedAt   string  `json:"createdAt"`
 }
 
-func newProduct(ser product.Service) *Product {
+func NewProduct(ser product.Service) *Product {
 	return &Product{service: ser}
 }
 
-func (pro *Product) loadFile() gin.HandlerFunc {
+func (pro *Product) LoadFile() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		err := pro.service.loadFile()
+		err := pro.service.LoadFile()
 
 		if err != nil {
 			ctx.String(400, "Hubo un error %v", err)
@@ -35,9 +35,9 @@ func (pro *Product) loadFile() gin.HandlerFunc {
 	}
 }
 
-func (pro *Product) getAll() gin.HandlerFunc {
+func (pro *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		products, err := pro.service.getAll()
+		products, err := pro.service.GetAll()
 
 		if err != nil {
 			ctx.String(400, "Hubo un error %v", err)
@@ -48,7 +48,7 @@ func (pro *Product) getAll() gin.HandlerFunc {
 	}
 }
 
-func (pro *Product) store() gin.HandlerFunc {
+func (pro *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var product Request
 
@@ -57,7 +57,7 @@ func (pro *Product) store() gin.HandlerFunc {
 		if err != nil {
 			ctx.String(400, "Hubo un error al querer cargar los datos %v", err)
 		} else {
-			response, err := pro.service.store(product.Name, product.Color, product.Price, product.Stock, product.Code, product.IsPublished, product.CreatedAt)
+			response, err := pro.service.Store(product.Name, product.Color, product.Price, product.Stock, product.Code, product.IsPublished, product.CreatedAt)
 			if err != nil {
 				ctx.String(400, "No se pudo guardad el producto %v", err)
 			} else {
