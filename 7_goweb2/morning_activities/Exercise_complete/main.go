@@ -24,7 +24,7 @@ deben seguir los siguientes pasos::
 1. Al momento de enviar la petición se debe validar que un token sea enviado
 2. Se debe validar ese token en nuestro código (el token puede estar hardcodeado).
 3. En caso que el token enviado no sea correcto debemos retornar un error 401 y un
-mensaje que “no tiene permisos para realizar la petición solicitada”. */
+mensaje que diga “no tiene permisos para realizar la petición solicitada”. */
 
 package main
 
@@ -99,23 +99,30 @@ func validate_fields(user_id Users) string {
 // Add new user to json file
 func post_users(c *gin.Context) {
 	var user_id Users
+	token := c.GetHeader("token")
+	value := "12345678"
 
-	err := c.ShouldBindJSON(&user_id)
-	last_id := user[len(user)-1].ID + 1
-	user_id.ID = last_id
-	validate := validate_fields(user_id)
+	if token == value {
+		err := c.ShouldBindJSON(&user_id)
+		last_id := user[len(user)-1].ID + 1
+		user_id.ID = last_id
+		validate := validate_fields(user_id)
 
-	if validate != "" {
-		c.String(http.StatusBadRequest, validate)
-		return
-	}
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		if validate != "" {
+			c.String(http.StatusBadRequest, validate)
+			return
+		}
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+		} else {
+			user = append(user, user_id)
+			c.JSON(http.StatusOK, user_id)
+		}
 	} else {
-		user = append(user, user_id)
-		c.JSON(http.StatusOK, user_id)
+		fmt.Println(http.StatusBadRequest, "Token not valid, please try again!")
+		c.JSON(401, "Token not valid, please try again!")
 	}
 }
 
