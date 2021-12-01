@@ -14,6 +14,9 @@ func main() {
 	router.GET("/producto", producto.GetAll())
 	router.POST("/producto", producto.Store())
 	router.GET("/producto/:id", producto.GetProductById())
+	router.PUT("/producto/:id", producto.Update())
+	router.DELETE("/producto/:id", producto.Delete())
+	router.PATCH("/producto/:id", producto.UpdateNombrePrecio())
 
 	router.Run()
 

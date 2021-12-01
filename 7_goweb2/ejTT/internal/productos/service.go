@@ -8,6 +8,9 @@ type Service interface {
 	GetAll() ([]Producto, error)
 	GetById(id int) (Producto, error)
 	Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fecha_creacion string) (Producto, error)
+	Update(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fecha_creacion string) (Producto, error)
+	UpdateNombrePrecio(id int, nombre string, precio float64) (Producto, error)
+	Delete(id int) error
 }
 
 func NewService(repo Repository) Service {
@@ -27,4 +30,30 @@ func (s *service) Store(nombre, color string, precio float64, stock int, codigo 
 	}
 	return productToReturn, nil
 
+}
+
+func (s *service) Update(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fecha_creacion string) (Producto, error) {
+
+	product, err := s.repository.Update(id, nombre, color, precio, stock, codigo, publicado, fecha_creacion)
+	if err != nil {
+		return Producto{}, err
+	}
+	return product, nil
+}
+
+func (s *service) UpdateNombrePrecio(id int, nombre string, precio float64) (Producto, error) {
+
+	product, err := s.repository.UpdateNombrePrecio(id, nombre, precio)
+	if err != nil {
+		return Producto{}, err
+	}
+	return product, nil
+}
+
+func (s *service) Delete(id int) error {
+	err := s.repository.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

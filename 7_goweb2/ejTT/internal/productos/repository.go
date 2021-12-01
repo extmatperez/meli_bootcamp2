@@ -1,19 +1,22 @@
 package internal
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 var lastId int
 var productos []Producto
 
 type Producto struct {
 	Id             int     `json:"id"`
-	Nombre         string  `json:"nombre" binding:"required"`
-	Color          string  `json:"color" binding:"required"`
-	Precio         float64 `json:"precio" binding:"required"`
-	Stock          int     `json:"stock" binding:"required"`
-	Codigo         string  `json:"codigo" binding:"required"`
-	Publicado      bool    `json:"publicado" binding:"required"`
-	Fecha_creacion string  `json:"fecha_creacion" binding:"required"`
+	Nombre         string  `json:"nombre"`
+	Color          string  `json:"color" `
+	Precio         float64 `json:"precio" `
+	Stock          int     `json:"stock" `
+	Codigo         string  `json:"codigo" `
+	Publicado      bool    `json:"publicado" `
+	Fecha_creacion string  `json:"fecha_creacion"`
 }
 
 type Repository interface {
@@ -21,6 +24,9 @@ type Repository interface {
 	GetById(id int) (Producto, error)
 	Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fecha_creacion string) (Producto, error)
 	GetLastId() (int, error)
+	Update(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fecha_creacion string) (Producto, error)
+	UpdateNombrePrecio(id int, nombre string, precio float64) (Producto, error)
+	Delete(id int) error
 }
 
 type repository struct {
@@ -50,4 +56,40 @@ func (r *repository) Store(id int, nombre, color string, precio float64, stock i
 }
 func (r *repository) GetLastId() (int, error) {
 	return lastId, nil
+}
+
+func (r *repository) Update(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fecha_creacion string) (Producto, error) {
+
+	productoNuevo := Producto{id, nombre, color, precio, stock, codigo, publicado, fecha_creacion}
+	for i, v := range productos {
+		if v.Id == id {
+			productos[i] = productoNuevo
+			return productoNuevo, nil
+		}
+	}
+	return Producto{}, fmt.Errorf("no se encontro el producto con id: %v", id)
+}
+
+func (r *repository) Delete(id int) error {
+
+	for i, v := range productos {
+		if v.Id == id {
+			productos = append(productos[:i], productos[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("no se encontro el producto con id: %v", id)
+}
+
+func (r *repository) UpdateNombrePrecio(id int, nombre string, precio float64) (Producto, error) {
+
+	for i, v := range productos {
+		if v.Id == id {
+			v.Nombre = nombre
+			v.Precio = precio
+			productos[i] = v
+			return v, nil
+		}
+	}
+	return Producto{}, fmt.Errorf("no se encontro el producto con id: %v", id)
 }
