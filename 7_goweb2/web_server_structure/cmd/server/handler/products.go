@@ -24,29 +24,58 @@ func NewProduct(serv products.Service) *Product {
 
 }
 
-func (controller *Product) getAll() gin.HandlerFunc {
+func (prod *Product) getAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		// page, _ := strconv.ParseInt(c.Request.URL.Query().Get("page"), 10, 64)
-		// limit, _ := strconv.ParseInt(c.Request.URL.Query().Get("limit"), 10, 64)
+		// token := c.GetHeader("token")
+		// if token != tokenPrueba {
+		// 	c.JSON(401, gin.H{
+		// 		"error": "token inválido",
+		// 	})
+		// } else {
+		products, err := prod.service.GetAll()
 
-		// startIndex := (page - 1) * limit
-		// endIndex := page * limit
-
-		// var paginatedResults []Products
-		// paginatedResults = prodList[startIndex:endIndex]
-		token := c.GetHeader("token")
-		if token != tokenPrueba {
-			c.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+		if err != nil {
+			c.String(400, "Hubo un error %v: ", err)
 		} else {
-
-			c.JSON(200, gin.H{
-				"data": prodList,
-			})
+			c.JSON(200, products)
 		}
 
+	}
+
+	// }
+
+}
+
+func (prod *Product) AddProduct() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		var newProd request
+
+		err := c.ShouldBindJSON(&newProd)
+
+		if err != nil {
+			c.String(400, "Hubo un error al cargar una persona %v: ", err)
+		} else {
+			response, err := prod.service.AddProduct(newProd.Name, newProd.Color, newProd.Price, newProd.Stock, newProd.Code, newProd.Published, newProd.Created)
+			if err != nil {
+				c.String("No se pudo cargar la persona %v: ", err)
+			} else {
+				c.JSON(200, response)
+			}
+		}
+
+		// validRequest := validateKeys(req)
+		// if validRequest != "" {
+		// 	c.JSON(400, validRequest)
+		// 	return
+		// } else {
+		// 	lastID++
+		// 	req.ID = lastID
+		// 	prodList = append(prodList, req)
+		// 	c.JSON(200, req)
+
+		// }
 	}
 
 }
