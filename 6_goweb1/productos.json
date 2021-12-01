@@ -1,0 +1,901 @@
+[{
+    "Id": 1,
+    "Nombre": "nulla neque",
+    "Color": "Pink",
+    "Precio": 99.34,
+    "Stock": 55,
+    "Codigo": "001945676-X",
+    "Publicado": false,
+    "Fecha_creacion": "25/05/2021"
+  }, {
+    "Id": 2,
+    "Nombre": "metus sapien",
+    "Color": "Violet",
+    "Precio": 92.8,
+    "Stock": 8,
+    "Codigo": "364161414-7",
+    "Publicado": false,
+    "Fecha_creacion": "17/11/2021"
+  }, {
+    "Id": 3,
+    "Nombre": "ipsum aliquam non mauris",
+    "Color": "Red",
+    "Precio": 78.43,
+    "Stock": 75,
+    "Codigo": "360568899-3",
+    "Publicado": false,
+    "Fecha_creacion": "17/09/2021"
+  }, {
+    "Id": 4,
+    "Nombre": "ultricies eu nibh quisque",
+    "Color": "Red",
+    "Precio": 95.67,
+    "Stock": 73,
+    "Codigo": "614648850-X",
+    "Publicado": true,
+    "Fecha_creacion": "04/10/2021"
+  }, {
+    "Id": 5,
+    "Nombre": "tristique fusce congue",
+    "Color": "Violet",
+    "Precio": 69.87,
+    "Stock": 1,
+    "Codigo": "715721559-4",
+    "Publicado": false,
+    "Fecha_creacion": "02/08/2021"
+  }, {
+    "Id": 6,
+    "Nombre": "nascetur ridiculus mus",
+    "Color": "Khaki",
+    "Precio": 66.12,
+    "Stock": 53,
+    "Codigo": "921127534-2",
+    "Publicado": false,
+    "Fecha_creacion": "17/02/2021"
+  }, {
+    "Id": 7,
+    "Nombre": "orci luctus et ultrices",
+    "Color": "Purple",
+    "Precio": 16.56,
+    "Stock": 46,
+    "Codigo": "291269103-6",
+    "Publicado": true,
+    "Fecha_creacion": "10/05/2021"
+  }, {
+    "Id": 8,
+    "Nombre": "ipsum praesent blandit lacinia",
+    "Color": "Indigo",
+    "Precio": 1.89,
+    "Stock": 45,
+    "Codigo": "003697732-2",
+    "Publicado": true,
+    "Fecha_creacion": "04/04/2021"
+  }, {
+    "Id": 9,
+    "Nombre": "sapien sapien non",
+    "Color": "Pink",
+    "Precio": 35.07,
+    "Stock": 67,
+    "Codigo": "983004511-0",
+    "Publicado": true,
+    "Fecha_creacion": "05/10/2021"
+  }, {
+    "Id": 10,
+    "Nombre": "penatibus et magnis dis",
+    "Color": "Mauv",
+    "Precio": 28.9,
+    "Stock": 2,
+    "Codigo": "875200556-9",
+    "Publicado": false,
+    "Fecha_creacion": "09/05/2021"
+  }, {
+    "Id": 11,
+    "Nombre": "eget nunc donec quis",
+    "Color": "Yellow",
+    "Precio": 37.84,
+    "Stock": 50,
+    "Codigo": "990521878-5",
+    "Publicado": true,
+    "Fecha_creacion": "25/01/2021"
+  }, {
+    "Id": 12,
+    "Nombre": "in sagittis dui",
+    "Color": "Indigo",
+    "Precio": 54.74,
+    "Stock": 69,
+    "Codigo": "929903289-0",
+    "Publicado": true,
+    "Fecha_creacion": "15/09/2021"
+  }, {
+    "Id": 13,
+    "Nombre": "id pretium iaculis",
+    "Color": "Green",
+    "Precio": 31.58,
+    "Stock": 100,
+    "Codigo": "004732470-8",
+    "Publicado": true,
+    "Fecha_creacion": "17/07/2021"
+  }, {
+    "Id": 14,
+    "Nombre": "dapibus duis",
+    "Color": "Teal",
+    "Precio": 58.61,
+    "Stock": 43,
+    "Codigo": "403012893-9",
+    "Publicado": false,
+    "Fecha_creacion": "16/03/2021"
+  }, {
+    "Id": 15,
+    "Nombre": "quis justo",
+    "Color": "Pink",
+    "Precio": 91.98,
+    "Stock": 48,
+    "Codigo": "133230277-7",
+    "Publicado": false,
+    "Fecha_creacion": "21/07/2021"
+  }, {
+    "Id": 16,
+    "Nombre": "etiam pretium iaculis",
+    "Color": "Turquoise",
+    "Precio": 67.01,
+    "Stock": 73,
+    "Codigo": "878214490-7",
+    "Publicado": true,
+    "Fecha_creacion": "29/03/2021"
+  }, {
+    "Id": 17,
+    "Nombre": "justo lacinia",
+    "Color": "Red",
+    "Precio": 72.66,
+    "Stock": 16,
+    "Codigo": "127512937-4",
+    "Publicado": false,
+    "Fecha_creacion": "15/02/2021"
+  }, {
+    "Id": 18,
+    "Nombre": "eu nibh quisque",
+    "Color": "Fuscia",
+    "Precio": 48.33,
+    "Stock": 52,
+    "Codigo": "252457779-1",
+    "Publicado": true,
+    "Fecha_creacion": "28/01/2021"
+  }, {
+    "Id": 19,
+    "Nombre": "phasellus sit amet erat",
+    "Color": "Yellow",
+    "Precio": 66.13,
+    "Stock": 95,
+    "Codigo": "821445178-7",
+    "Publicado": true,
+    "Fecha_creacion": "14/01/2021"
+  }, {
+    "Id": 20,
+    "Nombre": "diam nam tristique",
+    "Color": "Indigo",
+    "Precio": 78.24,
+    "Stock": 99,
+    "Codigo": "540491612-5",
+    "Publicado": true,
+    "Fecha_creacion": "26/01/2021"
+  }, {
+    "Id": 21,
+    "Nombre": "sit amet",
+    "Color": "Purple",
+    "Precio": 2.75,
+    "Stock": 28,
+    "Codigo": "914935787-5",
+    "Publicado": false,
+    "Fecha_creacion": "19/05/2021"
+  }, {
+    "Id": 22,
+    "Nombre": "ut nulla sed accumsan",
+    "Color": "Goldenrod",
+    "Precio": 77.18,
+    "Stock": 70,
+    "Codigo": "580244272-7",
+    "Publicado": true,
+    "Fecha_creacion": "23/09/2021"
+  }, {
+    "Id": 23,
+    "Nombre": "auctor sed",
+    "Color": "Purple",
+    "Precio": 26.77,
+    "Stock": 65,
+    "Codigo": "023873180-4",
+    "Publicado": true,
+    "Fecha_creacion": "05/03/2021"
+  }, {
+    "Id": 24,
+    "Nombre": "natoque penatibus et magnis",
+    "Color": "Yellow",
+    "Precio": 34.64,
+    "Stock": 13,
+    "Codigo": "030615240-1",
+    "Publicado": true,
+    "Fecha_creacion": "16/09/2021"
+  }, {
+    "Id": 25,
+    "Nombre": "quis lectus suspendisse potenti",
+    "Color": "Mauv",
+    "Precio": 46.49,
+    "Stock": 43,
+    "Codigo": "398055677-8",
+    "Publicado": false,
+    "Fecha_creacion": "09/05/2021"
+  }, {
+    "Id": 26,
+    "Nombre": "at dolor quis",
+    "Color": "Maroon",
+    "Precio": 16.9,
+    "Stock": 77,
+    "Codigo": "552419723-1",
+    "Publicado": true,
+    "Fecha_creacion": "17/03/2021"
+  }, {
+    "Id": 27,
+    "Nombre": "id ligula",
+    "Color": "Yellow",
+    "Precio": 31.76,
+    "Stock": 74,
+    "Codigo": "857442464-1",
+    "Publicado": true,
+    "Fecha_creacion": "18/05/2021"
+  }, {
+    "Id": 28,
+    "Nombre": "justo nec condimentum",
+    "Color": "Green",
+    "Precio": 38.77,
+    "Stock": 82,
+    "Codigo": "211134740-X",
+    "Publicado": false,
+    "Fecha_creacion": "21/10/2021"
+  }, {
+    "Id": 29,
+    "Nombre": "proin at turpis a",
+    "Color": "Pink",
+    "Precio": 7.11,
+    "Stock": 50,
+    "Codigo": "813939769-5",
+    "Publicado": true,
+    "Fecha_creacion": "15/08/2021"
+  }, {
+    "Id": 30,
+    "Nombre": "augue a suscipit",
+    "Color": "Orange",
+    "Precio": 56.31,
+    "Stock": 63,
+    "Codigo": "956183964-4",
+    "Publicado": true,
+    "Fecha_creacion": "08/06/2021"
+  }, {
+    "Id": 31,
+    "Nombre": "tempor convallis nulla neque",
+    "Color": "Teal",
+    "Precio": 49.43,
+    "Stock": 26,
+    "Codigo": "740829497-X",
+    "Publicado": true,
+    "Fecha_creacion": "10/09/2021"
+  }, {
+    "Id": 32,
+    "Nombre": "felis fusce",
+    "Color": "Yellow",
+    "Precio": 44.77,
+    "Stock": 10,
+    "Codigo": "678886624-4",
+    "Publicado": true,
+    "Fecha_creacion": "29/05/2021"
+  }, {
+    "Id": 33,
+    "Nombre": "dictumst etiam faucibus cursus",
+    "Color": "Maroon",
+    "Precio": 53.17,
+    "Stock": 56,
+    "Codigo": "875262471-4",
+    "Publicado": false,
+    "Fecha_creacion": "21/12/2020"
+  }, {
+    "Id": 34,
+    "Nombre": "velit nec nisi",
+    "Color": "Orange",
+    "Precio": 46.14,
+    "Stock": 32,
+    "Codigo": "504473582-5",
+    "Publicado": false,
+    "Fecha_creacion": "14/11/2021"
+  }, {
+    "Id": 35,
+    "Nombre": "nam congue risus semper",
+    "Color": "Purple",
+    "Precio": 8.16,
+    "Stock": 78,
+    "Codigo": "619408199-6",
+    "Publicado": false,
+    "Fecha_creacion": "08/06/2021"
+  }, {
+    "Id": 36,
+    "Nombre": "quam pede lobortis",
+    "Color": "Orange",
+    "Precio": 35.14,
+    "Stock": 12,
+    "Codigo": "629512539-5",
+    "Publicado": false,
+    "Fecha_creacion": "29/10/2021"
+  }, {
+    "Id": 37,
+    "Nombre": "id massa id",
+    "Color": "Mauv",
+    "Precio": 68.87,
+    "Stock": 9,
+    "Codigo": "805562700-2",
+    "Publicado": true,
+    "Fecha_creacion": "16/09/2021"
+  }, {
+    "Id": 38,
+    "Nombre": "orci luctus et",
+    "Color": "Crimson",
+    "Precio": 65.25,
+    "Stock": 24,
+    "Codigo": "558980333-0",
+    "Publicado": false,
+    "Fecha_creacion": "30/01/2021"
+  }, {
+    "Id": 39,
+    "Nombre": "magna bibendum",
+    "Color": "Pink",
+    "Precio": 85.51,
+    "Stock": 66,
+    "Codigo": "616223418-5",
+    "Publicado": true,
+    "Fecha_creacion": "20/09/2021"
+  }, {
+    "Id": 40,
+    "Nombre": "ac nibh",
+    "Color": "Aquamarine",
+    "Precio": 87.5,
+    "Stock": 39,
+    "Codigo": "500200997-2",
+    "Publicado": true,
+    "Fecha_creacion": "30/07/2021"
+  }, {
+    "Id": 41,
+    "Nombre": "maecenas tincidunt lacus at",
+    "Color": "Green",
+    "Precio": 35.18,
+    "Stock": 91,
+    "Codigo": "094241742-9",
+    "Publicado": false,
+    "Fecha_creacion": "13/07/2021"
+  }, {
+    "Id": 42,
+    "Nombre": "sollicitudin vitae consectetuer",
+    "Color": "Crimson",
+    "Precio": 72.36,
+    "Stock": 26,
+    "Codigo": "050327290-6",
+    "Publicado": false,
+    "Fecha_creacion": "15/07/2021"
+  }, {
+    "Id": 43,
+    "Nombre": "ac tellus",
+    "Color": "Goldenrod",
+    "Precio": 5.53,
+    "Stock": 28,
+    "Codigo": "480295882-X",
+    "Publicado": false,
+    "Fecha_creacion": "03/03/2021"
+  }, {
+    "Id": 44,
+    "Nombre": "nulla suscipit",
+    "Color": "Khaki",
+    "Precio": 51.33,
+    "Stock": 68,
+    "Codigo": "475433602-X",
+    "Publicado": true,
+    "Fecha_creacion": "01/05/2021"
+  }, {
+    "Id": 45,
+    "Nombre": "vel nulla",
+    "Color": "Purple",
+    "Precio": 96.76,
+    "Stock": 98,
+    "Codigo": "111740120-0",
+    "Publicado": false,
+    "Fecha_creacion": "31/01/2021"
+  }, {
+    "Id": 46,
+    "Nombre": "sodales scelerisque mauris",
+    "Color": "Orange",
+    "Precio": 33.41,
+    "Stock": 81,
+    "Codigo": "907528651-1",
+    "Publicado": true,
+    "Fecha_creacion": "05/07/2021"
+  }, {
+    "Id": 47,
+    "Nombre": "posuere cubilia",
+    "Color": "Violet",
+    "Precio": 98.46,
+    "Stock": 69,
+    "Codigo": "194207705-X",
+    "Publicado": false,
+    "Fecha_creacion": "27/03/2021"
+  }, {
+    "Id": 48,
+    "Nombre": "sapien cum",
+    "Color": "Puce",
+    "Precio": 17.94,
+    "Stock": 58,
+    "Codigo": "168153571-8",
+    "Publicado": false,
+    "Fecha_creacion": "03/08/2021"
+  }, {
+    "Id": 49,
+    "Nombre": "ipsum aliquam non mauris",
+    "Color": "Teal",
+    "Precio": 59.92,
+    "Stock": 33,
+    "Codigo": "747591718-5",
+    "Publicado": true,
+    "Fecha_creacion": "22/10/2021"
+  }, {
+    "Id": 50,
+    "Nombre": "nulla nunc purus phasellus",
+    "Color": "Puce",
+    "Precio": 41.08,
+    "Stock": 37,
+    "Codigo": "027753925-0",
+    "Publicado": true,
+    "Fecha_creacion": "16/09/2021"
+  }, {
+    "Id": 51,
+    "Nombre": "nullam sit",
+    "Color": "Purple",
+    "Precio": 83.77,
+    "Stock": 72,
+    "Codigo": "238735272-6",
+    "Publicado": true,
+    "Fecha_creacion": "16/02/2021"
+  }, {
+    "Id": 52,
+    "Nombre": "in ante vestibulum ante",
+    "Color": "Mauv",
+    "Precio": 84.68,
+    "Stock": 82,
+    "Codigo": "628205045-6",
+    "Publicado": true,
+    "Fecha_creacion": "18/06/2021"
+  }, {
+    "Id": 53,
+    "Nombre": "purus aliquet at",
+    "Color": "Crimson",
+    "Precio": 94.76,
+    "Stock": 1,
+    "Codigo": "953911887-5",
+    "Publicado": true,
+    "Fecha_creacion": "13/12/2020"
+  }, {
+    "Id": 54,
+    "Nombre": "nec nisi",
+    "Color": "Pink",
+    "Precio": 40.06,
+    "Stock": 94,
+    "Codigo": "036644353-4",
+    "Publicado": true,
+    "Fecha_creacion": "16/12/2020"
+  }, {
+    "Id": 55,
+    "Nombre": "quis tortor id",
+    "Color": "Green",
+    "Precio": 65.53,
+    "Stock": 50,
+    "Codigo": "502622339-7",
+    "Publicado": true,
+    "Fecha_creacion": "22/07/2021"
+  }, {
+    "Id": 56,
+    "Nombre": "proin at",
+    "Color": "Mauv",
+    "Precio": 84.37,
+    "Stock": 62,
+    "Codigo": "445207235-6",
+    "Publicado": false,
+    "Fecha_creacion": "01/07/2021"
+  }, {
+    "Id": 57,
+    "Nombre": "vitae nisi nam",
+    "Color": "Orange",
+    "Precio": 84.73,
+    "Stock": 61,
+    "Codigo": "969898454-2",
+    "Publicado": true,
+    "Fecha_creacion": "26/03/2021"
+  }, {
+    "Id": 58,
+    "Nombre": "in hac habitasse platea",
+    "Color": "Turquoise",
+    "Precio": 9.18,
+    "Stock": 50,
+    "Codigo": "143948903-3",
+    "Publicado": true,
+    "Fecha_creacion": "05/06/2021"
+  }, {
+    "Id": 59,
+    "Nombre": "mollis molestie",
+    "Color": "Yellow",
+    "Precio": 27.28,
+    "Stock": 96,
+    "Codigo": "185081988-2",
+    "Publicado": true,
+    "Fecha_creacion": "16/07/2021"
+  }, {
+    "Id": 60,
+    "Nombre": "in faucibus",
+    "Color": "Blue",
+    "Precio": 64.0,
+    "Stock": 63,
+    "Codigo": "325199236-8",
+    "Publicado": true,
+    "Fecha_creacion": "01/02/2021"
+  }, {
+    "Id": 61,
+    "Nombre": "nulla quisque",
+    "Color": "Purple",
+    "Precio": 42.77,
+    "Stock": 42,
+    "Codigo": "538019311-0",
+    "Publicado": false,
+    "Fecha_creacion": "04/03/2021"
+  }, {
+    "Id": 62,
+    "Nombre": "maecenas tristique est",
+    "Color": "Fuscia",
+    "Precio": 53.9,
+    "Stock": 52,
+    "Codigo": "127696057-3",
+    "Publicado": true,
+    "Fecha_creacion": "28/02/2021"
+  }, {
+    "Id": 63,
+    "Nombre": "id massa id nisl",
+    "Color": "Maroon",
+    "Precio": 14.19,
+    "Stock": 63,
+    "Codigo": "601360646-3",
+    "Publicado": false,
+    "Fecha_creacion": "27/07/2021"
+  }, {
+    "Id": 64,
+    "Nombre": "in hac habitasse platea",
+    "Color": "Blue",
+    "Precio": 96.43,
+    "Stock": 85,
+    "Codigo": "255374049-2",
+    "Publicado": false,
+    "Fecha_creacion": "16/08/2021"
+  }, {
+    "Id": 65,
+    "Nombre": "mauris morbi",
+    "Color": "Maroon",
+    "Precio": 6.91,
+    "Stock": 21,
+    "Codigo": "470420062-0",
+    "Publicado": false,
+    "Fecha_creacion": "15/03/2021"
+  }, {
+    "Id": 66,
+    "Nombre": "nisi venenatis tristique fusce",
+    "Color": "Fuscia",
+    "Precio": 80.66,
+    "Stock": 75,
+    "Codigo": "292632678-5",
+    "Publicado": true,
+    "Fecha_creacion": "06/07/2021"
+  }, {
+    "Id": 67,
+    "Nombre": "at turpis a",
+    "Color": "Khaki",
+    "Precio": 96.61,
+    "Stock": 3,
+    "Codigo": "301221997-8",
+    "Publicado": false,
+    "Fecha_creacion": "28/07/2021"
+  }, {
+    "Id": 68,
+    "Nombre": "congue etiam justo",
+    "Color": "Puce",
+    "Precio": 34.59,
+    "Stock": 51,
+    "Codigo": "919125154-0",
+    "Publicado": true,
+    "Fecha_creacion": "18/08/2021"
+  }, {
+    "Id": 69,
+    "Nombre": "dui luctus rutrum",
+    "Color": "Khaki",
+    "Precio": 10.42,
+    "Stock": 64,
+    "Codigo": "163630002-2",
+    "Publicado": true,
+    "Fecha_creacion": "24/12/2020"
+  }, {
+    "Id": 70,
+    "Nombre": "at diam nam",
+    "Color": "Turquoise",
+    "Precio": 15.5,
+    "Stock": 21,
+    "Codigo": "430965234-4",
+    "Publicado": false,
+    "Fecha_creacion": "04/04/2021"
+  }, {
+    "Id": 71,
+    "Nombre": "eget semper rutrum",
+    "Color": "Green",
+    "Precio": 36.08,
+    "Stock": 30,
+    "Codigo": "854864102-9",
+    "Publicado": true,
+    "Fecha_creacion": "27/03/2021"
+  }, {
+    "Id": 72,
+    "Nombre": "magna ac consequat",
+    "Color": "Puce",
+    "Precio": 74.29,
+    "Stock": 65,
+    "Codigo": "255788941-5",
+    "Publicado": true,
+    "Fecha_creacion": "25/06/2021"
+  }, {
+    "Id": 73,
+    "Nombre": "molestie sed justo pellentesque",
+    "Color": "Puce",
+    "Precio": 84.39,
+    "Stock": 90,
+    "Codigo": "286080953-8",
+    "Publicado": false,
+    "Fecha_creacion": "08/04/2021"
+  }, {
+    "Id": 74,
+    "Nombre": "erat quisque",
+    "Color": "Aquamarine",
+    "Precio": 70.43,
+    "Stock": 87,
+    "Codigo": "501381791-9",
+    "Publicado": true,
+    "Fecha_creacion": "06/07/2021"
+  }, {
+    "Id": 75,
+    "Nombre": "amet erat nulla",
+    "Color": "Teal",
+    "Precio": 13.58,
+    "Stock": 1,
+    "Codigo": "163178768-3",
+    "Publicado": false,
+    "Fecha_creacion": "10/11/2021"
+  }, {
+    "Id": 76,
+    "Nombre": "justo eu massa",
+    "Color": "Red",
+    "Precio": 28.43,
+    "Stock": 90,
+    "Codigo": "810370127-0",
+    "Publicado": true,
+    "Fecha_creacion": "13/12/2020"
+  }, {
+    "Id": 77,
+    "Nombre": "ipsum praesent blandit",
+    "Color": "Puce",
+    "Precio": 68.15,
+    "Stock": 58,
+    "Codigo": "750079399-5",
+    "Publicado": true,
+    "Fecha_creacion": "28/05/2021"
+  }, {
+    "Id": 78,
+    "Nombre": "in imperdiet",
+    "Color": "Khaki",
+    "Precio": 56.71,
+    "Stock": 81,
+    "Codigo": "567983251-8",
+    "Publicado": true,
+    "Fecha_creacion": "03/07/2021"
+  }, {
+    "Id": 79,
+    "Nombre": "id sapien",
+    "Color": "Goldenrod",
+    "Precio": 3.56,
+    "Stock": 28,
+    "Codigo": "692653583-3",
+    "Publicado": false,
+    "Fecha_creacion": "09/03/2021"
+  }, {
+    "Id": 80,
+    "Nombre": "aliquet maecenas leo",
+    "Color": "Purple",
+    "Precio": 93.16,
+    "Stock": 75,
+    "Codigo": "007745235-6",
+    "Publicado": false,
+    "Fecha_creacion": "05/11/2021"
+  }, {
+    "Id": 81,
+    "Nombre": "diam nam tristique",
+    "Color": "Crimson",
+    "Precio": 19.11,
+    "Stock": 54,
+    "Codigo": "261172530-6",
+    "Publicado": false,
+    "Fecha_creacion": "09/05/2021"
+  }, {
+    "Id": 82,
+    "Nombre": "dui proin leo odio",
+    "Color": "Maroon",
+    "Precio": 10.04,
+    "Stock": 19,
+    "Codigo": "000298163-7",
+    "Publicado": true,
+    "Fecha_creacion": "16/05/2021"
+  }, {
+    "Id": 83,
+    "Nombre": "congue eget semper rutrum",
+    "Color": "Aquamarine",
+    "Precio": 28.01,
+    "Stock": 1,
+    "Codigo": "512490153-5",
+    "Publicado": false,
+    "Fecha_creacion": "08/08/2021"
+  }, {
+    "Id": 84,
+    "Nombre": "odio justo",
+    "Color": "Teal",
+    "Precio": 97.2,
+    "Stock": 41,
+    "Codigo": "707486936-8",
+    "Publicado": false,
+    "Fecha_creacion": "27/11/2021"
+  }, {
+    "Id": 85,
+    "Nombre": "sed magna at",
+    "Color": "Green",
+    "Precio": 41.54,
+    "Stock": 37,
+    "Codigo": "538689570-2",
+    "Publicado": false,
+    "Fecha_creacion": "04/04/2021"
+  }, {
+    "Id": 86,
+    "Nombre": "proin risus praesent lectus",
+    "Color": "Goldenrod",
+    "Precio": 53.67,
+    "Stock": 30,
+    "Codigo": "260305960-2",
+    "Publicado": false,
+    "Fecha_creacion": "15/07/2021"
+  }, {
+    "Id": 87,
+    "Nombre": "proin interdum",
+    "Color": "Aquamarine",
+    "Precio": 75.23,
+    "Stock": 92,
+    "Codigo": "574371657-9",
+    "Publicado": true,
+    "Fecha_creacion": "26/02/2021"
+  }, {
+    "Id": 88,
+    "Nombre": "integer ac",
+    "Color": "Green",
+    "Precio": 85.9,
+    "Stock": 43,
+    "Codigo": "318030525-8",
+    "Publicado": false,
+    "Fecha_creacion": "29/05/2021"
+  }, {
+    "Id": 89,
+    "Nombre": "velit vivamus vel nulla",
+    "Color": "Puce",
+    "Precio": 35.89,
+    "Stock": 97,
+    "Codigo": "955538042-2",
+    "Publicado": false,
+    "Fecha_creacion": "05/08/2021"
+  }, {
+    "Id": 90,
+    "Nombre": "quis augue luctus",
+    "Color": "Goldenrod",
+    "Precio": 31.16,
+    "Stock": 100,
+    "Codigo": "974372515-6",
+    "Publicado": false,
+    "Fecha_creacion": "01/04/2021"
+  }, {
+    "Id": 91,
+    "Nombre": "orci nullam molestie",
+    "Color": "Red",
+    "Precio": 33.95,
+    "Stock": 69,
+    "Codigo": "822518441-6",
+    "Publicado": true,
+    "Fecha_creacion": "05/10/2021"
+  }, {
+    "Id": 92,
+    "Nombre": "massa id lobortis",
+    "Color": "Aquamarine",
+    "Precio": 91.29,
+    "Stock": 18,
+    "Codigo": "019376248-X",
+    "Publicado": true,
+    "Fecha_creacion": "13/08/2021"
+  }, {
+    "Id": 93,
+    "Nombre": "cras mi",
+    "Color": "Khaki",
+    "Precio": 75.37,
+    "Stock": 60,
+    "Codigo": "417795702-X",
+    "Publicado": false,
+    "Fecha_creacion": "24/06/2021"
+  }, {
+    "Id": 94,
+    "Nombre": "montes nascetur",
+    "Color": "Khaki",
+    "Precio": 17.72,
+    "Stock": 51,
+    "Codigo": "239237457-0",
+    "Publicado": false,
+    "Fecha_creacion": "26/12/2020"
+  }, {
+    "Id": 95,
+    "Nombre": "rhoncus dui",
+    "Color": "Orange",
+    "Precio": 87.51,
+    "Stock": 84,
+    "Codigo": "972077759-1",
+    "Publicado": false,
+    "Fecha_creacion": "17/09/2021"
+  }, {
+    "Id": 96,
+    "Nombre": "ultrices phasellus id",
+    "Color": "Khaki",
+    "Precio": 15.44,
+    "Stock": 45,
+    "Codigo": "697146538-5",
+    "Publicado": false,
+    "Fecha_creacion": "10/06/2021"
+  }, {
+    "Id": 97,
+    "Nombre": "mollis molestie lorem quisque",
+    "Color": "Red",
+    "Precio": 50.11,
+    "Stock": 86,
+    "Codigo": "923378672-2",
+    "Publicado": true,
+    "Fecha_creacion": "01/02/2021"
+  }, {
+    "Id": 98,
+    "Nombre": "in quis justo",
+    "Color": "Puce",
+    "Precio": 88.07,
+    "Stock": 100,
+    "Codigo": "758870593-0",
+    "Publicado": true,
+    "Fecha_creacion": "30/04/2021"
+  }, {
+    "Id": 99,
+    "Nombre": "nam nulla",
+    "Color": "Red",
+    "Precio": 54.2,
+    "Stock": 71,
+    "Codigo": "321833974-X",
+    "Publicado": true,
+    "Fecha_creacion": "01/09/2021"
+  }, {
+    "Id": 100,
+    "Nombre": "cras in purus",
+    "Color": "Purple",
+    "Precio": 28.27,
+    "Stock": 40,
+    "Codigo": "126935353-5",
+    "Publicado": false,
+    "Fecha_creacion": "15/02/2021"
+  }]
