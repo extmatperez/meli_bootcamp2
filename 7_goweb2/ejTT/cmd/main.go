@@ -13,6 +13,7 @@ func main() {
 	producto := handler.NewProducto(service)
 	router.GET("/producto", producto.GetAll())
 	router.POST("/producto", producto.Store())
+	router.GET("/producto/:id", producto.GetProductById())
 
 	router.Run()
 
