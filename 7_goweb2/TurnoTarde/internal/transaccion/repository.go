@@ -18,6 +18,7 @@ type Transaccion struct {
 var lastID int
 var transacciones []Transaccion
 var fileName = "./transactions.json"
+
 type Repository interface {
 	GetAll() ([]Transaccion, error)
 	Store(id int, codigo, moneda , monto, emisor, receptor,fecha string) (Transaccion, error)
@@ -40,7 +41,7 @@ func(repo *repository) GetAll() ([]Transaccion, error){
 	if(err1 != nil) {
 		return nil,err1
 	}
-	
+
 	var transaction []Transaccion
 
 	err := json.Unmarshal([]byte(file), &transaction)
