@@ -28,22 +28,29 @@ package main
 //Estructuras
 
 type tienda struct {
+	Productos []producto
 }
 
 type producto struct {
+	Tipo   string
+	Nombre string
+	Precio float64
 }
 
 //Interfaces
 
 type Producto interface {
+	CalcularCosto()
 }
 
 type Ecommerce interface {
+	Total()
+	Agregar()
 }
 
 //Funciones
 
-func nuevoProducto() {
+func nuevoProducto(string) {
 
 }
 
@@ -53,6 +60,13 @@ func nuevaTienda() {
 
 //Métodos
 
-func (v producto) calcularCosto() {
+func (v producto) CalcularCosto() {
+
+}
+func (v producto) Total() {
+
+}
+
+func (v producto) Agregar() {
 
 }
