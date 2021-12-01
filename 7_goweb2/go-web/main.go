@@ -121,7 +121,7 @@ func addProduct(ctx *gin.Context) {
 	lenthProds := len(prodList)
 	//tipes := reflect.TypeOf(prodList)
 	prodValidate := validation(prod)
-	//token := ctx.GetHeader("token")
+	token := ctx.GetHeader("token")
 	if prodValidate != "" {
 		ctx.String(400, prodValidate)
 		return
@@ -137,8 +137,19 @@ func addProduct(ctx *gin.Context) {
 		} else {
 			prod.ID = prodList[lenthProds-1].ID + 1
 		}
-		prodList = append(prodList, prod)
-		ctx.JSON(200, prod)
+		if token != "" {
+			if token == "123456" {
+				if err != nil {
+					ctx.String(400, "Ha ocurrido un error")
+				}
+				prodList = append(prodList, prod)
+				ctx.JSON(200, prod)
+			} else {
+				ctx.String(401, "No tiene permisos para realizar la peticion solicitada")
+			}
+		} else {
+			ctx.String(400, "No ingreso token")
+		}
 	}
 }
 
