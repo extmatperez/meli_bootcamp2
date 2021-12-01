@@ -80,8 +80,33 @@ func (controller *Producto) Store() gin.HandlerFunc {
 		err := c.ShouldBindJSON(&nuevoProducto)
 
 		if err != nil {
-			c.String(400, "Hubo un error al recibir los datos: %v", err.Error())
+			c.String(400, "Hubo un error al recibir los datos en el body: %v", err.Error())
 		} else {
+
+			if nuevoProducto.Nombre == "" {
+				c.String(400, "Error: el nombre es obligatorio")
+				return
+			}
+
+			if nuevoProducto.Color == "" {
+				c.String(400, "Error: El color es obligatorio")
+				return
+			}
+
+			if nuevoProducto.Precio == "" {
+				c.String(400, "Error: El precio es obligatorio")
+				return
+			}
+
+			if nuevoProducto.Codigo == "" {
+				c.String(400, "Error: El stock es obligatorio")
+				return
+			}
+
+			if nuevoProducto.FechaCreacion == "" {
+				c.String(400, "Error: La fecha de cración es obligatoria")
+				return
+			}
 
 			response, err := controller.service.Store(nuevoProducto.Nombre, nuevoProducto.Color, nuevoProducto.Precio, nuevoProducto.Stock, nuevoProducto.Codigo, nuevoProducto.Publicado, nuevoProducto.FechaCreacion)
 
@@ -112,6 +137,31 @@ func (controller *Producto) Update() gin.HandlerFunc {
 			if err != nil {
 				c.String(400, "No se pudo leer el body")
 			} else {
+
+				if productoActualizado.Nombre == "" {
+					c.String(400, "Error: el nombre es obligatorio")
+					return
+				}
+
+				if productoActualizado.Color == "" {
+					c.String(400, "Error: El color es obligatorio")
+					return
+				}
+
+				if productoActualizado.Precio == "" {
+					c.String(400, "Error: El precio es obligatorio")
+					return
+				}
+
+				if productoActualizado.Codigo == "" {
+					c.String(400, "Error: El stock es obligatorio")
+					return
+				}
+
+				if productoActualizado.FechaCreacion == "" {
+					c.String(400, "Error: La fecha de cración es obligatoria")
+					return
+				}
 
 				productoActualizado, err := controller.service.Update(id, productoActualizado.Nombre, productoActualizado.Color, productoActualizado.Precio, productoActualizado.Stock, productoActualizado.Codigo, productoActualizado.Publicado, productoActualizado.FechaCreacion)
 
@@ -166,16 +216,22 @@ func (controller *Producto) UpdateNombrePrecio() gin.HandlerFunc {
 				c.String(400, "No se pudo leer el body")
 			} else {
 
-				if productoActualizado.Nombre == "" || productoActualizado.Precio == "" {
-					c.String(404, "El nombre y el precio no pueden estar vacíos")
-				} else {
-					productoActualizado, err := controller.service.UpdateNombrePrecio(id, productoActualizado.Nombre, productoActualizado.Precio)
+				if productoActualizado.Nombre == "" {
+					c.String(400, "Error: el nombre es obligatorio")
+					return
+				}
 
-					if err != nil {
-						c.String(404, err.Error())
-					} else {
-						c.JSON(200, productoActualizado)
-					}
+				if productoActualizado.Precio == "" {
+					c.String(400, "Error: El precio es obligatorio")
+					return
+				}
+
+				productoActualizado, err := controller.service.UpdateNombrePrecio(id, productoActualizado.Nombre, productoActualizado.Precio)
+
+				if err != nil {
+					c.String(404, err.Error())
+				} else {
+					c.JSON(200, productoActualizado)
 				}
 
 			}
