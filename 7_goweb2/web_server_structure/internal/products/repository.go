@@ -18,18 +18,19 @@ type Product struct {
 }
 
 type Repository interface {
-	getAll() ([]Product, error)
-	getProductbyID() (Product, error)
-	addProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error)
-	setLastId() (int, error)
+	GetAll() ([]Product, error)
+	// getProductbyID() (Product, error)
+	AddProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error)
+	SetLastId() (int, error)
 }
 
 type repository struct {
 }
 
 var prodList []Product
-var lastID int
-var tokenPrueba string
+var lastIDrepo int
+
+// var tokenPrueba string
 
 /////////////// FUNCIONES /////////////////
 
@@ -37,7 +38,7 @@ func NewRepository() Repository {
 	return &repository{}
 }
 
-func readData() {
+func ReadData() {
 
 	readProducts, _ := os.ReadFile("./products.json")
 
@@ -47,13 +48,19 @@ func readData() {
 
 }
 
-func (repo *repository) getAll() ([]Product, error) {
+func (repo *repository) GetAll() ([]Product, error) {
 	return prodList, nil
 }
 
-func (repo *repository) addProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error) {
-	product := Product(id, name, color, price, stock, code, published, created)
-	lastID = id
-	prodList := append(prodList, product)
-	return product, nil
+func (repo *repository) AddProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error) {
+	newProduct := Product{id, name, color, price, stock, code, published, created}
+	lastIDrepo = id
+	prodList = append(prodList, newProduct)
+	return newProduct, nil
+}
+
+func (repo *repository) SetLastId() (int, error) {
+	length := len(prodList) - 1
+	lastIDrepo = prodList[length].ID
+	return lastIDrepo, nil
 }

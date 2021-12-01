@@ -1,9 +1,11 @@
-package server
+package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	products "github.com/extmatperez/meli_bootcamp2/pecora_estefania/7_goweb2/web_server_structure/internal/products"
+	"github.com/gin-gonic/gin"
+)
 
 type request struct {
-	ID        int     `json:"id"`
 	Name      string  `json:"name"`
 	Color     string  `json:"color"`
 	Price     float64 `json:"price"`
@@ -13,26 +15,38 @@ type request struct {
 	Created   string  `json:"created"`
 }
 
-func getAll(c *gin.Context) handlers {
+type Product struct {
+	service products.Service
+}
 
-	// page, _ := strconv.ParseInt(c.Request.URL.Query().Get("page"), 10, 64)
-	// limit, _ := strconv.ParseInt(c.Request.URL.Query().Get("limit"), 10, 64)
+func NewProduct(serv products.Service) *Product {
+	return &Product{service: serv}
 
-	// startIndex := (page - 1) * limit
-	// endIndex := page * limit
+}
 
-	// var paginatedResults []Products
-	// paginatedResults = prodList[startIndex:endIndex]
-	token := c.GetHeader("token")
-	if token != tokenPrueba {
-		c.JSON(401, gin.H{
-			"error": "token inválido",
-		})
-	} else {
+func (controller *Product) getAll() gin.HandlerFunc {
+	return func(c *gin.Context) {
 
-		c.JSON(200, gin.H{
-			"data": prodList,
-		})
+		// page, _ := strconv.ParseInt(c.Request.URL.Query().Get("page"), 10, 64)
+		// limit, _ := strconv.ParseInt(c.Request.URL.Query().Get("limit"), 10, 64)
+
+		// startIndex := (page - 1) * limit
+		// endIndex := page * limit
+
+		// var paginatedResults []Products
+		// paginatedResults = prodList[startIndex:endIndex]
+		token := c.GetHeader("token")
+		if token != tokenPrueba {
+			c.JSON(401, gin.H{
+				"error": "token inválido",
+			})
+		} else {
+
+			c.JSON(200, gin.H{
+				"data": prodList,
+			})
+		}
+
 	}
 
 }
