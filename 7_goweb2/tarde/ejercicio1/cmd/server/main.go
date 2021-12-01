@@ -1,15 +1,19 @@
 package main
 
-import "github.com/gin-gonic/gin"
-			"github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/7_goweb2/tarde/ejercicio1/cmd/server/handler"
-			user "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/7_goweb2/tarde/ejercicio1/internal/users"
+import (
+	"github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/7_goweb2/tarde/ejercicio1/cmd/server/handler"
+
+	users "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/7_goweb2/tarde/ejercicio1/internal/users"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	router := gin.Default()
 
-	repo := user.NewRepository()
-	service := user.NewService(repo)
-	controller := user.NewProduct(service)
+	repo := users.NewRepository()
+	service := users.NewService(repo)
+	controller := handler.NewUser(service)
 
 	router.GET("/product/get", controller.GetAll())
 	router.POST("/product/add", controller.Store())

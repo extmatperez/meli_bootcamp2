@@ -3,6 +3,9 @@ package internal
 type Service interface {
 	GetAll() ([]User, error)
 	Store(nombre, apellido, email string, edad, altura int, activo, fechaCreacion string) (User, error)
+	Update(id int, nombre, apellido, email string, edad, altura int, activo, fechaCreacion string) (User, error)
+	UpdateNombre(id int, nombre string) (User, error)
+	Delete(id int) error
 }
 type service struct {
 	repository Repository
@@ -28,4 +31,16 @@ func (ser *service) Store(nombre, apellido, email string, edad, altura int, acti
 		return User{}, err
 	}
 	return p, nil
+}
+
+func (ser *service) Update(id int, nombre, apellido, email string, edad, altura int, activo, fechaCreacion string) (User, error) {
+	return ser.repository.Update(id, nombre, apellido, email, edad, altura, activo, fechaCreacion)
+}
+
+func (ser *service) UpdateNombre(id int, nombre string) (User, error) {
+	return ser.repository.UpdateNombre(id, nombre)
+}
+
+func (ser *service) Delete(id int) error {
+	return ser.repository.Delete(id)
 }

@@ -1,4 +1,4 @@
-module github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/go_simple_module
+module github.com/extmatperez/meli_bootcamp2/tree/brian_beltran
 
 go 1.17
 

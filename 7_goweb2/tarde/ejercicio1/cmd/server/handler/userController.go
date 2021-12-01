@@ -1,11 +1,11 @@
 package handler
 
 import (
+	users "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/7_goweb2/tarde/ejercicio1/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-	ID            int    `json:"id"`
+type request struct {
 	Nombre        string `json:"nombre"`
 	Apellido      string `json:"apellido"`
 	Email         string `json:"email"`
@@ -15,55 +15,43 @@ type User struct {
 	FechaCreacion string `json:"fechaCreacion"`
 }
 
-var users []User
-
-func main() {
-
-	router := gin.Default()
-	router.POST("/add", AddUser)
-
-	router.Run()
-
+type User struct {
+	service users.Service
 }
 
-func AddUser(ctx *gin.Context) {
-	var usr User
-	err := ctx.ShouldBindJSON(&usr)
-	token := validToken(ctx)
-	if token {
+func NewUser(ser users.Service) *User {
+	return &User{service: ser}
+}
+
+func (per *User) GetAll() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		personas, err := per.service.GetAll()
 
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": err.Error(),
-			})
-
+			ctx.String(400, "Hubo un error %v", err)
 		} else {
-
-			if len(users) == 0 {
-				usr.ID = 1
-			} else {
-				usr.ID = users[len(users)-1].ID + 1
-			}
-			users = append(users, usr)
-			ctx.JSON(200, usr)
+			ctx.JSON(200, personas)
 		}
 	}
-
 }
 
-func validToken(ctx *gin.Context) bool {
+func (controller *User) Store() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 
-	token := ctx.GetHeader("token")
+		var usr request
 
-	if token != "" {
-		if token == "123456" {
-			return true
+		err := ctx.ShouldBindJSON(&usr)
+
+		if err != nil {
+			ctx.String(400, "Hubo un error al querer cargar una persona %v", err)
 		} else {
-			ctx.String(401, "no tiene permisos para realizar la petición solicitada")
-			return false
+			response, err := controller.service.Store(usr.Nombre, usr.Apellido, usr.Email, usr.Edad, usr.Altura, usr.Activo, usr.FechaCreacion)
+			if err != nil {
+				ctx.String(400, "No se pudo cargar la persona %v", err)
+			} else {
+				ctx.JSON(200, response)
+			}
 		}
-	} else {
-		ctx.String(400, "No ingreso un token")
-		return false
+
 	}
 }
