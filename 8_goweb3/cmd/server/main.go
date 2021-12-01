@@ -19,6 +19,7 @@ func main() {
 		products.GET("/load", productsController.LoadProducts())
 		products.GET("/:id", productsController.FindById())
 		products.POST("/", productsController.Store())
+		products.PUT("/:id", productsController.Update())
 	}
 
 	router.Run()

@@ -3,27 +3,30 @@ package internal
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 )
 
 type Product struct {
-	Id         int64  `json:"id"`
-	Name       string `json:"name" binding:"required"`
-	Color      string `json:"color" binding:"required"`
-	Stock      int    `json:"stock" binding:"required"`
-	Code       string `json:"code" binding:"required"`
-	Published  bool   `json:"published" binding:"required"`
-	Created_at string `json:"created_at" binding:"required"`
+	Id         int64   `json:"id"`
+	Name       string  `json:"name" binding:"required"`
+	Color      string  `json:"color" binding:"required"`
+	Price      float64 `json:"price" binding:"required"`
+	Stock      int     `json:"stock" binding:"required"`
+	Code       string  `json:"code" binding:"required"`
+	Published  bool    `json:"published" binding:"required"`
+	Created_at string  `json:"created_at" binding:"required"`
 }
 
 var products []Product
 
 type Repository interface {
 	GetAll() ([]Product, error)
-	Store(id int64, name string, color string, stock int, code string, published bool, createdAt string) (Product, error)
+	Store(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error)
 	FindById(id int64) (Product, error)
 	LastId() (int64, error)
 	LoadProducts() error
+	Update(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error)
 }
 
 type repository struct{}
@@ -32,11 +35,12 @@ func (r *repository) GetAll() ([]Product, error) {
 	return products, nil
 }
 
-func (r *repository) Store(id int64, name string, color string, stock int, code string, published bool, createdAt string) (Product, error) {
+func (r *repository) Store(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
 	product := Product{
 		Id:         id,
 		Name:       name,
 		Color:      color,
+		Price:      price,
 		Stock:      stock,
 		Code:       code,
 		Published:  published,
@@ -86,6 +90,29 @@ func (r *repository) LoadProducts() error {
 	products = allProducts
 
 	return nil
+}
+
+func (r *repository) Update(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
+	product := Product{
+		Id:         id,
+		Name:       name,
+		Color:      color,
+		Price:      price,
+		Stock:      stock,
+		Code:       code,
+		Published:  published,
+		Created_at: createdAt,
+	}
+
+	for i := 0; i < len(products); i++ {
+		if products[i].Id == id {
+			products[i] = product
+
+			return product, nil
+		}
+	}
+
+	return Product{}, fmt.Errorf("Product %d not found", id)
 }
 
 func NewRepository() Repository {

@@ -8,10 +8,11 @@ import (
 
 type Service interface {
 	GetAll() ([]Product, error)
-	Store(name string, color string, stock int, code string, published bool, created_at string) (Product, error)
+	Store(name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error)
 	FindById(id int64) (Product, error)
 	FilterProducts(allProducts []Product, queryParams map[string]string) []Product
 	LoadProducts() error
+	Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error)
 }
 
 type service struct {
@@ -28,14 +29,14 @@ func (s *service) GetAll() ([]Product, error) {
 	return products, nil
 }
 
-func (s *service) Store(name string, color string, stock int, code string, published bool, created_at string) (Product, error) {
+func (s *service) Store(name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error) {
 	newId, err := s.repository.LastId()
 
 	if err != nil {
 		return Product{}, err
 	}
 
-	product, err := s.repository.Store(newId+1, name, color, stock, code, published, created_at)
+	product, err := s.repository.Store(newId+1, name, color, price, stock, code, published, created_at)
 
 	if err != nil {
 		return Product{}, err
@@ -107,6 +108,10 @@ func (s *service) LoadProducts() error {
 	}
 
 	return nil
+}
+
+func (s *service) Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error) {
+	return s.repository.Update(id, name, color, price, stock, code, published, created_at)
 }
 
 func NewService(r Repository) Service {
