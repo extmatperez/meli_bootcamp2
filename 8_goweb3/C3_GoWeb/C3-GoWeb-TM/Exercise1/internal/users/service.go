@@ -14,14 +14,11 @@ type Service interface {
 	Store(first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 	LoadUser() error
 	Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
+	Delete(id int) error
 }
 
 type service struct {
 	repository Repository
-}
-
-func NewService(repository Repository) Service {
-	return &service{repository: repository}
 }
 
 func (ser *service) GetAll() ([]User, error) {
@@ -58,4 +55,12 @@ func (ser *service) LoadUser() error {
 
 func (ser *service) Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {
 	return ser.repository.Update(id, first_name, last_name, email, age, height, active, create_date)
+}
+
+func (ser *service) Delete(id int) error {
+	return ser.repository.Delete(id)
+}
+
+func NewService(repository Repository) Service {
+	return &service{repository: repository}
 }

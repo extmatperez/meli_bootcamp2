@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"strconv"
 
 	users "github.com/extmatperez/meli_bootcamp2/8_goweb3/C3_GoWeb/C3-GoWeb-TM/Exercise1/internal/users"
@@ -35,7 +36,7 @@ func (us *User) GetAll() gin.HandlerFunc {
 		users, err := us.service.GetAll()
 
 		if err != nil {
-			ctx.String(400, "Hubo un error: %v", err)
+			ctx.String(400, "There was a mistake: %v", err)
 		} else {
 			ctx.JSON(200, users)
 		}
@@ -49,11 +50,11 @@ func (controller *User) Store() gin.HandlerFunc {
 
 		err := ctx.ShouldBind(&user)
 		if err != nil {
-			ctx.String(400, "Hubo un error al querer cargar una persona: %v", err)
+			ctx.String(400, "There was an error wanting to load a user: %v", err)
 		} else {
 			response, err := controller.service.Store(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate)
 			if err != nil {
-				ctx.String(400, "No se pudo cargar la persona %v", err)
+				ctx.String(400, "Could not load user %v", err)
 			} else {
 				ctx.JSON(200, response)
 			}
@@ -117,5 +118,21 @@ func (controller *User) Update() gin.HandlerFunc {
 			}
 		}
 
+	}
+}
+
+func (controller *User) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "invalid ID"})
+			return
+		}
+		err = controller.service.Delete(int(id))
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, gin.H{"data": fmt.Sprintf("The user %d is deleted", id)})
 	}
 }

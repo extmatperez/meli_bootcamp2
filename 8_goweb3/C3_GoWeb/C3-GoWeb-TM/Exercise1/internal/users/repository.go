@@ -36,6 +36,7 @@ type Repository interface {
 	LastId() (int, error)
 	LoadUser() error
 	Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
+	Delete(id int) error
 }
 
 type repository struct{}
@@ -87,9 +88,26 @@ func (repo *repository) Update(id int, first_name string, last_name string, emai
 		}
 	}
 	if !update {
-		return User{}, fmt.Errorf("Usuario %d no encontrado", id)
+		return User{}, fmt.Errorf("User %d not found", id)
 	}
 	return us, nil
+}
+
+func (repo *repository) Delete(id int) error {
+	deleted := false
+	var index int
+
+	for i := range users {
+		if users[i].ID == id {
+			index = i
+			deleted = true
+		}
+	}
+	if !deleted {
+		return fmt.Errorf("User %d not found", id)
+	}
+	users = append(users[:index], users[index+1:]...)
+	return nil
 }
 
 func NewRepository() Repository {

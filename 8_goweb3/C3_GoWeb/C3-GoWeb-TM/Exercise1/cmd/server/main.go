@@ -14,8 +14,11 @@ func main() {
 	service := users.NewService(repo)
 	controller := handler.NewUser(service)
 
-	router.GET("/users/get", controller.GetAll())
-	router.POST("/users/add", controller.Store())
-	router.PUT("/users/:id", controller.Update())
+	routerUser := router.Group("/users")
+	routerUser.GET("/get", controller.GetAll())
+	routerUser.POST("/add", controller.Store())
+	routerUser.PUT("/:id", controller.Update())
+	routerUser.DELETE("/:id", controller.Delete())
+
 	router.Run()
 }
