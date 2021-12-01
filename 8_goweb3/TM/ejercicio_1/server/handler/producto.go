@@ -1,7 +1,7 @@
 package handler
 
 import (
-	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/7_goweb2/Tarde/ejercicio_2/internal/productos"
+	products "https://github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/Ma%C3%B1ana/ejercicio_1/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 

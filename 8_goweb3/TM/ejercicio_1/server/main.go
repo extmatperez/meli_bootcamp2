@@ -1,8 +1,8 @@
 package main
 
 import (
-	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/7_goweb2/Tarde/ejercicio_2/internal/productos"
 	"github.com/extmatperez/meli_bootcamp2/tree/parra_diego/7_goweb2/Tarde/ejercicio_2/server/handler"
+
 	"github.com/gin-gonic/gin"
 )
 
