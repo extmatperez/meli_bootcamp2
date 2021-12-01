@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"net/http"
+	"strconv"
+
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/soto_jose/8_goweb3/transactions"
 	"github.com/gin-gonic/gin"
 )
@@ -50,6 +53,29 @@ func (controller *Transaction) Store() gin.HandlerFunc {
 			} else {
 				ctx.JSON(200, response)
 			}
+		}
+
+	}
+}
+
+func (controller *Transaction) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var body request
+
+		err := ctx.ShouldBindJSON(&body)
+		paramId := ctx.Param("id")
+		id, parseErr := strconv.Atoi(paramId)
+
+		if err != nil || parseErr != nil {
+			ctx.AbortWithError(http.StatusBadRequest, err)
+		}
+
+		response, err := controller.service.Update(id, body.Code, body.Currency, body.Amount, body.Sender, body.Receiver, body.Date)
+		if err != nil {
+			ctx.AbortWithError(http.StatusNotFound, err)
+		} else {
+			ctx.JSON(200, response)
 		}
 
 	}

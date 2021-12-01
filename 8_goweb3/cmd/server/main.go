@@ -15,8 +15,9 @@ func main() {
 
 	transactions := router.Group("/transactions")
 
-	transactions.GET("/transactions", controller.GetAll())
-	transactions.POST("/transactions", controller.Store())
+	transactions.GET("", controller.GetAll())
+	transactions.POST("", controller.Store())
+	transactions.PUT("/:id", controller.Update())
 
 	router.Run()
 }

@@ -3,6 +3,7 @@ package internal
 type Service interface {
 	GetAll() ([]Transaction, error)
 	Store(code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
+	Update(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
 }
 
 type service struct {
@@ -34,5 +35,15 @@ func (ser *service) Store(code string, currency string, amount int, sender strin
 		return Transaction{}, err
 	}
 
+	return transaction, nil
+}
+
+func (ser *service) Update(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error) {
+
+	transaction, err := ser.repository.Update(id, code, currency, amount, sender, receiver, date)
+
+	if err != nil {
+		return Transaction{}, err
+	}
 	return transaction, nil
 }
