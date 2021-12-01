@@ -17,14 +17,14 @@ var lastId int
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
-	LastId(int, error)
+	LastId() (int, error)
 }
 
 type repository struct{}
 
-// func NewRepository() Repository {
-// 	return &repository{}
-// }
+func NewRepository() Repository {
+	return &repository{}
+}
 
 func (repo *repository) GetAll() ([]Product, error) {
 	return products, nil
