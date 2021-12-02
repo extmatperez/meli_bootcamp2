@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/arevalo_ivan/go_web/internal/transaction"
@@ -24,8 +25,25 @@ func NewController(ser transactions.Service) *Controller {
 	return &Controller{service: ser}
 }
 
+func tokenValidator(ctx *gin.Context) bool {
+	token := ctx.GetHeader("token")
+	if token == "" {
+		ctx.String(400, "Missing token")
+		return false
+	}
+	tokenENV := os.Getenv("TOKEN")
+	if token != tokenENV {
+		ctx.String(404, "Wrong token")
+		return false
+	}
+	return true
+}
+
 func (contr *Controller) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if !tokenValidator(ctx) {
+			return
+		}
 		transactions, err := contr.service.GetAll()
 
 		if err != nil {
@@ -38,6 +56,10 @@ func (contr *Controller) GetAll() gin.HandlerFunc {
 
 func (contr *Controller) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if !tokenValidator(ctx) {
+			return
+		}
+
 		var trans request
 
 		err := ctx.ShouldBindJSON(&trans)
@@ -57,6 +79,10 @@ func (contr *Controller) Store() gin.HandlerFunc {
 
 func (controller *Controller) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !tokenValidator(ctx) {
+			return
+		}
 
 		var trans request
 
@@ -84,6 +110,9 @@ func (controller *Controller) Update() gin.HandlerFunc {
 
 func (controller *Controller) UpdateReceptor() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if !tokenValidator(ctx) {
+			return
+		}
 
 		var trans request
 
@@ -115,6 +144,9 @@ func (controller *Controller) UpdateReceptor() gin.HandlerFunc {
 
 func (controller *Controller) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if !tokenValidator(ctx) {
+			return
+		}
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 
