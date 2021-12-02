@@ -142,7 +142,7 @@ func (p *Product) Update() gin.HandlerFunc {
 		}
 
 		var requiredFields []string
-		requiredFields = append(requiredFields, "name", "Color", "Price", "Stock", "Code", "Published", "Created_at")
+		requiredFields = append(requiredFields, "Name", "Color", "Price", "Stock", "Code", "Published", "Created_at")
 
 		validated, message := validateRequiredData(productRequest, requiredFields)
 
