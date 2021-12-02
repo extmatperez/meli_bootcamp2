@@ -133,7 +133,7 @@ func filtrar(sliceTransacciones []transaccion, campo string, valor string) []tra
 
 func filterTrans(c *gin.Context) {
 	var etiquetas []string
-	etiquetas = append(etiquetas, "moneda", "emisor", "receptor", "fecha_creacion", "codigo_transaccion")
+	etiquetas = append(etiquetas, "moneda", "emisor", "receptor", "fechacreacion", "codigotransaccion")
 	var transaccionesFiltradas []transaccion
 
 	transaccionesFiltradas = transacciones
