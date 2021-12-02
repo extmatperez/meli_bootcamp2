@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "nombre": "vaso",
+    "color": "asd",
+    "precio": 16,
+    "stock": 33,
+    "codigo": "7-050 - asdfsdf asd fsd f",
+    "publicado": true,
+    "fechaCreacion": "12/9/2021"
+  }
+]
