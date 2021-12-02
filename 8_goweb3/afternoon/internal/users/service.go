@@ -5,7 +5,7 @@ type Service interface {
 	Store(name, lastName, email string, age int, height float64, active bool, created string) (User, error)
 	Update(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error)
 	UpdateLastNameAge(id int, lastName string, age int) (User, error)
-	Delete(id int) error
+	Delete(id int) (bool, error)
 }
 
 type service struct {
@@ -60,11 +60,11 @@ func (ser *service) UpdateLastNameAge(id int, lastName string, age int) (User, e
 	return user, nil
 }
 
-func (ser *service) Delete(id int) error {
-	err := ser.repository.Delete(id)
+func (ser *service) Delete(id int) (bool, error) {
+	couldDelete, err := ser.repository.Delete(id)
 	if err != nil {
-		return err
+		return couldDelete, err
 	}
 
-	return nil
+	return couldDelete, nil
 }

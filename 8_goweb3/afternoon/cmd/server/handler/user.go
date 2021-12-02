@@ -6,6 +6,8 @@ import (
 	"strconv"
 
 	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/pkg/web"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,9 +38,9 @@ func (u *User) GetAll() gin.HandlerFunc {
 		users, err := u.service.GetAll()
 
 		if err != nil {
-			ctx.JSON(400, "There was an error "+err.Error())
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("There was an error: %v", err)))
 		} else {
-			ctx.JSON(200, users)
+			ctx.JSON(200, web.NewResponse(200, users, ""))
 		}
 	}
 }
@@ -53,21 +55,17 @@ func (u *User) Store() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&user)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"Error": "There was an error when storing the user: " + err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("There was an error when storing the user: %v", err)))
 			return
 		}
 
 		newUser, errStore := u.service.Store(user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created)
 		if errStore != nil {
-			ctx.JSON(404, gin.H{
-				"Error": "There was an error when storing the user: " + errStore.Error(),
-			})
+			ctx.JSON(500, web.NewResponse(500, nil, fmt.Sprintf("There was an error when storing the user: %v", err)))
 			return
 		}
 
-		ctx.JSON(200, newUser)
+		ctx.JSON(200, web.NewResponse(200, newUser, ""))
 	}
 }
 
@@ -79,39 +77,34 @@ func (u *User) Update() gin.HandlerFunc {
 
 		id, errId := strconv.Atoi(ctx.Param("id"))
 		if errId != nil {
-			ctx.JSON(400, gin.H{
-				"error": "Invalid ID",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "Invalid ID"))
 		}
 
 		var user request
 		err := ctx.ShouldBindJSON(&user)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": "There was an error when storing the user: " + err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("There was an error when updating the user: %v", err)))
 			return
 		}
 
 		checkMsg := validateUpdateFields(user)
 		if checkMsg != "" {
-			ctx.JSON(400, gin.H{
-				"error": fmt.Sprintf("Required field/s missing: %s", checkMsg),
-			})
-
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Required field/s missing: %s", checkMsg)))
 			return
 		}
 
 		updatedUser, errStore := u.service.Update(id, user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created)
 		if errStore != nil {
-			ctx.JSON(404, gin.H{
-				"Error": "There was an error when storing the user: " + errStore.Error(),
-			})
+			ctx.JSON(500, web.NewResponse(500, nil, fmt.Sprintf("There was an error when updating the user: %v", errStore)))
 			return
 		}
 
-		ctx.JSON(200, updatedUser)
+		if updatedUser == (users.User{}) {
+			ctx.JSON(404, web.NewResponse(404, nil, fmt.Sprintf("User %d not found", id)))
+		}
+
+		ctx.JSON(200, web.NewResponse(200, updatedUser, ""))
 	}
 }
 
@@ -123,36 +116,31 @@ func (u *User) UpdateLastNameAge() gin.HandlerFunc {
 
 		id, errId := strconv.Atoi(ctx.Param("id"))
 		if errId != nil {
-			ctx.JSON(400, gin.H{
-				"error": "Invalid ID",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "Invalid ID"))
 		}
 
 		var user request
 		err := ctx.ShouldBindJSON(&user)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": "There was an error when storing the user: " + err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("There was an error when updating the user: %v", err)))
 			return
 		}
 
 		checkMsg := validatePatchFields(user)
 		if checkMsg != "" {
-			ctx.JSON(400, gin.H{
-				"error": fmt.Sprintf("Required field/s missing: %s", checkMsg),
-			})
-
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Required field/s missing: %s", checkMsg)))
 			return
 		}
 
 		updatedUser, errStore := u.service.UpdateLastNameAge(id, user.LastName, user.Age)
 		if errStore != nil {
-			ctx.JSON(404, gin.H{
-				"Error": "There was an error when storing the user: " + errStore.Error(),
-			})
+			ctx.JSON(500, web.NewResponse(500, nil, fmt.Sprintf("There was an error when updating the user:  %v", err)))
 			return
+		}
+
+		if updatedUser == (users.User{}) {
+			ctx.JSON(404, web.NewResponse(404, nil, fmt.Sprintf("User %d not found", id)))
 		}
 
 		ctx.JSON(200, updatedUser)
@@ -167,23 +155,22 @@ func (u *User) Delete() gin.HandlerFunc {
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": "Invalid ID",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "Invalid ID"))
 			return
 		}
 
-		err = u.service.Delete(id)
-		if err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+		couldDelete, errDelete := u.service.Delete(id)
+		if errDelete != nil {
+			ctx.JSON(500, web.NewResponse(500, nil, fmt.Sprintf("There was an error when deleting the user:  %v", errDelete)))
 			return
 		}
 
-		ctx.JSON(200, gin.H{
-			"data": fmt.Sprintf("The user %d has been deleted", id),
-		})
+		if couldDelete {
+			ctx.JSON(500, web.NewResponse(404, nil, fmt.Sprintf("User %d not found", id)))
+			return
+		}
+
+		ctx.JSON(200, web.NewResponse(500, fmt.Sprintf("The user %d has been deleted", id), ""))
 	}
 }
 
@@ -226,9 +213,7 @@ func validateToken(ctx *gin.Context) bool {
 	var valid bool = true
 	token := ctx.Request.Header.Get("token")
 	if token != os.Getenv("TOKEN") {
-		ctx.JSON(401, gin.H{
-			"error": "Invalid token",
-		})
+		ctx.JSON(401, web.NewResponse(401, nil, "Invalid token"))
 		valid = false
 	}
 

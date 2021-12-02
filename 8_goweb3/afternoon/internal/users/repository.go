@@ -25,7 +25,7 @@ type Repository interface {
 	LastID() (int, error)
 	Update(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error)
 	UpdateLastNameAge(id int, lastName string, age int) (User, error)
-	Delete(id int) error
+	Delete(id int) (bool, error)
 }
 
 type repository struct {
@@ -82,7 +82,7 @@ func (r *repository) Update(id int, name, lastName, email string, age int, heigh
 	}
 
 	if i == len(users) {
-		return User{}, fmt.Errorf("User %d not found", id)
+		return User{}, nil
 	}
 
 	users[i] = u
@@ -105,7 +105,7 @@ func (r *repository) UpdateLastNameAge(id int, lastName string, age int) (User, 
 	}
 
 	if i == len(users) {
-		return User{}, fmt.Errorf("User %d not found", id)
+		return User{}, nil
 	}
 
 	users[i].LastName = lastName
@@ -119,7 +119,7 @@ func (r *repository) UpdateLastNameAge(id int, lastName string, age int) (User, 
 	return users[i], nil
 }
 
-func (r *repository) Delete(id int) error {
+func (r *repository) Delete(id int) (bool, error) {
 	var users []User
 	r.db.Read(&users)
 
@@ -129,15 +129,15 @@ func (r *repository) Delete(id int) error {
 	}
 
 	if i == len(users) {
-		return fmt.Errorf("User %d not found", id)
+		return false, nil
 	}
 
 	users = append(users[:i], users[i+1:]...)
 	err := r.db.Write(users)
 
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	return nil
+	return true, nil
 }
