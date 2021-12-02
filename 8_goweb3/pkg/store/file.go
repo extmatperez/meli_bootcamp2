@@ -21,8 +21,8 @@ type FileStore struct {
 }
 
 
-func New(store TypeFile,filename string) Store{
-	switch(store){
+func New(typeFile TypeFile,filename string) Store{
+	switch(typeFile){
 	case FileType:
 		return &FileStore{filename}
 	}

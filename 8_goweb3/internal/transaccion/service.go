@@ -53,12 +53,12 @@ func (ser *service) Store(codigo, moneda , monto, emisor, receptor,fecha string)
 	}
 	
 	lastID++
-	transcation, err1 := ser.repository.Store(lastID,codigo,moneda,monto,emisor,receptor,fecha)
+	transcation, err := ser.repository.Store(lastID,codigo,moneda,monto,emisor,receptor,fecha)
 	
-	if(err1 != nil){
+	if(err != nil){
 		return Transaction{},err
 	}
-	return transcation,err1
+	return transcation,nil
 }
 
 
@@ -69,7 +69,7 @@ func (ser *service) Update(id int,codigo, moneda, monto, emisor, receptor,fecha 
 	if(err != nil){
 		return Transaction{},err
 	}
-	return transcation,err
+	return transcation,nil
 }
 
 func (ser *service) UpdateCodigoAndMonto(id int,codigo,monto string)(Transaction, error) {

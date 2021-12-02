@@ -126,6 +126,7 @@ func (repo *repository) Update(id int, codigo, moneda , monto, emisor, receptor,
 		}
 		
 	} 
+	fmt.Println("tran no encotrda",id)
 	return Transaction{}, fmt.Errorf("Transaction %v no encontrada",id)
 
 }
