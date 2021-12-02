@@ -9,6 +9,13 @@ import (
 func main() {
 	router := gin.Default()
 
+	//err := godotenv.Load()
+	//if err != nil {
+	//	log.Fatal("error al intentar cargar el archivo .env")
+	//}
+	//token := os.Getenv("TOKEN")
+	//fmt.Println(token)
+
 	repo := productos.NewRepository()
 	service := productos.NewService(repo)
 	controller := handler.NewPersona(service)

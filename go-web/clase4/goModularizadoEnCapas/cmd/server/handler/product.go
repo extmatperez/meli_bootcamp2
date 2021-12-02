@@ -1,13 +1,11 @@
 package handler
 
 import (
-	"log"
 	"os"
 	"strconv"
 
-	productos "github.com/extmatperez/meli_bootcamp2/tree/zamora_damian/go-web/clase2/goModularizadoEnCapas/Internal/productos"
+	productos "github.com/extmatperez/meli_bootcamp2/tree/zamora_damian/go-web/clase3/goModularizadoEnCapas/Internal/productos"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 type product struct {
@@ -29,11 +27,11 @@ func NewPersona(ser productos.Service) *Producto {
 }
 
 func ValidarToken(ctx *gin.Context) bool {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("error al intentar cargar el archivo .env")
-		return false
-	}
+	//	err := godotenv.Load()
+	//if err != nil {
+	//	log.Fatal("error al intentar cargar el archivo .env")
+	//		return false
+	//	}
 	token := ctx.GetHeader("token")
 	if token != os.Getenv("TOKEN") {
 		ctx.JSON(401, "El token no es correcto")

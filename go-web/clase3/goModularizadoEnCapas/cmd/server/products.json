@@ -1,0 +1,62 @@
+[
+ {
+  "id": 1,
+  "nombre": "Puree - Raspberry",
+  "color": "Goldenrod",
+  "precio": "",
+  "stock": "535",
+  "codigo": "57520-0623",
+  "publicado": false,
+  "fechaCreacion": "24/3/2021"
+ },
+ {
+  "id": 2,
+  "nombre": "Wine - Red, Concha Y Toro",
+  "color": "Khaki",
+  "precio": "",
+  "stock": "8717",
+  "codigo": "62362-149",
+  "publicado": false,
+  "fechaCreacion": "10/3/2021"
+ },
+ {
+  "id": 3,
+  "nombre": "Mustard - Seed",
+  "color": "Aquamarine",
+  "precio": "",
+  "stock": "9662",
+  "codigo": "65954-046",
+  "publicado": false,
+  "fechaCreacion": "19/11/2021"
+ },
+ {
+  "id": 4,
+  "nombre": "Tray - 12in Rnd Blk",
+  "color": "Violet",
+  "precio": "",
+  "stock": "2",
+  "codigo": "11523-1159",
+  "publicado": true,
+  "fechaCreacion": "3/12/2020"
+ },
+ {
+  "id": 5,
+  "nombre": "HOLAAAAAAAA",
+  "color": "Celeste",
+  "precio": "8500",
+  "stock": "2",
+  "codigo": "99999-999",
+  "publicado": true,
+  "fechaCreacion": "30/11/2021"
+ },
+ {
+  "id": 6,
+  "nombre": "Lisandro Lopez Inc",
+  "color": "Celeste y Blanco",
+  "precio": "9999999",
+  "stock": "1",
+  "codigo": "62362-149",
+  "publicado": true,
+  "fechaCreacion": "12/09/2020"
+ }
+]
