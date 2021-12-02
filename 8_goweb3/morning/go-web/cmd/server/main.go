@@ -1,9 +1,9 @@
 package main
 
 import (
-	handler "github.com/extmatperez/meli_bootcamp2/7_goweb2/afternoon/go-web/cmd/server/handler"
-	productos "github.com/extmatperez/meli_bootcamp2/7_goweb2/afternoon/go-web/internal/productos"
-	"github.com/extmatperez/meli_bootcamp2/7_goweb2/afternoon/go-web/pkg/store"
+	handler "github.com/extmatperez/meli_bootcamp2/8_goweb3/morning/go-web/cmd/server/handler"
+	productos "github.com/extmatperez/meli_bootcamp2/8_goweb3/morning/go-web/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/morning/go-web/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

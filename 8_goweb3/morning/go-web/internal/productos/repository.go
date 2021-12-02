@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 
-	"github.com/extmatperez/meli_bootcamp2/7_goweb2/afternoon/go-web/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/morning/go-web/pkg/store"
 )
 
 type Producto struct {
