@@ -19,6 +19,7 @@ func main() {
 	tr.PUT("/update/:id", t.Update())
 	tr.PATCH("/cod/:id", t.UpdateCod())
 	tr.PATCH("/mon/:id", t.UpdateMon())
+	tr.DELETE("/del/:id", t.Delete())
 
 	r.Run()
 }
