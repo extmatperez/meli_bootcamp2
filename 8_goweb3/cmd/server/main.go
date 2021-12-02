@@ -20,7 +20,7 @@ func main(){
 	}
 
 
-	//inicialicaciones
+	//inicializaciones
 	db := store.New(store.FileType,os.Getenv("STOREPATH"))
 	repo := tran.NewRepository(db)
 	service := tran.NewService(repo)
@@ -34,6 +34,7 @@ func main(){
 		transaction.GET("/", controller.GetAll())
 		transaction.GET("/:id", controller.GetTransactionById())
 		transaction.GET("/filtros", controller.GetTransactionsExlusive())
+		
 		//post
 		transaction.POST("/", controller.Store())
 
