@@ -2,6 +2,8 @@ package internal
 
 import (
 	"fmt"
+	"reflect"
+	"strings"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/pkg/store"
 )
@@ -21,7 +23,7 @@ var lastId int
 
 type Repository interface {
 	GetAll() ([]Payment, error)
-	Filter(codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) ([]Payment, error)
+	Filtrar(values ...string) ([]Payment, error)
 	Store(id int, codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) (Payment, error)
 	Update(id int, codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) (Payment, error)
 	UpdateCodigo(id int, codigo string) (Payment, error)
@@ -46,35 +48,6 @@ func (repo *repository) GetAll() ([]Payment, error) {
 	}
 
 	return payments, nil
-}
-
-func (repo *repository) Filter(codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) ([]Payment, error) {
-	filteredPayments := []Payment{}
-	isFiltered := true
-	for i, v := range payments {
-		if codigo != "" && v.Codigo != codigo {
-			isFiltered = false
-		}
-		if moneda != "" && v.Moneda != moneda {
-			isFiltered = false
-		}
-		if monto != 0.0 && v.Monto != monto {
-			isFiltered = false
-		}
-		if emisor != "" && v.Emisor != emisor {
-			isFiltered = false
-		}
-		if receptor != "" && v.Receptor != receptor {
-			isFiltered = false
-		}
-		if fecha != "" && v.Fecha != fecha {
-			isFiltered = false
-		}
-		if isFiltered {
-			filteredPayments = append(filteredPayments, payments[i])
-		}
-	}
-	return filteredPayments, nil
 }
 
 func (repo *repository) Store(id int, codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) (Payment, error) {
@@ -187,4 +160,44 @@ func (repo *repository) Delete(id int) (string, error) {
 		}
 	}
 	return "", fmt.Errorf("La transacción %d no existe.", id)
+}
+
+func (repo *repository) Filtrar(values ...string) ([]Payment, error) {
+	var head []string
+	head = append(head, "codigo", "moneda", "monto", "emisor", "receptor", "fecha")
+	var filteredPayments []Payment
+
+	filteredPayments = payments
+
+	for i, v := range head {
+		if len(values[i]) != 0 && len(filteredPayments) != 0 {
+			filteredPayments = filtrarPayments(payments, v, values[i])
+		}
+		if len(filteredPayments) == 0 {
+			return filteredPayments, fmt.Errorf("No hay coincidencias de transacciones con los filtros ingresados.")
+		}
+	}
+	return filteredPayments, nil
+}
+
+func filtrarPayments(slicePayments []Payment, field string, value string) []Payment {
+	var filteredPayments []Payment
+	var pay Payment
+
+	types := reflect.TypeOf(pay)
+	i := 0
+	for i = 0; i < types.NumField(); i++ {
+		if strings.ToLower(types.Field(i).Name) == field {
+			break
+		}
+	}
+	for _, v := range slicePayments {
+		var cadena string
+		cadena = fmt.Sprintf("%v", reflect.ValueOf(v).Field(i).Interface())
+		if strings.Contains(cadena, value) {
+			filteredPayments = append(filteredPayments, v)
+		}
+
+	}
+	return filteredPayments
 }

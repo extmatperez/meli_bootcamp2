@@ -2,7 +2,7 @@ package internal
 
 type Service interface {
 	GetAll() ([]Payment, error)
-	Filter(codigo, moneda, emisor, receptor, fecha string, monto float64) ([]Payment, error)
+	Filtrar(values ...string) ([]Payment, error)
 	Store(codigo, moneda, emisor, receptor, fecha string, monto float64) (Payment, error)
 	Update(id int, codigo, moneda, emisor, receptor, fecha string, monto float64) (Payment, error)
 	UpdateCodigo(id int, codigo string) (Payment, error)
@@ -26,12 +26,8 @@ func (s *service) GetAll() ([]Payment, error) {
 	return payments, nil
 }
 
-func (s *service) Filter(codigo, moneda, emisor, receptor, fecha string, monto float64) ([]Payment, error) {
-	filteredPayments, err := s.repository.Filter(codigo, moneda, monto, emisor, receptor, fecha)
-	if err != nil {
-		return nil, err
-	}
-	return filteredPayments, nil
+func (s *service) Filtrar(values ...string) ([]Payment, error) {
+	return s.repository.Filtrar(values...)
 }
 
 func (s *service) Store(codigo, moneda, emisor, receptor, fecha string, monto float64) (Payment, error) {

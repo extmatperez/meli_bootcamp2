@@ -62,30 +62,6 @@ func (controller *Payment) GetAll() gin.HandlerFunc {
 	}
 }
 
-func (controller *Payment) Filter() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-
-		if !validarToken(ctx) {
-			return
-		}
-
-		var pay request
-
-		err := ctx.ShouldBindJSON(&pay)
-
-		if err != nil {
-			ctx.JSON(400, web.NewResponse(400, nil, "Error en el body."))
-		} else {
-			paymentUpdated, err := controller.service.Filter(pay.Codigo, pay.Moneda, pay.Emisor, pay.Receptor, pay.Fecha, pay.Monto)
-			if err != nil {
-				ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
-			} else {
-				ctx.JSON(200, web.NewResponse(200, paymentUpdated, ""))
-			}
-		}
-	}
-}
-
 func (controller *Payment) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -255,5 +231,29 @@ func (controller *Payment) Delete() gin.HandlerFunc {
 		} else {
 			ctx.JSON(200, web.NewResponse(200, msg, ""))
 		}
+	}
+}
+
+func (controller *Payment) Filtrar() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
+		moneda := ctx.Query("moneda")
+		emisor := ctx.Query("emisor")
+		receptor := ctx.Query("receptor")
+		fecha := ctx.Query("fecha")
+		monto := ctx.Query("monto")
+		codigo := ctx.Query("codigo")
+
+		controller, err := controller.service.Filtrar(moneda, emisor, receptor, fecha, monto, codigo)
+		if err != nil {
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
+		} else {
+			ctx.JSON(200, web.NewResponse(200, controller, ""))
+		}
+
 	}
 }
