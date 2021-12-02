@@ -1,0 +1,3 @@
+Se usa PATCH para cambiar una cosa puntual de una entidad, por ejemplo para cambiar una contraseña."
+SE usa PUT para cambiar un conjunto de datos de la entidad. Es idempotente porque si se ejecuta una y otra vez actua sobre la entidad con esa identificacion.
+El POST no es idempotente porque no devuelve lo mismo si se lo ejecuta una y otra vez, sino objetos nuevos con nuevos identificadores.

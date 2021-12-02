@@ -1,7 +1,13 @@
+// ETAPA 3: este es el controller, va a tener todos los datos que yo recibo.
+// Internamente voy a necesitar un servicio, y se lo tengo que asignar a un servicio.
+
+// Para que el controller sea usado, en este caso, los dos metodos que tiene, deben devolver un gin.HandlerFunc.
+// Nosotros para devolver eso
+
 package handler
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/7_goweb2/TT/internal/personas"
+	personas "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/7_goweb2/TT/internal/personas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,6 +27,7 @@ func NewPersona(service personas.Service) *Persona {
 
 func (per *Persona) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// RECORDAR EN ESTOS METODOS LLAMAR AL TOKEN. ESTAN EN LA PRESENTACION. token := ctx.Request.Header.Get("token")
 		personas, err := per.service.GetAll()
 		if err != nil {
 			ctx.String(400, "Hubo un error: %v", err)

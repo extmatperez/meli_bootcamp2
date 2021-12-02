@@ -1,3 +1,6 @@
+// ETAPA 1: Tenemos todo para manipular a los datos.
+// Ademas necesitamos definirle todos los metodos de manipulacion
+
 package internal
 
 type Persona struct {

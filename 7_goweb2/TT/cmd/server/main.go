@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/7_goweb2/TT/cmd/server/handler"
-	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/7_goweb2/TT/internal/personas"
+	handler "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/7_goweb2/TT/cmd/server/handler"
+	personas "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/7_goweb2/TT/internal/personas"
+
 	"github.com/gin-gonic/gin"
 )
 

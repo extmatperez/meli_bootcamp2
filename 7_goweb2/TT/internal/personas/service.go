@@ -1,3 +1,7 @@
+// ETAPA 2: tiene todos los metodos que va a usar la capa superior del controller.
+// Necesita tener internamente a un repository.
+// El service realiza la logica del negocio.
+
 package internal
 
 type Service interface {
