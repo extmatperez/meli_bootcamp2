@@ -1,15 +1,25 @@
 package main
 
 import (
+	"log"
+
 	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/8_goweb3/ClaseTM/ProyectoEstructura/cmd/server/handler"
 	producto "github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/8_goweb3/ClaseTM/ProyectoEstructura/internal/producto"
+	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/8_goweb3/ClaseTM/ProyectoEstructura/pkg/store"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("No se pudo abrir el archivo .env")
+	}
+
 	router := gin.Default()
 
-	repo := producto.NewRepository()
+	db := store.NewStore(store.FileType, "./dbProductos.json")
+	repo := producto.NewRepository(db)
 	service := producto.NewService(repo)
 	controller := handler.NewProductoController(service)
 
