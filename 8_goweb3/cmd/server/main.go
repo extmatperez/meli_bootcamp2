@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-
 	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/cmd/server/handler"
 	tran "github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/internal/transaccion"
 	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/pkg/store"
@@ -34,7 +33,7 @@ func main(){
 		transaction.GET("/", controller.GetAll())
 		transaction.GET("/:id", controller.GetTransactionById())
 		transaction.GET("/filtros", controller.GetTransactionsExlusive())
-		
+
 		//post
 		transaction.POST("/", controller.Store())
 
