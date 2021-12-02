@@ -82,7 +82,7 @@ func (repo *repository) Delete(id int) error {
 	for i, v := range products {
 		if v.ID == id {
 			index = i
-			products = append(products[:id], products[id+1:]...)
+			products = append(products[:index], products[index+1:]...)
 			err := repo.db.Write(products)
 			return err
 		}
