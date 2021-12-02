@@ -17,6 +17,8 @@ func main() {
 	tr.GET("/get", t.GetAll())
 	tr.GET("/load", t.Load())
 	tr.PUT("/update/:id", t.Update())
+	tr.PATCH("/cod/:id", t.UpdateCod())
+	tr.PATCH("/mon/:id", t.UpdateMon())
 
 	r.Run()
 }
