@@ -29,7 +29,10 @@ func NewTransaction(serv internal.Service) *Transaction {
 
 func (t *Transaction) GetAll() gin.HandlerFunc { //TODO: implement filters
 	return func(ctx *gin.Context) {
-		response, err := t.service.GetAll()
+
+		filters := getFilters(ctx)
+
+		response, err := t.service.GetAll(filters)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -267,4 +270,40 @@ func validarCampo(tr request, campo string) error {
 		}
 	}
 	return nil
+}
+
+func getFilters(ctx *gin.Context) map[string]string {
+	result := make(map[string]string)
+	filter := ctx.Query("codigo")
+	if filter != "" {
+		result["Codigo"] = filter
+	}
+	filter = ctx.Query("moneda")
+	if filter != "" {
+		result["Moneda"] = filter
+	}
+	filter = ctx.Query("monto")
+	if filter != "" {
+		if _, err := strconv.ParseFloat(filter, 64); err != nil {
+		} else {
+			result["Monto"] = filter
+		}
+	}
+	filter = ctx.Query("emisor")
+	if filter != "" {
+		result["Emisor"] = filter
+	}
+	filter = ctx.Query("receptor")
+	if filter != "" {
+		result["Receptor"] = filter
+	}
+	filter = ctx.Query("fecha_desde")
+	if filter != "" {
+		result["Fecha_desde"] = filter
+	}
+	filter = ctx.Query("fecha_hasta")
+	if filter != "" {
+		result["Fecha_hasta"] = filter
+	}
+	return result
 }

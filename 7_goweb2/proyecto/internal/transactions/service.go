@@ -1,7 +1,9 @@
 package internal
 
+import "strconv"
+
 type Service interface {
-	GetAll() ([]Transaction, error)
+	GetAll(filters map[string]string) ([]Transaction, error)
 	GetTransactionByID(id int) (Transaction, error)
 	Store(codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error)
 	Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error)
@@ -17,10 +19,47 @@ func NewService(repo Repository) Service {
 	return &service{repository: repo}
 }
 
-func (s *service) GetAll() ([]Transaction, error) {
-	resultado, err := s.repository.GetAll()
+func (s *service) GetAll(filters map[string]string) ([]Transaction, error) {
+	transacciones, err := s.repository.GetAll()
 
-	return resultado, err
+	for key, val := range filters {
+		var resultado []Transaction
+		if key == "Codigo" {
+			for _, t := range transacciones {
+				if t.CodigoDeTransaccion == val {
+					resultado = append(resultado, t)
+				}
+			}
+		} else if key == "Moneda" {
+			for _, t := range transacciones {
+				if t.Moneda == val {
+					resultado = append(resultado, t)
+				}
+			}
+		} else if key == "Monto" {
+			for _, t := range transacciones {
+				if m, _ := strconv.ParseFloat(val, 64); t.Monto == m {
+					resultado = append(resultado, t)
+				}
+			}
+		} else if key == "Emisor" {
+			for _, t := range transacciones {
+				if t.Emisor == val {
+					resultado = append(resultado, t)
+				}
+			}
+		} else if key == "Receptor" {
+			for _, t := range transacciones {
+				if t.Receptor == val {
+					resultado = append(resultado, t)
+				}
+			}
+		}
+		//TODO fecha desde y fecha hasta
+		transacciones = resultado
+	}
+
+	return transacciones, err
 }
 
 func (s *service) GetTransactionByID(id int) (Transaction, error) {

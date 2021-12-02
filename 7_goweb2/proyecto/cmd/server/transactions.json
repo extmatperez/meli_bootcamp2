@@ -2,9 +2,9 @@
 	{
 		"id": 5,
 		"codigo_de_transaccion": "asd12321",
-		"moneda": "UYU",
-		"monto": 2344.8,
-		"emisor": "sebac",
+		"moneda": "USD",
+		"monto": 23400.85,
+		"emisor": "sebac2",
 		"receptor": "rec",
 		"fecha_de_transaccion": "10/18/2021"
 	},
