@@ -48,7 +48,6 @@ func (repo *repository) GetAll() ([]Producto, error) {
 func (repo *repository) LastId() (int, error) {
 
 	var productos []Producto
-
 	if err := repo.db.Read(&productos); err != nil {
 		return 0, err
 	}
@@ -76,23 +75,41 @@ func (repo *repository) Store(id int, nombre, color string, precio float64, stoc
 }
 
 func (repo *repository) Update(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Producto, error) {
+
 	var productos []Producto
-	per := Producto{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
+	err := repo.db.Read(&productos)
+	if err != nil {
+		return Producto{}, err
+	}
+
+	prod := Producto{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
 
 	for i, p := range productos {
 		if p.Id == id {
-			productos[i] = per
-			return per, nil
+			productos[i] = prod
+			if err := repo.db.Write(productos); err != nil {
+				return Producto{}, err
+			}
+			return prod, nil
 		}
 	}
 	return Producto{}, fmt.Errorf("No se encontro el producto con id %d", id)
 }
 
 func (repo *repository) UpdateName(id int, nombre string) (Producto, error) {
+
 	var productos []Producto
+	err := repo.db.Read(&productos)
+
+	if err != nil {
+		return Producto{}, err
+	}
 	for i, p := range productos {
 		if p.Id == id {
 			productos[i].Nombre = nombre
+			if err := repo.db.Write(productos); err != nil {
+				return Producto{}, err
+			}
 			return productos[i], nil
 		}
 	}
@@ -101,9 +118,18 @@ func (repo *repository) UpdateName(id int, nombre string) (Producto, error) {
 
 func (repo *repository) Delete(id int) (string, error) {
 	var productos []Producto
+	err := repo.db.Read(&productos)
+
+	if err != nil {
+		return "", err
+	}
+
 	for i, p := range productos {
 		if p.Id == id {
 			productos = append(productos[:i], productos[i+1:]...)
+			if err := repo.db.Write(productos); err != nil {
+				return "", err
+			}
 			return "Producto eliminado", nil
 		}
 	}

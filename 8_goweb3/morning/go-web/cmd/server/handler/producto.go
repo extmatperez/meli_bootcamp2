@@ -32,9 +32,6 @@ func ValidaToken(ctx *gin.Context) bool {
 
 	if token != os.Getenv("TOKEN") {
 		ctx.JSON(401, web.NewResponse(401, nil, "Token invalido"))
-		/* ctx.JSON(401, gin.H{
-			"error": "token inválido",
-		}) */
 		return false
 	}
 	return true
@@ -50,11 +47,9 @@ func (prod *Producto) GetAll() gin.HandlerFunc {
 
 		if err != nil {
 			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
-			//ctx.JSON(400, err)
 			return
 		}
 		ctx.JSON(200, web.NewResponse(200, response, ""))
-		//ctx.JSON(200, response)
 	}
 }
 
@@ -68,16 +63,16 @@ func (prod *Producto) Store() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&req)
 
 		if err != nil {
-			ctx.JSON(400, err)
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		response, err := prod.service.Store(req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.FechaCreacion)
 
 		if err != nil {
-			ctx.JSON(400, err)
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, response)
+		ctx.JSON(200, web.NewResponse(200, response, ""))
 	}
 }
 
@@ -91,7 +86,7 @@ func (prod *Producto) Update() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&req)
 
 		if err != nil {
-			ctx.JSON(400, err)
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		myId, err := strconv.Atoi(ctx.Param("id"))
@@ -99,10 +94,10 @@ func (prod *Producto) Update() gin.HandlerFunc {
 		response, err := prod.service.Update(myId, req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.FechaCreacion)
 
 		if err != nil {
-			ctx.JSON(400, err)
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, response)
+		ctx.JSON(200, web.NewResponse(200, response, ""))
 	}
 }
 
@@ -116,7 +111,7 @@ func (prod *Producto) UpdateName() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&req)
 
 		if err != nil {
-			ctx.JSON(400, err)
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		myId, err := strconv.Atoi(ctx.Param("id"))
@@ -124,10 +119,10 @@ func (prod *Producto) UpdateName() gin.HandlerFunc {
 		response, err := prod.service.UpdateName(myId, req.Nombre)
 
 		if err != nil {
-			ctx.JSON(400, err.Error())
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, response)
+		ctx.JSON(200, web.NewResponse(200, response, ""))
 	}
 }
 
@@ -142,9 +137,9 @@ func (prod *Producto) Delete() gin.HandlerFunc {
 		response, err := prod.service.Delete(myId)
 
 		if err != nil {
-			ctx.JSON(400, err.Error())
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, response)
+		ctx.JSON(200, web.NewResponse(200, response, ""))
 	}
 }
