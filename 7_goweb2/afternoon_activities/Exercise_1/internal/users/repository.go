@@ -23,3 +23,6 @@ type Repository interface {
 	validate_fields(user_id Users) (string, error)
 	post_users() (Users, error)
 }
+
+// Agregamos la estructura repository donde vamos a tener implementados los métodos de la interface
+type repository struct{}
