@@ -43,15 +43,6 @@ func (s *service) Store(id int, codigotransaccion string, moneda string, monto f
 	} else {
 		id = transacciones[len(transacciones)-1].ID + 1
 	}
-	lastId = id
-
-	lastId, err := s.repository.LastId()
-
-	if err != nil {
-		return Transaccion{}, err
-	}
-
-	lastId++
 
 	transaccion, err := s.repository.Store(id, codigotransaccion, moneda, monto, emisor, receptor, fechacreacion)
 

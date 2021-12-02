@@ -21,12 +21,11 @@ type Transaccion struct {
 
 var transacciones []Transaccion
 
-var lastId int
+//var lastId int
 
 type Repository interface {
 	GetAll() ([]Transaccion, error)
 	Store(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error)
-	LastId() (int, error)
 	Load() ([]Transaccion, error)
 }
 
@@ -49,15 +48,10 @@ func (r *repository) GetAll() ([]Transaccion, error) {
 }
 
 func (r *repository) Store(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error) {
-	id1 := lastId
 	currentTime := time.Now().Format("02-01-2006")
 	fecha := fmt.Sprintf(currentTime)
 	codigo := uuid.NewV4().String()
-	trans := Transaccion{id1, codigo, moneda, monto, emisor, receptor, fecha}
+	trans := Transaccion{id, codigo, moneda, monto, emisor, receptor, fecha}
 	transacciones = append(transacciones, trans)
 	return trans, nil
-}
-
-func (r *repository) LastId() (int, error) {
-	return lastId, nil
 }
