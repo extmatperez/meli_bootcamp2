@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
+
+	"github.com/extmatperez/meli_bootcamp2/7_goweb2/Tarde/go-web/pkg/store"
 )
 
 type Product struct {
@@ -19,8 +19,6 @@ type Product struct {
 
 var products []Product
 
-var lastId int
-
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error)
@@ -30,20 +28,36 @@ type Repository interface {
 	UpdateNameAndPrice(id int, nombre string, precio int) (Product, error)
 }
 
-type repository struct{}
+type repository struct {
+	Db store.Store
+}
 
-func NewRepository() Repository {
-	loadData()
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{Db: db}
 }
 
 func (r *repository) GetAll() ([]Product, error) {
+	err := r.Db.Read(&products)
+	if err != nil {
+		return nil, err
+	}
 	return products, nil
 }
 
 func (r *repository) Store(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error) {
+
+	err := r.Db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
+
 	prod := Product{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
 	products = append(products, prod)
+
+	err = r.Db.Write(products)
+	if err != nil {
+		return Product{}, err
+	}
 
 	return prod, nil
 }
@@ -51,6 +65,11 @@ func (r *repository) Store(id int, nombre string, color string, precio int, stoc
 func (r *repository) LastID() (int, error) {
 
 	var id int
+
+	err := r.Db.Read(&products)
+	if err != nil {
+		return 0, err
+	}
 
 	if len(products) > 0 {
 		id = products[len(products)-1].ID
@@ -63,9 +82,18 @@ func (r *repository) LastID() (int, error) {
 func (r *repository) Update(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error) {
 	prod := Product{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
 
+	err := r.Db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
+
 	for i, _ := range products {
 		if products[i].ID == id {
 			products[i] = prod
+			err = r.Db.Write(products)
+			if err != nil {
+				return Product{}, err
+			}
 			return prod, nil
 		}
 	}
@@ -74,6 +102,12 @@ func (r *repository) Update(id int, nombre string, color string, precio int, sto
 
 func (r *repository) Delete(id int) error {
 	position := -1
+
+	err := r.Db.Read(&products)
+	if err != nil {
+		return err
+	}
+
 	for i, _ := range products {
 		if products[i].ID == id {
 			position = i
@@ -84,23 +118,37 @@ func (r *repository) Delete(id int) error {
 		return fmt.Errorf("El producto con id: %d no ha sido encontrado", id)
 	}
 	products = append(products[:position], products[position+1:]...)
+
+	err = r.Db.Write(products)
+	if err != nil {
+		return err
+	}
 	return nil
 
 }
 
 func (r *repository) UpdateNameAndPrice(id int, nombre string, precio int) (Product, error) {
 
+	err := r.Db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
+
 	for i, _ := range products {
 		if products[i].ID == id {
 			products[i].Nombre = nombre
 			products[i].Precio = precio
-
+			err = r.Db.Write(products)
+			if err != nil {
+				return Product{}, err
+			}
 			return products[i], nil
 		}
 	}
 	return Product{}, fmt.Errorf("El producto con id: %d no ha sido encontrado", id)
 }
 
+/*
 func loadData() {
 	content, err := os.ReadFile("../../internal/products/products.json")
 
@@ -114,4 +162,4 @@ func loadData() {
 	json.Unmarshal(content, &p)
 
 	products = p
-}
+}*/

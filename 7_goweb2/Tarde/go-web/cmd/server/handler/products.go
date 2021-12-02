@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -34,14 +35,24 @@ func NewProduct(s products.Service) *Product {
 	return &Product{serv: s}
 }
 
+func validToken(c *gin.Context) bool {
+	token := c.GetHeader("token")
+	if token == "" {
+		c.String(http.StatusBadRequest, "Falta token")
+		return false
+	}
+	if token != os.Getenv("TOKEN") {
+		c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		return false
+	}
+	return true
+}
+
 func (p *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token")
-		if token != "1234" {
-			c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		if !validToken(c) {
 			return
 		}
-
 		prods, err := p.serv.GetAll()
 
 		if err != nil {
@@ -54,9 +65,7 @@ func (p *Product) GetAll() gin.HandlerFunc {
 
 func (p *Product) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token")
-		if token != "1234" {
-			c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		if !validToken(c) {
 			return
 		}
 
@@ -103,9 +112,7 @@ func (p *Product) Store() gin.HandlerFunc {
 
 func (p *Product) FindById() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token")
-		if token != "1234" {
-			c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		if !validToken(c) {
 			return
 		}
 
@@ -129,9 +136,7 @@ func (p *Product) FindById() gin.HandlerFunc {
 
 func (p *Product) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token")
-		if token != "1234" {
-			c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		if !validToken(c) {
 			return
 		}
 		var updateRequest request
@@ -181,9 +186,7 @@ func (p *Product) Update() gin.HandlerFunc {
 
 func (p *Product) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token")
-		if token != "1234" {
-			c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		if !validToken(c) {
 			return
 		}
 
@@ -207,9 +210,7 @@ func (p *Product) Delete() gin.HandlerFunc {
 
 func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token")
-		if token != "1234" {
-			c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		if !validToken(c) {
 			return
 		}
 
