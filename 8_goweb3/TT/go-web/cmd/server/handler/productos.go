@@ -1,9 +1,10 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
-	productos "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/go-web/internal/productos"
+	productos "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/TT/go-web/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,10 +29,15 @@ func NewProduct(p productos.Service) *Product {
 	}
 }
 
+func validateToken(tokenReq string) bool {
+	tokenEnv := os.Getenv("TOKEN")
+	return tokenEnv == tokenReq
+}
+
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
+		tokenReq := ctx.Request.Header.Get("token")
+		if !validateToken(tokenReq) {
 			ctx.JSON(401, gin.H{
 				"error": "token inválido",
 			})
@@ -51,9 +57,11 @@ func (c *Product) GetAll() gin.HandlerFunc {
 
 func (c *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
-			ctx.JSON(401, gin.H{"error": "token inválido"})
+		tokenReq := ctx.Request.Header.Get("token")
+		if !validateToken(tokenReq) {
+			ctx.JSON(401, gin.H{
+				"error": "token inválido",
+			})
 			return
 		}
 		var req request
@@ -74,6 +82,13 @@ func (c *Product) Store() gin.HandlerFunc {
 
 func (c *Product) Edit() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		tokenReq := ctx.Request.Header.Get("token")
+		if !validateToken(tokenReq) {
+			ctx.JSON(401, gin.H{
+				"error": "token inválido",
+			})
+			return
+		}
 		var req request
 		id, existeId := ctx.GetQuery("id")
 		if !existeId {
@@ -97,6 +112,13 @@ func (c *Product) Edit() gin.HandlerFunc {
 
 func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		tokenReq := ctx.Request.Header.Get("token")
+		if !validateToken(tokenReq) {
+			ctx.JSON(401, gin.H{
+				"error": "token inválido",
+			})
+			return
+		}
 		id := ctx.Param("id")
 		if id == "" {
 			ctx.JSON(400, gin.H{"error": "No se ha seleccionado un producto"})
@@ -118,6 +140,13 @@ func (c *Product) Delete() gin.HandlerFunc {
 
 func (c *Product) Change() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		tokenReq := ctx.Request.Header.Get("token")
+		if !validateToken(tokenReq) {
+			ctx.JSON(401, gin.H{
+				"error": "token inválido",
+			})
+			return
+		}
 		var req request
 		id := ctx.Param("id")
 		if id == "" {
