@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/soto_jose/8_goweb3/transactions"
@@ -23,12 +24,32 @@ type Transaction struct {
 	service transactions.Service
 }
 
+func validarToken(ctx *gin.Context) bool {
+	token := ctx.GetHeader("token")
+	if token == "" {
+		ctx.String(http.StatusUnauthorized, "Falta token")
+		return false
+	}
+	tokenENV := os.Getenv("TOKEN")
+	if token != tokenENV {
+		ctx.String(http.StatusUnauthorized, "Token incorrecto")
+		return false
+	}
+
+	return true
+}
+
 func NewTransaction(ser transactions.Service) *Transaction {
 	return &Transaction{service: ser}
 }
 
 func (per *Transaction) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		transactions, err := per.service.GetAll()
 
 		if err != nil {
@@ -41,6 +62,10 @@ func (per *Transaction) GetAll() gin.HandlerFunc {
 
 func (controller *Transaction) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
 
 		var t request
 
@@ -71,6 +96,9 @@ func validateUpdatePayload(payload request) error {
 func (controller *Transaction) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
+		if !validarToken(ctx) {
+			return
+		}
 		var body request
 
 		err := ctx.ShouldBindJSON(&body)
@@ -106,6 +134,10 @@ func (controller *Transaction) Update() gin.HandlerFunc {
 func (controller *Transaction) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
+		if !validarToken(ctx) {
+			return
+		}
+
 		paramId := ctx.Param("id")
 		id, err := strconv.Atoi(paramId)
 
@@ -125,6 +157,10 @@ func (controller *Transaction) Delete() gin.HandlerFunc {
 
 func (controller *Transaction) UpdateCodeAndAmount() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
 
 		var body request
 
