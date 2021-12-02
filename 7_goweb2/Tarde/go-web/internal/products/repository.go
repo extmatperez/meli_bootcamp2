@@ -25,12 +25,15 @@ type Repository interface {
 	GetAll() ([]Product, error)
 	Store(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error)
 	LastID() (int, error)
+	Update(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error)
+	Delete(id int) error
+	UpdateNameAndPrice(id int, nombre string, precio int) (Product, error)
 }
 
 type repository struct{}
 
 func NewRepository() Repository {
-	//	loadData()
+	loadData()
 	return &repository{}
 }
 
@@ -57,8 +60,49 @@ func (r *repository) LastID() (int, error) {
 	return id, nil
 }
 
+func (r *repository) Update(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error) {
+	prod := Product{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
+
+	for i, _ := range products {
+		if products[i].ID == id {
+			products[i] = prod
+			return prod, nil
+		}
+	}
+	return Product{}, fmt.Errorf("El producto con id: %d no ha sido encontado", id)
+}
+
+func (r *repository) Delete(id int) error {
+	position := -1
+	for i, _ := range products {
+		if products[i].ID == id {
+			position = i
+			break
+		}
+	}
+	if position < 0 {
+		return fmt.Errorf("El producto con id: %d no ha sido encontrado", id)
+	}
+	products = append(products[:position], products[position+1:]...)
+	return nil
+
+}
+
+func (r *repository) UpdateNameAndPrice(id int, nombre string, precio int) (Product, error) {
+
+	for i, _ := range products {
+		if products[i].ID == id {
+			products[i].Nombre = nombre
+			products[i].Precio = precio
+
+			return products[i], nil
+		}
+	}
+	return Product{}, fmt.Errorf("El producto con id: %d no ha sido encontrado", id)
+}
+
 func loadData() {
-	content, err := os.ReadFile("/Users/jgama/Documents/Bootcamp/meli_bootcamp2/7_goweb2/Tarde/go-web/internal/products/products.json")
+	content, err := os.ReadFile("../../internal/products/products.json")
 
 	if err != nil {
 		fmt.Println(err)

@@ -18,6 +18,9 @@ func main() {
 	//productsRoute.GET("/filter", Filter)
 	productsRoute.GET("/:id", controller.FindById())
 	productsRoute.POST("", controller.Store())
+	productsRoute.PUT("/:id", controller.Update())
+	productsRoute.DELETE("/:id", controller.Delete())
+	productsRoute.PATCH("/:id", controller.UpdateNameAndPrice())
 
 	router.Run()
 }

@@ -8,6 +8,9 @@ type Service interface {
 	GetAll() ([]Product, error)
 	Store(nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error)
 	FindById(id int) (Product, error)
+	Update(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error)
+	Delete(id int) error
+	UpdateNameAndPrice(id int, nombre string, precio int) (Product, error)
 }
 
 type service struct {
@@ -61,5 +64,35 @@ func (serv *service) FindById(id int) (Product, error) {
 	}
 
 	return Product{}, fmt.Errorf("Producto id: %d no encontrado", id)
+
+}
+
+func (serv *service) Update(id int, nombre string, color string, precio int, stock int, codigo string, publicado bool, fechaCreacion string) (Product, error) {
+	prod, err := serv.repo.Update(id, nombre, color, precio, stock, codigo, publicado, fechaCreacion)
+
+	if err != nil {
+		return prod, fmt.Errorf("No se pudo actualizar el producto, %w", err)
+	}
+
+	return prod, nil
+}
+
+func (serv *service) Delete(id int) error {
+	err := serv.repo.Delete(id)
+	if err != nil {
+		return fmt.Errorf("No se pudo eliminar el producto, %w", err)
+	}
+	return nil
+}
+
+func (serv *service) UpdateNameAndPrice(id int, nombre string, precio int) (Product, error) {
+
+	prod, err := serv.repo.UpdateNameAndPrice(id, nombre, precio)
+
+	if err != nil {
+		return Product{}, fmt.Errorf("No se pudo actualizar el producto, %w", err)
+	}
+
+	return prod, nil
 
 }
