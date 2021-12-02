@@ -6,6 +6,8 @@ import (
 	"github.com/extmatperez/meli_bootcamp2/tree/arevalo_ivan/go_web/pkg/store"
 )
 
+var transactions []Transaction
+
 type Transaction struct {
 	ID               int     `form:"id", json:"id"`
 	Transaction_Code string  `form:"transaction_code", json:"transaction_code"`
@@ -35,8 +37,8 @@ func NewRepository(db store.Store) Repository {
 }
 
 func (repo *repository) GetAll() ([]Transaction, error) {
-	var transactions []Transaction
-	err := repo.db.Read(transactions)
+	//var transactions []Transaction
+	err := repo.db.Read(&transactions)
 	if err != nil {
 		return nil, err
 	}
@@ -44,8 +46,8 @@ func (repo *repository) GetAll() ([]Transaction, error) {
 }
 
 func (repo *repository) Store(id int, transaction_code, coin, emitor, receptor, transaction_date string, amount float64) (Transaction, error) {
-	var transactions []Transaction
-	repo.db.Read(transactions)
+	//var transactions []Transaction
+	repo.db.Read(&transactions)
 
 	trans := Transaction{id, transaction_code, coin, amount, receptor, transaction_date, transaction_date}
 	transactions = append(transactions, trans)
@@ -60,8 +62,8 @@ func (repo *repository) Store(id int, transaction_code, coin, emitor, receptor, 
 }
 
 func (repo *repository) LastId() (int, error) {
-	var transactions []Transaction
-	err := repo.db.Read(transactions)
+	//var transactions []Transaction
+	err := repo.db.Read(&transactions)
 
 	if err != nil {
 		return 0, err
@@ -74,8 +76,8 @@ func (repo *repository) LastId() (int, error) {
 }
 
 func (repo *repository) Update(id int, transaction_code, coin, emitor, receptor, transaction_date string, amount float64) (Transaction, error) {
-	var transactions []Transaction
-	err := repo.db.Read(transactions)
+	//var transactions []Transaction
+	err := repo.db.Read(&transactions)
 
 	if err != nil {
 		return Transaction{}, err
@@ -97,8 +99,8 @@ func (repo *repository) Update(id int, transaction_code, coin, emitor, receptor,
 }
 
 func (repo *repository) UpdateReceptor(id int, receptor string) (Transaction, error) {
-	var transactions []Transaction
-	err := repo.db.Read(transactions)
+	//var transactions []Transaction
+	err := repo.db.Read(&transactions)
 
 	if err != nil {
 		return Transaction{}, err
@@ -118,8 +120,8 @@ func (repo *repository) UpdateReceptor(id int, receptor string) (Transaction, er
 }
 
 func (repo *repository) Delete(id int) error {
-	var transactions []Transaction
-	err := repo.db.Read(transactions)
+	//var transactions []Transaction
+	err := repo.db.Read(&transactions)
 
 	if err != nil {
 		return err
