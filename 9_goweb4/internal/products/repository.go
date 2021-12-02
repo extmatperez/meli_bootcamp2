@@ -131,6 +131,12 @@ func (r *repository) Update(id int64, name string, color string, price float64, 
 		if products[i].Id == id {
 			products[i] = product
 
+			err = r.db.Write(products)
+
+			if err != nil {
+				return Product{}, err
+			}
+
 			return product, nil
 		}
 	}
@@ -162,6 +168,12 @@ func (r *repository) Delete(id int64) error {
 
 	products = append(products[:i], products[i+1:]...)
 
+	err = r.db.Write(products)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -177,6 +189,12 @@ func (r *repository) UpdateNameAndPrice(id int64, name string, price float64) (P
 		if products[i].Id == id {
 			products[i].Name = name
 			products[i].Price = price
+
+			err = r.db.Write(products)
+
+			if err != nil {
+				return Product{}, err
+			}
 
 			return products[i], nil
 		}
