@@ -8,6 +8,7 @@ type Service interface {
 	GetAll() ([]Usuario, error)
 	Store(nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error)
 	Update(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error)
+	Delete(id int) error
 }
 
 func NewService(repository Repository) Service {
@@ -43,4 +44,12 @@ func (serv *service) Update(id int, nombre, apellido, email string, edad, altura
 	}
 
 	return updateUser, nil
+}
+
+func (serv *service) Delete(id int) error {
+	err := serv.respository.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

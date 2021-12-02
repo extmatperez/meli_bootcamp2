@@ -18,6 +18,7 @@ type Repository interface {
 	Store(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error)
 	LastID() (int, error)
 	Update(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error)
+	Delete(id int) error
 }
 
 type repository struct{}
@@ -53,4 +54,16 @@ func (repo *repository) Update(id int, nombre, apellido, email string, edad, alt
 		}
 	}
 	return Usuario{}, fmt.Errorf("el usuario con ID %d no existe", id)
+}
+
+func (repo *repository) Delete(id int) error {
+
+	for i, user := range usuarios {
+		if user.ID == id {
+			// usuarios = append(usuarios[:i], usuarios[i+1:]...)
+			usuarios[i].Activo = false
+			return nil
+		}
+	}
+	return fmt.Errorf("el usuario %d no existe", id)
 }
