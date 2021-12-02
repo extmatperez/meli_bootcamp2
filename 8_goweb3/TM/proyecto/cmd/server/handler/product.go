@@ -60,6 +60,13 @@ func (controller *Producto) GetAll() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 
+		token :=  c.GetHeader("token")
+
+		if token != "123"{
+			c.String(401, "Token inválido")
+			return
+		}
+
 		productos, err := controller.service.GetAll()
 
 		if err != nil {
@@ -74,6 +81,13 @@ func (controller *Producto) GetAll() gin.HandlerFunc {
 func (controller *Producto) Store() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+
+		token :=  c.GetHeader("token")
+
+		if token != "123"{
+			c.String(401, "Token inválido")
+			return
+		}
 
 		var nuevoProducto request
 
@@ -123,6 +137,13 @@ func (controller *Producto) Store() gin.HandlerFunc {
 func (controller *Producto) Update() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+
+		token :=  c.GetHeader("token")
+
+		if token != "123"{
+			c.String(401, "Token inválido")
+			return
+		}
 
 		var productoActualizado request
 
@@ -180,6 +201,13 @@ func (controller *Producto) Delete() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 
+		token :=  c.GetHeader("token")
+
+		if token != "123"{
+			c.String(401, "Token inválido")
+			return
+		}
+
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
@@ -201,6 +229,13 @@ func (controller *Producto) Delete() gin.HandlerFunc {
 func (controller *Producto) UpdateNombrePrecio() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+
+		token :=  c.GetHeader("token")
+
+		if token != "123"{
+			c.String(401, "Token inválido")
+			return
+		}
 
 		var productoActualizado request
 
