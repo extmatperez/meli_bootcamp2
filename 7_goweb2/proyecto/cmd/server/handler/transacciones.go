@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	transacciones "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/internal/transacciones"
@@ -43,7 +44,7 @@ func (t *Transaccion) Store() gin.HandlerFunc{
 	err := ctx.ShouldBind(&req)
 	token := ctx.GetHeader("token")
 
-	if token == "secure" {
+	if token == os.Getenv("TOKEN") {
 		if err != nil {
 			ctx.String(400, "Ha ocurrido un error")
 		} else {
