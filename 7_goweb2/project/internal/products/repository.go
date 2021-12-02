@@ -1,7 +1,7 @@
 package internal
 
 type Products struct {
-	ID           int    `json:"id"`
+	ID           int64  `json:"id"`
 	Name         string `json:"name"`
 	Color        string `json:"color"`
 	Price        string `json:"price"`
@@ -12,12 +12,12 @@ type Products struct {
 }
 
 var products []Products
-var lastID int
+var lastID int64
 
 type Repository interface {
 	GetAll() ([]Products, error)
-	Store(id int, name string, color string, price string, stock string, code string, published bool, creationdate string) (Products, error)
-	LastID() (int, error)
+	Store(id int64, name string, color string, price string, stock string, code string, published bool, creationdate string) (Products, error)
+	LastID() (int64, error)
 }
 
 type repository struct{}
@@ -30,13 +30,13 @@ func (r *repository) GetAll() ([]Products, error) {
 	return products, nil
 }
 
-func (r *repository) Store(id int, name string, color string, price string, stock string, code string, published bool, creationdate string) (Products, error) {
+func (r *repository) Store(id int64, name string, color string, price string, stock string, code string, published bool, creationdate string) (Products, error) {
 	prod := Products{id, name, color, price, stock, code, published, creationdate}
 	products = append(products, prod)
 	lastID = prod.ID
 	return prod, nil
 }
 
-func (r *repository) LastID() (int, error) {
+func (r *repository) LastID() (int64, error) {
 	return lastID, nil
 }
