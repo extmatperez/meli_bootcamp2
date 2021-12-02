@@ -45,11 +45,7 @@ func (r *repository) GetAll() ([]Product, error) {
 
 func (r *repository) Store(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
 	var products []Product
-	err := r.db.Read(&products)
-
-	if err != nil {
-		return Product{}, err
-	}
+	r.db.Read(&products) // if there is an error with the file, the error is not handled so that it can be written
 
 	product := Product{
 		Id:         id,
@@ -64,7 +60,7 @@ func (r *repository) Store(id int64, name string, color string, price float64, s
 
 	products = append(products, product)
 
-	err = r.db.Write(products)
+	err := r.db.Write(products)
 
 	if err != nil {
 		return Product{}, err
