@@ -3,6 +3,8 @@ package internal
 import (
 	"errors"
 	"fmt"
+
+	"github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/pkg/store"
 )
 
 type Transaction struct {
@@ -22,25 +24,34 @@ type Repository interface {
 	Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error)
 	UpdateCodigoYMonto(id int, codigo_de_transaccion string, monto float64) (Transaction, error)
 	Delete(id int) error
-	LastId() int
-	ExistsTransaction(id int) bool
+	LastId() (int, error)
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
 var transactions []Transaction
 var lastID int
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }
 
 func (repo *repository) GetAll() ([]Transaction, error) {
-	return transactions, nil // TODO: Manejar errores
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return nil, errors.New("No se pudo leer el archivo")
+	}
+	return transactions, nil
 
 }
 
 func (repo *repository) GetTransactionByID(id int) (Transaction, error) {
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, errors.New("No se pudo leer el archivo")
+	}
 	for _, t := range transactions {
 		if t.ID == id {
 			return t, nil
@@ -50,18 +61,38 @@ func (repo *repository) GetTransactionByID(id int) (Transaction, error) {
 }
 
 func (repo *repository) Store(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error) {
+
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
 	transac := Transaction{id, codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion}
 	lastID = id
 	transactions = append(transactions, transac)
-	return transac, nil // TODO: Manejar errores
+	err = repo.db.Write(transactions)
+	if err != nil {
+		return Transaction{}, errors.New("No se pudo escribir el archivo")
+	}
+	return transac, nil
 }
 
 func (repo *repository) Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error) {
+
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, errors.New("No se pudo leer el archivo")
+	}
 	transac := Transaction{id, codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion}
 
 	for i, t := range transactions {
 		if t.ID == id {
 			transactions[i] = transac
+
+			err = repo.db.Write(transactions)
+			if err != nil {
+				return Transaction{}, errors.New("No se pudo escribir el archivo")
+			}
+
 			return transac, nil
 		}
 	}
@@ -70,10 +101,20 @@ func (repo *repository) Update(id int, codigo_de_transaccion, moneda string, mon
 
 func (repo *repository) UpdateCodigoYMonto(id int, codigo_de_transaccion string, monto float64) (Transaction, error) {
 
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, errors.New("No se pudo leer el archivo")
+	}
 	for i, t := range transactions {
 		if t.ID == id {
 			transactions[i].CodigoDeTransaccion = codigo_de_transaccion
 			transactions[i].Monto = monto
+
+			err = repo.db.Write(transactions)
+			if err != nil {
+				return Transaction{}, errors.New("No se pudo escribir el archivo")
+			}
+
 			return transactions[i], nil
 		}
 	}
@@ -82,9 +123,18 @@ func (repo *repository) UpdateCodigoYMonto(id int, codigo_de_transaccion string,
 
 func (repo *repository) Delete(id int) error {
 
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return errors.New("No se pudo leer el archivo")
+	}
 	for i, t := range transactions {
 		if t.ID == id {
 			transactions = append(transactions[:i], transactions[i+1:]...)
+
+			err = repo.db.Write(transactions)
+			if err != nil {
+				return errors.New("No se pudo escribir el archivo")
+			}
 			return nil
 		}
 	}
@@ -92,15 +142,16 @@ func (repo *repository) Delete(id int) error {
 
 }
 
-func (repo *repository) LastId() int {
-	return lastID
-}
+//
+func (repo *repository) LastId() (int, error) {
 
-func (repo *repository) ExistsTransaction(id int) bool {
-	for _, t := range transactions {
-		if t.ID == id {
-			return true
-		}
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return 0, errors.New("No se pudo leer el archivo")
 	}
-	return false
+	if len(transactions) == 0 {
+		return 0, nil
+	}
+
+	return transactions[len(transactions)-1].ID, nil
 }

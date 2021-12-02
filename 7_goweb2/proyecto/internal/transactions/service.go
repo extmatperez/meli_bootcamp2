@@ -29,7 +29,11 @@ func (s *service) GetTransactionByID(id int) (Transaction, error) {
 }
 
 func (s *service) Store(codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (Transaction, error) {
-	id := s.repository.LastId() + 1
+	id, err := s.repository.LastId()
+	if err != nil {
+		return Transaction{}, err
+	}
+	id++
 	resultado, err := s.repository.Store(id, codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion)
 	return resultado, err
 }

@@ -1,15 +1,24 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/cmd/server/handler"
 	internal "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/internal/transactions"
+	"github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	repo := internal.NewRepository()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("No se pudo abrir el archivo .env")
+	}
+
+	db := store.New(store.FileType, "./transactions.json")
+	repo := internal.NewRepository(db)
 	service := internal.NewService(repo)
 	controller := handler.NewTransaction(service)
 

@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 	"net/http"
+	"os"
 	"strconv"
 
 	internal "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/internal/transactions"
@@ -212,7 +213,7 @@ func (t *Transaction) ValidateToken() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
 		if token != "" {
-			if token == "123456" {
+			if token == os.Getenv("TOKEN") { //"123456" {
 				return
 			}
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, "Token incorrecto")
