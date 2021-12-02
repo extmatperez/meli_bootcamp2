@@ -24,7 +24,7 @@ var lastID int
 
 type Repository interface {
 	getAll() ([]Transaccion, error)
-	Store(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
+	Store(codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
 	LastId() (int, error)
 	Search(id string) (Transaccion, error)
 	Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error)
@@ -43,15 +43,15 @@ func NewRepository(db store.Store) Repository {
 
 func (repo *repository) getAll() ([]Transaccion, error) {
 	//Leo las transacciones desde store
-	repo.db.Read(transacciones)
+	repo.db.Read(&transacciones)
 	return transacciones, nil
 }
 
-func (repo *repository) Store(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
+func (repo *repository) Store(codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
 	//Leo las transacciones
-	repo.db.Read(transacciones)
+	repo.db.Read(&transacciones)
 
-	trans := Transaccion{id, codTransaccion, moneda, monto, emisor, receptor, fechaTrans}
+	trans := Transaccion{0, codTransaccion, moneda, monto, emisor, receptor, fechaTrans}
 	err := repo.verificarCampos(trans)
 	if err != nil {
 		return Transaccion{}, err
@@ -60,6 +60,7 @@ func (repo *repository) Store(id int, codTransaccion, moneda string, monto float
 		if err != nil {
 			return Transaccion{}, err
 		}
+		trans.Id = lastID + 1
 		transacciones = append(transacciones, trans)
 		//Guardo las nuevas transacciones una vez agregada la nueva
 		repo.db.Write(transacciones)
@@ -69,10 +70,7 @@ func (repo *repository) Store(id int, codTransaccion, moneda string, monto float
 }
 
 func (repo *repository) LastId() (int, error) {
-	err := repo.db.Read(&transacciones)
-	if err != nil {
-		return 0, err
-	}
+	repo.db.Read(&transacciones)
 
 	cantTrans := len(transacciones)
 	if cantTrans == 0 {

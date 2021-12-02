@@ -34,7 +34,7 @@ func (fs *FileStore) Write(data interface{}) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(fs.FileName, file, 644)
+	return os.WriteFile(fs.FileName, file, 0644)
 }
 
 func (fs *FileStore) Read(data interface{}) error {

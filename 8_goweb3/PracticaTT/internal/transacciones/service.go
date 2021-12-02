@@ -29,12 +29,7 @@ func (serv *service) GetAll() ([]Transaccion, error) {
 }
 
 func (serv *service) Store(codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
-	lastID, err := serv.repository.LastId()
-	if err != nil {
-		return Transaccion{}, err
-	}
-
-	transaccion, err := serv.repository.Store(lastID+1, codTransaccion, moneda, monto, emisor, receptor, fechaTrans)
+	transaccion, err := serv.repository.Store(codTransaccion, moneda, monto, emisor, receptor, fechaTrans)
 	if err != nil {
 		return Transaccion{}, err
 	}
