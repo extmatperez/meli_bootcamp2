@@ -1,10 +1,9 @@
 package handler
 
 import (
-	"os"
 	"strconv"
 
-	users "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/8_goweb3/tarde/ejercicio1/internal/users"
+	users "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/8_goweb3/manana/ejercicio1/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,11 +27,6 @@ func NewUser(ser users.Service) *User {
 
 func (per *User) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		/* if !validarToken(ctx) {
-			return
-		}
-		*/
 		personas, err := per.service.GetAll()
 
 		if err != nil {
@@ -45,10 +39,6 @@ func (per *User) GetAll() gin.HandlerFunc {
 
 func (controller *User) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		/* if !validarToken(ctx) {
-			return
-		} */
 
 		var usr request
 
@@ -70,10 +60,6 @@ func (controller *User) Store() gin.HandlerFunc {
 
 func (controller *User) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		if !validarToken(ctx) {
-			return
-		}
 
 		var usr request
 
@@ -101,10 +87,6 @@ func (controller *User) Update() gin.HandlerFunc {
 
 func (controller *User) UpdateNombre() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		if !validarToken(ctx) {
-			return
-		}
 
 		var usr request
 
@@ -137,10 +119,6 @@ func (controller *User) UpdateNombre() gin.HandlerFunc {
 func (controller *User) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
-			return
-		}
-
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if err != nil {
@@ -155,19 +133,4 @@ func (controller *User) Delete() gin.HandlerFunc {
 		}
 
 	}
-}
-
-func validarToken(ctx *gin.Context) bool {
-	token := ctx.GetHeader("token")
-	if token == "" {
-		ctx.String(400, "Falta token")
-		return false
-	}
-	tokenENV := os.Getenv("TOKEN")
-	if token != tokenENV {
-		ctx.String(404, "Token incorrecto")
-		return false
-	}
-
-	return true
 }
