@@ -245,7 +245,7 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 			parametrosRequired := []string{"Codigo","Monto"}
 			differences	:= ValidParms(transactionRecived,parametrosRequired)
 
-			// validamos que esten todos los parametros en el request
+			// validamos que esten todos los parametrosRequired en el body de la petecion
 			if(len(differences) > 0){
 				c.String(http.StatusBadRequest, "Faltan los campos %v", differences)
 				return
@@ -257,7 +257,7 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 	
 			
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error %v", err)
+				c.String(http.StatusBadRequest, "Hubo un error acutalizando codigo y monto %v", err)
 				return
 			} 
 	
@@ -288,7 +288,7 @@ func (tran Transaction) Delete() gin.HandlerFunc{
 			err = tran.service.Delete(idTransaction)
 
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error %v", err)
+				c.String(http.StatusBadRequest, "Hubo un error al hacer el delete. %v", err)
 				return
 			} 
 
@@ -359,9 +359,6 @@ func InValidParams(parametros request) []string{
 
 func filtrar(sliceTransaccion[]tra.Transaction, campo string, valor string) []tra.Transaction {
 	var filtrado []tra.Transaction
-
-	
-
 
 	var per tra.Transaction
 	fmt.Println(per)
