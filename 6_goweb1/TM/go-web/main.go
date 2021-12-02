@@ -77,9 +77,10 @@ func GetAll(c *gin.Context) {
 	if err != nil {
 		fmt.Printf("Error en la lectura %v", err)
 	}
-	cadena, err := json.Unmarshal(data, &usuarios)
+	json.Unmarshal(data, &usuarios)
 
-	c.JSON(200, string(cadena))
+	c.JSON(200, usuarios)
+
 	/* 	usuarios := leerUsuarios()
 	   	c.JSON(200, gin.H{
 	   		"Usuario": usuarios})
