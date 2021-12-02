@@ -25,6 +25,7 @@ type Repository interface {
 	Store(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
 	LastId() (int, error)
 	Search(id string) (Transaccion, error)
+	Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error)
 }
 
 type repository struct{}
@@ -74,6 +75,7 @@ func (repo *repository) verificarCampos(transac Transaccion) error {
 }
 
 func (repo *repository) Search(id string) (Transaccion, error) {
+	var transac Transaccion
 	found := false
 	for _, value := range transacciones {
 		if strconv.Itoa(value.Id) == id {
@@ -88,4 +90,22 @@ func (repo *repository) Search(id string) (Transaccion, error) {
 	} else {
 		return transac, fmt.Errorf("no existe la transacción con el id %v", id)
 	}
+}
+
+func (repo *repository) Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error) {
+	var filtredTransac []Transaccion
+	var etiquetaStruct string
+	for etiqueta, value := range mapEtiquetas {
+		//Recorro cada etiqueta con su valor
+		for _, transaccion := range transacciones {
+			//Busco el valor de la etiqueta en las transacciones
+			etiquetaStruct = mapRelacionEtiquetas[etiqueta]
+			actValue := fmt.Sprintf("%v", reflect.ValueOf(transaccion).FieldByName(etiquetaStruct).Interface())
+			if actValue == value {
+				filtredTransac = append(filtredTransac, transaccion)
+			}
+		}
+	}
+
+	return filtredTransac, nil
 }

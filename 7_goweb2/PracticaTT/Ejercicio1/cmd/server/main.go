@@ -19,7 +19,7 @@ func main() {
 	groupTransac.GET("/", transac.GetAll())
 
 	groupTransac.GET("/:id", transac.Search())
-	// groupTransac.GET("/filtros", filtrarTransacciones)
+	groupTransac.GET("/filtros", transac.Filter())
 
 	// //Endpoints POST
 	groupTransac.POST("/cargar", transac.Store())

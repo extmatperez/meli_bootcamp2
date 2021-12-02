@@ -61,15 +61,37 @@ func (trans *Transaccion) Search() gin.HandlerFunc {
 		} else {
 			ctx.JSON(200, transac)
 		}
+	}
+}
 
-		// if c.BindJSON(&transac) == nil {
-		// 	log.Println("Bind por JSON")
-		// 	log.Println("ID de transaccion: ", transac.Id)
-		// 	log.Println("Codigo de transaccion: ", transac.CodTransaccion)
-		// 	c.String(http.StatusOK, "(Query JSON) - Transaccion: %s, ID: %s\n", transac.CodTransaccion, transac.Id)
-		// } else {
-		// 	c.String(404, "La transaccion no existe")
-		// }
+func (trans *Transaccion) Filter() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		//Almaceno todas las etiquetas de mi struct
+		var etiquetas []string
+		etiquetas = append(etiquetas, "id", "cod_transaccion", "moneda", "monto", "emisor", "receptor", "fecha_trans")
+		mapEtiquetas := make(map[string]string)
+		mapRelacionEtiquetas := map[string]string{
+			"id":              "Id",
+			"cod_transaccion": "CodTransaccion",
+			"moneda":          "Moneda",
+			"monto":           "Monto",
+			"emisor":          "Emisor",
+			"receptor":        "Receptor",
+			"fecha_trans":     "FechaTrans",
+		}
 
+		for _, etiqueta := range etiquetas {
+			valEtiqueta := ctx.Query(etiqueta)
+			if valEtiqueta != "" {
+				mapEtiquetas[etiqueta] = valEtiqueta
+			}
+		}
+		filtredTransaction, err := trans.service.Filter(mapEtiquetas, mapRelacionEtiquetas)
+
+		if err != nil {
+			ctx.String(200, err.Error())
+		} else {
+			ctx.JSON(200, filtredTransaction)
+		}
 	}
 }
