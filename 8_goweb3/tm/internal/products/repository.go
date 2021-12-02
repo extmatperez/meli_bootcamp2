@@ -23,6 +23,7 @@ type Repository interface {
 	GetAll() ([]Product, error)
 	Store(ID int, Name, Color string, Price float64, Stock, Code int, isPublished bool, CreatedAt string) (Product, error)
 	Update(ID int, Name, Color string, Price float64, Stock, Code int, isPublished bool, CreatedAt string) (Product, error)
+	Delete(ID int) error
 }
 
 type repository struct {
@@ -36,12 +37,20 @@ func NewRepository(db store.Store) Repository {
 }
 
 func (repo *repository) GetAll() ([]Product, error) {
+	err := repo.db.Read(&products)
+	if err != nil {
+		return nil, err
+	}
 	return products, nil
 }
 
 func (repo *repository) Store(id int, name, color string, price float64, stock, code int, isPublished bool, createdAt string) (Product, error) {
 	prod := Product{id, name, color, price, stock, code, isPublished, createdAt}
 	products = append(products, prod)
+	err := repo.db.Write(products)
+	if err != nil {
+		return Product{}, err
+	}
 	return prod, nil
 }
 
@@ -51,6 +60,10 @@ func (repo *repository) Update(id int, name, color string, price float64, stock,
 	for i := range products {
 		if products[i].ID == id {
 			products[i] = prod
+			err := repo.db.Write(products)
+			if err != nil {
+				return Product{}, err
+			}
 			updated = true
 		}
 	}
@@ -58,4 +71,21 @@ func (repo *repository) Update(id int, name, color string, price float64, stock,
 		return Product{}, fmt.Errorf("producto no encontrado")
 	}
 	return prod, nil
+}
+
+func (repo *repository) Delete(id int) error {
+	err := repo.db.Read(&products)
+	if err != nil {
+		return err
+	}
+	index := 0
+	for i, v := range products {
+		if v.ID == id {
+			index = i
+			products = append(products[:id], products[id+1:]...)
+			err := repo.db.Write(products)
+			return err
+		}
+	}
+	return fmt.Errorf("el producto con id %d no existe", id)
 }
