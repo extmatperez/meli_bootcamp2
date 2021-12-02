@@ -32,7 +32,7 @@ func New(store TypeFile,filename string) Store{
 
 
 func(sto *FileStore) Write(data interface{}) error{
-	dataBytes, err := json.Marshal(data)
+	dataBytes, err := json.MarshalIndent(data, "", " ")
 
 	if err != nil {
 		return err

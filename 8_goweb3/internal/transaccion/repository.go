@@ -44,7 +44,7 @@ func NewRepository(db store.Store) Repository{
 
 func(repo *repository) GetAll() ([]Transaction, error){
 	var transactions []Transaction
-	err := repo.store.Read(transactions)
+	err := repo.store.Read(&transactions)
 
 	if(err != nil){
 		return nil,err
