@@ -28,7 +28,7 @@ type Repository interface {
 type repository struct{}
 
 // Creo una función que retorne mi interface (si por ejemplo tengo otra interface para base de datos no relacionales agrego otra función que retorne esa interface)
-func new_repository() Repository {
+func New_repository() Repository {
 	return &repository{}
 }
 
