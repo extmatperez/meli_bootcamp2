@@ -151,6 +151,45 @@ func (t *Transaccion) Store() gin.HandlerFunc {
 	}
 }
 
+func (t *Transaccion) FindById() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.GetHeader("token")
+
+		if token != "" {
+			if token == "39470939" {
+
+				id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+
+				if err != nil {
+					c.JSON(400, "el id es invalido")
+				} else {
+
+					t, err := t.service.FindById(int(id))
+					if err != nil {
+						c.JSON(404, gin.H{
+							"error": err.Error(),
+						})
+						return
+					}
+					c.JSON(200, t)
+
+				}
+
+			} else {
+				c.JSON(401, gin.H{
+					"error": "token incorrecto",
+				})
+			}
+
+		} else {
+			c.JSON(401, gin.H{
+				"error": "debes ingresas token en el header",
+			})
+		}
+
+	}
+}
+
 func (t *Transaccion) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
@@ -350,7 +389,7 @@ func (t *Transaccion) Delete() gin.HandlerFunc {
 						})
 						return
 					}
-					c.JSON(200, gin.H{"data": fmt.Sprintf("el producto %d ha sido eliminado", id)})
+					c.JSON(200, gin.H{"data": fmt.Sprintf("la transaccion %d ha sido eliminado", id)})
 
 				}
 
