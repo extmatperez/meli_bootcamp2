@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/7_goweb2/turn_afternoon/cmd/server/handler"
-	transaction "github.com/extmatperez/meli_bootcamp2/7_goweb2/turn_afternoon/internal/transaction"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/turn_morning/exercise_1/cmd/server/handler"
+	transaction "github.com/extmatperez/meli_bootcamp2/8_goweb3/turn_morning/exercise_1/internal/transaction"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,9 +21,9 @@ func main() {
 	transactionURL.GET("/receivers/:receiver", controller.GetByReceiver())
 	transactionURL.POST("/", controller.Store())
 	//transactionURL.POST("/", controller.CreateTransaction())
-	//transactionURL.PUT("/", controller.UpdateTransaction())
-	//transactionURL.PATCH("/", controller.UpdateAmount())
-	//transactionURL.DELETE("/", controller.DeleteTransaction())
+	transactionURL.PUT("/:id", controller.UpdateTransaction())
+	transactionURL.PATCH("/:id/:amount", controller.UpdateAmount())
+	transactionURL.DELETE("/:id", controller.DeleteTransaction())
 
 	router.Run(":9090")
 }

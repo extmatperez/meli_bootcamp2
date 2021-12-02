@@ -3,7 +3,7 @@ package handler
 import (
 	"strconv"
 
-	transaction "github.com/extmatperez/meli_bootcamp2/7_goweb2/turn_afternoon/internal/transaction"
+	transaction "github.com/extmatperez/meli_bootcamp2/8_goweb3/turn_morning/exercise_1/internal/transaction"
 	"github.com/gin-gonic/gin"
 )
 
@@ -79,6 +79,37 @@ func (tran *Transaction) Store() gin.HandlerFunc {
 	}
 }
 
+func (tran *Transaction) CreateTransaction() gin.HandlerFunc {
+
+	return func(context *gin.Context) {
+		token := context.GetHeader("token")
+
+		if token != "" {
+			if token == "dig.123" {
+				var request request
+				err := context.ShouldBindJSON(&request)
+				if err != nil {
+					context.String(400, "Hubo un error al querer cargar una persona %v", err)
+				} else {
+					newTransaction := transaction.Transaction{0, request.TransactionCode, request.Currency, request.Amount,
+						request.Receiver, request.Sender, request.TransactionDate}
+					request, err := tran.service.CreateTransaction(newTransaction)
+					if err != nil {
+						context.String(400, "No se pudo cargar la persona %v", err)
+					} else {
+						context.JSON(200, request)
+					}
+				}
+
+			} else {
+				context.String(401, "Invalid Token")
+			}
+		} else {
+			context.String(400, "Need enter a token")
+		}
+	}
+}
+
 func (tran *Transaction) GetByID() gin.HandlerFunc {
 
 	return func(context *gin.Context) {
@@ -126,6 +157,109 @@ func (trans *Transaction) GetByReceiver() gin.HandlerFunc {
 				} else {
 					context.JSON(200, gin.H{
 						"transaction": transFound})
+
+				}
+			} else {
+				context.String(401, "Invalid Token")
+			}
+		} else {
+			context.String(400, "Need enter a token")
+		}
+
+	}
+
+}
+
+func (trans *Transaction) UpdateTransaction() gin.HandlerFunc {
+
+	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+
+		if token != "" {
+			if token == "dig.123" {
+				id, err1 := strconv.Atoi(context.Param("id"))
+				if err1 != nil {
+					context.JSON(400, gin.H{
+						"transaction": err1})
+				}
+				var request request
+				err := context.ShouldBindJSON(&request)
+				transFound, err := trans.service.UpdateTransaction(id, request.TransactionCode, request.Currency, request.Amount,
+					request.Receiver, request.Sender, request.TransactionDate)
+				if err != nil {
+					context.String(404, "Receiver %s not found, error: %v", id, err)
+
+				} else {
+					context.JSON(200, gin.H{
+						"transaction": transFound})
+
+				}
+			} else {
+				context.String(401, "Invalid Token")
+			}
+		} else {
+			context.String(400, "Need enter a token")
+		}
+
+	}
+
+}
+
+func (trans *Transaction) UpdateAmount() gin.HandlerFunc {
+
+	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+
+		if token != "" {
+			if token == "dig.123" {
+				id, err1 := strconv.Atoi(context.Param("id"))
+				if err1 != nil {
+					context.JSON(400, gin.H{
+						"transaction": err1})
+				}
+				//var amount float64 = context.Param("amount")
+				transFound, err := trans.service.UpdateAmount(id, 40.00)
+				if err != nil {
+					context.String(404, "Receiver %s not found, error: %v", id, err)
+
+				} else {
+					context.JSON(200, gin.H{
+						"transaction": transFound})
+
+				}
+			} else {
+				context.String(401, "Invalid Token")
+			}
+		} else {
+			context.String(400, "Need enter a token")
+		}
+
+	}
+
+}
+
+func (trans *Transaction) DeleteTransaction() gin.HandlerFunc {
+
+	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+
+		if token != "" {
+			if token == "dig.123" {
+				id, err1 := strconv.Atoi(context.Param("id"))
+				if err1 != nil {
+					context.JSON(400, gin.H{
+						"transaction": err1})
+				}
+				err := trans.service.DeleteTransaction(id)
+				if err != nil {
+					context.String(404, "Receiver %s not found, error: %v", id, err)
+
+				} else {
+					context.JSON(200, gin.H{
+						"transaction": "Deleted"})
 
 				}
 			} else {

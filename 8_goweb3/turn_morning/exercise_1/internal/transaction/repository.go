@@ -20,7 +20,7 @@ type Transaction struct {
 var transactions []Transaction
 
 func readTransactions() []Transaction {
-	transacionFile := "../../../transaction.json"
+	transacionFile := "../../internal/transaction/transaction.json"
 	data, err := os.ReadFile(transacionFile)
 
 	if err != nil {
@@ -47,7 +47,7 @@ func toSaveTransaction(tran *[]Transaction) {
 	data := reqBodyBytes.Bytes()
 	//data := []byte(fmt.Sprintf("%v", transactions))
 
-	err := os.WriteFile("../../../transaction.json", data, 0644)
+	err := os.WriteFile("../../internal/transaction/transaction.json", data, 0644)
 
 	if err != nil {
 		panic(err)
@@ -58,9 +58,13 @@ type Repository interface {
 	GetAll() ([]Transaction, error)
 	GetByID(id int) (Transaction, error)
 	GetByReceiver(receiver string) (Transaction, error)
-	//CreateTransaction(transaction Transaction) (Transaction, error)
+	CreateTransaction(transaction Transaction) (Transaction, error)
 	Store(transactionCode string, currency string, amount float64,
 		receiver string, sender string, transactionDate string) (Transaction, error)
+	UpdateTransaction(id int, transactionCode string, currency string, amount float64,
+		receiver string, sender string, transactionDate string) (Transaction, error)
+	UpdateAmount(id int, amount float64) (Transaction, error)
+	DeleteTransaction(id int) error
 }
 
 type repository struct{}
@@ -118,4 +122,81 @@ func (repo *repository) Store(transactionCode string, currency string, amount fl
 func LastId() (int, error) {
 	transactions = readTransactions()
 	return transactions[len(transactions)-1:][0].ID, nil
+}
+
+func (repo *repository) CreateTransaction(trans Transaction) (Transaction, error) {
+	transactions = readTransactions()
+	lastId, err := LastId()
+	if err != nil {
+		panic(err)
+	}
+	trans.ID = lastId + 1
+
+	transactions = append(transactions, trans)
+
+	toSaveTransaction(&transactions)
+
+	return trans, nil
+
+}
+
+func (repo *repository) UpdateTransaction(id int, transactionCode string, currency string, amount float64,
+	receiver string, sender string, transactionDate string) (Transaction, error) {
+	transactions = readTransactions()
+
+	var transaction Transaction
+	transaction.TransactionCode = transactionCode
+	transaction.Currency = currency
+	transaction.Currency = currency
+	transaction.Amount = amount
+	transaction.Receiver = receiver
+	transaction.Sender = sender
+	transaction.TransactionDate = transactionDate
+	for i, v := range transactions {
+		if v.ID == id {
+			transaction.ID = i + 1
+			transactions[i] = transaction
+			toSaveTransaction(&transactions)
+			return transaction, nil
+		}
+	}
+
+	return Transaction{}, nil
+
+}
+
+func (repo *repository) UpdateAmount(id int, amount float64) (Transaction, error) {
+	transactions = readTransactions()
+
+	var transaction Transaction
+	for i, trans := range transactions {
+		if id == trans.ID {
+			transaction = transactions[i]
+			break
+		}
+	}
+	transaction.Amount = amount
+	transactions = append(transactions, transaction)
+
+	toSaveTransaction(&transactions)
+
+	return transaction, nil
+
+}
+
+func (repo *repository) DeleteTransaction(id int) error {
+	transactions = readTransactions()
+	index := 0
+	for i, v := range transactions {
+		if v.ID == id {
+			index = i
+			transactions = append(transactions[:index], transactions[index+1:]...)
+			return nil
+		}
+	}
+
+	toSaveTransaction(&transactions)
+
+	return fmt.Errorf("La persona %d no existe", id)
+
 }
