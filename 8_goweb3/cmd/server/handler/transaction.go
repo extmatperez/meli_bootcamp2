@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	tra "github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/internal/transaccion"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/pkg/store/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,9 +33,9 @@ func NewTransaction(service tra.Service) *Transaction{
 func (tran Transaction) GetAll() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
-		errs := ValidateToken(c.GetHeader("token"))
-		if  errs != nil {
-			c.String(http.StatusUnauthorized,errs.Error())
+		err := ValidateToken(c.GetHeader("token"))
+		if  err != nil {
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
 			return
 		}
 
@@ -42,9 +43,9 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 		transactions, err := tran.service.GetAll()
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 		} else {
-			c.JSON(http.StatusOK, transactions)
+			c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,transactions,""))
 		}
 	}
 }
@@ -55,9 +56,9 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
-		errs := ValidateToken(c.GetHeader("token"))
-		if  errs != nil {
-			c.String(http.StatusUnauthorized,errs.Error())
+		err := ValidateToken(c.GetHeader("token"))
+		if  err != nil {
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
 			return
 		}
 
@@ -65,40 +66,41 @@ func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 		idTransaction,err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 		transaction, err := tran.service.GetTransactionById(idTransaction)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
-		} else {
-			c.JSON(http.StatusOK, transaction)
-		}
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
+			return
+		} 
+			
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,transaction,""))
+		
 	}
 }
 
 func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
-		errs := ValidateToken(c.GetHeader("token"))
-		if  errs != nil {
-			c.String(http.StatusUnauthorized,errs.Error())
+		err := ValidateToken(c.GetHeader("token"))
+		if  err != nil {
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
 			return
 		}
-
 
 		transactions, err := tran.service.GetAll()
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 
 		var parametros request
-		err1 := c.BindJSON(&parametros)
-			if(err1 != nil){
-			c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar")
+		err = c.BindJSON(&parametros)
+			if(err != nil){
+				c.JSON(http.StatusForbidden, web.NewResponse(http.StatusForbidden,nil,err.Error()))
 			return
 		}
 
@@ -106,7 +108,8 @@ func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 	   filtros := GetParamsFromBody(parametros)
 
 	   if(len(filtros) == 0){
-			c.String(http.StatusForbidden,"Debes pasar al menos un flitro con los datos a buscar")
+		c.JSON(http.StatusForbidden, web.NewResponse(http.StatusForbidden,nil,
+													"Debes pasar al menos un flitro con los datos a buscar"))
 			return
 		}
 
@@ -118,7 +121,7 @@ func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 			filtrados = filtrar(filtrados,filtro,reflect.ValueOf(parametros).FieldByName(filtro).String())
 		}		
 
-		c.JSON(http.StatusOK,filtrados)
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,filtrados,""))
 
 
 	}
@@ -127,18 +130,17 @@ func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 func (tran Transaction) Store() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
-		errs := ValidateToken(c.GetHeader("token"))
-		if  errs != nil {
-			c.String(http.StatusUnauthorized,errs.Error())
+		err := ValidateToken(c.GetHeader("token"))
+		if  err != nil {
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
 			return
 		}
-
 		var transactionRecived request
 		
-		err := c.ShouldBindJSON(&transactionRecived)
+		err = c.ShouldBindJSON(&transactionRecived)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 
@@ -146,7 +148,7 @@ func (tran Transaction) Store() gin.HandlerFunc{
 
 		// validamos que esten todos los parametros en el request
 		if(len(invalidParams) > 0){
-			c.String(http.StatusBadRequest, "Faltan los campos %v", invalidParams)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,fmt.Sprintf("Faltan los campos %v", invalidParams)))
 			return
 		}
 
@@ -156,11 +158,11 @@ func (tran Transaction) Store() gin.HandlerFunc{
 
 		
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 
-		c.JSON(http.StatusOK,tranUpdate)
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,tranUpdate,""))
 
 	}
 }
@@ -169,9 +171,9 @@ func (tran Transaction) Store() gin.HandlerFunc{
 func (tran Transaction) Update() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
-		errs := ValidateToken(c.GetHeader("token"))
-		if  errs != nil {
-			c.String(http.StatusUnauthorized,errs.Error())
+		err := ValidateToken(c.GetHeader("token"))
+		if  err != nil {
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
 			return
 		}
 
@@ -180,7 +182,7 @@ func (tran Transaction) Update() gin.HandlerFunc{
 		idTransaction,err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 
@@ -189,7 +191,7 @@ func (tran Transaction) Update() gin.HandlerFunc{
 		err = c.ShouldBindJSON(&transactionRecived)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 
@@ -197,9 +199,10 @@ func (tran Transaction) Update() gin.HandlerFunc{
 
 		// validamos que esten todos los parametros en el request
 		if(len(invalidParams) > 0){
-			c.String(http.StatusBadRequest, "Faltan los campos %v", invalidParams)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,fmt.Sprintf("Faltan los campos %v", invalidParams)))
 			return
 		}
+
 
 
 		tranUpdate,err := tran.service.Update(idTransaction,transactionRecived.Codigo,transactionRecived.Moneda,transactionRecived.Monto,
@@ -207,11 +210,12 @@ func (tran Transaction) Update() gin.HandlerFunc{
 
 		
 		if err != nil {
-			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			fmt.Println(err)
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 			return
 		} 
 
-		c.JSON(http.StatusOK,tranUpdate)
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,tranUpdate,""))
 
 	}
 }
@@ -220,16 +224,15 @@ func (tran Transaction) Update() gin.HandlerFunc{
 func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
-			errs := ValidateToken(c.GetHeader("token"))
-			if  errs != nil {
-				c.String(http.StatusUnauthorized,errs.Error())
+			err := ValidateToken(c.GetHeader("token"))
+			if  err != nil {
+				c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
 				return
 			}
-
 			idTransaction,err := strconv.Atoi(c.Param("id"))
 	
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error %v", err)
+				c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 				return
 			} 
 	
@@ -238,7 +241,7 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 			err = c.ShouldBindJSON(&transactionRecived)
 	
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error %v", err)
+				c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 				return
 			} 
 
@@ -247,7 +250,7 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 
 			// validamos que esten todos los parametrosRequired en el body de la petecion
 			if(len(differences) > 0){
-				c.String(http.StatusBadRequest, "Faltan los campos %v", differences)
+				c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,fmt.Sprintf("Faltan los campos %v", differences)))
 				return
 			}
 
@@ -257,11 +260,12 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 	
 			
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error acutalizando codigo y monto %v", err)
+				c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 				return
 			} 
 	
-			c.JSON(http.StatusOK,tranUpdate)
+		
+			c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,tranUpdate,""))
 	
 		}
 }
@@ -270,30 +274,27 @@ func (tran Transaction) Delete() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
 
-		errs := ValidateToken(c.GetHeader("token"))
-		if  errs != nil {
-			c.String(http.StatusUnauthorized,errs.Error())
+		err := ValidateToken(c.GetHeader("token"))
+		if  err != nil {
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized,nil,err.Error()))
+
 			return
 		}
 
-
-
-		idTransaction,err := strconv.Atoi(c.Param("id"))
+			idTransaction,err := strconv.Atoi(c.Param("id"))
 	
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error %v", err)
+				c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 				return
 			} 
 
 			err = tran.service.Delete(idTransaction)
 
 			if err != nil {
-				c.String(http.StatusBadRequest, "Hubo un error al hacer el delete. %v", err)
+				c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest,nil,err.Error()))
 				return
 			} 
-
-			c.String(http.StatusOK,"Se elimino correctamente la transaccion con id: %v",idTransaction)
-
+			c.JSON(http.StatusOK, web.NewResponse(http.StatusOK,fmt.Sprintf("Se elimino correctamente la transaccion con id: %v",idTransaction),""))
 	}
 }
 

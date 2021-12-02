@@ -1,7 +1,7 @@
 [
  {
   "id": 2,
-  "codigo": "24385",
+  "codigo": "24safdsadfasdf385",
   "moneda": "Peso Colombiano",
   "monto": "$8228845654645678",
   "emisor": "Luis",
@@ -108,15 +108,6 @@
   "fecha": "01/01/2001"
  },
  {
-  "id": 21,
-  "codigo": "asdf-8908",
-  "moneda": "Dollar",
-  "monto": "$888,5",
-  "emisor": "Luis",
-  "receptor": "Perez",
-  "fecha": "01/01/2001"
- },
- {
   "id": 22,
   "codigo": "asdf-sdggfsdgsdgfsdg89",
   "moneda": "Peso",
@@ -136,6 +127,15 @@
  },
  {
   "id": 24,
+  "codigo": "nuevo-1245-8889",
+  "moneda": "Peso Colomboano",
+  "monto": "$888,5",
+  "emisor": "perez",
+  "receptor": "palacio",
+  "fecha": "01/12/2015"
+ },
+ {
+  "id": 25,
   "codigo": "nuevo-1245-8889",
   "moneda": "Peso Colomboano",
   "monto": "$888,5",
