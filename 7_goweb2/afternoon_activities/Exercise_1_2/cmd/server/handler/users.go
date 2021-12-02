@@ -5,7 +5,7 @@ package handler
 import (
 	"net/http"
 
-	users "github.com/extmatperez/melibootcamp2/tree/montenegro_edgar/7_goweb2/afternoon_activities/Exercise_1_2/internal/users"
+	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/7_goweb2/afternoon_activities/Exercise_1_2/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
