@@ -1,9 +1,10 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
-	transaction "github.com/extmatperez/meli_bootcamp2/8_goweb3/turn_morning/exercise_1/internal/transaction"
+	transaction "github.com/extmatperez/meli_bootcamp2/9_goweb4/internal/transaction"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +31,7 @@ func (tran *Transaction) GetAll() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				transactions, err := tran.service.GetAll()
 				if err != nil {
 					context.String(400, "There was a error %v", err)
@@ -55,7 +56,7 @@ func (tran *Transaction) Store() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				var newTransaction request
 				err := context.ShouldBindJSON(&newTransaction)
 				if err != nil {
@@ -85,7 +86,7 @@ func (tran *Transaction) CreateTransaction() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				var request request
 				err := context.ShouldBindJSON(&request)
 				if err != nil {
@@ -116,7 +117,7 @@ func (tran *Transaction) GetByID() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 
 				idParam, err := strconv.Atoi(context.Param("id"))
 				if err != nil {
@@ -148,7 +149,7 @@ func (trans *Transaction) GetByReceiver() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				var receiver string = context.Param("receiver")
 				transFound, err := trans.service.GetByReceiver(receiver)
 				if err != nil {
@@ -177,7 +178,7 @@ func (trans *Transaction) UpdateTransaction() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				id, err1 := strconv.Atoi(context.Param("id"))
 				if err1 != nil {
 					context.JSON(400, gin.H{
@@ -213,7 +214,7 @@ func (trans *Transaction) UpdateAmount() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				id, err1 := strconv.Atoi(context.Param("id"))
 				if err1 != nil {
 					context.JSON(400, gin.H{
@@ -247,7 +248,7 @@ func (trans *Transaction) DeleteTransaction() gin.HandlerFunc {
 		token := context.GetHeader("token")
 
 		if token != "" {
-			if token == "dig.123" {
+			if token == os.Getenv("TOKEN") {
 				id, err1 := strconv.Atoi(context.Param("id"))
 				if err1 != nil {
 					context.JSON(400, gin.H{

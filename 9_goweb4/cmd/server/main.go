@@ -1,12 +1,15 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/8_goweb3/turn_morning/exercise_1/cmd/server/handler"
-	transaction "github.com/extmatperez/meli_bootcamp2/8_goweb3/turn_morning/exercise_1/internal/transaction"
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/cmd/server/handler"
+	transaction "github.com/extmatperez/meli_bootcamp2/9_goweb4/internal/transaction"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
+	godotenv.Load()
 
 	router := gin.Default()
 
