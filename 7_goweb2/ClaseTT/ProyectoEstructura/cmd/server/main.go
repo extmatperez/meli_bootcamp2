@@ -15,8 +15,8 @@ func main() {
 
 	groupProducts := router.Group("api/productos")
 	{
-		groupProducts.GET("/get", controller.GetAll())
-		groupProducts.POST("/add", controller.Store())
+		groupProducts.GET("/", controller.GetAll())
+		groupProducts.POST("/", controller.Store())
 	}
 
 	router.Run()
