@@ -3,12 +3,14 @@ package main
 import (
 	"github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/cmd/server/handler"
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/internal/transactions"
+
 	"github.com/gin-gonic/gin"
 )
 
 
 func main() {
 	router := gin.Default()
+	//router.SetTrustedProxies([]string{"192.168.1.2"})
 	//router.GET("/sayHi/:name/:lastName", SayHi)
 	repository := transactions.NewRepository()
 	service := transactions.NewService(repository)

@@ -3,7 +3,10 @@ package handler
 import (
 	"fmt"
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/internal/transactions"
+	"github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/pkg/web"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"os"
 	"strconv"
 )
 
@@ -26,45 +29,66 @@ func NewTransaction(ser transactions.Service) *Transaction {
 
 func (transact *Transaction) GetAll() gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+
 		transactions, err := transact.service.GetAll()
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 		} else {
-			context.JSON(200, transactions)
+			context.JSON(200, web.NewResponse(200, transactions, ""))
 		}
 	}
 }
 
 func (transact *Transaction) Store() gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+
 		var newTransaction request
 		err := context.ShouldBindJSON(&newTransaction)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		transactionCreated, err := transact.service.Store(0, newTransaction.Code, newTransaction.Currency,
 			newTransaction.Amount, newTransaction.Remitter, newTransaction.Receptor, newTransaction.Date)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 		} else {
-			context.JSON(200, transactionCreated)
+			context.JSON(200, web.NewResponse(200, transactionCreated, ""))
 		}
 	}
 }
 
 func (transact *Transaction) Update() gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+
 		var modTransaction request
 		err := context.ShouldBindJSON(&modTransaction)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		transactionMod, err := transact.service.Update(id, modTransaction.Code, modTransaction.Currency,
@@ -72,34 +96,49 @@ func (transact *Transaction) Update() gin.HandlerFunc {
 		if err != nil {
 			context.String(404, err.Error())
 		} else {
-			context.JSON(200, transactionMod)
+			context.JSON(200, web.NewResponse(200, transactionMod, ""))
 		}
 	}
 }
 
 func (transact *Transaction) Delete() gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		err = transact.service.Delete(id)
 		if err != nil {
 			context.String(404, err.Error())
 		} else {
-			context.JSON(200, fmt.Sprintf("La transaccion con id %v, se ha eliminado correctamente", id))
+			context.JSON(200, web.NewResponse(200,
+				fmt.Sprintf("La transaccion con id %v, se ha eliminado correctamente", id), ""))
 		}
 	}
 }
 
 func (transact *Transaction) ModifyTransactionCode() gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		transactionCode := context.Param("TransactionCode")
@@ -107,30 +146,72 @@ func (transact *Transaction) ModifyTransactionCode() gin.HandlerFunc {
 		if err != nil {
 			context.String(404, err.Error())
 		} else {
-			context.JSON(200, transactionMod)
+			context.JSON(200, web.NewResponse(200, transactionMod, ""))
 		}
 	}
 }
 
 func (transact *Transaction) ModifyAmount() gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		amountStr := context.Param("Amount")
 		amount, err := strconv.ParseFloat(amountStr, 64)
 		if err != nil {
-			context.String(400, "Hubo un error")
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
 			return
 		}
 		transactionMod, err := transact.service.ModifyAmount(id, amount)
 		if err != nil {
 			context.String(404, err.Error())
 		} else {
-			context.JSON(200, transactionMod)
+			context.JSON(200, web.NewResponse(200, transactionMod, ""))
 		}
 	}
+}
+
+func (transact *Transaction) GetByID() gin.HandlerFunc {
+	return func(context *gin.Context) {
+
+		token := context.GetHeader("token")
+		if !validateToken(token) {
+			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
+			return
+		}
+		idStr := context.Param("ID")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			context.JSON(400, web.NewResponse(400, nil, "Incorrect params"))
+			return
+		}
+		transactions, err := transact.service.GetByID(id)
+		if err != nil {
+			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
+		} else {
+			context.JSON(200, web.NewResponse(200, transactions, ""))
+		}
+	}
+}
+
+func validateToken(token string) bool {
+	err := godotenv.Load("/Users/aghione/Desktop/repositorios/bootcamp/practicas/meli_bootcamp2/7_goweb2/cmd/server/.env")
+	if err != nil {
+		return false
+	}
+	tokenEnv := os.Getenv("MY_TOKEN")
+	if tokenEnv != token {
+		return false
+	}
+	return true
 }

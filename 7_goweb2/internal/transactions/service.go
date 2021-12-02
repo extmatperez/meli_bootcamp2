@@ -9,10 +9,20 @@ type Service interface {
 	Delete(id int) error
 	ModifyTransactionCode(id int, code string) (Transaction, error)
 	ModifyAmount(id int, amount float64) (Transaction, error)
+	GetByID(id int) (Transaction, error)
 }
 
 type service struct {
 	repository Repository
+}
+
+func (ser *service) GetByID(id int) (Transaction, error) {
+	transactions, err := ser.repository.GetByID(id)
+	if err != nil {
+		return Transaction{}, err
+	} else {
+		return transactions, nil
+	}
 }
 
 func (ser *service) ModifyAmount(id int, amount float64) (Transaction, error) {

@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/cmd/server/handler"
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/internal/transactions"
+	stores "github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/pkg/store"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,7 +11,8 @@ import (
 func main() {
 	router := gin.Default()
 	//router.GET("/sayHi/:name/:lastName", SayHi)
-	repository := transactions.NewRepository()
+	db := stores.New(stores.FileType, "/Users/aghione/Desktop/repositorios/bootcamp/practicas/meli_bootcamp2/7_goweb2/internal/transactions/transactions.json")
+	repository := transactions.NewRepository(db)
 	service := transactions.NewService(repository)
 	controller := handler.NewTransaction(service)
 
@@ -18,7 +20,7 @@ func main() {
 	{
 		routerTransactions.GET("/GetAll", controller.GetAll())
 		//routerTransactions.GET("/Filter", FilterByParams)
-		//routerTransactions.GET("/GetByID/:ID", GetByID)
+		routerTransactions.GET("/GetByID/:ID", controller.GetByID())
 		routerTransactions.POST("/", controller.Store())
 		//routerTransactions.GET("/chargeData", ObtainTransactions)
 		routerTransactions.PUT("/:ID", controller.Update())
