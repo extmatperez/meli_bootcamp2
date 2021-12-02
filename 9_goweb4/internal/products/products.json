@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Pelota",
+        "color": "Negro",
+        "price": 1505.50,
+        "stock": 200,
+        "code": "#0000000f1",
+        "published": true,
+        "created_at": "21/11/2021"
+    },
+    {
+        "id": 2,
+        "name": "Botines",
+        "color": "Blanco",
+        "price": 5020.50,
+        "stock": 50,
+        "code": "#0000000f2",
+        "published": false,
+        "created_at": "12/10/2021"
+    },
+    {
+        "id": 3,
+        "name": "Camiseta",
+        "color": "Gris",
+        "price": 2500.00,
+        "stock": 100,
+        "code": "#0000000f3",
+        "published": true,
+        "created_at": "28/11/2021"
+    }
+]
