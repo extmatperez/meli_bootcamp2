@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/cmd/server/handler"
-	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TM/proyecto/cmd/server/handler"
+	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TM/proyecto/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +17,7 @@ func main() {
 	tr.GET("/get", t.GetAll())
 	tr.GET("/load", t.Load())
 	tr.GET("/find/:id", t.FindById())
+	tr.GET("/filter", t.FilterBy())
 	tr.PUT("/update/:id", t.Update())
 	tr.PATCH("/cod/:id", t.UpdateCod())
 	tr.PATCH("/mon/:id", t.UpdateMon())

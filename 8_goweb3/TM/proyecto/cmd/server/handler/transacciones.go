@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/internal/transacciones"
+	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TM/proyecto/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
 
@@ -174,6 +174,43 @@ func (t *Transaccion) FindById() gin.HandlerFunc {
 					c.JSON(200, t)
 
 				}
+
+			} else {
+				c.JSON(401, gin.H{
+					"error": "token incorrecto",
+				})
+			}
+
+		} else {
+			c.JSON(401, gin.H{
+				"error": "debes ingresas token en el header",
+			})
+		}
+
+	}
+}
+
+func (t *Transaccion) FilterBy() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.GetHeader("token")
+
+		if token != "" {
+			if token == "39470939" {
+
+				moneda := c.Query("moneda")
+				emisor := c.Query("emisor")
+				receptor := c.Query("receptor")
+				fechacreacion := c.Query("fechacreacion")
+				codigotransaccion := c.Query("codigotransaccion")
+
+				t, err := t.service.FilterBy(moneda, emisor, receptor, fechacreacion, codigotransaccion)
+				if err != nil {
+					c.JSON(404, gin.H{
+						"error": err.Error(),
+					})
+					return
+				}
+				c.JSON(200, t)
 
 			} else {
 				c.JSON(401, gin.H{

@@ -5,6 +5,7 @@ type Service interface {
 	GetAll() ([]Transaccion, error)
 	Store(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error)
 	FindById(id int) (Transaccion, error)
+	FilterBy(valores ...string) ([]Transaccion, error)
 	Update(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error)
 	UpdateCod(id int, codigotransaccion string) (Transaccion, error)
 	UpdateMon(id int, monto float64) (Transaccion, error)
@@ -48,18 +49,19 @@ func (s *service) Store(id int, codigotransaccion string, moneda string, monto f
 	} else {
 		id = transacciones[len(transacciones)-1].ID + 1
 	}
-
 	transaccion, err := s.repository.Store(id, codigotransaccion, moneda, monto, emisor, receptor, fechacreacion)
-
 	if err != nil {
 		return Transaccion{}, err
 	}
-
 	return transaccion, nil
 }
 
 func (s *service) FindById(id int) (Transaccion, error) {
 	return s.repository.FindById(id)
+}
+
+func (s *service) FilterBy(valores ...string) ([]Transaccion, error) {
+	return s.repository.FilterBy(valores...)
 }
 
 func (s *service) Update(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error) {

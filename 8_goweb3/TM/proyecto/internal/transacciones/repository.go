@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
+	"strings"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -26,6 +28,7 @@ type Repository interface {
 	GetAll() ([]Transaccion, error)
 	Store(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error)
 	FindById(id int) (Transaccion, error)
+	FilterBy(valores ...string) ([]Transaccion, error)
 	Update(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error)
 	UpdateCod(id int, codigotransaccion string) (Transaccion, error)
 	UpdateMon(id int, monto float64) (Transaccion, error)
@@ -71,6 +74,49 @@ func (r *repository) FindById(id int) (Transaccion, error) {
 		}
 	}
 	return Transaccion{}, fmt.Errorf("La persona %d no existe", id)
+}
+
+func (r *repository) FilterBy(valores ...string) ([]Transaccion, error) {
+	var etiquetas []string
+	etiquetas = append(etiquetas, "moneda", "emisor", "receptor", "fechacreacion", "codigotransaccion")
+	var transaccionesFiltradas []Transaccion
+
+	transaccionesFiltradas = transacciones
+
+	for i, v := range etiquetas {
+		if len(valores[i]) != 0 && len(transaccionesFiltradas) != 0 {
+			transaccionesFiltradas = filtrar(transacciones, v, valores[i])
+
+		}
+		if len(transaccionesFiltradas) == 0 {
+			return transaccionesFiltradas, fmt.Errorf("no hay coincidencias")
+		}
+	}
+
+	return transaccionesFiltradas, nil
+
+}
+
+func filtrar(sliceTransacciones []Transaccion, campo string, valor string) []Transaccion {
+	var filtrado []Transaccion
+	var trans Transaccion
+
+	tipos := reflect.TypeOf(trans)
+	i := 0
+	for i = 0; i < tipos.NumField(); i++ {
+		if strings.ToLower(tipos.Field(i).Name) == campo {
+			break
+		}
+	}
+	for _, v := range sliceTransacciones {
+		var cadena string
+		cadena = fmt.Sprintf("%v", reflect.ValueOf(v).Field(i).Interface())
+		if strings.Contains(cadena, valor) {
+			filtrado = append(filtrado, v)
+		}
+
+	}
+	return filtrado
 }
 
 func (r *repository) Update(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error) {
