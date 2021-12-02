@@ -1,0 +1,1 @@
+El godotenv es un paquete que sirve para poder cargar variables de environment desde un archivo .env.

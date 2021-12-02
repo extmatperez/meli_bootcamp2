@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	payments "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/internal/payments"
@@ -24,44 +25,57 @@ func NewPayment(s payments.Service) *Payment {
 	return &Payment{service: s}
 }
 
+func validarToken(ctx *gin.Context) bool {
+	token := ctx.GetHeader("token")
+	if token != "" {
+		ctx.String(400, "Falta token.")
+		return false
+	}
+	token_env := os.Getenv("TOKEN")
+	if token != token_env {
+		ctx.String(400, "Token incorrecto.")
+		return false
+	}
+
+	return true
+}
+
 func (controller *Payment) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != "" {
-			if token == "123456" {
-				payments, err := controller.service.GetAll()
 
-				if err != nil {
-					ctx.String(400, "Hubo un error al cargar todas las transacciones: %v", err)
-				} else {
-					ctx.JSON(200, payments)
-				}
-			}
+		if !validarToken(ctx) {
+			return
+		}
+
+		payments, err := controller.service.GetAll()
+
+		if err != nil {
+			ctx.String(400, "Hubo un error al cargar todas las transacciones: %v", err)
 		} else {
-			ctx.String(400, "No ingreso un token")
+			ctx.JSON(200, payments)
 		}
 	}
 }
 
 func (controller *Payment) Filter() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != "" {
-			if token == "123456" {
-				var pay request
 
-				err := ctx.ShouldBindJSON(&pay)
+		if !validarToken(ctx) {
+			return
+		}
 
-				if err != nil {
-					ctx.String(400, "Error en el body.")
-				} else {
-					paymentUpdated, err := controller.service.Filter(pay.Codigo, pay.Moneda, pay.Emisor, pay.Receptor, pay.Fecha, pay.Monto)
-					if err != nil {
-						ctx.JSON(400, err.Error())
-					} else {
-						ctx.JSON(200, paymentUpdated)
-					}
-				}
+		var pay request
+
+		err := ctx.ShouldBindJSON(&pay)
+
+		if err != nil {
+			ctx.String(400, "Error en el body.")
+		} else {
+			paymentUpdated, err := controller.service.Filter(pay.Codigo, pay.Moneda, pay.Emisor, pay.Receptor, pay.Fecha, pay.Monto)
+			if err != nil {
+				ctx.JSON(400, err.Error())
+			} else {
+				ctx.JSON(200, paymentUpdated)
 			}
 		}
 	}
@@ -69,6 +83,11 @@ func (controller *Payment) Filter() gin.HandlerFunc {
 
 func (controller *Payment) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var pay request
 
 		err := ctx.ShouldBindJSON(&pay)
@@ -89,6 +108,11 @@ func (controller *Payment) Store() gin.HandlerFunc {
 
 func (controller *Payment) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var pay request
 
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -115,6 +139,11 @@ func (controller *Payment) Update() gin.HandlerFunc {
 
 func (controller *Payment) UpdateCodigo() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var pay request
 
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -144,6 +173,11 @@ func (controller *Payment) UpdateCodigo() gin.HandlerFunc {
 
 func (controller *Payment) UpdateMonto() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var pay request
 
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -173,6 +207,11 @@ func (controller *Payment) UpdateMonto() gin.HandlerFunc {
 
 func (controller *Payment) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		id, err := strconv.Atoi(ctx.Param("id"))
 
 		if err != nil {

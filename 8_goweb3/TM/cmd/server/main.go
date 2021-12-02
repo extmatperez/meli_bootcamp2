@@ -1,16 +1,26 @@
 package main
 
 import (
+	"log"
+
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/cmd/server/handler"
 	payments "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/internal/payments"
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/pkg/store"
+	"github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error al intentar cargar el archivo .env")
+	}
+
 	router := gin.Default()
 
-	repository := payments.NewRepository()
+	db := store.New(store.FileType, "./payments.json")
+	repository := payments.NewRepository(db)
 	service := payments.NewService(repository)
 	controller := handler.NewPayment(service)
 

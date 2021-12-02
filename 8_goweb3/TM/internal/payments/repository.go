@@ -2,6 +2,8 @@ package internal
 
 import (
 	"fmt"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/pkg/store"
 )
 
 type Payment struct {
@@ -29,13 +31,20 @@ type Repository interface {
 }
 
 type repository struct {
+	db store.Store
 }
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }
 
 func (repo *repository) GetAll() ([]Payment, error) {
+	err := repo.db.Read(&payments)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return payments, nil
 }
 
@@ -69,21 +78,49 @@ func (repo *repository) Filter(codigo string, moneda string, monto float64, emis
 }
 
 func (repo *repository) Store(id int, codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) (Payment, error) {
+	repo.db.Read(&payments)
+
 	pay := Payment{id, codigo, moneda, monto, emisor, receptor, fecha}
-	lastId = id
+
 	payments = append(payments, pay)
+
+	err := repo.db.Write(payments)
+
+	if err != nil {
+		return Payment{}, err
+	}
+
 	return pay, nil
 }
 
 func (repo *repository) LastId() (int, error) {
-	return lastId, nil
+	err := repo.db.Read(&payments)
+
+	if err != nil {
+		return 0, nil
+	}
+
+	if len(payments) == 0 {
+		return 0, nil
+	}
+
+	return payments[len(payments)-1].Id, nil
 }
 
 func (repo *repository) Update(id int, codigo string, moneda string, monto float64, emisor string, receptor string, fecha string) (Payment, error) {
+	err := repo.db.Read(&payments)
+	if err != nil {
+		return Payment{}, err
+	}
+
 	pay := Payment{id, codigo, moneda, monto, emisor, receptor, fecha}
 	for i, v := range payments {
 		if v.Id == id {
 			payments[i] = pay
+			err := repo.db.Write(payments)
+			if err != nil {
+				return Payment{}, err
+			}
 			return pay, nil
 		}
 	}
@@ -91,9 +128,18 @@ func (repo *repository) Update(id int, codigo string, moneda string, monto float
 }
 
 func (repo *repository) UpdateCodigo(id int, codigo string) (Payment, error) {
+	err := repo.db.Read(&payments)
+	if err != nil {
+		return Payment{}, err
+	}
+
 	for i, v := range payments {
 		if v.Id == id {
 			payments[i].Codigo = codigo
+			err := repo.db.Write(payments)
+			if err != nil {
+				return Payment{}, err
+			}
 			return payments[i], nil
 		}
 	}
@@ -101,9 +147,17 @@ func (repo *repository) UpdateCodigo(id int, codigo string) (Payment, error) {
 }
 
 func (repo *repository) UpdateMonto(id int, monto float64) (Payment, error) {
+	err := repo.db.Read(&payments)
+	if err != nil {
+		return Payment{}, err
+	}
 	for i, v := range payments {
 		if v.Id == id {
 			payments[i].Monto = monto
+			err := repo.db.Write(payments)
+			if err != nil {
+				return Payment{}, err
+			}
 			return payments[i], nil
 		}
 	}
@@ -111,6 +165,11 @@ func (repo *repository) UpdateMonto(id int, monto float64) (Payment, error) {
 }
 
 func (repo *repository) Delete(id int) (string, error) {
+	err := repo.db.Read(&payments)
+	if err != nil {
+		return "", err
+	}
+
 	index := 0
 	for i, v := range payments {
 		if v.Id == id {
@@ -118,6 +177,7 @@ func (repo *repository) Delete(id int) (string, error) {
 			index = i
 			// Y aca se sobreescribe con el contenido del slice que estaba antes del registro a borrar y todo lo que viene despues como un ellipsis.
 			payments = append(payments[:index], payments[index+1:]...)
+			err := repo.db.Write(payments)
 			return "Borrado correcto.", nil
 		}
 	}
