@@ -1,0 +1,38 @@
+[
+ {
+  "id": 2,
+  "cod_transaccion": "a1b2c3c3",
+  "moneda": "dolares",
+  "monto": 4000.6,
+  "emisor": "Sebastian",
+  "receptor": "Jorge",
+  "fecha_trans": "21/10/2021"
+ },
+ {
+  "id": 3,
+  "cod_transaccion": "a1b2c3c3",
+  "moneda": "dolares",
+  "monto": 55000.5,
+  "emisor": "Facundo",
+  "receptor": "Sebastian",
+  "fecha_trans": "21/10/2021"
+ },
+ {
+  "id": 4,
+  "cod_transaccion": "a1b2c3c3",
+  "moneda": "dolares",
+  "monto": 55000.5,
+  "emisor": "Facundo",
+  "receptor": "Sebastian",
+  "fecha_trans": "21/10/2021"
+ },
+ {
+  "id": 5,
+  "cod_transaccion": "abcdefg",
+  "moneda": "dolares",
+  "monto": 8000.67,
+  "emisor": "Facundo",
+  "receptor": "Sebastian",
+  "fecha_trans": "21/10/2021"
+ }
+]
