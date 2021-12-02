@@ -135,3 +135,80 @@ func (trans *Transaccion) Update() gin.HandlerFunc {
 		ctx.JSON(200, transacResult)
 	}
 }
+
+func (trans *Transaccion) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token == "" {
+			ctx.String(400, "no se ha enviado ningun token")
+			return
+		}
+		if token != "aaa111" {
+			ctx.String(400, "token invalido")
+			return
+		}
+
+		//obtengo el ID que se quiere eliminar
+		paramId := ctx.Param("id")
+		id, err := strconv.Atoi(paramId)
+		if err != nil {
+			ctx.String(400, "Error con el id %v:%v", paramId, err.Error())
+			return
+		}
+
+		transacEliminated, err := trans.service.Delete(id)
+		if err != nil {
+			ctx.String(404, err.Error())
+			return
+		}
+		ctx.String(200, "Se eliminó la transacción:")
+		ctx.JSON(200, transacEliminated)
+	}
+}
+
+func (trans *Transaccion) UpdateCodigoYMonto() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		//valido el token
+		token := ctx.Request.Header.Get("token")
+		if token == "" {
+			ctx.String(400, "no se ha enviado ningun token")
+			return
+		}
+		if token != "aaa111" {
+			ctx.String(400, "token invalido")
+			return
+		}
+
+		//obtengo el id que quiero actualizar, y los datos a cambiar
+		param := ctx.Param("id")
+		id, err := strconv.Atoi(param)
+		if err != nil {
+			ctx.String(400, "Error con el id %v:%v", param, err.Error())
+			return
+		}
+		var transac request
+		err = ctx.ShouldBindJSON(&transac)
+		if err != nil {
+			ctx.String(400, err.Error())
+			return
+		}
+
+		//Valido los campos
+		if transac.CodTransaccion == "" {
+			ctx.String(400, "El codigo de transacción no puede ser vacío")
+			return
+		}
+		if transac.Monto == 0 {
+			ctx.String(400, "El monto no puede ser cero")
+			return
+		}
+		transacResult, err := trans.service.UpdateCodigoYMonto(id, transac.CodTransaccion, transac.Monto)
+		if err != nil {
+			ctx.JSON(404, gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		ctx.JSON(200, transacResult)
+	}
+}

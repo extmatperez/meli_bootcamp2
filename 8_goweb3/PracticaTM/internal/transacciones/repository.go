@@ -27,6 +27,8 @@ type Repository interface {
 	Search(id string) (Transaccion, error)
 	Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error)
 	Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
+	Delete(id int) (Transaccion, error)
+	UpdateCodigoYMonto(id int, codTransaccion string, monto float64) (Transaccion, error)
 }
 
 type repository struct{}
@@ -125,4 +127,39 @@ func (repo *repository) Update(id int, codTransaccion, moneda string, monto floa
 		return Transaccion{}, fmt.Errorf("no se encontró la transaccion con el id %v", id)
 	}
 	return trans, nil
+}
+
+func (repo *repository) Delete(id int) (Transaccion, error) {
+	var transEliminated Transaccion
+	found := false
+	for i, value := range transacciones {
+		if value.Id == id {
+			found = true
+			transEliminated = value
+			transacciones = append(transacciones[:i], transacciones[i+1:]...)
+			break
+		}
+	}
+	if !found {
+		return Transaccion{}, fmt.Errorf("no se encontro la transacción con el id %v", id)
+	}
+	return transEliminated, nil
+}
+
+func (repo *repository) UpdateCodigoYMonto(id int, codTransaccion string, monto float64) (Transaccion, error) {
+	var transacUpdated Transaccion
+	found := false
+	for i, _ := range transacciones {
+		if transacciones[i].Id == id {
+			found = true
+			transacciones[i].CodTransaccion = codTransaccion
+			transacciones[i].Monto = monto
+			transacUpdated = transacciones[i]
+		}
+	}
+
+	if !found {
+		return Transaccion{}, fmt.Errorf("no se encontró la transaccion con el id %v", id)
+	}
+	return transacUpdated, nil
 }

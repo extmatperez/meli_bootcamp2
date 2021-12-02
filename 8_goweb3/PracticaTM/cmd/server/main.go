@@ -27,5 +27,11 @@ func main() {
 	// Endpoints Put
 	groupTransac.PUT("/:id", transac.Update())
 
+	// Endpoint delete
+	groupTransac.DELETE("/:id", transac.Delete())
+
+	// Endpoint Patch
+	groupTransac.PATCH("/:id", transac.UpdateCodigoYMonto())
+
 	router.Run()
 }

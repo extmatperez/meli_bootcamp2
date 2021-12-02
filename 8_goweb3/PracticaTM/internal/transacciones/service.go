@@ -8,6 +8,8 @@ type Service interface {
 	Search(id string) (Transaccion, error)
 	Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error)
 	Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
+	Delete(id int) (Transaccion, error)
+	UpdateCodigoYMonto(id int, conTransaccion string, monto float64) (Transaccion, error)
 }
 
 type service struct {
@@ -59,4 +61,12 @@ func (serv *service) Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string
 
 func (serv *service) Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
 	return serv.repository.Update(id, codTransaccion, moneda, monto, emisor, receptor, fechaTrans)
+}
+
+func (serv *service) Delete(id int) (Transaccion, error) {
+	return serv.repository.Delete(id)
+}
+
+func (serv *service) UpdateCodigoYMonto(id int, conTransaccion string, monto float64) (Transaccion, error) {
+	return serv.repository.UpdateCodigoYMonto(id, conTransaccion, monto)
 }
