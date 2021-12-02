@@ -1,0 +1,54 @@
+{
+    "products": [
+        {
+            "id": 0,
+            "name": "Mouse",
+            "color": "Black",
+            "price": 1259.99,
+            "stock": 10,
+            "code": "12abc3",
+            "isPublished": true,
+            "createdAt": "2021/10/03"
+        },
+        {
+            "id": 1,
+            "name": "Keyboard",
+            "color": "Black",
+            "price": 1759.99,
+            "stock": 10,
+            "code": "12abc4",
+            "isPublished": true,
+            "createdAt": "2021/10/03"
+        },
+        {
+            "id": 2,
+            "name": "Monitor",
+            "color": "White",
+            "price": 12259.99,
+            "stock": 10,
+            "code": "12abc5",
+            "isPublished": true,
+            "createdAt": "2021/10/03"
+        },
+        {
+            "id": 3,
+            "name": "Case",
+            "color": "Green",
+            "price": 1559.99,
+            "stock": 10,
+            "code": "12abc6",
+            "isPublished": true,
+            "createdAt": "2021/10/03"
+        },
+        {
+            "id": 4,
+            "name": "RAM",
+            "color": "Multi-Color",
+            "price": 3259.99,
+            "stock": 10,
+            "code": "12abc7",
+            "isPublished": true,
+            "createdAt": "2021/10/03"
+        }
+    ]
+}
