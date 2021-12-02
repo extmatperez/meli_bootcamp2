@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/tree/parra_diego/7_goweb2/Tarde/ejercicio_2/server/handler"
-
+	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/ejercicio_2/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/ejercicio_2/server/handler"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,6 +15,8 @@ func main() {
 
 	router.GET("/products/get", controller.GetAll())
 	router.POST("/products/add", controller.Store())
+	//
+	router.PUT("/products/:id", controller.Update())
 
 	router.Run()
 }

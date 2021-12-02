@@ -1,5 +1,7 @@
 package internal
 
+import "fmt"
+
 type Product struct {
 	Id      int     `json:"id"`
 	Name    string  `json:"name"`
@@ -18,6 +20,7 @@ type Repository interface {
 	GetAll() ([]Product, error)
 	Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
 	LastId() (int, error)
+	Update(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
 }
 
 type repository struct{}
@@ -44,4 +47,21 @@ func (repo *repository) Store(Id int, Name string, Color string, Price float64, 
 }
 func (repo *repository) LastId() (int, error) {
 	return lastId, nil
+}
+
+func (repo *repository) Update(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error) {
+	pr := Product{Name: Name, Color: Color, Price: Price, Stock: Stock, Code: Code, Publish: Publish, Date: Date}
+	udapted := false
+
+	for i := range products {
+		if products[i].Id == Id {
+			pr.Id = Id
+			products[i] = pr
+			udapted = true
+		}
+	}
+	if !udapted {
+		return Product{}, fmt.Errorf("Producto %d no encontrado", Id)
+	}
+	return pr, nil
 }

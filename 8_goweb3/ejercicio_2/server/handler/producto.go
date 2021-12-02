@@ -1,7 +1,9 @@
 package handler
 
 import (
-	products "https://github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/Ma%C3%B1ana/ejercicio_1/internal/productos"
+	"strconv"
+
+	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/ejercicio_2/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
@@ -53,5 +55,34 @@ func (controller *Product) Store() gin.HandlerFunc {
 			}
 		}
 
+	}
+}
+
+func (controller *Product) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var pro request
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+		if err != nil {
+			ctx.String(404, "Id incorrecto")
+		}
+		err = ctx.ShouldBindJSON(&pro)
+
+		if pro.Name == "" || pro.Color == "" || pro.Price == 0 || pro.Stock == 0 || pro.Code == "" || pro.Date == "" {
+			ctx.String(400, "Todos los campos son requeridos")
+		} else {
+
+			if err != nil {
+				ctx.String(400, "Error en el body")
+			} else {
+				produUpdate, err := controller.service.Update(int(id), pro.Name, pro.Color, pro.Price, pro.Stock, pro.Code, pro.Publish, pro.Date)
+				if err != nil {
+					ctx.JSON(400, err.Error())
+				} else {
+					ctx.JSON(200, produUpdate)
+				}
+			}
+		}
 	}
 }
