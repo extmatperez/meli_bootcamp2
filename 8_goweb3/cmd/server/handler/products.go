@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
@@ -28,6 +29,15 @@ func NewProduct(serv products.Service) *Product {
 
 func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		token := c.GetHeader("token")
+
+		if token != os.Getenv("TOKEN") {
+			c.JSON(401, gin.H{
+				"error": "token invalido",
+			})
+			return
+		}
 
 		products, err := prod.service.GetAll()
 

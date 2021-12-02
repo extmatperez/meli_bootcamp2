@@ -1,14 +1,21 @@
 package main
 
 import (
+	"log"
+
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/cmd/server/handler"
 	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 
-	/////////////////////// start server /////////////////////////////
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("no al intentar cargar archivo .env")
+	}
+
 	router := gin.Default()
 
 	repo := products.NewRepository()
