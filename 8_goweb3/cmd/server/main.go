@@ -18,7 +18,7 @@ func main(){
 		//get
 		transaction.GET("/", controller.GetAll())
 		transaction.GET("/:id", controller.GetTransactionById())
-
+		transaction.GET("/filtros", controller.GetTransactionsExlusive())
 		//post
 		transaction.POST("/", controller.Store())
 

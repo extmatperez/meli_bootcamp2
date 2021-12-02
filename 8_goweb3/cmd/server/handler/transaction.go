@@ -1,11 +1,12 @@
 package handler
 
 import (
-	
+	"fmt"
 	"net/http"
 	"reflect"
 	"strconv"
-	tran "github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/internal/transaccion"
+
+	tra "github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/internal/transaccion"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,10 +20,10 @@ type request struct {
 }
 
 type Transaction struct {
-	service tran.Service
+	service tra.Service
 }
 
-func NewTransaction(service tran.Service) *Transaction{
+func NewTransaction(service tra.Service) *Transaction{
 	return &Transaction{service}
 }
 
@@ -37,6 +38,8 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 		}
 	}
 }
+
+
 
 
 func (tran Transaction) GetTransactionById() gin.HandlerFunc{
@@ -58,7 +61,43 @@ func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 	}
 }
 
+func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
+	return func(c *gin.Context) {
+		transactions, err := tran.service.GetAll()
 
+		if err != nil {
+			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			return
+		} 
+
+		var parametros request
+		err1 := c.BindJSON(&parametros)
+			if(err1 != nil){
+			c.String(http.StatusForbidden,"Debes pasar un json con los datos a buscar")
+			return
+		}
+
+	   
+	   filtros := GetParamsFromBody(parametros)
+
+	   if(len(filtros) == 0){
+			c.String(http.StatusForbidden,"Debes pasar al menos un flitro con los datos a buscar")
+			return
+		}
+
+		filtrados := transactions
+
+		for _,filtro := range filtros{
+			fmt.Println(filtro)
+			fmt.Println(reflect.ValueOf(parametros).FieldByName(filtro).String())
+			filtrados = filtrar(filtrados,filtro,reflect.ValueOf(parametros).FieldByName(filtro).String())
+		}		
+
+		c.JSON(http.StatusOK,filtrados)
+
+
+	}
+}
 
 func (tran Transaction) Store() gin.HandlerFunc{
 	return func(c *gin.Context) {
@@ -259,4 +298,28 @@ func InValidParams(parametros request) []string{
 	}
 	return list;
 	
+}
+
+func filtrar(sliceTransaccion[]tra.Transaction, campo string, valor string) []tra.Transaction {
+	var filtrado []tra.Transaction
+
+	var per tra.Transaction
+	fmt.Println(per)
+	tipos := reflect.TypeOf(per)
+	fmt.Println(tipos)
+	i := 0
+	for i = 0; i < tipos.NumField(); i++ {
+		if tipos.Field(i).Name == campo {
+			break
+		}
+	}
+
+	for _, v := range sliceTransaccion {
+		cadena := fmt.Sprintf("%v", reflect.ValueOf(v).Field(i).Interface())
+		 if cadena == valor {
+			filtrado = append(filtrado, v)
+		}
+	}
+
+	return filtrado
 }

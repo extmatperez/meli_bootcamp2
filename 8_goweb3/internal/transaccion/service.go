@@ -30,6 +30,7 @@ func (ser *service) GetAll() ([]Transaction, error) {
 }
 
 
+
 func (ser *service) GetTransactionById(id int) (Transaction, error) {
 
 	transaction,err := ser.repository.GetTransactionById(id)
@@ -40,6 +41,7 @@ func (ser *service) GetTransactionById(id int) (Transaction, error) {
 
 	return transaction,nil
 }
+
 
 
 func (ser *service) Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error) {

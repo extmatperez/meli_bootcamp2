@@ -48,7 +48,7 @@ func(repo *repository) GetTransactionById(id int) (Transaction, error){
 	transactions,err := GetAllTransactionFromFolder()
 
 	if(err != nil){
-		return Transaction{},nil
+		return Transaction{},err
 	}
 	for _,t := range transactions {
 		if(t.ID == id){
