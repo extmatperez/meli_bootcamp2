@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 
@@ -28,7 +30,15 @@ func NewTransaction(service tra.Service) *Transaction{
 }
 
 func (tran Transaction) GetAll() gin.HandlerFunc{
-	return func(ctx *gin.Context) {
+	return func(c *gin.Context) {
+
+		errs := ValidateToken(c.GetHeader("token"))
+		if  errs != nil {
+			c.String(http.StatusUnauthorized,errs.Error())
+			return
+		}
+
+
 		transactions, err := tran.service.GetAll()
 
 		if err != nil {
@@ -44,6 +54,13 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 
 func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 	return func(c *gin.Context) {
+
+		errs := ValidateToken(c.GetHeader("token"))
+		if  errs != nil {
+			c.String(http.StatusUnauthorized,errs.Error())
+			return
+		}
+
 
 		idTransaction,err := strconv.Atoi(c.Param("id"))
 
@@ -63,6 +80,14 @@ func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 
 func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 	return func(c *gin.Context) {
+
+		errs := ValidateToken(c.GetHeader("token"))
+		if  errs != nil {
+			c.String(http.StatusUnauthorized,errs.Error())
+			return
+		}
+
+
 		transactions, err := tran.service.GetAll()
 
 		if err != nil {
@@ -101,6 +126,13 @@ func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 
 func (tran Transaction) Store() gin.HandlerFunc{
 	return func(c *gin.Context) {
+
+		errs := ValidateToken(c.GetHeader("token"))
+		if  errs != nil {
+			c.String(http.StatusUnauthorized,errs.Error())
+			return
+		}
+
 		var transactionRecived request
 		
 		err := c.ShouldBindJSON(&transactionRecived)
@@ -136,6 +168,15 @@ func (tran Transaction) Store() gin.HandlerFunc{
 
 func (tran Transaction) Update() gin.HandlerFunc{
 	return func(c *gin.Context) {
+
+		errs := ValidateToken(c.GetHeader("token"))
+		if  errs != nil {
+			c.String(http.StatusUnauthorized,errs.Error())
+			return
+		}
+
+
+
 		idTransaction,err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
@@ -179,6 +220,12 @@ func (tran Transaction) Update() gin.HandlerFunc{
 func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
+			errs := ValidateToken(c.GetHeader("token"))
+			if  errs != nil {
+				c.String(http.StatusUnauthorized,errs.Error())
+				return
+			}
+
 			idTransaction,err := strconv.Atoi(c.Param("id"))
 	
 			if err != nil {
@@ -221,6 +268,16 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc{
 
 func (tran Transaction) Delete() gin.HandlerFunc{
 	return func(c *gin.Context) {
+
+
+		errs := ValidateToken(c.GetHeader("token"))
+		if  errs != nil {
+			c.String(http.StatusUnauthorized,errs.Error())
+			return
+		}
+
+
+
 		idTransaction,err := strconv.Atoi(c.Param("id"))
 	
 			if err != nil {
@@ -303,6 +360,9 @@ func InValidParams(parametros request) []string{
 func filtrar(sliceTransaccion[]tra.Transaction, campo string, valor string) []tra.Transaction {
 	var filtrado []tra.Transaction
 
+	
+
+
 	var per tra.Transaction
 	fmt.Println(per)
 	tipos := reflect.TypeOf(per)
@@ -322,4 +382,18 @@ func filtrar(sliceTransaccion[]tra.Transaction, campo string, valor string) []tr
 	}
 
 	return filtrado
+}
+
+
+func ValidateToken(token string) error{
+
+	if token == "" {
+		return errors.New("token Vacio")
+	}
+
+	tokenFromEnv := os.Getenv("TOKEN")
+	if token != tokenFromEnv {
+		return errors.New("no tiene permisos para realizar la petición solicitada")
+	}
+	return nil
 }

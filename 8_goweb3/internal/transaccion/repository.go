@@ -91,7 +91,7 @@ func (repo *repository) LastId() (int, error) {
 		return 0,err
 	}
 	if len(transactions) == 0 {
-		return 1,nil
+		return 0,nil
 	} else {
 		return transactions[len(transactions)-1].ID ,nil
 	}
