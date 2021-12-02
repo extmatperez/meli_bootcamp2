@@ -12,24 +12,17 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func validarToken(ctx *gin.Context) bool {
-	token := ctx.GetHeader("token")
+func validateAuthToken(c *gin.Context) {
+	token := c.GetHeader("token")
 	if token == "" {
-		ctx.String(http.StatusUnauthorized, "Falta token")
-		return false
+		c.String(http.StatusUnauthorized, "missing auth token")
+		c.Abort()
+		return
 	}
+
 	secretToken := os.Getenv("TOKEN")
 	if token != secretToken {
-		ctx.String(http.StatusUnauthorized, "Token incorrecto")
-		return false
-	}
-
-	return true
-}
-
-func MyMiddleware(c *gin.Context) {
-
-	if !validarToken(c) {
+		c.String(http.StatusUnauthorized, "invalid auth token")
 		c.Abort()
 	}
 }
@@ -42,7 +35,7 @@ func main() {
 	}
 	router := gin.Default()
 
-	router.Use(MyMiddleware)
+	router.Use(validateAuthToken)
 
 	db := store.New(store.FileType, "./transactions.json")
 	repo := transactions.NewRepository(db)
