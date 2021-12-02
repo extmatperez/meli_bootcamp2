@@ -1,13 +1,20 @@
 package main
 
 import (
+	"log"
+
 	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/cmd/server/handler"
 	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/internal/productos"
 	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/pkg/store"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Couldnt load the environment")
+	}
 	router := gin.Default()
 	storage := store.NewStore("file", "products.json")
 	repository := internal.NewRepository(storage)

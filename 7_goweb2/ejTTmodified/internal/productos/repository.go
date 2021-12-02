@@ -35,18 +35,14 @@ func NewRepository(fileStore store.Store) Repository {
 }
 
 func (r *repository) GetAll() ([]Producto, error) {
-	err := r.fileStore.Read(&productos)
-	if err != nil {
-		return productos, err
-	}
+	r.fileStore.Read(&productos)
+
 	return productos, nil
 }
 
 func (r *repository) GetById(id int) (Producto, error) {
-	err := r.fileStore.Read(&productos)
-	if err != nil {
-		return Producto{}, err
-	}
+	r.fileStore.Read(&productos)
+
 	for _, p := range productos {
 		if p.Id == id {
 			return p, nil
@@ -55,31 +51,27 @@ func (r *repository) GetById(id int) (Producto, error) {
 	return Producto{}, errors.New("producto con id no encontrado")
 }
 func (r *repository) Store(id int, nombre, color string, precio float64) (Producto, error) {
-	err := r.fileStore.Read(&productos)
-	if err != nil {
-		return Producto{}, err
-	}
+	r.fileStore.Read(&productos)
+
 	p := Producto{id, nombre, color, precio}
 	productos = append(productos, p)
-	err = r.fileStore.Write(productos)
+	err := r.fileStore.Write(productos)
 	if err != nil {
 		return Producto{}, err
 	}
 	return p, nil
 }
 func (r *repository) GetLastId() (int, error) {
-	err := r.fileStore.Read(&productos)
-	if err != nil {
-		return 0, err
+	r.fileStore.Read(&productos)
+
+	if len(productos) == 0 {
+		return 0, nil
 	}
 	return productos[len(productos)-1].Id, nil
 }
 
 func (r *repository) Update(id int, nombre, color string, precio float64) (Producto, error) {
-	err := r.fileStore.Read(&productos)
-	if err != nil {
-		return Producto{}, err
-	}
+	r.fileStore.Read(&productos)
 
 	productoNuevo := Producto{id, nombre, color, precio}
 	encontrado := false
@@ -91,7 +83,7 @@ func (r *repository) Update(id int, nombre, color string, precio float64) (Produ
 		}
 	}
 	if encontrado {
-		err = r.fileStore.Write(productos)
+		err := r.fileStore.Write(productos)
 		if err != nil {
 			return Producto{}, err
 		}
@@ -100,10 +92,7 @@ func (r *repository) Update(id int, nombre, color string, precio float64) (Produ
 }
 
 func (r *repository) Delete(id int) error {
-	err := r.fileStore.Read(&productos)
-	if err != nil {
-		return err
-	}
+	r.fileStore.Read(&productos)
 
 	for i, v := range productos {
 		if v.Id == id {
