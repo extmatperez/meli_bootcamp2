@@ -16,11 +16,6 @@ func main() {
 	}
 	router := gin.Default()
 
-	db := store.New(store.FileType, "./personasSalida.json")
-	repo := personas.NewRepository(db)
-	service := personas.NewService(repo)
-	controller := handler.NewPersona(service)
-
 	repo := products.NewRepository()
 	service := products.NewService(repo)
 	controller := handler.NewProduct(service)
