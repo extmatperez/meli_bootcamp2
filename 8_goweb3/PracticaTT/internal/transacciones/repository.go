@@ -138,11 +138,8 @@ func (repo *repository) Filter(mapEtiquetas, mapRelacionEtiquetas map[string]str
 }
 
 func (repo *repository) Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
-	//Leo la transaccion desde el db
-	err := repo.db.Read(&transacciones)
-	if err != nil {
-		return Transaccion{}, err
-	}
+	//Leo las transacciones desde el db
+	repo.db.Read(&transacciones)
 
 	trans := Transaccion{id, codTransaccion, moneda, monto, emisor, receptor, fechaTrans}
 	updated := false
@@ -158,7 +155,7 @@ func (repo *repository) Update(id int, codTransaccion, moneda string, monto floa
 	}
 
 	//Una vez que modifico la transacción, lo guardo en la bd
-	err = repo.db.Write(&transacciones)
+	err := repo.db.Write(&transacciones)
 	if err != nil {
 		return Transaccion{}, err
 	}
@@ -167,6 +164,9 @@ func (repo *repository) Update(id int, codTransaccion, moneda string, monto floa
 }
 
 func (repo *repository) Delete(id int) (Transaccion, error) {
+	//Leo las transacciones desde el db
+	repo.db.Read(&transacciones)
+
 	var transEliminated Transaccion
 	found := false
 	for i, value := range transacciones {
@@ -180,10 +180,19 @@ func (repo *repository) Delete(id int) (Transaccion, error) {
 	if !found {
 		return Transaccion{}, fmt.Errorf("no se encontro la transacción con el id %v", id)
 	}
+
+	//Una vez que modifico la transacción, lo guardo en la bd
+	err := repo.db.Write(&transacciones)
+	if err != nil {
+		return Transaccion{}, err
+	}
 	return transEliminated, nil
 }
 
 func (repo *repository) UpdateCodigoYMonto(id int, codTransaccion string, monto float64) (Transaccion, error) {
+	//Leo las transacciones desde el db
+	repo.db.Read(&transacciones)
+
 	var transacUpdated Transaccion
 	found := false
 	for i, _ := range transacciones {
@@ -197,6 +206,12 @@ func (repo *repository) UpdateCodigoYMonto(id int, codTransaccion string, monto 
 
 	if !found {
 		return Transaccion{}, fmt.Errorf("no se encontró la transaccion con el id %v", id)
+	}
+
+	//Una vez que modifico la transacción, lo guardo en la bd
+	err := repo.db.Write(&transacciones)
+	if err != nil {
+		return Transaccion{}, err
 	}
 	return transacUpdated, nil
 }
