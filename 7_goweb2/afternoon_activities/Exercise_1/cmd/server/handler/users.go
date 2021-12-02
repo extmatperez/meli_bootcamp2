@@ -30,7 +30,7 @@ func New_user(ser users.Service) *Users {
 	return &Users{service: ser}
 }
 
-// Agregar Get_users que va a ser usado en el endpoint por main
+// Agregar Get_users handler que va a ser usado en el endpoint por main
 func (us *Users) Get_users() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		users, err := us.service.Get_users()
@@ -39,6 +39,26 @@ func (us *Users) Get_users() gin.HandlerFunc {
 			c.String(http.StatusBadRequest, "Something went wrong %v", err)
 		} else {
 			c.JSON(http.StatusOK, users)
+		}
+	}
+}
+
+// Agregar Post_users handler que va a ser usado en el endpoint por main
+func (controller *Users) Post_users() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var use request
+
+		err := c.ShouldBindJSON(&use)
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "Something went wrong to post a new user %v", err)
+		} else {
+			response, err := controller.service.Post_users(use.FirstName, use.LastName, use.Email, use.Age, use.Height, use.Active, use.Date)
+			if err != nil {
+				c.String(http.StatusBadRequest, "Something went wrong to post a new user")
+			} else {
+				c.JSON(http.StatusOK, response)
+			}
 		}
 	}
 }
