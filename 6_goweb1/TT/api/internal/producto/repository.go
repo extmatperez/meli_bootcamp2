@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -25,6 +26,9 @@ type Repository interface {
 	Store(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error)
 	GetLastID() int64
 	LoadFile() error
+	Delete(id int64) (string, error)
+	Update(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error)
+	UpdateNombre(id int64, name string) (Product, error)
 }
 
 func NewRepository() Repository {
@@ -61,4 +65,40 @@ func (repo *repository) GetAll() ([]Product, error) {
 	}
 
 	return products, nil
+}
+
+func (repo *repository) Delete(id int64) (string, error) {
+
+	for k, v := range products {
+		if v.ID == id {
+			products = append(products[:k], products[k+1:]...)
+			return "Se borro con exito el producto numero " + string(id), nil
+		}
+	}
+	return "", fmt.Errorf("No se ha encontrado la transaccion con id %v", id)
+
+}
+
+func (repo *repository) Update(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error) {
+
+	prod := Product{id, name, color, price, stock, code, isPublished, createdAt}
+
+	for i, v := range products {
+		if v.ID == id {
+			products[i] = prod
+			return prod, nil
+		}
+	}
+	return Product{}, fmt.Errorf("No se encontro el producto con id %d", id)
+
+}
+
+func (repo *repository) UpdateNombre(id int64, name string) (Product, error) {
+	for i, v := range products {
+		if v.ID == id {
+			products[i].Name = name
+			return products[i], nil
+		}
+	}
+	return Product{}, fmt.Errorf("No se encontro el producto con id %d", id)
 }

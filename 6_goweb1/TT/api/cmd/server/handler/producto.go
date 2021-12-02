@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strconv"
+
 	product "github.com/extmatperez/meli_bootcamp2/tree/panceri_santiago/6_goweb1/TT/api/internal/producto"
 	"github.com/gin-gonic/gin"
 )
@@ -60,6 +62,78 @@ func (pro *Product) Store() gin.HandlerFunc {
 			response, err := pro.service.Store(product.Name, product.Color, product.Price, product.Stock, product.Code, product.IsPublished, product.CreatedAt)
 			if err != nil {
 				ctx.String(400, "No se pudo guardad el producto %v", err)
+			} else {
+				ctx.JSON(200, response)
+			}
+		}
+	}
+}
+
+func (pro *Product) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		idStr := ctx.Param("ID")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			ctx.String(400, "Hubo un error")
+			return
+		}
+
+		mes, err := pro.service.Delete(int64(id))
+
+		if err != nil {
+			ctx.String(400, "No se pudo guardad el producto %v", err)
+		} else {
+			ctx.JSON(200, mes)
+		}
+	}
+}
+
+func (pro *Product) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var product Request
+		idStr := ctx.Param("ID")
+
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			ctx.String(400, "Hubo un error")
+			return
+		}
+
+		err = ctx.ShouldBindJSON(&product)
+
+		if err != nil {
+			ctx.String(400, "Hubo un error al querer cargar los datos %v", err)
+		} else {
+			response, err := pro.service.Update(int64(id), product.Name, product.Color, product.Price, product.Stock, product.Code, product.IsPublished, product.CreatedAt)
+			if err != nil {
+				ctx.String(400, "No se pudo actualizar el producto %v", err)
+			} else {
+				ctx.JSON(200, response)
+			}
+		}
+	}
+}
+
+func (pro *Product) UpdateNombre() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var product Request
+		idStr := ctx.Param("ID")
+
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			ctx.String(400, "Hubo un error")
+			return
+		}
+
+		err = ctx.ShouldBindJSON(&product)
+
+		if err != nil {
+			ctx.String(400, "Hubo un error al querer cargar los datos %v", err)
+		} else {
+			response, err := pro.service.UpdateNombre(int64(id), product.Name)
+			if err != nil {
+				ctx.String(400, "No se pudo actualizar el nombre del producto %v", err)
 			} else {
 				ctx.JSON(200, response)
 			}
