@@ -1,6 +1,10 @@
 package internal
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/soto_jose/8_goweb3/pkg/store"
+)
 
 type Transaction struct {
 	Id       int    `json:"id"`
@@ -12,9 +16,6 @@ type Transaction struct {
 	Date     string `json:"date"`
 }
 
-var transactions []Transaction = []Transaction{}
-var lastID int
-
 type Repository interface {
 	GetAll() ([]Transaction, error)
 	Store(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error)
@@ -24,54 +25,95 @@ type Repository interface {
 	LastId() (int, error)
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }
 
 func (repo *repository) GetAll() ([]Transaction, error) {
-	return transactions, nil
+	transactions := []Transaction{}
+	err := repo.db.Read(&transactions)
+	return transactions, err
 }
 
 func (repo *repository) Store(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error) {
-	transaction := Transaction{id, code, currency, amount, sender, receiver, date}
-	lastID = id
-	transactions = append(transactions, transaction)
-	return transaction, nil
+
+	transactions := []Transaction{}
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
+
+	newTransaction := Transaction{id, code, currency, amount, sender, receiver, date}
+	transactions = append(transactions, newTransaction)
+
+	err = repo.db.Write(transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
+	return newTransaction, nil
 }
 
 func (repo *repository) Update(id int, code string, currency string, amount int, sender string, receiver string, date string) (Transaction, error) {
 
-	newData := Transaction{id, code, currency, amount, sender, receiver, date}
+	newTransaction := Transaction{id, code, currency, amount, sender, receiver, date}
 
+	transactions := []Transaction{}
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
 	for i, transaction := range transactions {
 		if transaction.Id == id {
-			transactions[i] = newData
-			return transactions[i], nil
+			transactions[i] = newTransaction
+
+			err := repo.db.Write(transactions)
+			if err != nil {
+				return Transaction{}, err
+			}
+			return newTransaction, err
 		}
 	}
-	return Transaction{}, fmt.Errorf("Transaction with id: %v not found", id)
+	return Transaction{}, fmt.Errorf("Transaction  not found")
 }
 
 func (repo *repository) UpdateCodeAndAmount(id int, code string, amount int) (Transaction, error) {
 
+	transactions := []Transaction{}
+
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
 	for i, transaction := range transactions {
 		if transaction.Id == id {
 			transactions[i].Code = code
 			transactions[i].Amount = amount
-			return transactions[i], nil
+			err := repo.db.Write(transactions)
+			if err != nil {
+				return Transaction{}, err
+			}
+			return transactions[i], err
 		}
 	}
-	return Transaction{}, fmt.Errorf("Transaction with id: %v not found", id)
+	return Transaction{}, fmt.Errorf("Transaction  not found")
 }
 
 func (repo *repository) Delete(id int) error {
+	transactions := []Transaction{}
 
+	err := repo.db.Read(&transactions)
+	if err != nil {
+		return err
+	}
 	for i, transaction := range transactions {
 		if transaction.Id == id {
 			transactions = append(transactions[:i], transactions[i+1:]...)
-			return nil
+			err := repo.db.Write(transactions)
+			return err
 		}
 	}
 
@@ -79,5 +121,17 @@ func (repo *repository) Delete(id int) error {
 }
 
 func (repo *repository) LastId() (int, error) {
-	return lastID, nil
+
+	transactions := []Transaction{}
+	err := repo.db.Read(&transactions)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if len(transactions) == 0 {
+		return 0, nil
+	}
+
+	return transactions[len(transactions)-1].Id, nil
 }

@@ -72,16 +72,16 @@ func (controller *Transaction) Store() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&t)
 
 		if err != nil {
-			ctx.String(http.StatusBadRequest, "Hubo un error al querer cargar una persona %v", err)
-		} else {
-			response, err := controller.service.Store(t.Code, t.Currency, t.Amount, t.Sender, t.Receiver, t.Date)
-			if err != nil {
-				ctx.String(http.StatusBadRequest, "No se pudo cargar la persona %v", err)
-			} else {
-				ctx.JSON(http.StatusOK, response)
-			}
+			ctx.String(http.StatusBadRequest, "Body error: %v", err)
+			return
 		}
 
+		response, err := controller.service.Store(t.Code, t.Currency, t.Amount, t.Sender, t.Receiver, t.Date)
+		if err != nil {
+			ctx.String(http.StatusInternalServerError, "Error saving the transaction %v", err)
+			return
+		}
+		ctx.JSON(http.StatusCreated, response)
 	}
 }
 
@@ -148,7 +148,7 @@ func (controller *Transaction) Delete() gin.HandlerFunc {
 
 		err = controller.service.Delete(id)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, errors.New("transaction not found"))
+			ctx.String(http.StatusNotFound, fmt.Sprintf("Transaction with id %v not found", id))
 			return
 		}
 		ctx.Writer.WriteHeader(http.StatusNoContent)
@@ -174,7 +174,8 @@ func (controller *Transaction) UpdateCodeAndAmount() gin.HandlerFunc {
 
 		response, err := controller.service.UpdateCodeAndAmount(id, body.Code, body.Amount)
 		if err != nil {
-			ctx.AbortWithError(http.StatusNotFound, err)
+			ctx.String(http.StatusNotFound, err.Error())
+			return
 		}
 		ctx.JSON(http.StatusOK, response)
 	}

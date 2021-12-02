@@ -52,12 +52,7 @@ func (ser *service) Update(id int, code string, currency string, amount int, sen
 
 func (ser *service) UpdateCodeAndAmount(id int, code string, amount int) (Transaction, error) {
 
-	transaction, err := ser.repository.UpdateCodeAndAmount(id, code, amount)
-
-	if err != nil {
-		return Transaction{}, err
-	}
-	return transaction, nil
+	return ser.repository.UpdateCodeAndAmount(id, code, amount)
 }
 
 func (ser *service) Delete(id int) error {
