@@ -1,1 +1,7 @@
 El godotenv es un paquete que sirve para poder cargar variables de environment desde un archivo .env.
+
+Manejo de errores y de salidas.
+Para validar el request hay que validar que un dato sea requerido o que sea numerico por ejemplo, y se debe hacer desde la capa de control, osea el controlador.
+En caso de no pasar las validaciones el controlador directamente no envia la tarea al servicio sino que la rechaza, informando al cliente.
+
+Para realizar un manejo de respuestas standart es necesario crear un pkg web dentro de pkg.
