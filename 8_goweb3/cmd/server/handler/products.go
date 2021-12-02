@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	products "github.com/extmatperez/meli_bootcamp2/tree/ziliotto_matias/8_goweb3/internal/products"
+	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
 	"github.com/gin-gonic/gin"
 )
 

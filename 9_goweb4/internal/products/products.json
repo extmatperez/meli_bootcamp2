@@ -1,32 +1,72 @@
 [
-    {
-        "id": 1,
-        "name": "Pelota",
-        "color": "Negro",
-        "price": 1505.50,
-        "stock": 200,
-        "code": "#0000000f1",
-        "published": true,
-        "created_at": "21/11/2021"
-    },
-    {
-        "id": 2,
-        "name": "Botines",
-        "color": "Blanco",
-        "price": 5020.50,
-        "stock": 50,
-        "code": "#0000000f2",
-        "published": false,
-        "created_at": "12/10/2021"
-    },
-    {
-        "id": 3,
-        "name": "Camiseta",
-        "color": "Gris",
-        "price": 2500.00,
-        "stock": 100,
-        "code": "#0000000f3",
-        "published": true,
-        "created_at": "28/11/2021"
-    }
+	{
+		"id": 1,
+		"name": "Pelota",
+		"color": "Negro",
+		"price": 1505.5,
+		"stock": 200,
+		"code": "#0000000f1",
+		"published": true,
+		"created_at": "21/11/2021"
+	},
+	{
+		"id": 2,
+		"name": "Botines",
+		"color": "Blanco",
+		"price": 5020.5,
+		"stock": 50,
+		"code": "#0000000f2",
+		"published": false,
+		"created_at": "12/10/2021"
+	},
+	{
+		"id": 3,
+		"name": "Camiseta",
+		"color": "Gris",
+		"price": 2500,
+		"stock": 100,
+		"code": "#0000000f3",
+		"published": true,
+		"created_at": "28/11/2021"
+	},
+	{
+		"id": 4,
+		"name": "Yerbero",
+		"color": "Negro",
+		"price": 750,
+		"stock": 100,
+		"code": "#000000ma1",
+		"published": true,
+		"created_at": "1/12/2021"
+	},
+	{
+		"id": 5,
+		"name": "Mate",
+		"color": "Negro",
+		"price": 1000,
+		"stock": 350,
+		"code": "#000000ma2",
+		"published": true,
+		"created_at": "1/12/2021"
+	},
+	{
+		"id": 6,
+		"name": "Termo",
+		"color": "Blanco",
+		"price": 10750,
+		"stock": 50,
+		"code": "#000000ma3",
+		"published": true,
+		"created_at": "1/12/2021"
+	},
+	{
+		"id": 7,
+		"name": "Camiseta",
+		"color": "Blanco y Rojo",
+		"price": 7050,
+		"stock": 67,
+		"code": "#000000cam1",
+		"published": true,
+		"created_at": "1/12/2021"
+	}
 ]

@@ -2,15 +2,15 @@ package handler
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
 
-	products "github.com/extmatperez/meli_bootcamp2/tree/ziliotto_matias/9_goweb4/internal/products"
+	products "github.com/extmatperez/meli_bootcamp2/9_goweb4/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/pkg/web"
 	"github.com/gin-gonic/gin"
 )
-
-var TOKEN_PRODUCTS string = "TOKEN-PRODUCTS"
 
 type request struct {
 	Name       string  `json:"name"`
@@ -37,18 +37,14 @@ func (p *Product) GetAll() gin.HandlerFunc {
 		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
 
 		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
+			ctx.JSON(code, web.NewResponse(code, nil, message))
 			return
 		}
 
 		products, err := p.service.GetAll()
 
 		if err != nil {
-			ctx.JSON(500, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(500, web.NewResponse(500, nil, err.Error()))
 			return
 		}
 
@@ -61,9 +57,7 @@ func (p *Product) GetAll() gin.HandlerFunc {
 
 		products = p.service.FilterProducts(products, queryParams)
 
-		ctx.JSON(200, gin.H{
-			"products": products,
-		})
+		ctx.JSON(200, web.NewResponse(200, gin.H{"products": products}, ""))
 	}
 }
 
@@ -72,9 +66,7 @@ func (p *Product) Store() gin.HandlerFunc {
 		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
 
 		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
+			ctx.JSON(code, web.NewResponse(code, nil, message))
 			return
 		}
 
@@ -83,24 +75,18 @@ func (p *Product) Store() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&productRequest)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		product, err := p.service.Store(productRequest.Name, productRequest.Color, productRequest.Price, productRequest.Stock, productRequest.Code, productRequest.Published, productRequest.Created_at)
 
 		if err != nil {
-			ctx.JSON(500, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(500, web.NewResponse(500, nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(201, gin.H{
-			"product": product,
-		})
+		ctx.JSON(201, web.NewResponse(201, gin.H{"product": product}, ""))
 	}
 }
 
@@ -109,58 +95,25 @@ func (p *Product) FindById() gin.HandlerFunc {
 		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
 
 		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
+			ctx.JSON(code, web.NewResponse(code, nil, message))
 			return
 		}
 
 		productId, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{
-				"message": "ID invalido",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		product, err := p.service.FindById(productId)
 
 		if err != nil {
-			ctx.JSON(404, gin.H{
-				"message": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(200, gin.H{
-			"product": product,
-		})
-	}
-}
-
-func (p *Product) LoadProducts() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
-			return
-		}
-
-		err := p.service.LoadProducts()
-		if err != nil {
-			ctx.JSON(code, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-
-		ctx.JSON(code, gin.H{
-			"message": "Products loaded!",
-		})
+		ctx.JSON(200, web.NewResponse(200, gin.H{"product": product}, ""))
 	}
 }
 
@@ -169,18 +122,14 @@ func (p *Product) Update() gin.HandlerFunc {
 		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
 
 		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
+			ctx.JSON(code, web.NewResponse(code, nil, message))
 			return
 		}
 
 		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if errParse != nil {
-			ctx.JSON(400, gin.H{
-				"message": "ID invalido",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "ID Inválido"))
 			return
 		}
 
@@ -188,9 +137,7 @@ func (p *Product) Update() gin.HandlerFunc {
 		errBind := ctx.ShouldBindJSON(&productRequest)
 
 		if errBind != nil {
-			ctx.JSON(400, gin.H{
-				"error": errBind.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, errBind.Error()))
 			return
 		}
 
@@ -200,23 +147,18 @@ func (p *Product) Update() gin.HandlerFunc {
 		validated, message := validateRequiredData(productRequest, requiredFields)
 
 		if !validated {
-			ctx.JSON(404, gin.H{
-				"error": message,
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, message))
+			return
 		}
 
 		product, err := p.service.Update(productId, productRequest.Name, productRequest.Color, productRequest.Price, productRequest.Stock, productRequest.Code, productRequest.Published, productRequest.Created_at)
 
 		if err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(200, gin.H{
-			"product": product,
-		})
+		ctx.JSON(200, web.NewResponse(200, gin.H{"product": product}, ""))
 	}
 }
 
@@ -225,33 +167,25 @@ func (p *Product) Delete() gin.HandlerFunc {
 		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
 
 		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
+			ctx.JSON(code, web.NewResponse(code, nil, message))
 			return
 		}
 
 		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if errParse != nil {
-			ctx.JSON(400, gin.H{
-				"message": "ID invalido",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "ID Inválido"))
 			return
 		}
 
 		err := p.service.Delete(productId)
 
 		if err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(200, gin.H{
-			"message": fmt.Sprintf("Product %d deleted", productId),
-		})
+		ctx.JSON(200, web.NewResponse(200, nil, fmt.Sprintf("Product %d deleted", productId)))
 	}
 }
 
@@ -260,18 +194,14 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
 
 		if !tokenValidated {
-			ctx.JSON(code, gin.H{
-				"message": message,
-			})
+			ctx.JSON(code, web.NewResponse(code, nil, message))
 			return
 		}
 
 		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if errParse != nil {
-			ctx.JSON(400, gin.H{
-				"message": "ID invalido",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "ID inválido"))
 			return
 		}
 
@@ -279,9 +209,7 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 		errBind := ctx.ShouldBindJSON(&productRequest)
 
 		if errBind != nil {
-			ctx.JSON(400, gin.H{
-				"error": errBind.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, errBind.Error()))
 			return
 		}
 
@@ -291,24 +219,18 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 		validated, message := validateRequiredData(productRequest, requiredFields)
 
 		if !validated {
-			ctx.JSON(404, gin.H{
-				"error": message,
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, message))
 			return
 		}
 
 		product, err := p.service.UpdateNameAndPrice(productId, productRequest.Name, productRequest.Price)
 
 		if err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(200, gin.H{
-			"product": product,
-		})
+		ctx.JSON(200, web.NewResponse(200, gin.H{"product": product}, ""))
 	}
 }
 
@@ -317,7 +239,7 @@ func validateToken(tokenHeader string) (bool, int, string) {
 		return false, 400, "Missing token"
 	}
 
-	if tokenHeader != TOKEN_PRODUCTS {
+	if tokenHeader != os.Getenv("TOKEN") {
 		return false, 401, "Don´t have permission to access"
 	}
 

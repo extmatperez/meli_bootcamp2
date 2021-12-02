@@ -1,8 +1,8 @@
 package main
 
 import (
-	handlers "github.com/extmatperez/meli_bootcamp2/tree/ziliotto_matias/7_goweb2/TT/cmd/server/handler"
-	products "github.com/extmatperez/meli_bootcamp2/tree/ziliotto_matias/7_goweb2/TT/internal/products"
+	handlers "github.com/extmatperez/meli_bootcamp2/7_goweb2/TT/cmd/server/handler"
+	products "github.com/extmatperez/meli_bootcamp2/7_goweb2/TT/internal/products"
 	"github.com/gin-gonic/gin"
 )
 

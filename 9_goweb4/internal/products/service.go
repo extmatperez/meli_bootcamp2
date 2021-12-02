@@ -11,7 +11,6 @@ type Service interface {
 	Store(name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error)
 	FindById(id int64) (Product, error)
 	FilterProducts(allProducts []Product, queryParams map[string]string) []Product
-	LoadProducts() error
 	Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error)
 	Delete(id int64) error
 	UpdateNameAndPrice(id int64, name string, price float64) (Product, error)
@@ -100,16 +99,6 @@ func filterProductsByField(productsToFilter []Product, field, fieldValue string)
 	}
 
 	return filteredProducts
-}
-
-func (s *service) LoadProducts() error {
-	err := s.repository.LoadProducts()
-
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *service) Update(id int64, name string, color string, price float64, stock int, code string, published bool, created_at string) (Product, error) {

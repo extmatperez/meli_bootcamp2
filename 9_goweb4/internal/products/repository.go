@@ -1,10 +1,10 @@
 package internal
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
+
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/pkg/store"
 )
 
 type Product struct {
@@ -18,26 +18,39 @@ type Product struct {
 	Created_at string  `json:"created_at" binding:"required"`
 }
 
-var products []Product
-
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error)
 	FindById(id int64) (Product, error)
 	LastId() (int64, error)
-	LoadProducts() error
 	Update(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error)
 	Delete(id int64) error
 	UpdateNameAndPrice(id int64, name string, price float64) (Product, error)
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
 func (r *repository) GetAll() ([]Product, error) {
+	var products []Product
+	err := r.db.Read(&products)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return products, nil
 }
 
 func (r *repository) Store(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
+	var products []Product
+	err := r.db.Read(&products)
+
+	if err != nil {
+		return Product{}, err
+	}
+
 	product := Product{
 		Id:         id,
 		Name:       name,
@@ -51,10 +64,23 @@ func (r *repository) Store(id int64, name string, color string, price float64, s
 
 	products = append(products, product)
 
+	err = r.db.Write(products)
+
+	if err != nil {
+		return Product{}, err
+	}
+
 	return product, nil
 }
 
 func (r *repository) FindById(id int64) (Product, error) {
+	var products []Product
+	err := r.db.Read(&products)
+
+	if err != nil {
+		return Product{}, err
+	}
+
 	var product Product
 
 	for i := 0; i < len(products); i++ {
@@ -68,6 +94,13 @@ func (r *repository) FindById(id int64) (Product, error) {
 }
 
 func (r *repository) LastId() (int64, error) {
+	var products []Product
+	err := r.db.Read(&products)
+
+	if err != nil {
+		return 0, err
+	}
+
 	if len(products) == 0 {
 		return 0, nil
 	}
@@ -75,26 +108,14 @@ func (r *repository) LastId() (int64, error) {
 	return products[len(products)-1].Id, nil
 }
 
-func (r *repository) LoadProducts() error {
-	bytes, err := os.ReadFile("../../internal/products/products.json")
+func (r *repository) Update(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
+	var products []Product
+	err := r.db.Read(&products)
 
 	if err != nil {
-		return err
+		return Product{}, err
 	}
 
-	var allProducts []Product
-	errUnmarshal := json.Unmarshal(bytes, &allProducts)
-
-	if errUnmarshal != nil {
-		return err
-	}
-
-	products = allProducts
-
-	return nil
-}
-
-func (r *repository) Update(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
 	product := Product{
 		Id:         id,
 		Name:       name,
@@ -118,6 +139,13 @@ func (r *repository) Update(id int64, name string, color string, price float64, 
 }
 
 func (r *repository) Delete(id int64) error {
+	var products []Product
+	err := r.db.Read(&products)
+
+	if err != nil {
+		return err
+	}
+
 	i := 0
 	indexToRemoveFound := false
 
@@ -138,6 +166,13 @@ func (r *repository) Delete(id int64) error {
 }
 
 func (r *repository) UpdateNameAndPrice(id int64, name string, price float64) (Product, error) {
+	var products []Product
+	err := r.db.Read(&products)
+
+	if err != nil {
+		return Product{}, err
+	}
+
 	for i := 0; i < len(products); i++ {
 		if products[i].Id == id {
 			products[i].Name = name
@@ -150,6 +185,8 @@ func (r *repository) UpdateNameAndPrice(id int64, name string, price float64) (P
 	return Product{}, fmt.Errorf("Product %d not found", id)
 }
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{
+		db: db,
+	}
 }
