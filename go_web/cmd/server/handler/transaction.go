@@ -1,6 +1,11 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"strconv"
+
+	transactions "github.com/extmatperez/meli_bootcamp2/tree/arevalo_ivan/go_web/internal/transaction"
+	"github.com/gin-gonic/gin"
+)
 
 type request struct {
 	Transaction_Code string  `form:"transaction_code", json:"transaction_code"`
@@ -13,7 +18,7 @@ type request struct {
 
 type Controller struct {
 	service transactions.Service
-}transaction_code, coin, emitor, receptor, transaction_date string, amount float64
+}
 
 func NewController(ser transactions.Service) *Controller {
 	return &Controller{service: ser}
@@ -47,5 +52,82 @@ func (contr *Controller) Store() gin.HandlerFunc {
 				ctx.JSON(200, response)
 			}
 		}
+	}
+}
+
+func (controller *Controller) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var trans request
+
+		id, err := strconv.Atoi(ctx.Param("id"))
+
+		if err != nil {
+			ctx.String(400, "El id es invalido")
+		}
+
+		err = ctx.ShouldBindJSON(&trans)
+
+		if err != nil {
+			ctx.String(400, "Error en el body")
+		} else {
+			transactionUpdated, err := controller.service.Update(id, trans.Transaction_Code, trans.Coin, trans.Emitor, trans.Receptor, trans.Transaction_Date, trans.Amount)
+			if err != nil {
+				ctx.JSON(400, err.Error())
+			} else {
+				ctx.JSON(200, transactionUpdated)
+			}
+		}
+
+	}
+}
+
+func (controller *Controller) UpdateReceptor() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var trans request
+
+		id, err := strconv.Atoi(ctx.Param("id"))
+
+		if err != nil {
+			ctx.String(400, "El id es invalido")
+		}
+
+		err = ctx.ShouldBindJSON(&trans)
+
+		if err != nil {
+			ctx.String(400, "Error en el body")
+		} else {
+			if trans.Receptor == "" {
+				ctx.String(404, "El nombre no puede estar vacío")
+				return
+			}
+			transactionUpdated, err := controller.service.UpdateReceptor(id, trans.Receptor)
+			if err != nil {
+				ctx.JSON(400, err.Error())
+			} else {
+				ctx.JSON(200, transactionUpdated)
+			}
+		}
+
+	}
+}
+
+func (controller *Controller) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		id, err := strconv.Atoi(ctx.Param("id"))
+
+		if err != nil {
+			ctx.String(400, "El id es invalido")
+		}
+
+		err = controller.service.Delete(id)
+		if err != nil {
+			ctx.JSON(400, err.Error())
+		} else {
+			ctx.String(200, "La trasferencia %d ha sido eliminada", id)
+		}
+
 	}
 }

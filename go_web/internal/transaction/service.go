@@ -3,6 +3,9 @@ package internal
 type Service interface {
 	GetAll() ([]Transaction, error)
 	Store(transaction_code, coin, emitor, receptor, transaction_date string, amount float64) (Transaction, error)
+	Update(id int, transaction_code, coin, emitor, receptor, transaction_date string, amount float64) (Transaction, error)
+	UpdateReceptor(id int, receptor string) (Transaction, error)
+	Delete(id int) error
 }
 
 type service struct {
@@ -35,4 +38,16 @@ func (ser *service) Store(transaction_code, coin, emitor, receptor, transaction_
 	}
 
 	return trans, nil
+}
+
+func (ser *service) Update(id int, transaction_code, coin, emitor, receptor, transaction_date string, amount float64) (Transaction, error) {
+	return ser.repository.Update(id, transaction_code, coin, emitor, receptor, transaction_date, amount)
+}
+
+func (ser *service) UpdateReceptor(id int, nombre string) (Transaction, error) {
+	return ser.repository.UpdateReceptor(id, nombre)
+}
+
+func (ser *service) Delete(id int) error {
+	return ser.repository.Delete(id)
 }
