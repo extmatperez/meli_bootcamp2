@@ -18,6 +18,7 @@ func main() {
 	router.POST("/usuarios/add", controller.Store())
 	router.PUT("usuarios/update", controller.Update())
 	router.DELETE("usuarios/delete/:id", controller.Delete())
+	router.PATCH("usuarios/patch/:id", controller.EditarNombreEdad())
 
 	router.Run()
 

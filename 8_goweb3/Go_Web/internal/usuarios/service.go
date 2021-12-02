@@ -9,6 +9,7 @@ type Service interface {
 	Store(nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error)
 	Update(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error)
 	Delete(id int) error
+	EditarNombreEdad(id int, nombre string, edad int) (Usuario, error)
 }
 
 func NewService(repository Repository) Service {
@@ -52,4 +53,14 @@ func (serv *service) Delete(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (serv *service) EditarNombreEdad(id int, nombre string, edad int) (Usuario, error) {
+	user, err := serv.respository.EditarNombreEdad(id, nombre, edad)
+
+	if err != nil {
+		return Usuario{}, err
+	} else {
+		return user, nil
+	}
 }

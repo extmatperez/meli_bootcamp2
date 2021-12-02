@@ -99,6 +99,31 @@ func (control *Usuario) Delete() gin.HandlerFunc {
 	}
 }
 
+func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
+		if err != nil {
+			c.String(400, err.Error())
+		} else {
+			var userPatch request
+			err := c.ShouldBindJSON(&userPatch)
+			fmt.Println(userPatch)
+			if err != nil {
+				c.String(400, err.Error())
+			} else {
+				user, err := control.service.EditarNombreEdad(int(id), userPatch.Nombre, userPatch.Edad)
+
+				if err != nil {
+					c.String(404, err.Error())
+				} else {
+					c.JSON(200, user)
+				}
+			}
+		}
+
+	}
+}
+
 func validarUsuario(usuario request) error {
 	message := ""
 	var fields []string
