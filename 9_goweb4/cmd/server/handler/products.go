@@ -291,12 +291,12 @@ func validateRequiredField(fieldType reflect.Kind, value string) bool {
 		if value != "" {
 			return true
 		}
-	case reflect.Float64:
+	case reflect.Float32, reflect.Float64:
 		floatVal, err := strconv.ParseFloat(value, 64)
 		if err == nil && floatVal > 0 {
 			return true
 		}
-	case reflect.Int, reflect.Int32, reflect.Int64:
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		intVal, err := strconv.Atoi(value)
 		if err == nil && intVal > 0 {
 			return true
