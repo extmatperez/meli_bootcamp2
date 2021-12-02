@@ -19,6 +19,8 @@ func main() {
 	routerUser.POST("/add", controller.Store())
 	routerUser.PUT("/:id", controller.Update())
 	routerUser.DELETE("/:id", controller.Delete())
+	routerUser.PATCH("/lastname/:id", controller.UpdateLastName())
+	routerUser.PATCH("/age/:id", controller.UpdateAge())
 
 	router.Run()
 }

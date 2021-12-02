@@ -15,6 +15,8 @@ type Service interface {
 	LoadUser() error
 	Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 	Delete(id int) error
+	UpdateLastName(id int, last_name string) (User, error)
+	UpdateAge(id int, age int) (User, error)
 }
 
 type service struct {
@@ -59,6 +61,14 @@ func (ser *service) Update(id int, first_name string, last_name string, email st
 
 func (ser *service) Delete(id int) error {
 	return ser.repository.Delete(id)
+}
+
+func (ser *service) UpdateLastName(id int, last_name string) (User, error) {
+	return ser.repository.UpdateLastName(id, last_name)
+}
+
+func (ser *service) UpdateAge(id int, age int) (User, error) {
+	return ser.repository.UpdateAge(id, age)
 }
 
 func NewService(repository Repository) Service {

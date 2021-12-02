@@ -136,3 +136,53 @@ func (controller *User) Delete() gin.HandlerFunc {
 		ctx.JSON(200, gin.H{"data": fmt.Sprintf("The user %d is deleted", id)})
 	}
 }
+
+func (controller *User) UpdateLastName() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "invalid ID"})
+			return
+		}
+		var req request
+		if err := ctx.Bind(&req); err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		if req.LastName == "" {
+			ctx.JSON(400, gin.H{"error": "The LastName is required"})
+			return
+		}
+		us, err := controller.service.UpdateLastName(int(id), req.LastName)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, us)
+	}
+}
+
+func (controller *User) UpdateAge() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "invalid ID"})
+			return
+		}
+		var req request
+		if err := ctx.Bind(&req); err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		if req.Age == 0 {
+			ctx.JSON(400, gin.H{"error": "The Age cannot be zero"})
+			return
+		}
+		us, err := controller.service.UpdateAge(int(id), req.Age)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, us)
+	}
+}
