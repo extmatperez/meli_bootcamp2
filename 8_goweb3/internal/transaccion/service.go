@@ -2,6 +2,7 @@ package internal
 
 type Service interface{
 	GetAll() ([]Transaction, error)
+	GetTransactionById(Id int) (Transaction, error)
 	Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error)
 	Update(id int, codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error) //todos
 	UpdateCodigoAndMonto(id int,codigo,monto string)(Transaction, error)
@@ -27,6 +28,19 @@ func (ser *service) GetAll() ([]Transaction, error) {
 
 	return transactions,nil
 }
+
+
+func (ser *service) GetTransactionById(id int) (Transaction, error) {
+
+	transaction,err := ser.repository.GetTransactionById(id)
+
+	if(err != nil){
+		return Transaction{},err
+	}
+
+	return transaction,nil
+}
+
 
 func (ser *service) Store(codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error) {
 	

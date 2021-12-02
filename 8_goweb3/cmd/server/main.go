@@ -15,10 +15,22 @@ func main(){
 	controller := handler.NewTransaction(service)
 	transaction := server.Group("/transactions")
 	{
+		//get
 		transaction.GET("/", controller.GetAll())
+		transaction.GET("/:id", controller.GetTransactionById())
+
+		//post
 		transaction.POST("/", controller.Store())
+
+
+		//put
 		transaction.PUT("/:id", controller.Update())
+
+		//patch
 		transaction.PATCH("/:id", controller.UpdateCodigoAndMonto())
+
+
+		//delete
 		transaction.DELETE("/:id", controller.Delete())
 	}	
 	server.Run()

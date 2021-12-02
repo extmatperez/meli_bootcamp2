@@ -38,6 +38,28 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 	}
 }
 
+
+func (tran Transaction) GetTransactionById() gin.HandlerFunc{
+	return func(c *gin.Context) {
+
+		idTransaction,err := strconv.Atoi(c.Param("id"))
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+			return
+		} 
+		transaction, err := tran.service.GetTransactionById(idTransaction)
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "Hubo un error %v", err)
+		} else {
+			c.JSON(http.StatusOK, transaction)
+		}
+	}
+}
+
+
+
 func (tran Transaction) Store() gin.HandlerFunc{
 	return func(c *gin.Context) {
 		var transactionRecived request

@@ -21,11 +21,13 @@ var fileName = "./transactions.json"
 
 type Repository interface {
 	GetAll() ([]Transaction, error)
+	GetTransactionById(Id int) (Transaction, error)
 	Store(id int, codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error)
 	LastId() (int, error)
 	Update(id int, codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error) //todos
 	UpdateCodigoAndMonto(id int,codigo,monto string)(Transaction, error)
 	Delete(id int)(error)
+
 }
 
 type repository struct {
@@ -41,6 +43,22 @@ func(repo *repository) GetAll() ([]Transaction, error){
 	return GetAllTransactionFromFolder()
 
 }
+
+func(repo *repository) GetTransactionById(id int) (Transaction, error){
+	transactions,err := GetAllTransactionFromFolder()
+
+	if(err != nil){
+		return Transaction{},nil
+	}
+	for _,t := range transactions {
+		if(t.ID == id){
+			return t,nil
+		}
+	}
+	return Transaction{}, fmt.Errorf("no existe la transaccion con id %d",id)
+}
+
+
 
 func (repo *repository) Store(id int, codigo, moneda , monto, emisor, receptor,fecha string) (	Transaction, error){
 	
