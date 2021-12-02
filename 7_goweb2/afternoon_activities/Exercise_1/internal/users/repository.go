@@ -19,9 +19,9 @@ var last_id int
 
 // Definimos métodos a utilizar en nuestro repo
 type Repository interface {
-	get_users() ([]Users, error)
-	post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
-	/* validate_fields(user_id Users) (string, error) */
+	Get_users() ([]Users, error)
+	Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
+	Last_id() (int, error)
 }
 
 // Agregamos la estructura repository donde vamos a tener implementados los métodos de la interface
@@ -33,16 +33,16 @@ func new_repository() Repository {
 }
 
 // Implementamos los métodos para que no marque erros la func new_repository
-func (repo *repository) get_users() ([]Users, error) {
+func (repo *repository) Get_users() ([]Users, error) {
 	return users, nil
 }
-func (repo *repository) post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error) {
+func (repo *repository) Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error) {
 	user := Users{id, first_name, last_name, email, age, height, active, date}
 	last_id = id
 	users = append(users, user)
 	return user, nil
 }
 
-/* func (repo *repository) validate_fields(user_id Users)(string, error){
-	return ???? <---------------
-} */
+func (repo *repository) Last_id() (int, error) {
+	return last_id, nil
+}
