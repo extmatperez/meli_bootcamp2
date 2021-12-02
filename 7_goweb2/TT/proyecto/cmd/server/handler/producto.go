@@ -1,7 +1,13 @@
 package handler
 
 import (
+	"fmt"
+	"os"
+	"reflect"
+	"strconv"
+
 	products "github.com/extmatperez/meli_bootcamp2/7_goweb2/TT/proyecto/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/7_goweb2/TT/proyecto/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,35 +30,152 @@ func NewProduct(prod products.Service) *Product {
 		service: prod,
 	}
 }
+
+func validation(req request) string {
+	reqValue := reflect.ValueOf(req)
+	for i := 0; i < reqValue.NumField(); i++ {
+		value := reqValue.Field(i).Interface()
+		tipe := reflect.TypeOf(value).Kind()
+		if fmt.Sprint(tipe) == "string" {
+			if value == "" {
+				return fmt.Sprintf("El campo %v no puede estar vacío", reqValue.Type().Field(i).Name)
+			}
+		} else if fmt.Sprint(tipe) == "int" {
+			if value.(int) < 0 {
+				return fmt.Sprintf("El campo %v no puede estar vacío", reqValue.Type().Field(i).Name)
+			}
+		} else if fmt.Sprint(tipe) == "float64" {
+			if value.(float64) == 0 {
+				return fmt.Sprintf("El campo %v no puede estar vacío", reqValue.Type().Field(i).Name)
+			}
+		} else if fmt.Sprint(tipe) == "boolean" {
+			if value.(bool) == false {
+				return fmt.Sprintf("El campo %v no puede estar vacío", reqValue.Type().Field(i).Name)
+			}
+		}
+	}
+	return ""
+}
+
 func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
-		if token != "123456" {
-			c.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+		if token != os.Getenv("TOKEN") {
+			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
 			return
 		}
 		p, err := prod.service.GetAll()
 		if err != nil {
-			c.JSON(404, gin.H{"error": err.Error()})
+			c.JSON(404, web.NewResponse(400, nil, fmt.Sprintf("error %v", err)))
 			return
 		}
-		c.JSON(200, p)
+		c.JSON(200, web.NewResponse(200, p, ""))
 	}
 }
 func (controller *Product) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		token := c.Request.Header.Get("token")
+		if token != os.Getenv("TOKEN") {
+			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			return
+		}
 		var prod request
+		prod.Stock = -1
 		err := c.ShouldBindJSON(&prod)
 		if err != nil {
-			c.String(400, "Hubo un error al querer cargar la personas %v", err)
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error al querer cargar el producto %v", err)))
 		} else {
+			validated := validation(prod)
+			if validated != "" {
+				c.JSON(400, web.NewResponse(400, nil, validated))
+				return
+			}
 			response, err := controller.service.Store(prod.Nombre, prod.Color, prod.Precio, prod.Stock, prod.Codigo, prod.Publicado, prod.FechaDeCreacion)
 			if err != nil {
-				c.String(400, "No se pudo cargar la persona %v", err)
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo cargar el producto %v", err)))
 			} else {
-				c.JSON(200, response)
+				c.JSON(200, web.NewResponse(200, response, ""))
+			}
+		}
+	}
+}
+
+func (controller *Product) Update() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get("token")
+		if token != os.Getenv("TOKEN") {
+			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			return
+		}
+		var prod request
+		id, err1 := strconv.Atoi(c.Param("id"))
+		if err1 != nil {
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo obtener el id %v", err1)))
+		} else {
+			err2 := c.ShouldBindJSON(&prod)
+			validated := validation(prod)
+			if validated != "" {
+				c.JSON(400, web.NewResponse(400, nil, validated))
+				return
+			}
+			if err2 != nil {
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo cargar el producto %v", err2)))
+			} else {
+				fmt.Println("PRODUCTO", prod)
+				response, err := controller.service.Update(id, prod.Nombre, prod.Color, prod.Precio, prod.Stock, prod.Codigo, prod.Publicado, prod.FechaDeCreacion)
+				if err != nil {
+					c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo cargar el producto %v", err)))
+
+				} else {
+					c.JSON(200, web.NewResponse(200, response, ""))
+				}
+			}
+		}
+	}
+}
+
+func (controller *Product) UpdateProd() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get("token")
+		if token != os.Getenv("TOKEN") {
+			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			return
+		}
+		var prod request
+		id, err1 := strconv.Atoi(c.Param("id"))
+		if err1 != nil {
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo obtener el id %v", err1)))
+		} else {
+			err2 := c.ShouldBindJSON(&prod)
+			if err2 != nil {
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo cargar el producto %v", err2)))
+			} else {
+				response, err := controller.service.UpdateProd(id, prod.Nombre, prod.Precio)
+				if err != nil {
+					c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo actualizar el producto %v", err)))
+				} else {
+					c.JSON(200, web.NewResponse(200, response, ""))
+				}
+			}
+		}
+	}
+}
+func (controller *Product) Delete() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get("token")
+		if token != os.Getenv("TOKEN") {
+			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			return
+		}
+		id, err1 := strconv.Atoi(c.Param("id"))
+		if err1 != nil {
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo obtener el id %v", err1)))
+		} else {
+			err := controller.service.Delete(id)
+			if err != nil {
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo eliminar el producto %v", err)))
+			} else {
+				c.JSON(200, web.NewResponse(200, "Producto eliminado correctamente", ""))
 			}
 		}
 	}
