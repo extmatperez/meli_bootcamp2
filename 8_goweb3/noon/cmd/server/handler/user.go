@@ -28,11 +28,7 @@ func NewUser(ser users.Service) *User {
 
 func (u *User) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
-			ctx.JSON(401, gin.H{
-				"error": "Invalid token",
-			})
+		if !validateToken(ctx) {
 			return
 		}
 
@@ -48,11 +44,7 @@ func (u *User) GetAll() gin.HandlerFunc {
 
 func (u *User) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
-			ctx.JSON(401, gin.H{
-				"error": "Invalid token",
-			})
+		if !validateToken(ctx) {
 			return
 		}
 
@@ -80,11 +72,7 @@ func (u *User) Store() gin.HandlerFunc {
 
 func (u *User) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
-			ctx.JSON(401, gin.H{
-				"error": "Invalid token",
-			})
+		if !validateToken(ctx) {
 			return
 		}
 
@@ -128,11 +116,7 @@ func (u *User) Update() gin.HandlerFunc {
 
 func (u *User) UpdateLastNameAge() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
-			ctx.JSON(401, gin.H{
-				"error": "Invalid token",
-			})
+		if !validateToken(ctx) {
 			return
 		}
 
@@ -176,11 +160,7 @@ func (u *User) UpdateLastNameAge() gin.HandlerFunc {
 
 func (u *User) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
-			ctx.JSON(401, gin.H{
-				"error": "Invalid token",
-			})
+		if !validateToken(ctx) {
 			return
 		}
 
@@ -239,4 +219,17 @@ func validatePatchFields(u request) string {
 	}
 
 	return msg
+}
+
+func validateToken(ctx *gin.Context) bool {
+	var valid bool = true
+	token := ctx.Request.Header.Get("token")
+	if token != "123456" {
+		ctx.JSON(401, gin.H{
+			"error": "Invalid token",
+		})
+		valid = false
+	}
+
+	return valid
 }
