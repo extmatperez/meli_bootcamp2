@@ -42,9 +42,9 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 		transactions, err := tran.service.GetAll()
 
 		if err != nil {
-			ctx.String(http.StatusBadRequest, "Hubo un error %v", err)
+			c.String(http.StatusBadRequest, "Hubo un error %v", err)
 		} else {
-			ctx.JSON(http.StatusOK, transactions)
+			c.JSON(http.StatusOK, transactions)
 		}
 	}
 }

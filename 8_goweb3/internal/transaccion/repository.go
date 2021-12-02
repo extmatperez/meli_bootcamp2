@@ -1,9 +1,8 @@
 package internal
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/8_goweb3/pkg/store"
 )
 
 type Transaction struct {
@@ -16,8 +15,8 @@ type Transaction struct {
 	Fecha    string `json:"fecha"`
 }
 
-var lastID int
-var fileName = "./transactions.json"
+
+
 
 type Repository interface {
 	GetAll() ([]Transaction, error)
@@ -31,21 +30,30 @@ type Repository interface {
 }
 
 type repository struct {
-
+	store store.Store
 }
 
 
-func NewRepository() Repository{
-	return &repository{}
+func NewRepository(db store.Store) Repository{
+
+
+	return &repository{
+		store: db,
+	}
 }
 
 func(repo *repository) GetAll() ([]Transaction, error){
-	return GetAllTransactionFromFolder()
+	var transactions []Transaction
+	err := repo.store.Read(transactions)
 
+	if(err != nil){
+		return nil,err
+	}
+	return transactions,nil
 }
 
 func(repo *repository) GetTransactionById(id int) (Transaction, error){
-	transactions,err := GetAllTransactionFromFolder()
+	transactions,err :=repo.GetAll()
 
 	if(err != nil){
 		return Transaction{},err
@@ -63,7 +71,7 @@ func(repo *repository) GetTransactionById(id int) (Transaction, error){
 func (repo *repository) Store(id int, codigo, moneda , monto, emisor, receptor,fecha string) (	Transaction, error){
 	
 	tran := Transaction{id,codigo,moneda,monto,emisor,receptor,fecha}
-	transactions,err := GetAllTransactionFromFolder()
+	transactions,err := repo.GetAll()
 
 	if(err != nil){
 		return Transaction{},err
@@ -73,9 +81,8 @@ func (repo *repository) Store(id int, codigo, moneda , monto, emisor, receptor,f
 	transactions = append(transactions, tran)
 
 
-	err = UpdateJson(transactions)
+	err = repo.store.Write(transactions)
 	
-
 
 	if err != nil {
 		return Transaction{},err
@@ -85,7 +92,7 @@ func (repo *repository) Store(id int, codigo, moneda , monto, emisor, receptor,f
 }
 
 func (repo *repository) LastId() (int, error) {
-	transactions,err := GetAllTransactionFromFolder()
+	transactions,err := repo.GetAll()
 
 	if(err != nil){
 		return 0,err
@@ -100,7 +107,7 @@ func (repo *repository) LastId() (int, error) {
 
 func (repo *repository) Update(id int, codigo, moneda , monto, emisor, receptor,fecha string) (Transaction, error){
 
-	transactions,err := GetAllTransactionFromFolder()
+	transactions,err := repo.GetAll()
 
 	if(err != nil){
 		return Transaction{},err
@@ -111,7 +118,10 @@ func (repo *repository) Update(id int, codigo, moneda , monto, emisor, receptor,
 	for i,t := range transactions {
 		if t.ID == tran.ID {
 			transactions[i] = tran
-			UpdateJson(transactions)
+			err := repo.store.Write(transactions)
+			if(err != nil){
+				return Transaction{},err
+			}
 			return tran,nil
 		}
 		
@@ -123,7 +133,7 @@ func (repo *repository) Update(id int, codigo, moneda , monto, emisor, receptor,
 
 func (repo *repository) UpdateCodigoAndMonto(id int, codigo,monto string ) (Transaction, error){
 
-	transactions,err := GetAllTransactionFromFolder()
+	transactions,err := repo.GetAll()
 
 	if(err != nil){
 		return Transaction{},err
@@ -133,7 +143,10 @@ func (repo *repository) UpdateCodigoAndMonto(id int, codigo,monto string ) (Tran
 		if t.ID == id {
 			transactions[i].Codigo = codigo
 			transactions[i].Monto = monto
-			UpdateJson(transactions)
+			err := repo.store.Write(transactions)
+			if(err != nil){
+				return Transaction{},err
+			}
 			return transactions[i],nil
 		}
 		
@@ -144,7 +157,7 @@ func (repo *repository) UpdateCodigoAndMonto(id int, codigo,monto string ) (Tran
 
 
 func (repo *repository) Delete(id int) error {
-	transactions,err := GetAllTransactionFromFolder()
+	transactions,err := repo.GetAll()
 
 	if(err != nil){
 		return err
@@ -153,7 +166,10 @@ func (repo *repository) Delete(id int) error {
 	for i,t := range transactions {
 		if t.ID == id {
 			transactions = RemoveIndex(transactions,i)
-			UpdateJson(transactions)
+			err := repo.store.Write(transactions)
+			if(err != nil){
+				return err
+			}
 			return nil
 		}
 		
@@ -161,40 +177,40 @@ func (repo *repository) Delete(id int) error {
 	return fmt.Errorf("no existe la transaccion con id: %v",id)
 } 
 
-func GetAllTransactionFromFolder() ([]Transaction,error){
+// func GetAllTransactionFromFolder() ([]Transaction,error){
 	
-	file, err:= ioutil.ReadFile(fileName)
-	if(err != nil) {
-		return nil,err
-	}
+// 	file, err:= ioutil.ReadFile(fileName)
+// 	if(err != nil) {
+// 		return nil,err
+// 	}
 
-	var transaction []Transaction
+// 	var transaction []Transaction
  
-	err = json.Unmarshal([]byte(file), &transaction)
+// 	err = json.Unmarshal([]byte(file), &transaction)
 	
-	if(err != nil) {
-		return nil,err
-	}
+// 	if(err != nil) {
+// 		return nil,err
+// 	}
 
-	return transaction,nil
+// 	return transaction,nil
 
-}
+// }
 
 func RemoveIndex(s []Transaction, index int) []Transaction {
     return append(s[:index], s[index+1:]...)
 }
 
 
-func UpdateJson(transactions [] Transaction) error{
+// func UpdateJson(transactions [] Transaction) error{
 
-	dataBytes, err := json.Marshal(transactions)
-    if err != nil {
-		return err
-    }
-	err = ioutil.WriteFile(fileName, dataBytes, 0644)
-	if err != nil {
-		return err
-    }
+// 	dataBytes, err := json.Marshal(transactions)
+//     if err != nil {
+// 		return err
+//     }
+// 	err = ioutil.WriteFile(fileName, dataBytes, 0644)
+// 	if err != nil {
+// 		return err
+//     }
 
-	return nil
-}
+// 	return nil
+// }
