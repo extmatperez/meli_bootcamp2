@@ -5,6 +5,7 @@ type Service interface {
 	Store(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error)
 	Edit(id int, nombre, color, precio string, stock int, codigo string, publicado bool, creado string) (Producto, error)
 	Delete(id int) error
+	Change(id int, nombre, precio string) (Producto, error)
 }
 type service struct {
 	repository Repository
@@ -55,4 +56,12 @@ func (s *service) Delete(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (s *service) Change(id int, nombre, precio string) (Producto, error) {
+	cambios, err := s.repository.Change(id, nombre, precio)
+	if err != nil {
+		return Producto{}, err
+	}
+	return cambios, err
 }
