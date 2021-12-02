@@ -34,5 +34,14 @@
   "emisor": "Facundo",
   "receptor": "Sebastian",
   "fecha_trans": "21/10/2021"
+ },
+ {
+  "id": 6,
+  "cod_transaccion": "a1b2c3c3",
+  "moneda": "dolares",
+  "monto": 55000.5,
+  "emisor": "Facundo",
+  "receptor": "Sebastian",
+  "fecha_trans": "21/10/2021"
  }
 ]

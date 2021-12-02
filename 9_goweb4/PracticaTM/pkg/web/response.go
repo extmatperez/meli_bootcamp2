@@ -3,9 +3,9 @@ package web
 //Este archivo corresponde a la estructura de la respuestas de peticiones web de
 
 type Response struct {
-	Code  int
-	Data  interface{}
-	Error string
+	Code      int         `json:"code"`
+	Contenido interface{} `json:"data,omitempty"`
+	Error     string      `json:"error,omitempty"`
 }
 
 func NewResponse(codeStatus int, data interface{}, err string) Response {
