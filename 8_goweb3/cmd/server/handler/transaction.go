@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/extmatperez/meli_bootcamp2/tree/soto_jose/8_goweb3/pkg/web"
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/soto_jose/8_goweb3/transactions"
 	"github.com/gin-gonic/gin"
 )
@@ -31,12 +32,13 @@ func (per *Transaction) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		transactions, err := per.service.GetAll()
-
 		if err != nil {
-			ctx.String(http.StatusBadRequest, "Hubo un error %v", err)
-		} else {
-			ctx.JSON(http.StatusOK, transactions)
+
+			ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, fmt.Sprintf("Hubo un error %v", err)))
+			return
 		}
+		web.NewResponse(http.StatusOK, transactions, "")
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, transactions, ""))
 	}
 }
 
@@ -48,16 +50,16 @@ func (controller *Transaction) Store() gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&t)
 
 		if err != nil {
-			ctx.String(http.StatusBadRequest, "Body error: %v", err)
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, fmt.Sprintf("Body error: %v", err)))
 			return
 		}
 
 		response, err := controller.service.Store(t.Code, t.Currency, t.Amount, t.Sender, t.Receiver, t.Date)
 		if err != nil {
-			ctx.String(http.StatusInternalServerError, "Error saving the transaction %v", err)
+			ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, fmt.Sprintf("Error saving the transaction %v", err)))
 			return
 		}
-		ctx.JSON(http.StatusCreated, response)
+		ctx.JSON(http.StatusCreated, web.NewResponse(http.StatusCreated, response, ""))
 	}
 }
 
@@ -81,26 +83,24 @@ func (controller *Transaction) Update() gin.HandlerFunc {
 		bodyErr := validateUpdatePayload(body)
 
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, err.Error())
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, err.Error()))
 			return
 		}
 		if parseErr != nil {
-			ctx.JSON(http.StatusBadRequest, parseErr.Error())
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, parseErr.Error()))
 			return
 		}
 		if bodyErr != nil {
-			ctx.JSON(http.StatusBadRequest, bodyErr.Error())
-			fmt.Println(bodyErr)
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, bodyErr.Error()))
 			return
 		}
 
 		response, err := controller.service.Update(id, body.Code, body.Currency, body.Amount, body.Sender, body.Receiver, body.Date)
 		if err != nil {
-			ctx.AbortWithError(http.StatusNotFound, err)
+			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 		} else {
-			ctx.JSON(http.StatusOK, response)
+			ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, response, ""))
 		}
-
 	}
 }
 
@@ -111,16 +111,16 @@ func (controller *Transaction) Delete() gin.HandlerFunc {
 		id, err := strconv.Atoi(paramId)
 
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, errors.New("not valid id"))
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "not valid id"))
 			return
 		}
 
 		err = controller.service.Delete(id)
 		if err != nil {
-			ctx.String(http.StatusNotFound, fmt.Sprintf("Transaction with id %v not found", id))
+			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, fmt.Sprintf("Transaction with id %v not found", id)))
 			return
 		}
-		ctx.Writer.WriteHeader(http.StatusNoContent)
+		ctx.JSON(http.StatusNoContent, web.NewResponse(http.StatusNoContent, nil, ""))
 	}
 }
 
@@ -134,14 +134,14 @@ func (controller *Transaction) UpdateCodeAndAmount() gin.HandlerFunc {
 		id, parseErr := strconv.Atoi(paramId)
 
 		if err != nil || parseErr != nil {
-			ctx.AbortWithError(http.StatusBadRequest, err)
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, err.Error()))
 		}
 
 		response, err := controller.service.UpdateCodeAndAmount(id, body.Code, body.Amount)
 		if err != nil {
-			ctx.String(http.StatusNotFound, err.Error())
+			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusOK, response)
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, response, ""))
 	}
 }
