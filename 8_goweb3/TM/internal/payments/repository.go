@@ -178,6 +178,11 @@ func (repo *repository) Delete(id int) (string, error) {
 			// Y aca se sobreescribe con el contenido del slice que estaba antes del registro a borrar y todo lo que viene despues como un ellipsis.
 			payments = append(payments[:index], payments[index+1:]...)
 			err := repo.db.Write(payments)
+
+			if err != nil {
+				return "", err
+			}
+
 			return "Borrado correcto.", nil
 		}
 	}

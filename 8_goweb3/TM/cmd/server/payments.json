@@ -1,0 +1,38 @@
+[
+ {
+  "id": 1,
+  "codigo": "0000001",
+  "moneda": "ARS",
+  "monto": 10535.26,
+  "emisor": "Rodrigo Vega Gimenez",
+  "receptor": "Juampi",
+  "fecha": "2021-12-01"
+ },
+ {
+  "id": 3,
+  "codigo": "0000003",
+  "moneda": "ARS",
+  "monto": 10535.26,
+  "emisor": "Rodrigo Vega Gimenez",
+  "receptor": "Juampi",
+  "fecha": "2021-12-01"
+ },
+ {
+  "id": 4,
+  "codigo": "0000004",
+  "moneda": "ARS",
+  "monto": 10535.26,
+  "emisor": "Rodrigo Vega Gimenez",
+  "receptor": "Juampi",
+  "fecha": "2021-12-01"
+ },
+ {
+  "id": 5,
+  "codigo": "0000005",
+  "moneda": "ARS",
+  "monto": 10535.26,
+  "emisor": "Rodrigo Vega Gimenez",
+  "receptor": "Juampi",
+  "fecha": "2021-12-01"
+ }
+]

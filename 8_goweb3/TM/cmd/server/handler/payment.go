@@ -26,14 +26,17 @@ func NewPayment(s payments.Service) *Payment {
 }
 
 func validarToken(ctx *gin.Context) bool {
-	token := ctx.GetHeader("token")
-	if token != "" {
+	token := ctx.GetHeader("TOKEN")
+
+	if token == "" {
 		ctx.String(400, "Falta token.")
 		return false
 	}
+
 	token_env := os.Getenv("TOKEN")
+
 	if token != token_env {
-		ctx.String(400, "Token incorrecto.")
+		ctx.String(404, "Token incorrecto.")
 		return false
 	}
 
