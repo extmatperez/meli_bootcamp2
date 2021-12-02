@@ -142,7 +142,7 @@ func (p *Product) Update() gin.HandlerFunc {
 		}
 
 		var requiredFields []string
-		requiredFields = append(requiredFields, "name", "color", "price", "stock", "code", "published", "created_at")
+		requiredFields = append(requiredFields, "name", "Color", "Price", "Stock", "Code", "Published", "Created_at")
 
 		validated, message := validateRequiredData(productRequest, requiredFields)
 
@@ -214,7 +214,7 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 		}
 
 		var requiredFields []string
-		requiredFields = append(requiredFields, "name", "price")
+		requiredFields = append(requiredFields, "Name", "Price")
 
 		validated, message := validateRequiredData(productRequest, requiredFields)
 
@@ -256,21 +256,22 @@ func validateToken(tokenHeader string) (bool, int, string) {
 */
 func validateRequiredData(productRequest request, requiredFields []string) (bool, string) {
 	productTypeOf := reflect.TypeOf(productRequest)
+	productValueOf := reflect.ValueOf(productRequest)
 
 	for _, field := range requiredFields {
-		fieldIndex := 0
+		fieldByName, fieldFound := productTypeOf.FieldByName(field) // Try to get the field
 
-		for fieldIndex = 0; fieldIndex < productTypeOf.NumField(); fieldIndex++ {
-			if strings.ToLower(productTypeOf.Field(fieldIndex).Name) == field {
-				break
-			}
+		if !fieldFound {
+			return false, "Field '" + strings.ToLower(field) + "'not found"
 		}
 
-		typeOfVField := fmt.Sprint(productTypeOf.Field(fieldIndex).Type.Kind())
-		valueOfField := fmt.Sprintf("%v", reflect.ValueOf(productRequest).Field(fieldIndex).Interface())
+		// Get the type of the field
+		typeOfVField := fieldByName.Type.Kind()
+		// Get value of the field as string format
+		valueOfField := fmt.Sprintf("%v", productValueOf.FieldByName(field).Interface())
 
 		if !validateRequiredField(typeOfVField, valueOfField) {
-			return false, "Field '" + field + "' is required"
+			return false, "Field '" + strings.ToLower(field) + "' is required"
 		}
 	}
 
@@ -284,23 +285,23 @@ func validateRequiredData(productRequest request, requiredFields []string) (bool
 	Return:
 		-bool: if field was validated ok or not
 */
-func validateRequiredField(fieldType, value string) bool {
+func validateRequiredField(fieldType reflect.Kind, value string) bool {
 	switch fieldType {
-	case "string":
+	case reflect.String:
 		if value != "" {
 			return true
 		}
-	case "float64":
+	case reflect.Float64:
 		floatVal, err := strconv.ParseFloat(value, 64)
 		if err == nil && floatVal > 0 {
 			return true
 		}
-	case "int":
+	case reflect.Int, reflect.Int32, reflect.Int64:
 		intVal, err := strconv.Atoi(value)
 		if err == nil && intVal > 0 {
 			return true
 		}
-	case "bool":
+	case reflect.Bool:
 		if value != "" && (value == "true" || value == "false") {
 			return true
 		}
