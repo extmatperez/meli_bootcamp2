@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	product "github.com/extmatperez/meli_bootcamp2/tree/panceri_santiago/6_goweb1/TT/api/internal/producto"
@@ -25,20 +26,28 @@ func NewProduct(ser product.Service) *Product {
 	return &Product{service: ser}
 }
 
-func (pro *Product) LoadFile() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		err := pro.service.LoadFile()
-
-		if err != nil {
-			ctx.String(400, "Hubo un error %v", err)
-		} else {
-			ctx.JSON(200, "El archivo fue cargado con exito")
-		}
+func validarToken(ctx *gin.Context) bool {
+	token := ctx.GetHeader("token")
+	if token == "" {
+		ctx.String(400, "Falta token")
+		return false
 	}
+	tokenENV := os.Getenv("TOKEN")
+	if token != tokenENV {
+		ctx.String(404, "Token incorrecto")
+		return false
+	}
+
+	return true
 }
 
 func (pro *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		products, err := pro.service.GetAll()
 
 		if err != nil {
@@ -52,6 +61,11 @@ func (pro *Product) GetAll() gin.HandlerFunc {
 
 func (pro *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var product Request
 
 		err := ctx.ShouldBindJSON(&product)
@@ -72,7 +86,11 @@ func (pro *Product) Store() gin.HandlerFunc {
 func (pro *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		idStr := ctx.Param("ID")
+		if !validarToken(ctx) {
+			return
+		}
+
+		idStr := ctx.Param("id")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
 			ctx.String(400, "Hubo un error")
@@ -82,7 +100,7 @@ func (pro *Product) Delete() gin.HandlerFunc {
 		mes, err := pro.service.Delete(int64(id))
 
 		if err != nil {
-			ctx.String(400, "No se pudo guardad el producto %v", err)
+			ctx.String(400, "No se pudo guardad el producto %v: ", err)
 		} else {
 			ctx.JSON(200, mes)
 		}
@@ -91,6 +109,11 @@ func (pro *Product) Delete() gin.HandlerFunc {
 
 func (pro *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var product Request
 		idStr := ctx.Param("ID")
 
@@ -117,6 +140,11 @@ func (pro *Product) Update() gin.HandlerFunc {
 
 func (pro *Product) UpdateNombre() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !validarToken(ctx) {
+			return
+		}
+
 		var product Request
 		idStr := ctx.Param("ID")
 

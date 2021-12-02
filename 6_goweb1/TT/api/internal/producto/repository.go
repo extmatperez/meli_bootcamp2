@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/panceri_santiago/6_goweb1/TT/api/pkg/store"
 )
 
 type Product struct {
@@ -19,46 +19,44 @@ type Product struct {
 
 var products []Product
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error)
-	GetLastID() int64
-	LoadFile() error
+	GetLastID() (int64, error)
 	Delete(id int64) (string, error)
 	Update(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error)
 	UpdateNombre(id int64, name string) (Product, error)
 }
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }
 
-func (repo *repository) LoadFile() error {
-	data, err := os.ReadFile("../../internal/producto/products.json")
+func (repo *repository) GetLastID() (int64, error) {
+	err := repo.db.Read(&products)
 
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	err = json.Unmarshal(data, &products)
+	if len(products) == 0 {
+		return 0, nil
+	}
 
-	return err
-}
-
-func (repo *repository) GetLastID() int64 {
-	return int64(len(products) + 1)
-}
-
-func (repo *repository) Store(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error) {
-
-	product := Product{id, name, color, price, stock, code, isPublished, createdAt} //creo un productos
-	products = append(products, product)                                            //agrego el productor al slice
-	return product, nil
+	return products[len(products)-1].ID, nil
 }
 
 func (repo *repository) GetAll() ([]Product, error) {
+
+	err := repo.db.Read(&products)
+
+	if err != nil {
+		return nil, err
+	}
 
 	if len(products) == 0 {
 		return nil, nil
@@ -67,12 +65,43 @@ func (repo *repository) GetAll() ([]Product, error) {
 	return products, nil
 }
 
+func (repo *repository) Store(id int64, name string, color string, price float64, stock int64, code string, isPublished bool, createdAt string) (Product, error) {
+
+	err := repo.db.Read(&products)
+
+	if err != nil {
+		return Product{}, err
+	}
+
+	product := Product{id, name, color, price, stock, code, isPublished, createdAt} //creo un productos
+	products = append(products, product)                                            //agrego el productor al slice
+	err = repo.db.Write(products)
+
+	if err != nil {
+		return Product{}, err
+	}
+
+	return product, nil
+}
+
 func (repo *repository) Delete(id int64) (string, error) {
 
+	err := repo.db.Read(&products)
+
+	if err != nil {
+		return "", err
+	}
 	for k, v := range products {
 		if v.ID == id {
 			products = append(products[:k], products[k+1:]...)
-			return "Se borro con exito el producto numero " + string(id), nil
+
+			err = repo.db.Write(products)
+
+			if err != nil {
+				return "", err
+			}
+
+			return fmt.Sprintf("Se borro con exito el producto numero %v", id), nil
 		}
 	}
 	return "", fmt.Errorf("No se ha encontrado la transaccion con id %v", id)
@@ -86,6 +115,13 @@ func (repo *repository) Update(id int64, name string, color string, price float6
 	for i, v := range products {
 		if v.ID == id {
 			products[i] = prod
+
+			err := repo.db.Write(products)
+
+			if err != nil {
+				return Product{}, err
+			}
+
 			return prod, nil
 		}
 	}
@@ -97,6 +133,11 @@ func (repo *repository) UpdateNombre(id int64, name string) (Product, error) {
 	for i, v := range products {
 		if v.ID == id {
 			products[i].Name = name
+			err := repo.db.Write(products)
+
+			if err != nil {
+				return Product{}, err
+			}
 			return products[i], nil
 		}
 	}
