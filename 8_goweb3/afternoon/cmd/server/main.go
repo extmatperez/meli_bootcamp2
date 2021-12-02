@@ -5,6 +5,8 @@ import (
 
 	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/cmd/server/handler"
 	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/pkg/store"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -15,8 +17,10 @@ func main() {
 		log.Fatal("Can't open .env file")
 	}
 
+	db := store.NewStore(store.FileType, "./users.json")
+
 	router := gin.Default()
-	repo := users.NewRepository()
+	repo := users.NewRepository(db)
 	service := users.NewService(repo)
 	hand := handler.NewUser(service)
 
