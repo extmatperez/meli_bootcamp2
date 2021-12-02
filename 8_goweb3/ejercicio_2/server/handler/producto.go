@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"strconv"
 
 	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/ejercicio_2/internal/productos"
@@ -84,5 +85,27 @@ func (controller *Product) Update() gin.HandlerFunc {
 				}
 			}
 		}
+	}
+}
+
+func (controller *Product) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "12345" {
+			ctx.JSON(401, gin.H{"error": "Token incorrecto"})
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "invalid ID"})
+			return
+		}
+		err = controller.service.Delete(int(id))
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, gin.H{"data": fmt.Sprintf("el producto %d fue eliminado", id)})
 	}
 }

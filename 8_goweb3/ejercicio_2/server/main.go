@@ -17,6 +17,7 @@ func main() {
 	router.POST("/products/add", controller.Store())
 	//
 	router.PUT("/products/:id", controller.Update())
+	router.DELETE("/products/:id", controller.Delete())
 
 	router.Run()
 }

@@ -4,6 +4,7 @@ type Service interface {
 	GetAll() ([]Product, error)
 	Store(Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
 	Update(id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
+	Delete(id int) error
 }
 
 type service struct {
@@ -36,4 +37,8 @@ func (ser *service) Store(Name string, Color string, Price float64, Stock int, C
 func (ser *service) Update(id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error) {
 
 	return ser.repository.Update(id, Name, Color, Price, Stock, Code, Publish, Date)
+}
+func (ser *service) Delete(id int) error {
+
+	return ser.repository.Delete(id)
 }

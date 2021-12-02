@@ -21,6 +21,7 @@ type Repository interface {
 	Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
 	LastId() (int, error)
 	Update(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
+	Delete(id int) error
 }
 
 type repository struct{}
@@ -64,4 +65,22 @@ func (repo *repository) Update(Id int, Name string, Color string, Price float64,
 		return Product{}, fmt.Errorf("Producto %d no encontrado", Id)
 	}
 	return pr, nil
+}
+
+func (repo *repository) Delete(id int) error {
+	deleted := false
+	var index int
+	for i := range products {
+		if products[i].Id == id {
+			index = i
+			deleted = true
+			break
+		}
+	}
+	if !deleted {
+		return fmt.Errorf("Producto %d no encontrado:", id)
+	}
+	products = append(products[:index], products[index+1:]...)
+	return nil
+
 }
