@@ -19,7 +19,7 @@ func main() {
 	transactions.POST("", controller.Store())
 	transactions.PUT("/:id", controller.Update())
 	transactions.DELETE("/:id", controller.Delete())
-	transactions.PATCH("/:id", controller.Patch())
+	transactions.PATCH("/:id", controller.UpdateCodeAndAmount())
 
 	router.Run()
 }

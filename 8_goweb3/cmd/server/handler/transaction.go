@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -59,6 +60,14 @@ func (controller *Transaction) Store() gin.HandlerFunc {
 	}
 }
 
+func validateUpdatePayload(payload request) error {
+
+	if payload.Amount == 0 || payload.Code == "" || payload.Currency == "" || payload.Date == "" || payload.Receiver == "" || payload.Sender == "" {
+		return errors.New("unvalid body")
+	}
+	return nil
+}
+
 func (controller *Transaction) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -68,8 +77,20 @@ func (controller *Transaction) Update() gin.HandlerFunc {
 		paramId := ctx.Param("id")
 		id, parseErr := strconv.Atoi(paramId)
 
-		if err != nil || parseErr != nil {
-			ctx.AbortWithError(http.StatusBadRequest, err)
+		bodyErr := validateUpdatePayload(body)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+		if parseErr != nil {
+			ctx.JSON(http.StatusBadRequest, parseErr.Error())
+			return
+		}
+		if bodyErr != nil {
+			ctx.JSON(http.StatusBadRequest, bodyErr.Error())
+			fmt.Println(bodyErr)
+			return
 		}
 
 		response, err := controller.service.Update(id, body.Code, body.Currency, body.Amount, body.Sender, body.Receiver, body.Date)
@@ -102,7 +123,7 @@ func (controller *Transaction) Delete() gin.HandlerFunc {
 	}
 }
 
-func (controller *Transaction) Patch() gin.HandlerFunc {
+func (controller *Transaction) UpdateCodeAndAmount() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body request
