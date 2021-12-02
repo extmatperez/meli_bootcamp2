@@ -3,7 +3,10 @@ package handler
 
 // importo el package handler
 import (
+	"net/http"
+
 	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/7_goweb2/afternoon_activities/Exercise_1/internal/users"
+	"github.com/gin-gonic/gin"
 )
 
 // Creamos la request struct
@@ -23,6 +26,19 @@ type Users struct {
 }
 
 // Agregar New_user function
-func New_user(service users.Service) *Users {
-	return &Users{service: service}
+func New_user(ser users.Service) *Users {
+	return &Users{service: ser}
+}
+
+// Agregar Get_users que va a ser usado en el endpoint por main
+func (us *Users) Get_users() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		users, err := us.service.Get_users()
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "Something went wrong %v", err)
+		} else {
+			c.JSON(http.StatusOK, users)
+		}
+	}
 }
