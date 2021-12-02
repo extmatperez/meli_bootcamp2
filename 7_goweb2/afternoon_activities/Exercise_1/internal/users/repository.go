@@ -16,3 +16,10 @@ type Users struct {
 // Mientras no tengamos base de datos necesitamos saber donde almacenar los datos
 var users []Users
 var last_id int
+
+// Definimos métodos a utilizar en nuestro repo
+type Repository interface {
+	get_users() ([]Users, error)
+	validate_fields(user_id Users) (string, error)
+	post_users() (Users, error)
+}
