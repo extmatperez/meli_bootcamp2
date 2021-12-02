@@ -21,3 +21,8 @@ type request struct {
 type Users struct {
 	service users.Service
 }
+
+// Agregar New_user function
+func New_user(service users.Service) *Users {
+	return &Users{service: service}
+}
