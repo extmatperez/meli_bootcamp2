@@ -1,0 +1,92 @@
+[
+ {
+  "id": 1,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 2,
+  "nombre": "NUEVO",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 3,
+  "nombre": "nuevo10",
+  "color": "123abc",
+  "precio": 180.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 5,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 6,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 7,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 8,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 9,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ },
+ {
+  "id": 10,
+  "nombre": "nuevo",
+  "color": "123abc",
+  "precio": 150.5,
+  "stock": 15,
+  "codigo": "verde",
+  "publicado": true,
+  "fecha_de_creacion": "20/11/2021"
+ }
+]

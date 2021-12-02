@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	producto "github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/internal/productos"
@@ -25,8 +26,28 @@ func NewProducto(ser producto.Service) *Producto {
 	return &Producto{service: ser}
 }
 
+func validarToken(c *gin.Context) bool {
+	token := c.GetHeader("token")
+
+	if token == "" {
+		c.String(400, "Falta token")
+		return false
+	}
+	tokenENV := os.Getenv("TOKEN")
+	if tokenENV != token {
+		c.String(400, "Token incorrecto")
+		return false
+	}
+	return true
+}
+
 func (prod *Producto) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		if !validarToken(c) {
+			return
+		}
+
 		prod, err := prod.service.GetAll()
 
 		if err != nil {
@@ -39,6 +60,10 @@ func (prod *Producto) GetAll() gin.HandlerFunc {
 
 func (controller *Producto) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		if !validarToken(c) {
+			return
+		}
 		var prod request
 		err := c.ShouldBindJSON(&prod)
 		if err != nil {
@@ -58,6 +83,9 @@ func (controller *Producto) Store() gin.HandlerFunc {
 func (controller *Producto) Modify() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		if !validarToken(c) {
+			return
+		}
 		var prod request
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
@@ -84,6 +112,9 @@ func (controller *Producto) Modify() gin.HandlerFunc {
 func (controller *Producto) ModifyNamePrice() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		if !validarToken(c) {
+			return
+		}
 		var prod request
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
@@ -111,6 +142,9 @@ func (controller *Producto) ModifyNamePrice() gin.HandlerFunc {
 func (controller *Producto) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		if !validarToken(c) {
+			return
+		}
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 		if err != nil {
 			c.String(404, "Hubo un error, el id es invalido")
