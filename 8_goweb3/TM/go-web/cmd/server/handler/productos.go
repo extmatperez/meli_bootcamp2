@@ -3,7 +3,7 @@ package handler
 import (
 	"strconv"
 
-	productos "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/go-web/internal/productos"
+	productos "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/TM/go-web/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
