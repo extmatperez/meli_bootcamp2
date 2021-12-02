@@ -26,6 +26,7 @@ type Repository interface {
 	LastId() (int, error)
 	Search(id string) (Transaccion, error)
 	Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error)
+	Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
 }
 
 type repository struct{}
@@ -108,4 +109,20 @@ func (repo *repository) Filter(mapEtiquetas, mapRelacionEtiquetas map[string]str
 	}
 
 	return filtredTransac, nil
+}
+
+func (repo *repository) Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
+	trans := Transaccion{id, codTransaccion, moneda, monto, emisor, receptor, fechaTrans}
+	updated := false
+	for i := range transacciones {
+		if id == transacciones[i].Id {
+			transacciones[i] = trans
+			updated = true
+			break
+		}
+	}
+	if !updated {
+		return Transaccion{}, fmt.Errorf("no se encontró la transaccion con el id %v", id)
+	}
+	return trans, nil
 }

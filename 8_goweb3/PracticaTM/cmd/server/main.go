@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/7_goweb2/PracticaTT/Ejercicio1/cmd/server/handler"
-	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/7_goweb2/PracticaTT/Ejercicio1/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/8_goweb3/PracticaTM/cmd/server/handler"
+	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/8_goweb3/PracticaTM/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,6 +23,9 @@ func main() {
 
 	// //Endpoints POST
 	groupTransac.POST("/cargar", transac.Store())
+
+	// Endpoints Put
+	groupTransac.PUT("/:id", transac.Update())
 
 	router.Run()
 }

@@ -7,6 +7,7 @@ type Service interface {
 	Store(codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
 	Search(id string) (Transaccion, error)
 	Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string) ([]Transaccion, error)
+	Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error)
 }
 
 type service struct {
@@ -54,4 +55,8 @@ func (serv *service) Filter(mapEtiquetas, mapRelacionEtiquetas map[string]string
 		err = nil
 	}
 	return filtredTransac, err
+}
+
+func (serv *service) Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
+	return serv.repository.Update(id, codTransaccion, moneda, monto, emisor, receptor, fechaTrans)
 }

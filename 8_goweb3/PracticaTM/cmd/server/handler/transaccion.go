@@ -1,7 +1,9 @@
 package handler
 
 import (
-	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/7_goweb2/PracticaTT/Ejercicio1/internal/transacciones"
+	"strconv"
+
+	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/8_goweb3/PracticaTM/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
 
@@ -93,5 +95,43 @@ func (trans *Transaccion) Filter() gin.HandlerFunc {
 		} else {
 			ctx.JSON(200, filtredTransaction)
 		}
+	}
+}
+
+func (trans *Transaccion) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		//valido el token
+		token := ctx.Request.Header.Get("token")
+		if token == "" {
+			ctx.String(400, "no se ha enviado ningun token")
+			return
+		}
+		if token != "aaa111" {
+			ctx.String(400, "token invalido")
+			return
+		}
+
+		//obtengo el id que quiero actualizar, y los datos a cambiar
+		param := ctx.Param("id")
+		id, err := strconv.Atoi(param)
+		if err != nil {
+			ctx.String(400, "Error con el id %v:%v", param, err.Error())
+			return
+		}
+		var transac request
+		err = ctx.ShouldBindJSON(&transac)
+		if err != nil {
+			ctx.String(400, err.Error())
+			return
+		}
+
+		transacResult, err := trans.service.Update(id, transac.CodTransaccion, transac.Moneda, transac.Monto, transac.Emisor, transac.Receptor, transac.FechaTrans)
+		if err != nil {
+			ctx.JSON(404, gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		ctx.JSON(200, transacResult)
 	}
 }
