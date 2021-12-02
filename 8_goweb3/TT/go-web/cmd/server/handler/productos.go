@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	productos "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/TT/go-web/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/8_goweb3/TT/go-web/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,20 +39,16 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
 		if !validateToken(tokenReq) {
-			ctx.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+			ctx.JSON(401, web.NewResponse(401, nil, "Token invalido"))
 			return
 		}
 
 		p, err := c.service.GetAll()
 		if err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, "Productos no encontrados"))
 			return
 		}
-		ctx.JSON(200, p)
+		ctx.JSON(200, web.NewResponse(200, p, ""))
 	}
 }
 
@@ -59,21 +56,17 @@ func (c *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
 		if !validateToken(tokenReq) {
-			ctx.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+			ctx.JSON(401, web.NewResponse(401, nil, "Token invalido"))
 			return
 		}
 		var req request
 		if err := ctx.Bind(&req); err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
 		p, err := c.service.Store(req.ID, req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.Creado)
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
 		ctx.JSON(200, p)
@@ -84,26 +77,24 @@ func (c *Product) Edit() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
 		if !validateToken(tokenReq) {
-			ctx.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+			ctx.JSON(401, web.NewResponse(401, nil, "Token invalido"))
 			return
 		}
 		var req request
 		id, existeId := ctx.GetQuery("id")
 		if !existeId {
-			ctx.JSON(400, gin.H{"error": "Especifique ID"})
+			ctx.JSON(400, web.NewResponse(400, nil, "Producto no especificado"))
 			return
 		}
 		parsedId, _ := strconv.Atoi(id)
 		err := ctx.ShouldBind(&req)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		p, err := c.service.Edit(parsedId, req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.Creado)
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(404, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		ctx.JSON(200, p)
@@ -114,9 +105,7 @@ func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
 		if !validateToken(tokenReq) {
-			ctx.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+			ctx.JSON(401, web.NewResponse(401, nil, "Token invalido"))
 			return
 		}
 		id := ctx.Param("id")
@@ -142,31 +131,29 @@ func (c *Product) Change() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
 		if !validateToken(tokenReq) {
-			ctx.JSON(401, gin.H{
-				"error": "token inválido",
-			})
+			ctx.JSON(401, web.NewResponse(401, nil, "Token invalido"))
 			return
 		}
 		var req request
 		id := ctx.Param("id")
 		if id == "" {
-			ctx.JSON(400, gin.H{"error": "No se ha seleccionado un producto"})
+			ctx.JSON(400, web.NewResponse(400, nil, "No se ha especificado un prodcuto"))
 			return
 		}
 		parsedId, err := strconv.Atoi(id)
 		if err != nil {
-			ctx.JSON(500, gin.H{"error": err.Error()})
+			ctx.JSON(500, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		err = ctx.ShouldBind(&req)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		cambios, err := c.service.Change(parsedId, req.Nombre, req.Precio)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		ctx.JSON(200, cambios)
