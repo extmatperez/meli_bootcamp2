@@ -1,7 +1,9 @@
 package handler
 
 import (
-	products "github.com/extmatperez/meli_bootcamp2/pecora_estefania/8_goweb3/internal/products"
+	"strconv"
+
+	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,15 +26,9 @@ func NewProduct(serv products.Service) *Product {
 
 }
 
-func (prod *Product) getAll() gin.HandlerFunc {
+func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		// token := c.GetHeader("token")
-		// if token != tokenPrueba {
-		// 	c.JSON(401, gin.H{
-		// 		"error": "token inválido",
-		// 	})
-		// } else {
 		products, err := prod.service.GetAll()
 
 		if err != nil {
@@ -59,7 +55,7 @@ func (prod *Product) AddProduct() gin.HandlerFunc {
 		} else {
 			response, err := prod.service.AddProduct(newProd.Name, newProd.Color, newProd.Price, newProd.Stock, newProd.Code, newProd.Published, newProd.Created)
 			if err != nil {
-				c.String("No se pudo cargar la persona %v: ", err)
+				c.String(400, "No se pudo cargar el producto %v: ", err)
 			} else {
 				c.JSON(200, response)
 			}
@@ -76,6 +72,34 @@ func (prod *Product) AddProduct() gin.HandlerFunc {
 		// 	c.JSON(200, req)
 
 		// }
+	}
+
+}
+
+func (prod *Product) UpdateProduct() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		var prodToUpdate request
+
+		id, err := strconv.Atoi(c.Param("id"))
+
+		if err != nil {
+			c.String(400, "El id no es válido")
+		}
+
+		err = c.ShouldBindJSON(&prodToUpdate)
+
+		if err != nil {
+			c.String(400, "Error en el body")
+		} else {
+			updatedProd, err := prod.service.UpdateProduct(id, prodToUpdate.Name, prodToUpdate.Color, prodToUpdate.Price, prodToUpdate.Stock, prodToUpdate.Code, prodToUpdate.Published, prodToUpdate.Created)
+			if err != nil {
+				c.JSON(400, err.Error())
+			} else {
+				c.JSON(200, updatedProd)
+			}
+		}
+
 	}
 
 }

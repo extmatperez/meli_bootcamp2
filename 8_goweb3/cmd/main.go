@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/pecora_estefania/8_goweb3/cmd/server/handler"
-	products "github.com/extmatperez/meli_bootcamp2/pecora_estefania/8_goweb3/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/cmd/server/handler"
+	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,15 +15,14 @@ func main() {
 	service := products.NewService(repo)
 	controller := handler.NewProduct(service)
 
-	repo.ReadData()
+	productsroute := router.Group("/products")
 
-	products := router.Group("/products")
-
-	products.GET("/", controller.GetAll())
+	productsroute.GET("/", controller.GetAll())
 	//products.GET("/:id", getProductbyID)
 	// products.GET("/products/filter/select", getbyFilter)
 
-	products.POST("/addproduct", controller.AddProduct())
+	productsroute.POST("/addproduct", controller.AddProduct())
+	productsroute.PUT("/updateproduct/:id", controller.UpdateProduct())
 
 	router.Run()
 
