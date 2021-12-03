@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	users "github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM/internal/users"
@@ -33,6 +34,20 @@ func (us *User) GetAll() gin.HandlerFunc {
 		// if errLoad != nil {
 		// 	fmt.Printf("Error loading user")
 		// } else {
+
+		token := ctx.GetHeader("token")
+
+		if token == "" {
+			ctx.String(400, "Token not foun")
+			return
+		}
+
+		tokenENV := os.Getenv("TOKEN")
+
+		if token != tokenENV {
+			ctx.String(400, "Invalid token")
+			return
+		}
 		users, err := us.service.GetAll()
 
 		if err != nil {
