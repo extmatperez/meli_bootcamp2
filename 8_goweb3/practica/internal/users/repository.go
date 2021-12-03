@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 	"time"
-	"github.com/extmatperez/meli_bootcamp2/8_goweb3/practica/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/Saavedra-Benjamin/8_goweb3/practica/pkg/store"
 )
 
 type Users struct {
@@ -23,8 +23,10 @@ var (
 
 type Repository interface {
 	GetAll() ([]Users, error)
-	Store(id int, firstName string, lastName string, age int) (Users, error)
-	Update(id int, firstName string, lastName string, age int) (Users, error)
+	Store(id int, fisrtName string, lastName string, email string, age int, height float64,
+		active bool, creationDate time.Time) (Users, error)
+	Update(id int, firstName string, lastName string, email string, age int, height float64,
+		active bool, creationDate time.Time) (Users, error)
 	UpdateName(id int, firstName string) (Users, error)
 	Delete(id int) error
 	LastId() (int, error)
@@ -38,11 +40,11 @@ func NewRepository(db store.Store) Repository {
 }
 
 func (repo *repository) GetAll() ([]Users, error) {
-	err := repo.db.Read(&Users{})
+	err := repo.db.Read(&us)
 	if err != nil {
 		return nil, err
 	}
-	return Users{}, nil
+	return us, nil
 }
 
 func (repo *repository) Store(id int, fisrtName string, lastName string, email string, age int, height float64,
@@ -67,7 +69,7 @@ func (repo *repository) Store(id int, fisrtName string, lastName string, email s
 		return Users{}, err
 	}
 
-	return per, nil
+	return user, nil
 }
 
 func (repo *repository) LastId() (int, error) {

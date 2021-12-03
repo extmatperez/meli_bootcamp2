@@ -1,9 +1,11 @@
 package internal
 
+import "time"
+
 type Service interface {
 	GetAll() ([]Users, error)
-	Store(firstName, lastName string, age int) (Users, error)
-	Update(id int, firstName, lastName string, age int) (Users, error)
+	Store(firstName, lastName string, email string, age int, height float64) (Users, error)
+	Update(id int, firstName, lastName string, email string, age int, height float64, active bool, creationDate time.Time) (Users, error)
 	UpdateName(id int, firstName string) (Users, error)
 	Delete(id int) error
 }
@@ -24,14 +26,18 @@ func (ser *service) GetAll() ([]Users, error) {
 	return personas, nil
 }
 
-func (ser *service) Store(firstName, lastName string, edad int) (Users, error) {
+func (ser *service) Store(firstName, lastName string, email string, edad int, height float64) (Users, error) {
+	var (
+		active       = true
+		creationDate = time.Now()
+	)
 	ultimoId, err := ser.repository.LastId()
 
 	if err != nil {
 		return Users{}, err
 	}
 
-	per, err := ser.repository.Store(ultimoId+1, firstName, lastName, edad)
+	per, err := ser.repository.Store(ultimoId+1, firstName, lastName, email, edad, height, active, creationDate)
 
 	if err != nil {
 		return Users{}, err
@@ -39,8 +45,8 @@ func (ser *service) Store(firstName, lastName string, edad int) (Users, error) {
 	return per, nil
 }
 
-func (ser *service) Update(id int, firstName, lastName string, age int) (Users, error) {
-	return ser.repository.Update(id, firstName, lastName, age)
+func (ser *service) Update(id int, firstName, lastName string, email string, age int, height float64, active bool, creationDate time.Time) (Users, error) {
+	return ser.repository.Update(id, firstName, lastName, email, age, height, active, creationDate)
 }
 
 func (ser *service) UpdateName(id int, firstName string) (Users, error) {
