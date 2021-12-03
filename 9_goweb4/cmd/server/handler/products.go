@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -52,13 +51,6 @@ func NewProduct(s products.Service) *Product {
 // @Router       /products/ [get]
 func (p *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, web.NewResponse(code, nil, message))
-			return
-		}
-
 		products, err := p.service.GetAll()
 
 		if err != nil {
@@ -94,13 +86,6 @@ func (p *Product) GetAll() gin.HandlerFunc {
 // @Router       /products [post]
 func (p *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, web.NewResponse(code, nil, message))
-			return
-		}
-
 		var productRequest request
 
 		err := ctx.ShouldBindJSON(&productRequest)
@@ -136,13 +121,6 @@ func (p *Product) Store() gin.HandlerFunc {
 // @Router       /products/{product_id} [get]
 func (p *Product) FindById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, web.NewResponse(code, nil, message))
-			return
-		}
-
 		productId, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if err != nil {
@@ -177,13 +155,6 @@ func (p *Product) FindById() gin.HandlerFunc {
 // @Router       /products/{product_id} [put]
 func (p *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, web.NewResponse(code, nil, message))
-			return
-		}
-
 		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if errParse != nil {
@@ -235,13 +206,6 @@ func (p *Product) Update() gin.HandlerFunc {
 // @Router       /products/{product_id} [delete]
 func (p *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, web.NewResponse(code, nil, message))
-			return
-		}
-
 		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if errParse != nil {
@@ -277,13 +241,6 @@ func (p *Product) Delete() gin.HandlerFunc {
 // @Router       /products/{product_id} [patch]
 func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokenValidated, code, message := validateToken(ctx.GetHeader("token"))
-
-		if !tokenValidated {
-			ctx.JSON(code, web.NewResponse(code, nil, message))
-			return
-		}
-
 		productId, errParse := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if errParse != nil {
@@ -318,18 +275,6 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 
 		ctx.JSON(200, web.NewResponse(200, gin.H{"product": product}, ""))
 	}
-}
-
-func validateToken(tokenHeader string) (bool, int, string) {
-	if tokenHeader == "" {
-		return false, 400, "Missing token"
-	}
-
-	if tokenHeader != os.Getenv("TOKEN") {
-		return false, 401, "Don´t have permission to access"
-	}
-
-	return true, 0, ""
 }
 
 /*

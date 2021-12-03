@@ -5,6 +5,7 @@ import (
 	"os"
 
 	handlers "github.com/extmatperez/meli_bootcamp2/9_goweb4/cmd/server/handler"
+	middlewares "github.com/extmatperez/meli_bootcamp2/9_goweb4/cmd/server/middleware"
 	"github.com/extmatperez/meli_bootcamp2/9_goweb4/docs"
 	products "github.com/extmatperez/meli_bootcamp2/9_goweb4/internal/products"
 	"github.com/extmatperez/meli_bootcamp2/9_goweb4/pkg/store"
@@ -27,6 +28,7 @@ func main() {
 	}
 
 	router := gin.Default()
+	router.Use(middlewares.ValidateToken())
 
 	dbStore := store.New(store.FileType, "../../internal/products/products.json")
 	productsRepository := products.NewRepository(dbStore)
