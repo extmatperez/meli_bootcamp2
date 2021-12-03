@@ -15,7 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Creo la función main, agrego mi router y lo inicializo, creo las rutas necesarias y agrego los handlers
+// Creo la función main, agrego mi router y lo inicializo, creo las rutas necesarias y agrego los handlers (controllers)
 func main() {
 	router := gin.Default()
 
