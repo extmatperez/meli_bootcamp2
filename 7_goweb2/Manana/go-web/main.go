@@ -173,6 +173,33 @@ func Register(c *gin.Context) {
 
 }
 
+func filterByParams(paramas map[string][]string) {
+
+	for key, element := range paramas {
+
+	}
+}
+
+func filterByParam(param string, element []string, p []Product) []Product {
+	prod := Product{}
+	tipos := reflect.TypeOf(prod)
+	fieldNum := -1
+	for i := 0; i < tipos.NumField(); i++ {
+		if strings.ToLower(param) == strings.ToLower(tipos.Field(i).Name) {
+			fieldNum = i
+			break
+		}
+	}
+
+	for i, v := range p {
+		
+		if 
+	}
+
+
+
+}
+
 func main() {
 	LoadData()
 	router := gin.Default()

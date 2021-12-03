@@ -26,7 +26,7 @@ func main() {
 
 	productsRoute := router.Group("products")
 	productsRoute.GET("", controller.GetAll())
-	//productsRoute.GET("/filter", Filter)
+	productsRoute.GET("/filter", controller.Filter())
 	productsRoute.GET("/:id", controller.FindById())
 	productsRoute.POST("", controller.Store())
 	productsRoute.PUT("/:id", controller.Update())

@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	products "github.com/extmatperez/meli_bootcamp2/7_goweb2/Tarde/go-web/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/7_goweb2/Tarde/go-web/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,11 +39,11 @@ func NewProduct(s products.Service) *Product {
 func validToken(c *gin.Context) bool {
 	token := c.GetHeader("token")
 	if token == "" {
-		c.String(http.StatusBadRequest, "Falta token")
+		c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Falta Token"))
 		return false
 	}
 	if token != os.Getenv("TOKEN") {
-		c.String(http.StatusUnauthorized, "no tiene permisos para realizar la petición solicitada")
+		c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "No tiene permisos para realizar la petición solicitada"))
 		return false
 	}
 	return true
@@ -56,10 +57,10 @@ func (p *Product) GetAll() gin.HandlerFunc {
 		prods, err := p.serv.GetAll()
 
 		if err != nil {
-			c.String(404, err.Error())
+			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
-		c.JSON(200, prods)
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prods, ""))
 	}
 }
 
@@ -72,37 +73,15 @@ func (p *Product) Store() gin.HandlerFunc {
 		var newRequest request
 		err := c.ShouldBindJSON(&newRequest)
 		if err != nil {
-
-			if strings.Contains(err.Error(), "required") {
-				tipos := reflect.TypeOf(newRequest)
-				i := 0
-				var errores []string
-				for i = 0; i < tipos.NumField(); i++ {
-					if strings.Contains(err.Error(), tipos.Field(i).Name) {
-						errores = append(errores, fmt.Sprintf("Error: el campo %s es requerido", tipos.Field(i).Name))
-					}
-				}
-				if len(errores) == 1 {
-					c.JSON(400, gin.H{
-						"error": errores[0],
-					})
-				} else {
-					c.JSON(400, errores)
-				}
-			} else {
-				c.JSON(400, gin.H{
-					"error": err.Error(),
-				})
-			}
-
+			validRequired(err.Error(), newRequest, c)
 		} else {
 
 			prod, err := p.serv.Store(newRequest.Nombre, newRequest.Color, newRequest.Precio, newRequest.Stock, newRequest.Codigo, newRequest.Publicado, newRequest.FechaCreacion)
 
 			if err != nil {
-				c.String(500, err.Error())
+				c.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, err.Error()))
 			} else {
-				c.JSON(200, prod)
+				c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prod, ""))
 			}
 
 		}
@@ -119,16 +98,16 @@ func (p *Product) FindById() gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			c.String(400, "Id invalido")
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Id invalido"))
 			return
 		}
 
 		prod, err := p.serv.FindById(id)
 
 		if err != nil {
-			c.String(404, err.Error())
+			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 		} else {
-			c.JSON(200, prod)
+			c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prod, ""))
 		}
 
 	}
@@ -142,45 +121,25 @@ func (p *Product) Update() gin.HandlerFunc {
 		var updateRequest request
 		err := c.ShouldBindJSON(&updateRequest)
 		if err != nil {
-			if strings.Contains(err.Error(), "required") {
-				tipos := reflect.TypeOf(updateRequest)
-				i := 0
-				var errores []string
-				for i = 0; i < tipos.NumField(); i++ {
-					if strings.Contains(err.Error(), tipos.Field(i).Name) {
-						errores = append(errores, fmt.Sprintf("Error: el campo %s es requerido", tipos.Field(i).Name))
-					}
-				}
-				if len(errores) == 1 {
-					c.JSON(400, gin.H{
-						"error": errores[0],
-					})
-				} else {
-					c.JSON(400, errores)
-				}
-			} else {
-				c.JSON(400, gin.H{
-					"error": err.Error(),
-				})
-			}
+			validRequired(err.Error(), updateRequest, c)
 			return
 		}
 
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			c.String(400, "Id invalido")
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Id invalido"))
 			return
 		}
 
 		prod, err := p.serv.Update(id, updateRequest.Nombre, updateRequest.Color, updateRequest.Precio, updateRequest.Stock, updateRequest.Codigo, updateRequest.Publicado, updateRequest.FechaCreacion)
 
 		if err != nil {
-			c.String(404, err.Error())
+			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
 
-		c.JSON(200, prod)
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prod, ""))
 	}
 }
 
@@ -193,18 +152,33 @@ func (p *Product) Delete() gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			c.String(400, "Id invalido")
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Id invalido"))
 			return
 		}
 
 		err = p.serv.Delete(id)
 		if err != nil {
-			c.String(404, err.Error())
+			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
 
-		c.String(200, "Eliminado exitosamente")
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, "Eliminado exitosamente", ""))
 
+	}
+}
+
+func (p *Product) Filter() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !validToken(c) {
+			return
+		}
+
+		prods, err := p.serv.Filter(c.Request.URL.Query())
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, err.Error()))
+			return
+		}
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prods, ""))
 	}
 }
 
@@ -217,44 +191,43 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			c.String(400, "Id invalido")
+			c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Id invalido"))
+
 			return
 		}
 
 		var updateRequest requestPatchNamePrice
 		err = c.ShouldBindJSON(&updateRequest)
 		if err != nil {
-			if strings.Contains(err.Error(), "required") {
-				tipos := reflect.TypeOf(updateRequest)
-				i := 0
-				var errores []string
-				for i = 0; i < tipos.NumField(); i++ {
-					if strings.Contains(err.Error(), tipos.Field(i).Name) {
-						errores = append(errores, fmt.Sprintf("Error: el campo %s es requerido", tipos.Field(i).Name))
-					}
-				}
-				if len(errores) == 1 {
-					c.JSON(400, gin.H{
-						"error": errores[0],
-					})
-				} else {
-					c.JSON(400, errores)
-				}
-			} else {
-				c.JSON(400, gin.H{
-					"error": err.Error(),
-				})
-			}
+			validRequired(err.Error(), updateRequest, c)
 			return
 		}
 
 		prod, err := p.serv.UpdateNameAndPrice(id, updateRequest.Nombre, updateRequest.Precio)
 		if err != nil {
-			c.String(404, err.Error())
+			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
 
-		c.JSON(200, prod)
+		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prod, ""))
 
+	}
+}
+
+func validRequired(err string, request interface{}, c *gin.Context) {
+
+	if strings.Contains(err, "required") {
+		tipos := reflect.TypeOf(request)
+		i := 0
+		errores := ""
+		for i = 0; i < tipos.NumField(); i++ {
+			if strings.Contains(err, tipos.Field(i).Name) {
+				errores = errores + fmt.Sprintf("El campo %s es requerido. ", tipos.Field(i).Name)
+			}
+		}
+		c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, errores))
+
+	} else {
+		c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, err))
 	}
 }
