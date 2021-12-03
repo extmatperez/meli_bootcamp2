@@ -35,6 +35,15 @@ func validateToken(tokenReq string) bool {
 	return tokenEnv == tokenReq
 }
 
+// Store godoc
+// @Summary Stores products
+// @Tags Productos
+// @Description posts product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /productos [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
@@ -52,6 +61,15 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// Store godoc
+// @Summary Stores products
+// @Tags Productos
+// @Description posts product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /productos/{id} [post]
 func (c *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
@@ -73,6 +91,15 @@ func (c *Product) Store() gin.HandlerFunc {
 	}
 }
 
+// Edit godoc
+// @Summary Edits a product
+// @Tags Productos
+// @Description posts product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /productos/{id} [put]
 func (c *Product) Edit() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
@@ -101,6 +128,15 @@ func (c *Product) Edit() gin.HandlerFunc {
 	}
 }
 
+// Delete godoc
+// @Summary Deletes a product
+// @Tags Productos
+// @Description Deletes product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /productos/{id} [delete]
 func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
@@ -127,6 +163,15 @@ func (c *Product) Delete() gin.HandlerFunc {
 	}
 }
 
+// Delete godoc
+// @Summary Edits prudct name & price
+// @Tags Productos
+// @Description posts product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /productos/{id} [patch]
 func (c *Product) Change() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenReq := ctx.Request.Header.Get("token")
