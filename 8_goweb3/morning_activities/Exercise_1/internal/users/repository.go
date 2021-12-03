@@ -25,6 +25,7 @@ type Repository interface {
 	Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
 	Update_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
 	Update_users_first_name(id int, first_name string) (Users, error)
+	Delete_users(id int) error
 	Last_id() (int, error)
 }
 
@@ -77,4 +78,28 @@ func (repo *repository) Update_users_first_name(id int, first_name string) (User
 		}
 	}
 	return Users{}, fmt.Errorf("The user with id %v doesn't exist, try with another user to change the name.", id)
+}
+
+// Implementamos la funcionalidad para borrar el usuario en memoria.
+func (repo *repository) Delete_users(id int) error {
+	// Otra manera de eliminar sería...
+	/* var new_users []Users
+
+	for _, v := range users {
+		if v.ID != id {
+			new_users = append(new_users, v)
+		}
+	}
+	users = new_users */
+
+	index := 0
+
+	for i, v := range users {
+		if v.ID == id {
+			index = i
+			users = append(users[:index], users[index+1:]...)
+			break
+		}
+	}
+	return fmt.Errorf("The user with id %v doesn't exist, try with another user to change the name.", id)
 }
