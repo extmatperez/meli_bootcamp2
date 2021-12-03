@@ -39,6 +39,7 @@ func main() {
 	fmt.Println("SALARIO CALCULATOR: ")
 	fmt.Println("-------------------------------------------------------------------------------")
 	salary, err = salaryCalculator(90, 1400, &worker)
+	// for only to register salaries
 	for i := 0; i<2; i++{
 		salary, err = salaryCalculator(90, 1800, &worker)
 	}
