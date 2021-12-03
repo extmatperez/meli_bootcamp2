@@ -27,6 +27,7 @@ func main() {
 	router.POST("/users", controller.Post_users())
 	router.PUT("/users/:id", controller.Update_users())
 	router.PATCH("/users/:id", controller.Update_users_first_name())
+	router.DELETE("/users/:id", controller.Delete_users())
 
 	router.Run()
 }
