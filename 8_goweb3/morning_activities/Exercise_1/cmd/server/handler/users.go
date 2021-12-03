@@ -119,3 +119,24 @@ func (controller *Users) Update_users_first_name() gin.HandlerFunc {
 		}
 	}
 }
+
+// Agregar Delete_users handler que va a ser usado en el endpoint por main
+func (controller *Users) Delete_users() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "The id is not a valid id.")
+		}
+
+		err = controller.service.Delete_users(int(id))
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+		} else {
+			c.String(http.StatusOK, "The user %v has been deleted.", id)
+		}
+
+	}
+}
