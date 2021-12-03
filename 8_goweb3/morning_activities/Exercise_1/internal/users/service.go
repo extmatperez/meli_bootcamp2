@@ -5,6 +5,7 @@ package internal
 type Service interface {
 	Get_users() ([]Users, error)
 	Post_users(first_name, last_name, email string, age, height int, active bool, date string) (Users, error)
+	Update_users(id int, first_name, last_name, email string, age, height int, active bool, date string) (Users, error)
 }
 
 // Agregamos la struct service
@@ -35,4 +36,7 @@ func (ser *service) Post_users(first_name, last_name, email string, age, height 
 		return Users{}, err
 	}
 	return user, nil
+}
+func (ser *service) Update_users(id int, first_name, last_name, email string, age, height int, active bool, date string) (Users, error) {
+	return ser.repository.Update_users(id, first_name, last_name, email, age, height, active, date)
 }
