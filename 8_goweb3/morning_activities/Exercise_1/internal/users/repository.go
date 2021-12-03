@@ -24,6 +24,7 @@ type Repository interface {
 	Get_users() ([]Users, error)
 	Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
 	Update_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
+	Update_users_first_name(id int, first_name string) (Users, error)
 	Last_id() (int, error)
 }
 
@@ -64,4 +65,16 @@ func (repo *repository) Update_users(id int, first_name string, last_name string
 		}
 	}
 	return Users{}, fmt.Errorf("The user with id %v doesn't exist.", id)
+}
+
+// Implementamos la funcionalidad para actualizar el usuario en memoria, en caso de que coincida con el ID enviado, caso contrario retorna un error.
+func (repo *repository) Update_users_first_name(id int, first_name string) (Users, error) {
+
+	for i, v := range users {
+		if v.ID == id {
+			users[i].FirstName = first_name
+			return users[i], nil
+		}
+	}
+	return Users{}, fmt.Errorf("The user with id %v doesn't exist, try with another user to change the name.", id)
 }
