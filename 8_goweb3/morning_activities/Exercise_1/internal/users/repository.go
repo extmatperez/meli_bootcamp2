@@ -1,6 +1,8 @@
 // Repository pertenece al paquete internal (carpeta general a la que pertenece)
 package internal
 
+import "fmt"
+
 // Estructura de los datos que voy a manipular
 type Users struct {
 	ID        int    `json:"id"`
@@ -21,6 +23,7 @@ var last_id int
 type Repository interface {
 	Get_users() ([]Users, error)
 	Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
+	Update_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error)
 	Last_id() (int, error)
 }
 
@@ -42,7 +45,16 @@ func (repo *repository) Post_users(id int, first_name string, last_name string, 
 	users = append(users, user)
 	return user, nil
 }
-
 func (repo *repository) Last_id() (int, error) {
 	return last_id, nil
+}
+func (repo *repository) Update_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error) {
+	user := Users{id, first_name, last_name, email, age, height, active, date}
+	for i, v := range users {
+		if v.ID == id {
+			users[i] = user
+			return user, nil
+		}
+	}
+	return Users{}, fmt.Errorf("The user with id %v doesn't exist.", id)
 }
