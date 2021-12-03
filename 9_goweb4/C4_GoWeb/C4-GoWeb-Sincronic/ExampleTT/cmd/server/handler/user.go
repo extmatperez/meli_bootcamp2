@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	users "github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTT/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTT/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,14 +33,14 @@ func ValidateToken(ctx *gin.Context) bool {
 	token := ctx.GetHeader("token")
 
 	if token == "" {
-		ctx.String(400, "Token not foun")
+		ctx.JSON(400, web.NewResponse(400, nil, "Token not found"))
 		return false
 	}
 
 	tokenENV := os.Getenv("TOKEN")
 
 	if token != tokenENV {
-		ctx.String(400, "Invalid token")
+		ctx.JSON(400, web.NewResponse(400, nil, "Invalid token"))
 		return false
 	}
 
@@ -48,11 +49,6 @@ func ValidateToken(ctx *gin.Context) bool {
 
 func (us *User) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// errLoad := us.service.LoadUser()
-		// if errLoad != nil {
-		// 	fmt.Printf("Error loading user")
-		// } else {
-
 		if !ValidateToken(ctx) {
 			return
 		}
@@ -60,11 +56,10 @@ func (us *User) GetAll() gin.HandlerFunc {
 		users, err := us.service.GetAll()
 
 		if err != nil {
-			ctx.String(400, "There was a mistake: %v", err)
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("There was a mistake: %v", err)))
 		} else {
-			ctx.JSON(200, users)
+			ctx.JSON(200, web.NewResponse(200, users, ""))
 		}
-		// }
 	}
 }
 
