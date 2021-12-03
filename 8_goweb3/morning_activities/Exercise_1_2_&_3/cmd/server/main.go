@@ -10,8 +10,8 @@ lograrlo, es necesario, seguir los siguientes pasos:
 package main
 
 import (
-	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/morning_activities/Exercise_1/cmd/server/handler"
-	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/morning_activities/Exercise_1/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/morning_activities/Exercise_1_2_&_3/cmd/server/handler"
+	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/morning_activities/Exercise_1_2_&_3/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
