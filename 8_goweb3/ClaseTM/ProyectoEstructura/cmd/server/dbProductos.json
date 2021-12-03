@@ -10,10 +10,10 @@
   "fecha_creacion": "25/10/2020"
  },
  {
-  "id": 2,
-  "nombre": "Celular",
-  "color": "Blanco",
-  "precio": 20,
+  "id": 3,
+  "nombre": "Auricular",
+  "color": "Verde",
+  "precio": 25.3,
   "stock": 10,
   "codigo": "156ujma8ssssDA",
   "publicado": true,

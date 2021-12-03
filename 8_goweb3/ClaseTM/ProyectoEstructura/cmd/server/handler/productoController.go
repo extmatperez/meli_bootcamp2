@@ -39,6 +39,15 @@ func NewProductoController(ser producto.ServiceProducto) *ProductoController {
 	return &ProductoController{service: ser}
 }
 
+// GetAll godoc
+// @Summary List products
+// @Tags Products
+// @Description Get all products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /api/productos [get]
 func (prodController *ProductoController) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -58,6 +67,16 @@ func (prodController *ProductoController) GetAll() gin.HandlerFunc {
 	}
 }
 
+// Store godoc
+// @Summary Store products
+// @Tags Products
+// @Description store products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param product body request true "Product to store"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (prodController *ProductoController) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -83,6 +102,15 @@ func (prodController *ProductoController) Store() gin.HandlerFunc {
 	}
 }
 
+// Store godoc
+// @Summary Update product
+// @Tags Products
+// @Description Update product
+// @Accept json
+// @Produce json
+// @Param id path int true "id"
+// @Success 200 {object} web.Response
+// @Router /products/{id} [put]
 func (prodController *ProductoController) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 

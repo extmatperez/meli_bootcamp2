@@ -30,6 +30,14 @@ type FileStore struct {
 }
 
 func (fileStore *FileStore) Read(data interface{}) error {
+
+	// _, err := os.ReadFile("/dbProductos.json")
+	// if err != nil {
+	// marshaleado , err := json.Marshal([])
+	// os.WriteFile(fileStore.FileName, file, 0644)
+
+	// }
+
 	file, err := os.ReadFile(fileStore.FileName)
 	if err != nil {
 		return err
