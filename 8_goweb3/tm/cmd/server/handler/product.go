@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	products "github.com/extmatperez/meli_bootcamp2/tree/ottavianelli_rocio/meli_bootcamp2/8_goweb3/tm/internal/products"
-	web "github.com/extmatperez/meli_bootcamp2/tree/ottavianelli_rocio/meli_bootcamp2/8_goweb3/tm/pkg/web"
+	"github.com/extmatperez/meli_bootcamp2/tree/ottavianelli_rocio/meli_bootcamp2/8_goweb3/tm/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,6 +42,15 @@ func validateToken(ctx *gin.Context) bool {
 	return true
 }
 
+// Listproducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [get]
 func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validateToken(ctx) {
@@ -56,6 +65,16 @@ func (prod *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description store products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param product body request true "Product to store"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (prod *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validateToken(ctx) {
