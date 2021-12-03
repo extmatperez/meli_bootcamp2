@@ -5,3 +5,7 @@ Para validar el request hay que validar que un dato sea requerido o que sea nume
 En caso de no pasar las validaciones el controlador directamente no envia la tarea al servicio sino que la rechaza, informando al cliente.
 
 Para realizar un manejo de respuestas standart es necesario crear un pkg web dentro de pkg.
+
+VER TEMA DE DOCUMENTACION EN LA GRABACION DE LA CLASE.
+
+Middleware: son las funciones que se van a ejecutar para dar seguridad a nuestro programa.

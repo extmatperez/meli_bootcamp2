@@ -45,12 +45,21 @@ func validarToken(ctx *gin.Context) bool {
 	return true
 }
 
+// ListPayments godoc
+// @Summary List payments
+// @Tags Payments
+// @Description get all the payments
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /payments [get]
 func (controller *Payment) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		payments, err := controller.service.GetAll()
 
@@ -62,12 +71,22 @@ func (controller *Payment) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StorePayments godoc
+// @Summary Store payments
+// @Tags Payments
+// @Description store payments
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param payment body request true "Payment to store"
+// @Success 200 {object} web.Response
+// @Router /payments [post]
 func (controller *Payment) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		var pay request
 
@@ -113,12 +132,21 @@ func (controller *Payment) Store() gin.HandlerFunc {
 	}
 }
 
+// UpdatePayments godoc
+// @Summary Update payments
+// @Tags Payments
+// @Description update some fields of one payment
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /payments/:id [put]
 func (controller *Payment) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		var pay request
 
@@ -144,12 +172,21 @@ func (controller *Payment) Update() gin.HandlerFunc {
 
 }
 
+// PatchPaymentCode godoc
+// @Summary Update payment code
+// @Tags Payments
+// @Description change one payment's code
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /payments/code/:id [patch]
 func (controller *Payment) UpdateCodigo() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		var pay request
 
@@ -178,12 +215,21 @@ func (controller *Payment) UpdateCodigo() gin.HandlerFunc {
 	}
 }
 
+// PatchPaymentAmount godoc
+// @Summary Update payment amount
+// @Tags Payments
+// @Description change one payment's amount
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /payments/amount/:id [patch]
 func (controller *Payment) UpdateMonto() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		var pay request
 
@@ -212,12 +258,21 @@ func (controller *Payment) UpdateMonto() gin.HandlerFunc {
 	}
 }
 
+// DeletePayment godoc
+// @Summary Delete payment
+// @Tags Payments
+// @Description delete one payment
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /payments/:id [delete]
 func (controller *Payment) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 
@@ -237,9 +292,9 @@ func (controller *Payment) Delete() gin.HandlerFunc {
 func (controller *Payment) Filtrar() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !validarToken(ctx) {
+		/*if !validarToken(ctx) {
 			return
-		}
+		}*/
 
 		moneda := ctx.Query("moneda")
 		emisor := ctx.Query("emisor")
