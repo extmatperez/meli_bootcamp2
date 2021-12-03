@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	//"github.com/extmatperez/meli_bootcamp2/9_goweb4/pkg/store"
+
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/pkg/store"
 )
 
 type Transaction struct {
@@ -55,11 +56,12 @@ func toSaveTransaction(tran *[]Transaction) {
 }
 
 type Repository interface {
+	LastId() (int, error)
 	GetAll() ([]Transaction, error)
 	GetByID(id int) (Transaction, error)
 	GetByReceiver(receiver string) (Transaction, error)
 	CreateTransaction(transaction Transaction) (Transaction, error)
-	Store(transactionCode string, currency string, amount float64,
+	Store(id int, transactionCode string, currency string, amount float64,
 		receiver string, sender string, transactionDate string) (Transaction, error)
 	UpdateTransaction(id int, transactionCode string, currency string, amount float64,
 		receiver string, sender string, transactionDate string) (Transaction, error)
@@ -67,19 +69,35 @@ type Repository interface {
 	DeleteTransaction(id int) error
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
+}
+
+func (repo *repository) LastId() (int, error) {
+	_, err := repo.db.Read(&transactions)
+	if err != nil {
+		return 0, err
+	}
+	return transactions[len(transactions)-1:][0].ID, nil
 }
 
 func (repo *repository) GetAll() ([]Transaction, error) {
-	transactions = readTransactions()
+	_, err := repo.db.Read(&transactions)
+	if err != nil {
+		return nil, err
+	}
 	return transactions, nil
 }
 
 func (repo *repository) GetByID(idParam int) (Transaction, error) {
-	transactions = readTransactions()
+	_, err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
 	var transaction Transaction
 	for i, trans := range transactions {
 		if idParam == trans.ID {
@@ -91,7 +109,10 @@ func (repo *repository) GetByID(idParam int) (Transaction, error) {
 }
 
 func (repo *repository) GetByReceiver(receiver string) (Transaction, error) {
-	transactions = readTransactions()
+	_, err := repo.db.Read(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
 	var transaction Transaction
 	for i, trans := range transactions {
 		if receiver == trans.Receiver {
@@ -102,31 +123,48 @@ func (repo *repository) GetByReceiver(receiver string) (Transaction, error) {
 	return transaction, nil
 }
 
-func (repo *repository) Store(transactionCode string, currency string, amount float64,
+func (repo *repository) Store(id int, transactionCode string, currency string, amount float64,
 	receiver string, sender string, transactionDate string) (Transaction, error) {
 
-	transactions = readTransactions()
-	lastId, err := LastId()
-	if err != nil {
-		panic(err)
+	isExists, err := repo.db.Read(&transactions)
+
+	if !isExists {
+		repo.db.Write(&transactions)
+		_, err := repo.db.Read(&transactions)
+
+		if err != nil {
+			return Transaction{}, err
+		}
+		tran := Transaction{id, transactionCode, currency, amount, receiver, sender, transactionDate}
+		transactions = append(transactions, tran)
+		_, err = repo.db.Write(&transactions)
+		if err != nil {
+			return Transaction{}, err
+		}
+
+		return tran, nil
+	} else {
+		if err != nil {
+			return Transaction{}, err
+		}
+		tran := Transaction{id, transactionCode, currency, amount, receiver, sender, transactionDate}
+		transactions = append(transactions, tran)
+		_, err = repo.db.Write(transactions)
+		if err != nil {
+			return Transaction{}, err
+		}
+
+		return tran, nil
 	}
-	tran := Transaction{lastId + 1, transactionCode, currency, amount, receiver, sender, transactionDate}
-
-	transactions = append(transactions, tran)
-
-	toSaveTransaction(&transactions)
-
-	return tran, nil
-}
-
-func LastId() (int, error) {
-	transactions = readTransactions()
-	return transactions[len(transactions)-1:][0].ID, nil
 }
 
 func (repo *repository) CreateTransaction(trans Transaction) (Transaction, error) {
-	transactions = readTransactions()
-	lastId, err := LastId()
+	_, err := repo.db.Read(&transactions)
+
+	if err != nil {
+		return Transaction{}, err
+	}
+	lastId, err := repo.LastId()
 	if err != nil {
 		panic(err)
 	}
@@ -134,7 +172,10 @@ func (repo *repository) CreateTransaction(trans Transaction) (Transaction, error
 
 	transactions = append(transactions, trans)
 
-	toSaveTransaction(&transactions)
+	_, err = repo.db.Write(&transactions)
+	if err != nil {
+		return Transaction{}, err
+	}
 
 	return trans, nil
 
@@ -142,7 +183,11 @@ func (repo *repository) CreateTransaction(trans Transaction) (Transaction, error
 
 func (repo *repository) UpdateTransaction(id int, transactionCode string, currency string, amount float64,
 	receiver string, sender string, transactionDate string) (Transaction, error) {
-	transactions = readTransactions()
+	_, err := repo.db.Read(&transactions)
+
+	if err != nil {
+		return Transaction{}, err
+	}
 
 	var transaction Transaction
 	transaction.TransactionCode = transactionCode
@@ -156,7 +201,10 @@ func (repo *repository) UpdateTransaction(id int, transactionCode string, curren
 		if v.ID == id {
 			transaction.ID = i + 1
 			transactions[i] = transaction
-			toSaveTransaction(&transactions)
+			_, err = repo.db.Write(&transactions)
+			if err != nil {
+				return Transaction{}, err
+			}
 			return transaction, nil
 		}
 	}
@@ -166,37 +214,44 @@ func (repo *repository) UpdateTransaction(id int, transactionCode string, curren
 }
 
 func (repo *repository) UpdateAmount(id int, amount float64) (Transaction, error) {
-	transactions = readTransactions()
+	_, err := repo.db.Read(&transactions)
 
-	var transaction Transaction
-	for i, trans := range transactions {
-		if id == trans.ID {
-			transaction = transactions[i]
-			break
+	if err != nil {
+		return Transaction{}, err
+	}
+
+	for i, v := range transactions {
+		if v.ID == id {
+			transactions[i].Amount = amount
+			_, err = repo.db.Write(&transactions)
+			if err != nil {
+				return Transaction{}, err
+			}
+			return transactions[i], nil
 		}
 	}
-	transaction.Amount = amount
-	transactions = append(transactions, transaction)
 
-	toSaveTransaction(&transactions)
-
-	return transaction, nil
+	return Transaction{}, nil
 
 }
 
 func (repo *repository) DeleteTransaction(id int) error {
-	transactions = readTransactions()
+	_, err := repo.db.Read(&transactions)
+
+	if err != nil {
+		return err
+	}
 	index := 0
 	for i, v := range transactions {
 		if v.ID == id {
 			index = i
 			transactions = append(transactions[:index], transactions[index+1:]...)
+			_, err = repo.db.Write(&transactions)
+			if err != nil {
+				return err
+			}
 			return nil
 		}
 	}
-
-	toSaveTransaction(&transactions)
-
 	return fmt.Errorf("La persona %d no existe", id)
-
 }

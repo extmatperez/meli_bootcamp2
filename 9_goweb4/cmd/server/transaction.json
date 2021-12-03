@@ -1,0 +1,47 @@
+[
+ {
+  "id": 1,
+  "transaction_code": "68828-179",
+  "currency": "Bolivares",
+  "amount": 600,
+  "receiver": "Digneli",
+  "sender": "Maria",
+  "transaction_date": "8/11/2021"
+ },
+ {
+  "id": 3,
+  "transaction_code": "68828-17963",
+  "currency": "Bolivares",
+  "amount": 250,
+  "receiver": "Josue",
+  "sender": "Sofi",
+  "transaction_date": "8/10/2021"
+ },
+ {
+  "id": 4,
+  "transaction_code": "68828-17963",
+  "currency": "Bolivares",
+  "amount": 250,
+  "receiver": "Josue",
+  "sender": "Sofi",
+  "transaction_date": "8/10/2021"
+ },
+ {
+  "id": 5,
+  "transaction_code": "68828-17963",
+  "currency": "Bolivares",
+  "amount": 250,
+  "receiver": "Josue",
+  "sender": "Sofi",
+  "transaction_date": "8/10/2021"
+ },
+ {
+  "id": 6,
+  "transaction_code": "68828-17963",
+  "currency": "Bolivares",
+  "amount": 250,
+  "receiver": "Josue",
+  "sender": "Sofi",
+  "transaction_date": "8/10/2021"
+ }
+]

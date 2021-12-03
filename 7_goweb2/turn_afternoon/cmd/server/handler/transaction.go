@@ -59,7 +59,7 @@ func (tran *Transaction) Store() gin.HandlerFunc {
 				var newTransaction request
 				err := context.ShouldBindJSON(&newTransaction)
 				if err != nil {
-					context.String(400, "Hubo un error al querer cargar una persona %v", err)
+					context.String(400, "Hubo un error al querer cargar una transaction %v", err)
 				} else {
 					response, err := tran.service.Store(newTransaction.TransactionCode, newTransaction.Currency, newTransaction.Amount,
 						newTransaction.Receiver, newTransaction.Sender, newTransaction.TransactionDate)

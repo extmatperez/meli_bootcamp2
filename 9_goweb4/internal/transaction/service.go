@@ -56,7 +56,12 @@ func (s *service) GetByReceiver(receiver string) (Transaction, error) {
 func (s *service) Store(transactionCode string, currency string, amount float64,
 	receiver string, sender string, transactionDate string) (Transaction, error) {
 
-	tran, err := s.repository.Store(transactionCode, currency, amount,
+	lastId, err := s.repository.LastId()
+	if err != nil {
+		return Transaction{}, err
+	}
+
+	tran, err := s.repository.Store(lastId+1, transactionCode, currency, amount,
 		receiver, sender, transactionDate)
 
 	if err != nil {

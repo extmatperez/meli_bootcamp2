@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/extmatperez/meli_bootcamp2/9_goweb4/cmd/server/handler"
 	transaction "github.com/extmatperez/meli_bootcamp2/9_goweb4/internal/transaction"
+	store "github.com/extmatperez/meli_bootcamp2/9_goweb4/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -12,8 +13,8 @@ func main() {
 	godotenv.Load()
 
 	router := gin.Default()
-
-	repo := transaction.NewRepository()
+	db := store.New(store.FileType, "./transaction.json")
+	repo := transaction.NewRepository(db)
 	service := transaction.NewService(repo)
 	controller := handler.NewTransaction(service)
 

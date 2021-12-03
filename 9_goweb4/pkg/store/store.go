@@ -6,14 +6,14 @@ import (
 )
 
 type Store interface {
-	Read(data interface{}) error
-	Write(data interface{}) error
+	Read(data interface{}) (bool, error)
+	Write(data interface{}) (bool, error)
 }
 
 type Type string
 
 const (
-	FileType Type = "file"
+	FileType Type = "file_transaction"
 )
 
 func New(store Type, fileName string) Store {
@@ -28,17 +28,17 @@ type FileStore struct {
 	FileName string
 }
 
-func (fs *FileStore) Write(data interface{}) error {
+func (fs *FileStore) Write(data interface{}) (bool, error) {
 	file, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
-		return err
+		return false, err
 	}
-	return os.WriteFile(fs.FileName, file, 0644)
+	return true, os.WriteFile(fs.FileName, file, 0644)
 }
-func (fs *FileStore) Read(data interface{}) error {
+func (fs *FileStore) Read(data interface{}) (bool, error) {
 	file, err := os.ReadFile(fs.FileName)
 	if err != nil {
-		return err
+		return false, err
 	}
-	return json.Unmarshal(file, &data)
+	return true, json.Unmarshal(file, &data)
 }
