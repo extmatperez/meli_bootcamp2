@@ -63,7 +63,7 @@ func (repo *repository) LastId() (int, error) {
 
 func (r *repository) LoadUser() error {
 	// bytes, err := os.ReadFile("../../Exercise1/internal/users/users.json")
-	bytes, err := os.ReadFile("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/8_goweb3/C3_GoWeb/C3-GoWeb-TM/Exercise1/internal/users/users.json")
+	bytes, err := os.ReadFile("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM/internal/users/users.json")
 	if err != nil {
 		return err
 	}

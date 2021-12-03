@@ -1,0 +1,4 @@
+Recordar que el ultimo ejercicio de C3-GoWeb-TM tiene el CRUD completo, pero el PATCH esta implementado
+de la forma que se muestra en la guia, esto genera un problema ya que actualiza a todos los elementos del array.
+En el ejercicio del proximo dia este problema es solucionado siguiendo el ejemplo del programa realizado en clases
+directamente por el facilitador Matias.
