@@ -49,6 +49,15 @@ func validToken(c *gin.Context) bool {
 	return true
 }
 
+// ListProducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [get]
 func (p *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validToken(c) {
@@ -64,6 +73,16 @@ func (p *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description store products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param product body request true "Product to store"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (p *Product) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validToken(c) {
@@ -89,6 +108,16 @@ func (p *Product) Store() gin.HandlerFunc {
 	}
 }
 
+// Get by id Product godoc
+// @Summary get product by id
+// @Tags Products
+// @Description this handler get a product by id
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param id path int true "id"
+// @Success 200 {object} web.Response
+// @Router /products/{id} [get]
 func (p *Product) FindById() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validToken(c) {
@@ -113,6 +142,17 @@ func (p *Product) FindById() gin.HandlerFunc {
 	}
 }
 
+// Update Product godoc
+// @Summary Update product
+// @Tags Products
+// @Description this handler updates a product
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param product body request true "Product to edit"
+// @Param id path int true "id"
+// @Success 200 {object} web.Response
+// @Router /products/{id} [put]
 func (p *Product) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validToken(c) {
