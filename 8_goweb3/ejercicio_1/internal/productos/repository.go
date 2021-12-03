@@ -1,6 +1,10 @@
 package internal
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/TT/ejercicio_2/pkg/store"
+)
 
 type Product struct {
 	Id      int     `json:"id"`
@@ -14,25 +18,36 @@ type Product struct {
 }
 
 var products []Product
-var lastId int
+
+//var lastId int
 
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
 	LastId() (int, error)
 	Update(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error)
+	Delete(id int) error
+	UpdateNamePrice(id int, name string, price float64) (Product, error)
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }
 
 func (repo *repository) GetAll() ([]Product, error) {
+	err := repo.db.Read(&products)
+	if err != nil {
+		return nil, err
+	}
+
 	return products, nil
 }
 func (repo *repository) Store(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error) {
+	repo.db.Read(&products)
 	pro := Product{Id,
 		Name,
 		Color,
@@ -41,27 +56,84 @@ func (repo *repository) Store(Id int, Name string, Color string, Price float64, 
 		Code,
 		Publish,
 		Date}
-	lastId = Id
+	//lastId = Id
 	products = append(products, pro)
+	err := repo.db.Write(products)
+
+	if err != nil {
+		return Product{}, err
+	}
 	return pro, nil
 }
 func (repo *repository) LastId() (int, error) {
-	return lastId, nil
+	err := repo.db.Read(&products)
+	if err != nil {
+		return 0, err
+	}
+	if len(products) == 0 {
+		return 0, nil
+	}
+	return products[len(products)-1].Id, nil
 }
 
 func (repo *repository) Update(Id int, Name string, Color string, Price float64, Stock int, Code string, Publish bool, Date string) (Product, error) {
+	err := repo.db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
 	pr := Product{Name: Name, Color: Color, Price: Price, Stock: Stock, Code: Code, Publish: Publish, Date: Date}
-	udapted := false
 
-	for i := range products {
-		if products[i].Id == Id {
-			pr.Id = Id
+	for i, v := range products {
+		if v.Id == Id {
+			// pr.Id = Id
 			products[i] = pr
-			udapted = true
+			err := repo.db.Write(products)
+			if err != nil {
+				return Product{}, err
+			}
+			return pr, nil
 		}
 	}
-	if !udapted {
-		return Product{}, fmt.Errorf("Producto %d no encontrado", Id)
+	return Product{}, fmt.Errorf("Producto %d no encontrado", Id)
+
+}
+
+func (repo *repository) Delete(id int) error {
+	err := repo.db.Read(&products)
+	if err != nil {
+		return err
 	}
-	return pr, nil
+	index := 0
+	for i, v := range products {
+		if v.Id == id {
+			index = i
+			products = append(products[:index], products[index+1:]...)
+			err := repo.db.Write(products)
+			return err
+		}
+	}
+
+	return fmt.Errorf("Producto %d no encontrado:", id)
+
+}
+func (repo *repository) UpdateNamePrice(id int, name string, price float64) (Product, error) {
+	err := repo.db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
+
+	for i, v := range products {
+		if v.Id == id {
+			products[i].Name = name
+			products[i].Price = price
+			err := repo.db.Write(products)
+			if err != nil {
+				return Product{}, err
+			}
+			return products[i], nil
+		}
+	}
+
+	return Product{}, fmt.Errorf("Producto %d no encontrado", id)
+
 }

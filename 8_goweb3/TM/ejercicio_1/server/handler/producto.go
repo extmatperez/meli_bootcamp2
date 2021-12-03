@@ -1,11 +1,9 @@
 package handler
 
 import (
-	"fmt"
-	"os"
 	"strconv"
 
-	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/ejercicio_1/internal/productos"
+	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/TM/ejercicio_1/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,26 +24,9 @@ type Product struct {
 func NewProduct(ser products.Service) *Product {
 	return &Product{service: ser}
 }
-func validarToken(ctx *gin.Context) bool {
-	token := ctx.GetHeader("token")
-	if token == "" {
-		ctx.String(400, "No se recibio el token")
-		return false
-	}
-	tokenENV := os.Getenv("TOKEN")
-	if token != tokenENV {
-		ctx.String(404, "Token incorrecto")
-		return false
-	}
-
-	return true
-}
 
 func (pro *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if !validarToken(ctx) {
-			return
-		}
 		products, err := pro.service.GetAll()
 
 		if err != nil {
@@ -58,9 +39,7 @@ func (pro *Product) GetAll() gin.HandlerFunc {
 
 func (controller *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if !validarToken(ctx) {
-			return
-		}
+
 		var produ request
 
 		err := ctx.ShouldBindJSON(&produ)
@@ -81,9 +60,6 @@ func (controller *Product) Store() gin.HandlerFunc {
 
 func (controller *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if !validarToken(ctx) {
-			return
-		}
 
 		var pro request
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -108,57 +84,5 @@ func (controller *Product) Update() gin.HandlerFunc {
 				}
 			}
 		}
-	}
-}
-
-func (controller *Product) Delete() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		if !validarToken(ctx) {
-			return
-		}
-		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
-
-		if err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid ID"})
-			return
-		}
-		err = controller.service.Delete(int(id))
-		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
-			return
-		}
-		ctx.JSON(200, gin.H{"data": fmt.Sprintf("el producto %d fue eliminado", id)})
-	}
-}
-
-func (controller *Product) UpdateNamePrice() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		if !validarToken(ctx) {
-			return
-		}
-		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
-		if err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid ID"})
-			return
-		}
-
-		var req request
-
-		if err := ctx.Bind(&req); err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-
-		if req.Name == "" || req.Price == 0 {
-			ctx.JSON(404, gin.H{"error": "Nombre y precio requerido"})
-			return
-		}
-		p, err := controller.service.UpdateNamePrice(int(id), req.Name, req.Price)
-		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
-			return
-		}
-		ctx.JSON(200, p)
-
 	}
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/ejercicio_3/internal/productos"
+	products "github.com/extmatperez/meli_bootcamp2/tree/parra_diego/8_goweb3/TM/ejercicio_3/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
