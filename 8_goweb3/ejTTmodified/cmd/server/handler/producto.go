@@ -5,8 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/internal/productos"
 	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/pkg/web"
+	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/8_goweb3/ejTTmodified/internal/productos"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,6 +23,15 @@ func NewProducto(serv internal.Service) *Producto {
 	return &Producto{service: serv}
 }
 
+// ListProducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /producto [get]
 func (p *Producto) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validateToken(ctx) {

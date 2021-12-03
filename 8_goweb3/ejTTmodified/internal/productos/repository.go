@@ -34,31 +34,12 @@ func NewRepository(fileStore store.Store) Repository {
 	return &repository{fileStore: fileStore}
 }
 
-// ListProducts godoc
-// @Summary List products
-// @Tags Products
-// @Description get all the products stored
-// @Accept json
-// @Produce json
-// @Param token header string true "token"
-// @Success 200 {object} web.Response
-// @Router /producto [get]
 func (r *repository) GetAll() ([]Producto, error) {
 	r.fileStore.Read(&productos)
 
 	return productos, nil
 }
 
-// ListProducts godoc
-// @Summary Prodcut with id
-// @Tags Products
-// @Description get the product with the id given
-// @Accept json
-// @Produce json
-// @Param token header string true "token"
-// @Param id url int true "id"
-// @Success 200 {object} web.Response
-// @Router /producto/:id [get]
 func (r *repository) GetById(id int) (Producto, error) {
 	r.fileStore.Read(&productos)
 
