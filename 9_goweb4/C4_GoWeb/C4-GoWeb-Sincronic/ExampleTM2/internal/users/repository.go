@@ -101,6 +101,12 @@ func (r *repository) LoadUser() error {
 }
 
 func (repo *repository) Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {
+	err := repo.db.Read(&users)
+
+	if err != nil {
+		return User{}, err
+	}
+
 	us := User{id, first_name, last_name, email, age, height, active, create_date}
 	update := false
 	for i := range users {
@@ -113,10 +119,21 @@ func (repo *repository) Update(id int, first_name string, last_name string, emai
 	if !update {
 		return User{}, fmt.Errorf("User %d not found", id)
 	}
+
+	err = repo.db.Write(users)
+	if err != nil {
+		return User{}, err
+	}
+
 	return us, nil
 }
 
 func (repo *repository) Delete(id int) error {
+	err := repo.db.Read(&users)
+	if err != nil {
+		return err
+	}
+
 	deleted := false
 	var index int
 
@@ -130,6 +147,12 @@ func (repo *repository) Delete(id int) error {
 		return fmt.Errorf("User %d not found", id)
 	}
 	users = append(users[:index], users[index+1:]...)
+	err = repo.db.Write(users)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
