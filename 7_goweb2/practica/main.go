@@ -35,9 +35,8 @@ func addUser(c *gin.Context) {
 		c.String(http.StatusUnauthorized, "No tiene acceso a esta funcion")
 		return
 	}
-	// filter exception
+	// field exceptions
 	field, errField := checkerData(usRequest)
-
 	if errField {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error" : "El campo "+field+" Es requerido",
