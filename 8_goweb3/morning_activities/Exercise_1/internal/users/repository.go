@@ -98,8 +98,8 @@ func (repo *repository) Delete_users(id int) error {
 		if v.ID == id {
 			index = i
 			users = append(users[:index], users[index+1:]...)
-			break
+			return nil
 		}
 	}
-	return fmt.Errorf("The user with id %v doesn't exist, try with another user to change the name.", id)
+	return fmt.Errorf("The user with id %v doesn't exist.", id)
 }
