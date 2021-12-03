@@ -30,6 +30,16 @@ func NewTransaction(service tra.Service) *Transaction{
 	return &Transaction{service}
 }
 
+
+// ListTransactions godoc
+// @Summary List Transactions 
+// @Tags Transactions 
+// @Description get Transactions 
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Error 401 {object} web.Response
+// @Router /transactions [get]
 func (tran Transaction) GetAll() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
@@ -50,9 +60,16 @@ func (tran Transaction) GetAll() gin.HandlerFunc{
 	}
 }
 
-
-
-
+// TransactionById godoc
+// @Summary Transaction by Id 
+// @Tags Transactions 
+// @Description get transactions by id
+// @Produce json
+// @Param token header string true "token"
+// @Param id query integer true "id"
+// @Success 200 {object} web.Response
+// @Error 401 {object} web.Response
+// @Router /transactions:id [get]
 func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
@@ -81,6 +98,18 @@ func (tran Transaction) GetTransactionById() gin.HandlerFunc{
 	}
 }
 
+
+// FilterTransactions godoc
+// @Summary Filter Transactions  
+// @Tags Transactions 
+// @Description get transactions by filter from json
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param transaction body request true "filtros"
+// @Success 200 {object} web.Response
+// @Error 401 {object} web.Response
+// @Router /transactions/filtros [get]
 func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
@@ -127,6 +156,16 @@ func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc{
 	}
 }
 
+// StoreTransactions godoc
+// @Summary Store Transactions 
+// @Tags Transactions 
+// @Description store Transactions 
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param transaction body request true "Transactions  to store"
+// @Success 200 {object} web.Response
+// @Router /transactions  [post]
 func (tran Transaction) Store() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
@@ -167,7 +206,17 @@ func (tran Transaction) Store() gin.HandlerFunc{
 	}
 }
 
-
+// UpdateTransactions godoc
+// @Summary Update Transactions 
+// @Tags Transactions 
+// @Description store Transactions 
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param id query integer true "id"
+// @Param transaction body request true "Transactions  to store"
+// @Success 200 {object} web.Response
+// @Router /transactions:id  [put]
 func (tran Transaction) Update() gin.HandlerFunc{
 	return func(c *gin.Context) {
 
