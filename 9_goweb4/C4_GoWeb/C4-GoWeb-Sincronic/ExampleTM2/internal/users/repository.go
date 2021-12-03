@@ -14,6 +14,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM2/pkg/store"
 )
 
 type User struct {
@@ -41,20 +43,39 @@ type Repository interface {
 	UpdateAge(id int, age int) (User, error)
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
 func (repo *repository) GetAll() ([]User, error) {
+	err := repo.db.Read(&users)
+	if err != nil {
+		return nil, err
+	}
 	return users, nil
 }
 
 func (repo *repository) Store(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {
+	repo.db.Read(&users)
+
 	us := User{id, first_name, last_name, email, age, height, active, create_date}
+
 	users = append(users, us)
-	lastID = us.ID
+
+	err := repo.db.Write(users)
+
+	if err != nil {
+		return User{}, err
+	}
+
 	return us, nil
 }
 
 func (repo *repository) LastId() (int, error) {
+	err := repo.db.Read(&users)
+	if err != nil {
+		return 0, nil
+	}
 	if len(users) == 0 {
 		return 0, nil
 	}
@@ -132,6 +153,6 @@ func (repo *repository) UpdateAge(id int, age int) (User, error) {
 	return User{}, fmt.Errorf("User %d not found", id)
 }
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }

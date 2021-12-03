@@ -5,6 +5,7 @@ import (
 
 	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM2/cmd/server/handler"
 	users "github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM2/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM2/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -16,7 +17,9 @@ func main() {
 	}
 	router := gin.Default()
 
-	repo := users.NewRepository()
+	db := store.New(store.FileType, "./users.json")
+
+	repo := users.NewRepository(db)
 	service := users.NewService(repo)
 	controller := handler.NewUser(service)
 
