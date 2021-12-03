@@ -7,6 +7,7 @@ type Service interface {
 	Post_users(first_name, last_name, email string, age, height int, active bool, date string) (Users, error)
 	Update_users(id int, first_name, last_name, email string, age, height int, active bool, date string) (Users, error)
 	Update_users_first_name(id int, first_name string) (Users, error)
+	Delete_users(id int) error
 }
 
 // Agregamos la struct service
@@ -50,4 +51,9 @@ func (ser *service) Update_users(id int, first_name, last_name, email string, ag
 // Llamamos al repository para que proceda a actualizar al nombre del usuario
 func (ser *service) Update_users_first_name(id int, first_name string) (Users, error) {
 	return ser.repository.Update_users_first_name(id, first_name)
+}
+
+// Llamamos al repository para que proceda a borrar al usuario
+func (ser *service) Delete_users(id int) error {
+	return ser.repository.Delete_users(id)
 }
