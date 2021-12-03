@@ -16,7 +16,10 @@ func main() {
 	personasEP := r.Group("/personas")
 	{
 		personasEP.GET("/", controller.GetAll())
-		personasEP.POST("/personas/add", controller.Store())
+		personasEP.POST("/add", controller.Store())
+		personasEP.PUT("/update/:id", controller.Update())
+		personasEP.PATCH("/updateParcial/:id", controller.UpdateNombre())
+		personasEP.DELETE("/delete/:id", controller.Delete())
 	}
 
 	r.Run()

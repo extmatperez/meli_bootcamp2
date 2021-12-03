@@ -1,9 +1,13 @@
 package handler
 
 import (
-	personas "github.com/rossi_juancruz/meli_bootcamp2/7_goweb2/afternoon/proyecto/internal/personas"
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"os"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	personas "github.com/rossi_juancruz/meli_bootcamp2/8_goweb3/morning/ejercicios/internal/personas"
+	"github.com/rossi_juancruz/meli_bootcamp2/8_goweb3/morning/ejercicios/pkg/web"
 )
 
 type request struct {
@@ -16,24 +20,50 @@ type Persona struct {
 	service personas.Service
 }
 
+//Nueva persona
 func NewPersona(ser personas.Service) *Persona {
 	return &Persona{service: ser}
 }
 
+//Validar token de auth
+func validarToken(ctx *gin.Context) bool {
+	token := ctx.GetHeader("token")
+	if token == "" {
+		ctx.JSON(400, web.NewResponse(400, nil, "Falta token"))
+		return false
+	}
+	tokenENV := os.Getenv("TOKEN")
+	if token != tokenENV {
+		ctx.JSON(400, web.NewResponse(400, nil, "Token invalido"))
+		return false
+	}
+
+	return true
+}
+
 func (per *Persona) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !(validarToken(ctx)) {
+			return
+		}
+
 		personas, err := per.service.GetAll()
 
 		if err != nil {
-			ctx.String(400, "Hubo un error %v", err)
+			ctx.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 		} else {
-			ctx.JSON(200, personas)
+			ctx.JSON(200, web.NewResponse(200, personas, ""))
 		}
 	}
 }
 
 func (controller *Persona) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !(validarToken(ctx)) {
+			return
+		}
 
 		var perso request
 
@@ -56,6 +86,11 @@ func (controller *Persona) Store() gin.HandlerFunc {
 func (controller *Persona) Update() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
+
+		if !(validarToken(ctx)) {
+			return
+		}
+
 		var per request
 		err := ctx.ShouldBindJSON(&per)
 		
@@ -81,6 +116,10 @@ func (controller *Persona) Update() gin.HandlerFunc {
 func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
+
+		if !(validarToken(ctx)) {
+			return
+		}
 	
 		id, err_int := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
@@ -103,7 +142,7 @@ func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 			if err != nil {
 				ctx.JSON(404, err.Error())
 			} else {
-				ctx.String(200, "La persona %d ha sido eliminada", id)
+				ctx.String(200, "La persona %d ha sido actualizada", id)
 			}
 		}
 	}
@@ -112,6 +151,10 @@ func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 func (controller *Persona) Delete() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
+
+		if !(validarToken(ctx)) {
+			return
+		}
 	
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
@@ -124,7 +167,10 @@ func (controller *Persona) Delete() gin.HandlerFunc {
 			if err != nil {
 				ctx.JSON(404, err.Error())
 			} else {
-				ctx.JSON(200, err)
+				msg := fmt.Sprintf("Deleted id %d successfully", id)
+				ctx.JSON(200, gin.H{
+					"message": msg,
+				})
 			}
 		
 	}
