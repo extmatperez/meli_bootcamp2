@@ -8,3 +8,24 @@ lograrlo, es necesario, seguir los siguientes pasos:
 4. Realizar todas las validaciones (todos los campos son requeridos) */
 
 package main
+
+import (
+	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/morning_activities/Exercise_1/cmd/server/handler"
+	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/morning_activities/Exercise_1/internal/users"
+	"github.com/gin-gonic/gin"
+)
+
+// Creo la función main, agrego mi router y lo inicializo, creo las rutas necesarias y agrego los handlers
+func main() {
+	router := gin.Default()
+
+	repo := users.New_repository()
+	service := users.New_service(repo)
+	controller := handler.New_user(service)
+
+	router.GET("/users", controller.Get_users())
+	router.POST("/users", controller.Post_users())
+	router.PUT("/users/:id", controller.Update_users())
+
+	router.Run()
+}
