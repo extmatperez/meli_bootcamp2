@@ -52,7 +52,7 @@ func validarToken(ctx *gin.Context) bool {
 // @Accept json
 // @Produce json
 // @Param token header string true "token"
-// @Success 200 {object} web.Response
+// @Success 200 {object} web.response
 // @Router /payments [get]
 func (controller *Payment) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -79,7 +79,7 @@ func (controller *Payment) GetAll() gin.HandlerFunc {
 // @Produce json
 // @Param token header string true "token"
 // @Param payment body request true "Payment to store"
-// @Success 200 {object} web.Response
+// @Success 200 {object} web.response
 // @Router /payments [post]
 func (controller *Payment) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -139,7 +139,7 @@ func (controller *Payment) Store() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param token header string true "token"
-// @Success 200 {object} web.Response
+// @Success 200 {object} web.response
 // @Router /payments/:id [put]
 func (controller *Payment) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -179,7 +179,7 @@ func (controller *Payment) Update() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param token header string true "token"
-// @Success 200 {object} web.Response
+// @Success 200 {object} web.response
 // @Router /payments/code/:id [patch]
 func (controller *Payment) UpdateCodigo() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -222,7 +222,7 @@ func (controller *Payment) UpdateCodigo() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param token header string true "token"
-// @Success 200 {object} web.Response
+// @Success 200 {object} web.response
 // @Router /payments/amount/:id [patch]
 func (controller *Payment) UpdateMonto() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -265,7 +265,7 @@ func (controller *Payment) UpdateMonto() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param token header string true "token"
-// @Success 200 {object} web.Response
+// @Success 200 {object} web.response
 // @Router /payments/:id [delete]
 func (controller *Payment) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {

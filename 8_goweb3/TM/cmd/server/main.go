@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TM/cmd/server/docs"
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/docs"
 	payments "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/internal/payments"
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/pkg/store"
 	"github.com/joho/godotenv"
