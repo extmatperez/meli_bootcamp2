@@ -5,8 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	product "github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/8_goweb3/go-web-TTM/internal/products"
-	"github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/8_goweb3/go-web-TTM/pkg/web"
+	product "github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/8_goweb3/go-web-TTMM/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/8_goweb3/go-web-TTMM/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,11 +27,20 @@ func NewProduct(ser product.Service) *Product {
 	return &Product{service: ser}
 }
 
+// ListProducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [get]
 func (p *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if !validarToken(ctx) {
-			return
-		}
+		// if !validarToken(ctx) {
+		// 	return
+		// }
 		products, err := p.service.GetAll()
 		if err != nil {
 			ctx.JSON(400, web.NewReponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
@@ -40,6 +49,17 @@ func (p *Product) GetAll() gin.HandlerFunc {
 		}
 	}
 }
+
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description store products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param product body request true "Product to store"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (controller *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validarToken(ctx) {

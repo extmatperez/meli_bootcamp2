@@ -12,14 +12,14 @@ import (
 )
 
 func main() {
-	err := godotenv.Load("./8_goweb3/go-web-TT/cmd/server/.env")
+	err := godotenv.Load("./8_goweb3/go-web-TTMM/cmd/server/.env")
 	if err != nil {
 		fmt.Println(err)
 		log.Fatal("error al intentar cargar el archivo")
 	}
 
 	router := gin.Default()
-	db := store.New(store.FileType, "./8_goweb3/go-web-TT/cmd/server/products.json")
+	db := store.New(store.FileType, "./8_goweb3/go-web-TTM/cmd/server/products.json")
 	repo := product.NewRepository(db)
 	service := product.NewService(repo)
 	controller := handler.NewProduct(service)
