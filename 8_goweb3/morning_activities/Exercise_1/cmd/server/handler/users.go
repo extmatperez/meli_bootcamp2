@@ -78,9 +78,39 @@ func (controller *Users) Update_users() gin.HandlerFunc {
 		err = c.ShouldBindJSON(&use)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Something went wrong")
+			c.String(http.StatusBadRequest, "Something went wrong in body.")
 		} else {
 			user_updated, err := controller.service.Update_users(int(id), use.FirstName, use.LastName, use.Email, use.Age, use.Height, use.Active, use.Date)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, err.Error())
+			} else {
+				c.JSON(http.StatusOK, user_updated)
+			}
+		}
+	}
+}
+
+// Agregar Update_users_fields handler que va a ser usado en el endpoint por main
+func (controller *Users) Update_users_first_name() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var use request
+
+		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "The id is not a valid id.")
+		}
+
+		err = c.ShouldBindJSON(&use)
+
+		if err != nil {
+			c.String(http.StatusBadRequest, "Something went wrong in body.")
+		} else {
+			if use.FirstName == "" {
+				c.String(http.StatusBadRequest, "The Name is required.")
+				return
+			}
+			user_updated, err := controller.service.Update_users_first_name(int(id), use.FirstName)
 			if err != nil {
 				c.JSON(http.StatusBadRequest, err.Error())
 			} else {
