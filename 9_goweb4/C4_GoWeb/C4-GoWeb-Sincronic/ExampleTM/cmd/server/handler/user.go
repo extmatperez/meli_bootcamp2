@@ -28,6 +28,24 @@ func NewUser(ser users.Service) *User {
 		service: ser}
 }
 
+func ValidateToken(ctx *gin.Context) bool {
+	token := ctx.GetHeader("token")
+
+	if token == "" {
+		ctx.String(400, "Token not foun")
+		return false
+	}
+
+	tokenENV := os.Getenv("TOKEN")
+
+	if token != tokenENV {
+		ctx.String(400, "Invalid token")
+		return false
+	}
+
+	return true
+}
+
 func (us *User) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// errLoad := us.service.LoadUser()
@@ -35,19 +53,10 @@ func (us *User) GetAll() gin.HandlerFunc {
 		// 	fmt.Printf("Error loading user")
 		// } else {
 
-		token := ctx.GetHeader("token")
-
-		if token == "" {
-			ctx.String(400, "Token not foun")
+		if !ValidateToken(ctx) {
 			return
 		}
 
-		tokenENV := os.Getenv("TOKEN")
-
-		if token != tokenENV {
-			ctx.String(400, "Invalid token")
-			return
-		}
 		users, err := us.service.GetAll()
 
 		if err != nil {
@@ -61,6 +70,11 @@ func (us *User) GetAll() gin.HandlerFunc {
 
 func (controller *User) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !ValidateToken(ctx) {
+			return
+		}
+
 		var user request
 
 		err := ctx.ShouldBind(&user)
@@ -80,6 +94,9 @@ func (controller *User) Store() gin.HandlerFunc {
 func (controller *User) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
+		if !ValidateToken(ctx) {
+			return
+		}
 		var req request
 
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -138,6 +155,11 @@ func (controller *User) Update() gin.HandlerFunc {
 
 func (controller *User) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !ValidateToken(ctx) {
+			return
+		}
+
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": "invalid ID"})
@@ -154,6 +176,11 @@ func (controller *User) Delete() gin.HandlerFunc {
 
 func (controller *User) UpdateLastName() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		if !ValidateToken(ctx) {
+			return
+		}
+
 		var req request
 
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
