@@ -19,6 +19,7 @@ func New_service(repository Repository) Service {
 }
 
 // Creamos los métodos del New_service
+// Llamamos al repository para que proceda a llamar a todos los usuarios
 func (ser *service) Get_users() ([]Users, error) {
 	users, err := ser.repository.Get_users()
 	if err != nil {
@@ -26,6 +27,8 @@ func (ser *service) Get_users() ([]Users, error) {
 	}
 	return users, nil
 }
+
+// Llamamos al repository para que proceda a agregar a un usuario
 func (ser *service) Post_users(first_name, last_name, email string, age, height int, active bool, date string) (Users, error) {
 	last_id, err := ser.repository.Last_id()
 	if err != nil {
@@ -37,6 +40,8 @@ func (ser *service) Post_users(first_name, last_name, email string, age, height 
 	}
 	return user, nil
 }
+
+// Llamamos al repository para que proceda a actualizar al usuario
 func (ser *service) Update_users(id int, first_name, last_name, email string, age, height int, active bool, date string) (Users, error) {
 	return ser.repository.Update_users(id, first_name, last_name, email, age, height, active, date)
 }

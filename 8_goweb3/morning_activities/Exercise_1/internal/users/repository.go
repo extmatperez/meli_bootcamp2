@@ -36,18 +36,25 @@ func New_repository() Repository {
 }
 
 // Implementamos los métodos para que no marque erros la func new_repository
+// Implementamos la funcionalidad para llamar a todos los usuarios existentes en el slice
 func (repo *repository) Get_users() ([]Users, error) {
 	return users, nil
 }
+
+// Implementamos la funcionalidad para agregar usuarios a nuestro slice
 func (repo *repository) Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error) {
 	user := Users{id, first_name, last_name, email, age, height, active, date}
 	last_id = id
 	users = append(users, user)
 	return user, nil
 }
+
+// Implementamos la funcionalidad para obtener el ID del último usuario en el slice
 func (repo *repository) Last_id() (int, error) {
 	return last_id, nil
 }
+
+// Implementamos la funcionalidad para actualizar el usuario en memoria, en caso de que coincida con el ID enviado, caso contrario retorna un error.
 func (repo *repository) Update_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error) {
 	user := Users{id, first_name, last_name, email, age, height, active, date}
 	for i, v := range users {
