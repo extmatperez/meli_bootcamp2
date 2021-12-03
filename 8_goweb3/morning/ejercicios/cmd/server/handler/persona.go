@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"os"
+	//"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +26,7 @@ func NewPersona(ser personas.Service) *Persona {
 }
 
 //Validar token de auth
-func validarToken(ctx *gin.Context) bool {
+/* func validarToken(ctx *gin.Context) bool {
 	token := ctx.GetHeader("token")
 	if token == "" {
 		ctx.JSON(400, web.NewResponse(400, nil, "Falta token"))
@@ -39,14 +39,23 @@ func validarToken(ctx *gin.Context) bool {
 	}
 
 	return true
-}
+} */
 
+// ListPersonas godoc
+// @Summary List personas
+// @Tags Personas
+// @Description get personas
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /personas [get]
 func (per *Persona) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !(validarToken(ctx)) {
+		/* if !(validarToken(ctx)) {
 			return
-		}
+		} */
 
 		personas, err := per.service.GetAll()
 
@@ -58,12 +67,22 @@ func (per *Persona) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StorePersonas godoc
+// @Summary Store personas
+// @Tags Personas
+// @Description store personas
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param persona body request true "Persona to store"
+// @Success 200 {object} web.Response
+// @Router /personas/add [post]
 func (controller *Persona) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		if !(validarToken(ctx)) {
+		/* if !(validarToken(ctx)) {
 			return
-		}
+		} */
 
 		var perso request
 
@@ -87,9 +106,9 @@ func (controller *Persona) Update() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
 
-		if !(validarToken(ctx)) {
+		/* if !(validarToken(ctx)) {
 			return
-		}
+		} */
 
 		var per request
 		err := ctx.ShouldBindJSON(&per)
@@ -117,9 +136,9 @@ func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
 
-		if !(validarToken(ctx)) {
+		/* if !(validarToken(ctx)) {
 			return
-		}
+		} */
 	
 		id, err_int := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
@@ -152,9 +171,9 @@ func (controller *Persona) Delete() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
 
-		if !(validarToken(ctx)) {
+		/* if !(validarToken(ctx)) {
 			return
-		}
+		} */
 	
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 

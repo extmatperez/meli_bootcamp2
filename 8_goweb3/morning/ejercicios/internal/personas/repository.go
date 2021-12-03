@@ -6,13 +6,12 @@ import (
 )
 type Persona struct {
 	ID       int    `json:"id"`
-	Nombre   string `json:"nombre" binding:"required"`
-	Apellido string `json:"apellido" binding:"required"`
-	Edad     int    `json:"edad" binding:"required"`
+	Nombre   string `json:"nombre"`
+	Apellido string `json:"apellido"`
+	Edad     int    `json:"edad"`
 }
 
 var personas []Persona
-var lastID int
 
 type Repository interface {
 	GetAll() ([]Persona, error)

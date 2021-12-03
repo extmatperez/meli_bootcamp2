@@ -28,8 +28,6 @@ func New(store Type, fileName string) Store {
 	return nil
 }
 
-
-
 func (fs *FileStore) Write(data interface{}) error {
 	file, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
