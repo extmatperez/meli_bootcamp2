@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,12 +33,12 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 func validarToken(c *gin.Context) bool {
 	token := c.GetHeader("token")
 	if token == "" {
-		c.String(400, "Falta token")
+		c.JSON(400, web.NewResponse(400, nil, "Falta token"))
 		return false
 	}
 	tokenENV := os.Getenv("TOKEN")
 	if token != tokenENV {
-		c.String(404, "Token incorrecto")
+		c.JSON(400, web.NewResponse(400, nil, "token incorrecto"))
 		return false
 	}
 
@@ -53,12 +54,10 @@ func (t *Transaccion) Load() gin.HandlerFunc {
 		t, err := t.service.Load()
 
 		if err != nil {
-			c.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 			return
 		}
-		c.JSON(200, t)
+		c.JSON(200, web.NewResponse(200, t, ""))
 
 	}
 }
@@ -71,12 +70,10 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 		t, err := t.service.GetAll()
 
 		if err != nil {
-			c.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 			return
 		}
-		c.JSON(200, t)
+		c.JSON(200, web.NewResponse(200, t, ""))
 
 	}
 }
@@ -90,37 +87,25 @@ func (t *Transaccion) Store() gin.HandlerFunc {
 		}
 
 		if err := c.Bind(&req); err != nil {
-			c.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 			return
 		} else {
 			switch {
 			case req.Monto == 0.0:
-				c.JSON(401, gin.H{
-					"error": "no se puede poner el monto vacio",
-				})
+				c.JSON(401, web.NewResponse(400, nil, "no se puede poner el monto vacio"))
 			case req.Emisor == "":
-				c.JSON(401, gin.H{
-					"error": "no se puede emitir al emisor",
-				})
+				c.JSON(401, web.NewResponse(400, nil, "no se puede emitir al emisor"))
 			case req.Moneda == "":
-				c.JSON(401, gin.H{
-					"error": "no se puede omitir el tipo de moneda",
-				})
+				c.JSON(401, web.NewResponse(400, nil, "no se puede omitir el tipo de moneda"))
 			case req.Receptor == "":
-				c.JSON(401, gin.H{
-					"error": "no se puede emitir al receptor",
-				})
+				c.JSON(401, web.NewResponse(400, nil, "no se puede emitir al receptor"))
 			default:
 				t, err := t.service.Store(req.ID, req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaCreacion)
 				if err != nil {
-					c.JSON(404, gin.H{
-						"error": err.Error(),
-					})
+					c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 					return
 				}
-				c.JSON(200, t)
+				c.JSON(200, web.NewResponse(200, t, ""))
 
 			}
 
@@ -138,7 +123,7 @@ func (t *Transaccion) FindById() gin.HandlerFunc {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.JSON(400, "el id es invalido")
+			c.JSON(400, web.NewResponse(400, nil, "el id es invalido"))
 		} else {
 
 			t, err := t.service.FindById(int(id))
@@ -148,7 +133,7 @@ func (t *Transaccion) FindById() gin.HandlerFunc {
 				})
 				return
 			}
-			c.JSON(200, t)
+			c.JSON(200, web.NewResponse(200, t, ""))
 
 		}
 	}
@@ -168,12 +153,10 @@ func (t *Transaccion) FilterBy() gin.HandlerFunc {
 
 		t, err := t.service.FilterBy(moneda, emisor, receptor, fechacreacion, codigotransaccion)
 		if err != nil {
-			c.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 			return
 		}
-		c.JSON(200, t)
+		c.JSON(200, web.NewResponse(200, t, ""))
 
 	}
 }
@@ -191,37 +174,25 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 			c.JSON(400, "el id es invalido")
 		} else {
 			if err := c.ShouldBindJSON(&req); err != nil {
-				c.JSON(404, gin.H{
-					"error": err.Error(),
-				})
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 				return
 			} else {
 				switch {
 				case req.Monto == 0.0:
-					c.JSON(401, gin.H{
-						"error": "no se puede poner el monto vacio",
-					})
+					c.JSON(401, web.NewResponse(400, nil, "no se puede poner el monto vacio"))
 				case req.Emisor == "":
-					c.JSON(401, gin.H{
-						"error": "no se puede omitir al emisor",
-					})
+					c.JSON(401, web.NewResponse(400, nil, "no se puede emitir al emisor"))
 				case req.Moneda == "":
-					c.JSON(401, gin.H{
-						"error": "no se puede emitir el tipo de moneda",
-					})
+					c.JSON(401, web.NewResponse(400, nil, "no se puede omitir el tipo de moneda"))
 				case req.Receptor == "":
-					c.JSON(401, gin.H{
-						"error": "no se puede emitir al receptor",
-					})
+					c.JSON(401, web.NewResponse(400, nil, "no se puede emitir al receptor"))
 				default:
 					t, err := t.service.Update(int(id), req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaCreacion)
 					if err != nil {
-						c.JSON(404, gin.H{
-							"error": err.Error(),
-						})
+						c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 						return
 					}
-					c.JSON(200, t)
+					c.JSON(200, web.NewResponse(200, t, ""))
 
 				}
 
@@ -241,29 +212,23 @@ func (t *Transaccion) UpdateCod() gin.HandlerFunc {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.JSON(400, "el id es invalido")
+			c.JSON(401, web.NewResponse(400, nil, "el id es invalido"))
 		} else {
 			if err := c.ShouldBindJSON(&req); err != nil {
-				c.JSON(404, gin.H{
-					"error": err.Error(),
-				})
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 				return
 			} else {
 
 				if req.CodigoTransaccion == "" {
-					c.JSON(401, gin.H{
-						"error": "no se puede poner el codigo vacio",
-					})
+					c.JSON(401, web.NewResponse(400, nil, "no se puede dejar el codigo vacio"))
 
 				} else {
 					t, err := t.service.UpdateCod(int(id), req.CodigoTransaccion)
 					if err != nil {
-						c.JSON(404, gin.H{
-							"error": err.Error(),
-						})
+						c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 						return
 					}
-					c.JSON(200, t)
+					c.JSON(200, web.NewResponse(200, t, ""))
 
 				}
 
@@ -283,29 +248,23 @@ func (t *Transaccion) UpdateMon() gin.HandlerFunc {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.JSON(400, "el id es invalido")
+			c.JSON(401, web.NewResponse(400, nil, "el id es invalido"))
 		} else {
 			if err := c.ShouldBindJSON(&req); err != nil {
-				c.JSON(404, gin.H{
-					"error": err.Error(),
-				})
+				c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 				return
 			} else {
 
 				if req.Monto == 0.0 {
-					c.JSON(401, gin.H{
-						"error": "no se puede poner el monto vacio",
-					})
+					c.JSON(401, web.NewResponse(400, nil, "no se puede poner el monto vacio"))
 
 				} else {
 					t, err := t.service.UpdateMon(int(id), req.Monto)
 					if err != nil {
-						c.JSON(404, gin.H{
-							"error": err.Error(),
-						})
+						c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 						return
 					}
-					c.JSON(200, t)
+					c.JSON(200, web.NewResponse(200, t, ""))
 
 				}
 
@@ -317,25 +276,21 @@ func (t *Transaccion) UpdateMon() gin.HandlerFunc {
 
 func (t *Transaccion) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		if !validarToken(c) {
 			return
 		}
+
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.JSON(400, "el id es invalido")
+			c.JSON(401, web.NewResponse(400, nil, "el id es invalido"))
 		} else {
 
 			err := t.service.Delete(int(id))
 			if err != nil {
-				c.JSON(404, gin.H{
-					"error": err.Error(),
-				})
+				c.JSON(201, web.NewResponse(201, nil, fmt.Sprintf("%v", err)))
 				return
 			}
-			c.JSON(200, gin.H{"data": fmt.Sprintf("la transaccion %d ha sido eliminado", id)})
-
 		}
 	}
 }
