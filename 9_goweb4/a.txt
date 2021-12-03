@@ -1,0 +1,15 @@
+Recordar cuando se hace una copia cambiar:
+main: 
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/####ExampleTT###/cmd/server/handler"
+	users "github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/####ExampleTT###/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/####ExampleTT###/pkg/store"
+
+	err := godotenv.Load("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/###ExampleTT###/cmd/server/.env")
+
+users: 
+
+	users "github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/###ExampleTT###/internal/users"
+
+repository: 
+
+	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/###ExampleTT###/pkg/store"
