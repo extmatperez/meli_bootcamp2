@@ -33,16 +33,12 @@ func (prod *Product) GetAll() gin.HandlerFunc {
 		token := c.GetHeader("token")
 
 		if token == "" {
-			c.JSON(401, gin.H{
-				"error": "token required",
-			})
+			c.JSON(400, "token required")
 			return
 
 		}
 		if os.Getenv("TOKEN") != token {
-			c.JSON(401, gin.H{
-				"error": "token invalido",
-			})
+			c.JSON(404, "token no válido")
 			return
 		}
 
