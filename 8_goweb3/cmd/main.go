@@ -5,6 +5,7 @@ import (
 
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/cmd/server/handler"
 	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -18,7 +19,8 @@ func main() {
 
 	router := gin.Default()
 
-	repo := products.NewRepository()
+	db := store.NewStore("file", "products.json")
+	repo := products.NewRepository(db)
 	service := products.NewService(repo)
 	controller := handler.NewProduct(service)
 

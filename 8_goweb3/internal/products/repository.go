@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"encoding/json"
-	"log"
-	"os"
+	"fmt"
+
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/pkg/store"
 )
 
 type Product struct {
@@ -21,46 +21,51 @@ type Repository interface {
 	GetAll() ([]Product, error)
 	// getProductbyID() (Product, error)
 	AddProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error)
-	SetLastId() (int, error)
+	UpdateProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error)
 }
 
 type repository struct {
+	db store.Store
 }
 
 var prodList []Product
 var lastIDrepo int
 
-// var tokenPrueba string
-
 /////////////// FUNCIONES /////////////////
 
-func NewRepository() Repository {
-	return &repository{}
-}
-
-func ReadData() {
-
-	readProducts, _ := os.ReadFile("./products.json")
-
-	if err := json.Unmarshal(readProducts, &prodList); err != nil {
-		log.Fatal(err)
+func NewRepository(db store.Store) Repository {
+	return &repository{
+		db: db,
 	}
-
 }
 
 func (repo *repository) GetAll() ([]Product, error) {
+	repo.db.Read(&prodList)
 	return prodList, nil
 }
 
 func (repo *repository) AddProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error) {
+	repo.db.Read(&prodList)
 	newProduct := Product{id, name, color, price, stock, code, published, created}
 	lastIDrepo = id
 	prodList = append(prodList, newProduct)
+
+	err := repo.db.Write(&prodList)
+	if err != nil {
+		return Product{}, err
+	}
 	return newProduct, nil
 }
 
-func (repo *repository) SetLastId() (int, error) {
-	length := len(prodList) - 1
-	lastIDrepo = prodList[length].ID
-	return lastIDrepo, nil
+func (repo *repository) UpdateProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error) {
+	updatedProduct := Product{id, name, color, price, stock, code, published, created}
+
+	for i, v := range prodList {
+		if v.ID == id {
+			prodList[i] = updatedProduct
+			return updatedProduct, nil
+		}
+	}
+	return Product{}, fmt.Errorf("el producto id: %d no se encontró", id)
+
 }

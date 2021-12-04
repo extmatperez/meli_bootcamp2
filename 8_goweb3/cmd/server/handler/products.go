@@ -32,7 +32,14 @@ func (prod *Product) GetAll() gin.HandlerFunc {
 
 		token := c.GetHeader("token")
 
-		if token != os.Getenv("TOKEN") {
+		if token == "" {
+			c.JSON(401, gin.H{
+				"error": "token required",
+			})
+			return
+
+		}
+		if os.Getenv("TOKEN") != token {
 			c.JSON(401, gin.H{
 				"error": "token invalido",
 			})
@@ -48,8 +55,6 @@ func (prod *Product) GetAll() gin.HandlerFunc {
 		}
 
 	}
-
-	// }
 
 }
 
@@ -70,18 +75,6 @@ func (prod *Product) AddProduct() gin.HandlerFunc {
 				c.JSON(200, response)
 			}
 		}
-
-		// validRequest := validateKeys(req)
-		// if validRequest != "" {
-		// 	c.JSON(400, validRequest)
-		// 	return
-		// } else {
-		// 	lastID++
-		// 	req.ID = lastID
-		// 	prodList = append(prodList, req)
-		// 	c.JSON(200, req)
-
-		// }
 	}
 
 }

@@ -7,6 +7,7 @@ type service struct {
 type Service interface {
 	GetAll() ([]Product, error)
 	AddProduct(name, color string, price float64, stock, code int, published string, created string) (Product, error)
+	UpdateProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error)
 }
 
 func NewService(repository Repository) Service {
@@ -24,15 +25,18 @@ func (serv *service) GetAll() ([]Product, error) {
 }
 
 func (serv *service) AddProduct(name, color string, price float64, stock, code int, published string, created string) (Product, error) {
-	lastID, err := serv.repository.SetLastId()
-	if err != nil {
-		return Product{}, err
-	}
+	lastID := lastIDrepo + 1
+
 	newProd, err := serv.repository.AddProduct(lastID, name, color, price, stock, code, published, created)
 
 	if err != nil {
 		return Product{}, err
 	}
 	return newProd, nil
+
+}
+
+func (serv *service) UpdateProduct(id int, name, color string, price float64, stock, code int, published string, created string) (Product, error) {
+	return serv.repository.UpdateProduct(id, name, color, price, stock, code, published, created)
 
 }
