@@ -1,0 +1,62 @@
+[
+	{
+		"id": 1,
+		"nombre": "Pedrito",
+		"apellido": "Benavides",
+		"email": "ncab@npr.org",
+		"edad": 1,
+		"altura": 172,
+		"activo": true,
+		"fecha_creacion": "30/11/2021"
+	},
+	{
+		"id": 2,
+		"nombre": "Luis",
+		"apellido": "Benavides",
+		"email": "ncab@npr.org",
+		"edad": 18,
+		"altura": 172,
+		"activo": true,
+		"fecha_creacion": "30/11/2021"
+	},
+	{
+		"id": 3,
+		"nombre": "Luis",
+		"apellido": "Benavides",
+		"email": "ncab@npr.org",
+		"edad": 18,
+		"altura": 172,
+		"activo": true,
+		"fecha_creacion": "30/11/2021"
+	},
+	{
+		"id": 4,
+		"nombre": "Luis",
+		"apellido": "Benavides",
+		"email": "ncab@npr.org",
+		"edad": 18,
+		"altura": 172,
+		"activo": true,
+		"fecha_creacion": "30/11/2021"
+	},
+	{
+		"id": 5,
+		"nombre": "Luis",
+		"apellido": "Benavides",
+		"email": "ncab@npr.org",
+		"edad": 18,
+		"altura": 172,
+		"activo": true,
+		"fecha_creacion": "30/11/2021"
+	},
+	{
+		"id": 6,
+		"nombre": "Juana",
+		"apellido": "Rocio",
+		"email": "ncab@npr.org",
+		"edad": 50,
+		"altura": 172,
+		"activo": false,
+		"fecha_creacion": "30/11/2021"
+	}
+]

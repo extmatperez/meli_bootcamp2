@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 
@@ -30,6 +31,13 @@ func NewUsuario(serv usuarios.Service) *Usuario {
 
 func (control *Usuario) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		validacion, err := validarToken(c)
+
+		if err != nil {
+			c.String(validacion, err.Error())
+			return
+		}
+
 		usuarios, err := control.service.GetAll()
 		if err != nil {
 			c.String(400, "Hubo un error %v", err)
@@ -41,8 +49,15 @@ func (control *Usuario) GetAll() gin.HandlerFunc {
 
 func (control *Usuario) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		validacion, err := validarToken(c)
+
+		if err != nil {
+			c.String(validacion, err.Error())
+			return
+		}
+
 		var newUser request
-		err := c.ShouldBindJSON(&newUser)
+		err = c.ShouldBindJSON(&newUser)
 		if err != nil {
 			c.String(400, "Hubo un error al querer cargar un usuario %v", err)
 		} else {
@@ -63,8 +78,15 @@ func (control *Usuario) Store() gin.HandlerFunc {
 
 func (control *Usuario) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		validacion, err := validarToken(c)
+
+		if err != nil {
+			c.String(validacion, err.Error())
+			return
+		}
+
 		var updateUser request
-		err := c.ShouldBindJSON(&updateUser)
+		err = c.ShouldBindJSON(&updateUser)
 		if err != nil {
 			c.String(400, err.Error())
 		} else {
@@ -85,6 +107,13 @@ func (control *Usuario) Update() gin.HandlerFunc {
 
 func (control *Usuario) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		validacion, err := validarToken(c)
+
+		if err != nil {
+			c.String(validacion, err.Error())
+			return
+		}
+
 		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 		if err != nil {
 			c.String(400, "El ID ingresado no es válido")
@@ -101,6 +130,13 @@ func (control *Usuario) Delete() gin.HandlerFunc {
 
 func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		validacion, err := validarToken(c)
+
+		if err != nil {
+			c.String(validacion, err.Error())
+			return
+		}
+
 		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 		if err != nil {
 			c.String(400, err.Error())
@@ -122,6 +158,21 @@ func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
 		}
 
 	}
+}
+
+func validarToken(ctx *gin.Context) (int, error) {
+	token := ctx.GetHeader("token")
+
+	if token == "" {
+		return 404, fmt.Errorf("imposible validar token")
+	}
+
+	token_env := os.Getenv("TOKEN")
+
+	if token != token_env {
+		return 400, fmt.Errorf("token incorrecto")
+	}
+	return 200, nil
 }
 
 func validarUsuario(usuario request) error {

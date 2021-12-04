@@ -1,6 +1,10 @@
 package internal
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/8_goweb3/Go_Web/pkg/store"
+)
 
 type Usuario struct {
 	ID            int    `json:"id"`
@@ -22,35 +26,61 @@ type Repository interface {
 	EditarNombreEdad(id int, nombre string, edad int) (Usuario, error)
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
 var usuarios []Usuario
-var lastID int
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{db}
 }
 
 func (repo *repository) GetAll() ([]Usuario, error) {
+	repo.db.Read(&usuarios)
 	return usuarios, nil
 }
 
 func (repo *repository) Store(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error) {
-	lastID = id
+
+	repo.db.Read(&usuarios)
 	nuevoUsuario := Usuario{id, nombre, apellido, email, edad, altura, activo, fecha}
 	usuarios = append(usuarios, nuevoUsuario)
+	err := repo.db.Write(usuarios)
+
+	if err != nil {
+		return Usuario{}, err
+	}
 	return nuevoUsuario, nil
 }
 
 func (repo *repository) LastID() (int, error) {
-	return lastID, nil
+	err := repo.db.Read(&usuarios)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if len(usuarios) == 0 {
+		return 0, nil
+	}
+	return usuarios[len(usuarios)-1].ID, nil
 }
 
 func (repo *repository) Update(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error) {
+	err := repo.db.Read(&usuarios)
+	if err != nil {
+		return Usuario{}, err
+	}
+
 	updateUser := Usuario{id, nombre, apellido, email, edad, altura, activo, fecha}
 	for i, user := range usuarios {
 		if user.ID == id {
 			usuarios[i] = updateUser
+			err := repo.db.Write(&usuarios)
+			if err != nil {
+				return Usuario{}, err
+			}
 			return updateUser, nil
 		}
 	}
@@ -59,10 +89,19 @@ func (repo *repository) Update(id int, nombre, apellido, email string, edad, alt
 
 func (repo *repository) Delete(id int) error {
 
+	err := repo.db.Read(&usuarios)
+	if err != nil {
+		return err
+	}
+
 	for i, user := range usuarios {
 		if user.ID == id {
 			// usuarios = append(usuarios[:i], usuarios[i+1:]...)
 			usuarios[i].Activo = false
+			err := repo.db.Write(&usuarios)
+			if err != nil {
+				return err
+			}
 			return nil
 		}
 	}
@@ -70,13 +109,21 @@ func (repo *repository) Delete(id int) error {
 }
 
 func (repo *repository) EditarNombreEdad(id int, nombre string, edad int) (Usuario, error) {
+	err := repo.db.Read(&usuarios)
+	if err != nil {
+		return Usuario{}, err
+	}
+
 	for i, user := range usuarios {
 		if user.ID == id {
 			fmt.Println(id, " ++ ", user.ID)
-			fmt.Println(user)
 			usuarios[i].Nombre = nombre
 			usuarios[i].Edad = edad
-			fmt.Println(user)
+
+			err := repo.db.Write(&usuarios)
+			if err != nil {
+				return Usuario{}, err
+			}
 			return usuarios[i], nil
 		}
 	}
