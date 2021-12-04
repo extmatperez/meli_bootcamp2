@@ -249,3 +249,14 @@ func (t *Transaccion) Delete() gin.HandlerFunc {
 		}
 	}
 }
+
+func (t *Transaccion) DeleteAll() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		err := t.service.DeleteAll()
+		if err != nil {
+			c.JSON(201, web.NewResponse(201, nil, fmt.Sprintf("Se borraron todas las transacciones")))
+			return
+		}
+		c.JSON(401, web.NewResponse(400, nil, "No hay transacciones para eliminar"))
+	}
+}
