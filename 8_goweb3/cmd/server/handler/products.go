@@ -27,20 +27,23 @@ func NewProduct(serv products.Service) *Product {
 
 }
 
+func ValidateToken(c *gin.Context) bool {
+	token := c.GetHeader("token")
+
+	if token == "" {
+		c.JSON(400, "token required")
+		return false
+
+	}
+	if os.Getenv("TOKEN") != token {
+		c.JSON(404, "token no válido")
+		return false
+	}
+	return true
+}
+
 func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
-		token := c.GetHeader("token")
-
-		if token == "" {
-			c.JSON(400, "token required")
-			return
-
-		}
-		if os.Getenv("TOKEN") != token {
-			c.JSON(404, "token no válido")
-			return
-		}
 
 		products, err := prod.service.GetAll()
 
