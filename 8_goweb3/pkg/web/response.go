@@ -2,8 +2,8 @@ package web
 
 type Response struct {
 	Code    int         `json:"code"`
-	Content interface{} `json:"content"`
-	Error   string      `json:"error"`
+	Content interface{} `json:"content, omitempty"`
+	Error   string      `json:"error, omitempty"`
 }
 
 func NewResponse(code int, content interface{}, err string) Response {
