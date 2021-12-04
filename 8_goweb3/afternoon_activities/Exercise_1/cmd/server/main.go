@@ -10,13 +10,22 @@ la validación, para eso se deben realizar los siguientes pasos:
 package main
 
 import (
+	"log"
+
 	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/afternoon_activities/Exercise_1/cmd/server/handler"
 	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/afternoon_activities/Exercise_1/internal/users"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 // Creo la función main, agrego mi router y lo inicializo, creo las rutas necesarias y agrego los handlers (controllers)
 func main() {
+	// Levanto las variables de entorno del archivo .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Something went wrong with the .env file")
+	}
+
 	router := gin.Default()
 
 	repo := users.New_repository()
