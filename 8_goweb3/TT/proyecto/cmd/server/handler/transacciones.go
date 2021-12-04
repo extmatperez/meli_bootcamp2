@@ -250,7 +250,7 @@ func (t *Transaccion) Delete() gin.HandlerFunc {
 	}
 }
 
-func (t *Transaccion) DeleteAll() gin.HandlerFunc {
+/* func (t *Transaccion) DeleteAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		err := t.service.DeleteAll()
 		if err != nil {
@@ -259,4 +259,4 @@ func (t *Transaccion) DeleteAll() gin.HandlerFunc {
 		}
 		c.JSON(401, web.NewResponse(400, nil, "No hay transacciones para eliminar"))
 	}
-}
+} */
