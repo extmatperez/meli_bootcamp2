@@ -1,10 +1,12 @@
 package handler
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
 	products "github.com/extmatperez/meli_bootcamp2/8_goweb3/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,26 +33,33 @@ func ValidateToken(c *gin.Context) bool {
 	token := c.GetHeader("token")
 
 	if token == "" {
-		c.JSON(400, "token required")
+		c.JSON(400, web.NewResponse(400, nil, "token required"))
 		return false
 
 	}
 	if os.Getenv("TOKEN") != token {
-		c.JSON(404, "token no válido")
+		c.JSON(404, web.NewResponse(404, nil, "invalid token"))
 		return false
 	}
 	return true
 }
 
+////////////////////////// HANDLERS //////////////////////////
+
 func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		if !ValidateToken(c) {
+			return
+		}
 
 		products, err := prod.service.GetAll()
 
 		if err != nil {
-			c.String(400, "Hubo un error %v: ", err)
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v: ", err)))
+
 		} else {
-			c.JSON(200, products)
+			c.JSON(200, web.NewResponse(200, products, ""))
 		}
 
 	}
@@ -80,6 +89,10 @@ func (prod *Product) AddProduct() gin.HandlerFunc {
 
 func (prod *Product) UpdateProduct() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		if !ValidateToken(c) {
+			return
+		}
 
 		var prodToUpdate request
 

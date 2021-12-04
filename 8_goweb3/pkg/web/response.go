@@ -6,7 +6,7 @@ type Response struct {
 	Error   string      `json:"error"`
 }
 
-func (resp *Response) NewResponse(code int, content interface{}, err string) Response {
+func NewResponse(code int, content interface{}, err string) Response {
 	if code < 300 {
 		return Response{code, content, ""}
 
