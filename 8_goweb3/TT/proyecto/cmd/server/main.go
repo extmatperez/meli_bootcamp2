@@ -3,13 +3,15 @@ package main
 import (
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/cmd/server/handler"
 	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	_ = godotenv.Load()
-	repo := transacciones.NewRepository()
+	db := store.New(store.FileType, "../../internal/transacciones/transacciones.json")
+	repo := transacciones.NewRepository(db)
 	service := transacciones.NewService(repo)
 	t := handler.NewTransaccion(service)
 
