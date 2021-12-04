@@ -5,10 +5,13 @@ import (
 	"os"
 
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/docs"
 	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/internal/transacciones"
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func respondWithError(c *gin.Context, code int, message interface{}) {
@@ -39,6 +42,17 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
+// @title MELI Bootcamp API
+// @version 1.0
+// @description This API Handle MELI Products.
+// @termsOfService https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
+
+// @contact.name API Support
+// @contact.url https://developers.mercadolibre.com.ar/support
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
 func main() {
 	_ = godotenv.Load()
 	db := store.New(store.FileType, "../../internal/transacciones/transacciones.json")
@@ -48,10 +62,14 @@ func main() {
 
 	r := gin.Default()
 	//r.Use(TokenAuthMiddleware())
+
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	tr := r.Group("/transacciones")
 	tr.POST("/add", TokenAuthMiddleware(), t.Store())
+	tr.POST("/load", TokenAuthMiddleware(), t.Load())
 	tr.GET("/get", t.GetAll())
-	tr.GET("/load", TokenAuthMiddleware(), t.Load())
 	tr.GET("/find/:id", t.FindById())
 	tr.GET("/filter", t.FilterBy())
 	tr.PUT("/update/:id", TokenAuthMiddleware(), t.Update())
