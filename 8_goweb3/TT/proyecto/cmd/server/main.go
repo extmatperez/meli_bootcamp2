@@ -1,12 +1,43 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/cmd/server/handler"
 	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/internal/transacciones"
 	"github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
+
+func respondWithError(c *gin.Context, code int, message interface{}) {
+	c.AbortWithStatusJSON(code, gin.H{"error": message})
+}
+
+func TokenAuthMiddleware() gin.HandlerFunc {
+	requiredToken := os.Getenv("TOKEN")
+
+	if requiredToken == "" {
+		log.Fatal("Please set API_TOKEN environment variable")
+	}
+
+	return func(c *gin.Context) {
+		token := c.GetHeader("token")
+
+		if token == "" {
+			respondWithError(c, 401, "API token required")
+			return
+		}
+
+		if token != requiredToken {
+			respondWithError(c, 401, "Invalid API token")
+			return
+		}
+
+		c.Next()
+	}
+}
 
 func main() {
 	_ = godotenv.Load()
@@ -16,6 +47,7 @@ func main() {
 	t := handler.NewTransaccion(service)
 
 	r := gin.Default()
+	r.Use(TokenAuthMiddleware())
 	tr := r.Group("/transacciones")
 	tr.POST("/add", t.Store())
 	tr.GET("/get", t.GetAll())

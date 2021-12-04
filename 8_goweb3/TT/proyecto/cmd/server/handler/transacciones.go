@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 
 	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/TT/proyecto/internal/transacciones"
@@ -30,26 +29,8 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 	}
 }
 
-func validarToken(c *gin.Context) bool {
-	token := c.GetHeader("token")
-	if token == "" {
-		c.JSON(400, web.NewResponse(400, nil, "Falta token"))
-		return false
-	}
-	tokenENV := os.Getenv("TOKEN")
-	if token != tokenENV {
-		c.JSON(400, web.NewResponse(400, nil, "token incorrecto"))
-		return false
-	}
-
-	return true
-}
-
 func (t *Transaccion) Load() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
 
 		t, err := t.service.Load()
 
@@ -64,9 +45,7 @@ func (t *Transaccion) Load() gin.HandlerFunc {
 
 func (t *Transaccion) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
+
 		t, err := t.service.GetAll()
 
 		if err != nil {
@@ -81,10 +60,6 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 func (t *Transaccion) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
-
-		if !validarToken(c) {
-			return
-		}
 
 		if err := c.Bind(&req); err != nil {
 			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
@@ -116,9 +91,6 @@ func (t *Transaccion) Store() gin.HandlerFunc {
 
 func (t *Transaccion) FindById() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
@@ -142,9 +114,6 @@ func (t *Transaccion) FindById() gin.HandlerFunc {
 func (t *Transaccion) FilterBy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		if !validarToken(c) {
-			return
-		}
 		moneda := c.Query("moneda")
 		emisor := c.Query("emisor")
 		receptor := c.Query("receptor")
@@ -164,9 +133,6 @@ func (t *Transaccion) FilterBy() gin.HandlerFunc {
 func (t *Transaccion) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
-		if !validarToken(c) {
-			return
-		}
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
@@ -206,9 +172,6 @@ func (t *Transaccion) UpdateCod() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
 
-		if !validarToken(c) {
-			return
-		}
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
@@ -241,10 +204,6 @@ func (t *Transaccion) UpdateCod() gin.HandlerFunc {
 func (t *Transaccion) UpdateMon() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
-
-		if !validarToken(c) {
-			return
-		}
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
@@ -276,10 +235,6 @@ func (t *Transaccion) UpdateMon() gin.HandlerFunc {
 
 func (t *Transaccion) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
-
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
