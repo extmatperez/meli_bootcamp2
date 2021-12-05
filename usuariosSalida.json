@@ -56,7 +56,7 @@
 		"email": "ncab@npr.org",
 		"edad": 50,
 		"altura": 172,
-		"activo": false,
+		"activo": true,
 		"fecha_creacion": "30/11/2021"
 	}
 ]

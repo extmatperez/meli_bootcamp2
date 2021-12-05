@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	usuarios "github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/8_goweb3/Go_Web/internal/usuarios"
+	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/8_goweb3/Go_Web/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,45 +32,39 @@ func NewUsuario(serv usuarios.Service) *Usuario {
 
 func (control *Usuario) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		validacion, err := validarToken(c)
-
-		if err != nil {
-			c.String(validacion, err.Error())
+		if !validarToken(c) {
 			return
 		}
 
 		usuarios, err := control.service.GetAll()
 		if err != nil {
-			c.String(400, "Hubo un error %v", err)
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error %v", err)))
 		} else {
-			c.JSON(200, usuarios)
+			c.JSON(200, web.NewResponse(200, usuarios, ""))
 		}
 	}
 }
 
 func (control *Usuario) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		validacion, err := validarToken(c)
-
-		if err != nil {
-			c.String(validacion, err.Error())
+		if !validarToken(c) {
 			return
 		}
 
 		var newUser request
-		err = c.ShouldBindJSON(&newUser)
+		err := c.ShouldBindJSON(&newUser)
 		if err != nil {
-			c.String(400, "Hubo un error al querer cargar un usuario %v", err)
+			c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("Hubo un error al querer cargar un usuario %v", err)))
 		} else {
 			err := validarUsuario(newUser)
 			if err != nil {
-				c.String(400, err.Error())
+				c.JSON(400, web.NewResponse(400, nil, err.Error()))
 			} else {
 				response, err := control.service.Store(newUser.Nombre, newUser.Apellido, newUser.Email, newUser.Edad, newUser.Altura, newUser.Activo, newUser.FechaCreacion)
 				if err != nil {
-					c.String(400, "No se pudo cargar la persona %v", err)
+					c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo cargar la persona %v", err)))
 				} else {
-					c.JSON(200, response)
+					c.JSON(200, web.NewResponse(200, response, ""))
 				}
 			}
 		}
@@ -78,27 +73,24 @@ func (control *Usuario) Store() gin.HandlerFunc {
 
 func (control *Usuario) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		validacion, err := validarToken(c)
-
-		if err != nil {
-			c.String(validacion, err.Error())
+		if !validarToken(c) {
 			return
 		}
 
 		var updateUser request
-		err = c.ShouldBindJSON(&updateUser)
+		err := c.ShouldBindJSON(&updateUser)
 		if err != nil {
-			c.String(400, err.Error())
+			c.JSON(400, web.NewResponse(400, nil, err.Error()))
 		} else {
 			err := validarUsuario(updateUser)
 			if err != nil {
-				c.String(400, err.Error())
+				c.JSON(400, web.NewResponse(400, nil, err.Error()))
 			} else {
 				response, err := control.service.Update(updateUser.ID, updateUser.Nombre, updateUser.Apellido, updateUser.Email, updateUser.Edad, updateUser.Altura, updateUser.Activo, updateUser.FechaCreacion)
 				if err != nil {
-					c.String(404, err.Error())
+					c.JSON(404, web.NewResponse(404, nil, err.Error()))
 				} else {
-					c.JSON(200, response)
+					c.JSON(200, web.NewResponse(200, response, ""))
 				}
 			}
 		}
@@ -107,22 +99,19 @@ func (control *Usuario) Update() gin.HandlerFunc {
 
 func (control *Usuario) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		validacion, err := validarToken(c)
-
-		if err != nil {
-			c.String(validacion, err.Error())
+		if !validarToken(c) {
 			return
 		}
 
 		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 		if err != nil {
-			c.String(400, "El ID ingresado no es válido")
+			c.JSON(400, web.NewResponse(400, nil, "El ID ingresado no es válido"))
 		} else {
 			err := control.service.Delete(int(id))
 			if err != nil {
-				c.String(404, err.Error())
+				c.JSON(404, web.NewResponse(404, nil, err.Error()))
 			} else {
-				c.String(200, "Usuario %d ha sido eliminado correctamente", id)
+				c.JSON(200, web.NewResponse(200, fmt.Sprintf("Usuario %d ha sido eliminado correctamente", id), ""))
 			}
 		}
 	}
@@ -130,29 +119,26 @@ func (control *Usuario) Delete() gin.HandlerFunc {
 
 func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		validacion, err := validarToken(c)
-
-		if err != nil {
-			c.String(validacion, err.Error())
+		if !validarToken(c) {
 			return
 		}
 
 		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 		if err != nil {
-			c.String(400, err.Error())
+			c.JSON(400, web.NewResponse(400, nil, err.Error()))
 		} else {
 			var userPatch request
 			err := c.ShouldBindJSON(&userPatch)
 			fmt.Println(userPatch)
 			if err != nil {
-				c.String(400, err.Error())
+				c.JSON(400, web.NewResponse(400, nil, err.Error()))
 			} else {
 				user, err := control.service.EditarNombreEdad(int(id), userPatch.Nombre, userPatch.Edad)
 
 				if err != nil {
-					c.String(404, err.Error())
+					c.JSON(404, web.NewResponse(404, nil, err.Error()))
 				} else {
-					c.JSON(200, user)
+					c.JSON(200, web.NewResponse(200, user, ""))
 				}
 			}
 		}
@@ -160,19 +146,21 @@ func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
 	}
 }
 
-func validarToken(ctx *gin.Context) (int, error) {
+func validarToken(ctx *gin.Context) bool {
 	token := ctx.GetHeader("token")
 
 	if token == "" {
-		return 404, fmt.Errorf("imposible validar token")
+		ctx.JSON(400, web.NewResponse(400, nil, "Imposible validar token"))
+		return false
 	}
 
 	token_env := os.Getenv("TOKEN")
 
 	if token != token_env {
-		return 400, fmt.Errorf("token incorrecto")
+		ctx.JSON(400, web.NewResponse(400, nil, "Token incorrecto"))
+		return false
 	}
-	return 200, nil
+	return true
 }
 
 func validarUsuario(usuario request) error {
