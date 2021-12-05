@@ -1,0 +1,82 @@
+[
+ {
+  "id": 1,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 2,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 3,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 4,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 5,
+  "name": "nuev33a",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 6,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 7,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ },
+ {
+  "id": 8,
+  "name": "nuevo",
+  "color": "Indigo",
+  "price": "$0.18",
+  "stock": "24",
+  "code": "99417ea4-331f-4ad7-8ba0-5844d6e673e8",
+  "published": false,
+  "creation_date": "21.01.2021"
+ }
+]

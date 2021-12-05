@@ -1,0 +1,121 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/products/add": {
+            "post": {
+                "description": "store products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Store products",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Product to store",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/get": {
+            "get": {
+                "description": "get products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "List products",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.request": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "creation_date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "stock": {
+                    "type": "string"
+                }
+            }
+        },
+        "web.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

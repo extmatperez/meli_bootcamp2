@@ -1,0 +1,78 @@
+definitions:
+  handler.request:
+    properties:
+      code:
+        type: string
+      color:
+        type: string
+      creation_date:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      published:
+        type: boolean
+      stock:
+        type: string
+    type: object
+  web.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      error:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /products/add:
+    post:
+      consumes:
+      - application/json
+      description: store products
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Product to store
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/handler.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Store products
+      tags:
+      - Products
+  /products/get:
+    get:
+      consumes:
+      - application/json
+      description: get products
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: List products
+      tags:
+      - Products
+swagger: "2.0"
