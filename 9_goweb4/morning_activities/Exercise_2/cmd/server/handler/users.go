@@ -5,7 +5,8 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"os"
+
+	/* "os" */
 	"strconv"
 
 	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_2/internal/users"
@@ -35,7 +36,7 @@ func New_user(ser users.Service) *Users {
 }
 
 // Agregamos una función para validar el token
-func validate_token(c *gin.Context) bool {
+/* func validate_token(c *gin.Context) bool {
 	token := c.GetHeader("token")
 	if token == "" {
 		c.JSON(http.StatusBadRequest, web.New_response(400, nil, "Missing token."))
@@ -49,7 +50,7 @@ func validate_token(c *gin.Context) bool {
 		return false
 	}
 	return true
-}
+} */
 
 // Store godoc
 // @Summary Stores users
@@ -64,9 +65,9 @@ func (us *Users) Get_users() gin.HandlerFunc {
 	// Agregar Get_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
-		if !validate_token(c) {
+		/* if !validate_token(c) {
 			return
-		}
+		} */
 		users, err := us.service.Get_users()
 
 		if err != nil {
@@ -92,9 +93,9 @@ func (controller *Users) Post_users() gin.HandlerFunc {
 	// Agregar Post_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
-		if !validate_token(c) {
+		/* if !validate_token(c) {
 			return
-		}
+		} */
 		var use request
 
 		err := c.ShouldBindJSON(&use)
@@ -128,9 +129,9 @@ func (controller *Users) Update_users() gin.HandlerFunc {
 	// Agregar Update_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
-		if !validate_token(c) {
+		/* if !validate_token(c) {
 			return
-		}
+		} */
 		var use request
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
@@ -170,9 +171,9 @@ func (controller *Users) Update_users_first_name() gin.HandlerFunc {
 	// Agregar Update_users_fields handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
-		if !validate_token(c) {
+		/* if !validate_token(c) {
 			return
-		}
+		} */
 		var use request
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
@@ -217,9 +218,9 @@ func (controller *Users) Delete_users() gin.HandlerFunc {
 	// Agregar Delete_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
-		if !validate_token(c) {
+		/* if !validate_token(c) {
 			return
-		}
+		} */
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
