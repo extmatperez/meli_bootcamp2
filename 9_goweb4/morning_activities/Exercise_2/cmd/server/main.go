@@ -12,12 +12,16 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_2/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_2/docs"
 	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_2/internal/users"
 	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_2/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 // @title MELI Bootcamp API
@@ -46,6 +50,8 @@ func main() {
 	repo := users.New_repository(db)
 	service := users.New_service(repo)
 	controller := handler.New_user(service)
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.GET("/users", controller.Get_users())
 	router.POST("/users", controller.Post_users())
