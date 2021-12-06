@@ -24,6 +24,32 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
+func respondWithError(c *gin.Context, code int, message interface{}) {
+	c.AbortWithStatusJSON(code, gin.H{"error": message})
+}
+
+func TokenAuthMiddleware() gin.HandlerFunc {
+	requiredToken := os.Getenv("TOKEN")
+
+	// We want to make sure the token is set, bail if not
+	if requiredToken == "" {
+		log.Fatal("Please set API_TOKEN environment variable")
+	}
+	return func(c *gin.Context) {
+		token := c.GetHeader("token")
+
+		if token == "" {
+			respondWithError(c, 401, "API token is required")
+			return
+		}
+		if token != requiredToken {
+			respondWithError(c, 401, "Invalid API token")
+			return
+		}
+		c.Next()
+	}
+}
+
 // @title MELI Bootcamp API
 // @version 1.0
 // @description This API Handle MELI Users.
@@ -53,6 +79,9 @@ func main() {
 
 	router := gin.Default()
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// Utilizo el middleware que va a autenticar el token, debajo de las rutas de documentación para que no cree conflicto
+	router.Use(TokenAuthMiddleware())
 
 	router.GET("/users", controller.Get_users())
 	router.POST("/users", controller.Post_users())
