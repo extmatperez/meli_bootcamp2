@@ -30,6 +30,15 @@ func NewUsuario(serv usuarios.Service) *Usuario {
 	return &Usuario{service: serv}
 }
 
+// ListProducts godoc
+// @Summary List usuarios
+// @Tags Usuario
+// @Description get usuarios
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /usuarios/get [get]
 func (control *Usuario) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validarToken(c) {
@@ -45,6 +54,16 @@ func (control *Usuario) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store usuario
+// @Tags Usuario
+// @Description store usuario
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param usuario body request true "Usuario to store"
+// @Success 200 {object} web.Response
+// @Router /usuarios/add [post]
 func (control *Usuario) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validarToken(c) {
@@ -71,6 +90,16 @@ func (control *Usuario) Store() gin.HandlerFunc {
 	}
 }
 
+// UpdateProducts godoc
+// @Summary Update usuario
+// @Tags Usuario
+// @Description update usuario
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param usuario body request true "Usuario to update"
+// @Success 200 {object} web.Response
+// @Router /usuarios/update [put]
 func (control *Usuario) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validarToken(c) {
@@ -97,6 +126,15 @@ func (control *Usuario) Update() gin.HandlerFunc {
 	}
 }
 
+// DeleteUsuario godoc
+// @Summary Delete usuario
+// @Tags Usuario
+// @Description delete usuario
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} web.Response
+// @Router /usuarios/delete/:id [delete]
 func (control *Usuario) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validarToken(c) {
@@ -117,6 +155,16 @@ func (control *Usuario) Delete() gin.HandlerFunc {
 	}
 }
 
+// PatchProducts godoc
+// @Summary Patch usuario
+// @Tags Usuario
+// @Description patch usuario
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param usuario body request true "Usuario to patch"
+// @Success 200 {object} web.Response
+// @Router /usuarios/patch [patch]
 func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !validarToken(c) {
