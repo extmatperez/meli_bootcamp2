@@ -42,6 +42,15 @@ func validToken(ctx *gin.Context) bool {
 	return true
 }
 
+// ListProducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [get]
 func (tran *Transaction) GetAll() gin.HandlerFunc {
 
 	return func(context *gin.Context) {
@@ -58,6 +67,16 @@ func (tran *Transaction) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description store products
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param product body request true "Product to store"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (tran *Transaction) Store() gin.HandlerFunc {
 
 	return func(context *gin.Context) {
