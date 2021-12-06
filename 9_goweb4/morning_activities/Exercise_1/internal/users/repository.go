@@ -95,7 +95,7 @@ func (repo *repository) Update_users(id int, first_name string, last_name string
 		if v.ID == id {
 			// Actualizo mi JSON
 			users[i] = user
-			// Sobre escribo mi JSON
+			// Sobre-escribo mi JSON
 			err := repo.db.Write(users)
 			if err != nil {
 				return Users{}, err
@@ -108,10 +108,19 @@ func (repo *repository) Update_users(id int, first_name string, last_name string
 
 // Implementamos la funcionalidad para actualizar el usuario en memoria, en caso de que coincida con el ID enviado, caso contrario retorna un error.
 func (repo *repository) Update_users_first_name(id int, first_name string) (Users, error) {
+	err := repo.db.Read(&users)
+
+	if err != nil {
+		return Users{}, err
+	}
 
 	for i, v := range users {
 		if v.ID == id {
 			users[i].FirstName = first_name
+			err := repo.db.Write(users)
+			if err != nil {
+				return Users{}, err
+			}
 			return users[i], nil
 		}
 	}
