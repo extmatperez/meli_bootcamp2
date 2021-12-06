@@ -41,9 +41,9 @@ func NewUsuario(serv usuarios.Service) *Usuario {
 // @Router /usuarios/get [get]
 func (control *Usuario) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
+		// if !validarToken(c) {
+		// 	return
+		// }
 
 		usuarios, err := control.service.GetAll()
 		if err != nil {
@@ -66,9 +66,9 @@ func (control *Usuario) GetAll() gin.HandlerFunc {
 // @Router /usuarios/add [post]
 func (control *Usuario) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
+		// if !validarToken(c) {
+		// 	return
+		// }
 
 		var newUser request
 		err := c.ShouldBindJSON(&newUser)
@@ -102,9 +102,9 @@ func (control *Usuario) Store() gin.HandlerFunc {
 // @Router /usuarios/update [put]
 func (control *Usuario) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
+		// if !validarToken(c) {
+		// 	return
+		// }
 
 		var updateUser request
 		err := c.ShouldBindJSON(&updateUser)
@@ -137,9 +137,9 @@ func (control *Usuario) Update() gin.HandlerFunc {
 // @Router /usuarios/delete/:id [delete]
 func (control *Usuario) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
+		// if !validarToken(c) {
+		// 	return
+		// }
 
 		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 		if err != nil {
@@ -167,9 +167,9 @@ func (control *Usuario) Delete() gin.HandlerFunc {
 // @Router /usuarios/patch [patch]
 func (control *Usuario) EditarNombreEdad() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validarToken(c) {
-			return
-		}
+		// if !validarToken(c) {
+		// 	return
+		// }
 
 		id, err := strconv.ParseInt(c.Param("id"), 0, 64)
 		if err != nil {
