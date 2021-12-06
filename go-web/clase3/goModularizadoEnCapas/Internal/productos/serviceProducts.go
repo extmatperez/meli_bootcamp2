@@ -4,6 +4,8 @@ type Service interface {
 	GetAll() ([]Product, error)
 	Store(productoAux Product) (Product, error)
 	Update(varID int, productoAux Product) (Product, error)
+	UpdateName(varID int, nameUpdate string) error
+	Delete(varID int) error
 }
 
 type service struct {
@@ -41,5 +43,23 @@ func (ser *service) Update(varID int, producto Product) (Product, error) {
 		return Product{}, err
 	} else {
 		return producto, nil
+	}
+}
+
+func (ser *service) UpdateName(varID int, nameUpdate string) error {
+	err := ser.repository.UpdateName(varID, nameUpdate)
+	if err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
+
+func (ser *service) Delete(varID int) error {
+	err := ser.repository.Delete(varID)
+	if err != nil {
+		return err
+	} else {
+		return nil
 	}
 }

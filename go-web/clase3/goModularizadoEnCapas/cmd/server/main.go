@@ -19,7 +19,6 @@ func main() {
 	}
 
 	db := store.New(store.FileType, "./products.json")
-
 	repo := productos.NewRepository(db)
 	service := productos.NewService(repo)
 	controller := handler.NewPersona(service)
@@ -27,7 +26,7 @@ func main() {
 	router.GET("/personas/get", controller.GetAll())
 	router.POST("/personas/add", controller.Store())
 	router.PUT("/modificar/:id", controller.Update())
-	//router.PATCH("/modificarNombre/:id", controller.UpdateName())
-	//router.DELETE("/delete/:id", controller.delete())
+	router.PATCH("/modificarNombre/:id", controller.UpdateName())
+	router.DELETE("/delete/:id", controller.Delete())
 	router.Run()
 }

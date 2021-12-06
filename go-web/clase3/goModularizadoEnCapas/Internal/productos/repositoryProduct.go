@@ -25,6 +25,8 @@ type Repository interface {
 	Store(productoAux Product) (Product, error)
 	LastId() (int, error)
 	Update(varID int, producto Product) (Product, error)
+	UpdateName(varID int, nameUpdate string) error
+	Delete(varID int) error
 }
 
 type repository struct {
@@ -74,4 +76,37 @@ func (repo *repository) Update(varID int, productCTX Product) (Product, error) {
 		}
 	}
 	return Product{}, errors.New("No se ha encontrado el producto a actualizar")
+}
+
+func (repo *repository) UpdateName(varID int, nameUpdate string) error {
+	var productoAux []Product
+	repo.db.Read(&productoAux)
+	for i, _ := range productoAux {
+		if productoAux[i].Id == varID {
+			productoAux[i].Nombre = nameUpdate
+			repo.db.Write(productoAux)
+			return nil
+		}
+	}
+	return errors.New("No se ha encontrado el producto a actualizar")
+}
+
+func (repo *repository) Delete(varID int) error {
+	var productoAux []Product
+	var productoEliminado []Product
+	var bandera bool = false
+	repo.db.Read(&productoAux)
+	for i, _ := range productoAux {
+		if productoAux[i].Id != varID {
+			productoEliminado = append(productoEliminado, productoAux[i])
+		} else {
+			bandera = true
+		}
+	}
+	if bandera == false {
+		return errors.New("No se ha encontrado el producto a eliminar")
+	} else {
+		repo.db.Write(&productoEliminado)
+		return nil
+	}
 }

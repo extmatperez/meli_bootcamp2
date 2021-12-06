@@ -3,7 +3,7 @@ package internal
 import (
 	"errors"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/zamora_damian/go-web/clase3/goModularizadoEnCapas/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/zamora_damian/go-web/clase4/goModularizadoEnCapas/pkg/store"
 )
 
 type Product struct {
@@ -25,6 +25,8 @@ type Repository interface {
 	Store(productoAux Product) (Product, error)
 	LastId() (int, error)
 	Update(varID int, producto Product) (Product, error)
+	UpdateName(varID int, nameUpdate string) error
+	Delete(varID int) error
 }
 
 type repository struct {
@@ -41,24 +43,70 @@ func (repo *repository) GetAll() ([]Product, error) {
 	return productoAux, nil
 }
 
-func (repo *repository) Store(productoAux Product) (Product, error) {
-	lastID = productoAux.Id
-	producto = append(producto, productoAux)
-	return productoAux, nil
+func (repo *repository) Store(productCTX Product) (Product, error) {
+
+	var productoAux []Product
+	repo.db.Read(&productoAux)
+	lastID = productCTX.Id
+	productoAux = append(productoAux, productCTX)
+	repo.db.Write(productoAux)
+	return productCTX, nil
 }
 
 func (repo *repository) LastId() (int, error) {
-	return lastID, nil
+	err := repo.db.Read(&producto)
+	if err != nil {
+		return 0, err
+	}
+	if len(producto) == 0 {
+		return 0, nil
+	}
+	return producto[len(producto)-1].Id, nil
 }
 
-func (repo *repository) Update(varID int, productoAux Product) (Product, error) {
-
-	for i, _ := range producto {
-		if producto[i].Id == varID {
-			productoAux.Id = varID
-			producto[i] = productoAux
-			return producto[i], nil
+func (repo *repository) Update(varID int, productCTX Product) (Product, error) {
+	var productoAux []Product
+	repo.db.Read(&productoAux)
+	for i, _ := range productoAux {
+		if productoAux[i].Id == varID {
+			productCTX.Id = varID
+			productoAux[i] = productCTX
+			repo.db.Write(productoAux)
+			return productCTX, nil
 		}
 	}
 	return Product{}, errors.New("No se ha encontrado el producto a actualizar")
+}
+
+func (repo *repository) UpdateName(varID int, nameUpdate string) error {
+	var productoAux []Product
+	repo.db.Read(&productoAux)
+	for i, _ := range productoAux {
+		if productoAux[i].Id == varID {
+			productoAux[i].Nombre = nameUpdate
+			repo.db.Write(productoAux)
+			return nil
+		}
+	}
+	return errors.New("No se ha encontrado el producto a actualizar")
+}
+
+func (repo *repository) Delete(varID int) error {
+	var productoAux []Product
+	var productoEliminado []Product
+	var bandera bool = false
+	repo.db.Read(&productoAux)
+	for i, _ := range productoAux {
+		if productoAux[i].Id != varID {
+			productoEliminado = append(productoEliminado, productoAux[i])
+		} else {
+			bandera = true
+		}
+	}
+	if bandera == false {
+		return errors.New("No se ha encontrado el producto a eliminar")
+	} else {
+		repo.db.Write(&productoEliminado)
+		return nil
+	}
 }

@@ -61,6 +61,14 @@ func (controller *Producto) Store() gin.HandlerFunc {
 		if err != nil {
 			ctx.String(400, "Hubo un error al querer cargar una persona %v", err)
 		} else {
+			if producto.Nombre == "" {
+				ctx.JSON(400, gin.H{"error": "No ingresó el nombre"})
+				return
+			}
+			if producto.Stock == "0" {
+				ctx.JSON(400, gin.H{"error": "El stock no puede ser cero."})
+				return
+			}
 			response, err := controller.service.Store(producto)
 			if err != nil {
 				ctx.String(400, "No se pudo cargar la persona %v", err)
@@ -89,6 +97,49 @@ func (controller *Producto) Update() gin.HandlerFunc {
 				ctx.String(400, "No se pudo cargar la persona %v", err)
 			} else {
 				ctx.JSON(200, response)
+			}
+		}
+
+	}
+}
+
+func (controller *Producto) UpdateName() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if !ValidarToken(ctx) {
+			ctx.JSON(401, "")
+			return
+		}
+		var nameUpdate = ctx.GetHeader("nameUpdate")
+		varID, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.String(400, "No se pudo convertir ID a integer %v", err)
+		} else {
+			err := controller.service.UpdateName(varID, nameUpdate)
+			if err != nil {
+				ctx.String(400, "No se pudo cargar la persona %v", err)
+			} else {
+				ctx.String(200, "Se actualizo el producto con el id %v", varID)
+			}
+		}
+
+	}
+}
+
+func (controller *Producto) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if !ValidarToken(ctx) {
+			ctx.JSON(401, "")
+			return
+		}
+		varID, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.String(400, "No se pudo convertir ID a integer %v", err)
+		} else {
+			err := controller.service.Delete(varID)
+			if err != nil {
+				ctx.String(400, "No se ha encontraro un producto para eliminar con id %v", varID)
+			} else {
+				ctx.String(200, "Se elimino el producto con el id %v", varID)
 			}
 		}
 
