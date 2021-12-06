@@ -3,11 +3,13 @@ package handler
 
 // importo el package handler
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
 
 	users "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_1/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_1/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,12 +38,14 @@ func New_user(ser users.Service) *Users {
 func validate_token(c *gin.Context) bool {
 	token := c.GetHeader("token")
 	if token == "" {
-		c.String(http.StatusBadRequest, "Missing token.")
+		c.JSON(http.StatusBadRequest, web.New_response(400, nil, "Missing token."))
+		// c.String(http.StatusBadRequest, "Missing token.")
 		return false
 	}
 	token_env := os.Getenv("TOKEN")
 	if token != token_env {
-		c.String(http.StatusBadRequest, "Invalid Token.")
+		c.JSON(http.StatusBadRequest, web.New_response(404, nil, "Invalid Token."))
+		// c.String(http.StatusBadRequest, "Invalid Token.")
 		return false
 	}
 	return true
@@ -57,9 +61,11 @@ func (us *Users) Get_users() gin.HandlerFunc {
 		users, err := us.service.Get_users()
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Something went wrong %v", err)
+			c.JSON(http.StatusBadRequest, web.New_response(404, nil, fmt.Sprintf("Something went wrong %v", err)))
+			// c.String(http.StatusBadRequest, "Something went wrong %v", err)
 		} else {
-			c.JSON(http.StatusOK, users)
+			c.JSON(http.StatusOK, web.New_response(200, users, ""))
+			// c.JSON(http.StatusOK, users)
 		}
 	}
 }
@@ -76,13 +82,16 @@ func (controller *Users) Post_users() gin.HandlerFunc {
 		err := c.ShouldBindJSON(&use)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Something went wrong to post a new user %v", err)
+			c.JSON(http.StatusBadRequest, web.New_response(404, nil, fmt.Sprintf("Something went wrong to post a new user %v", err)))
+			// c.String(http.StatusBadRequest, "Something went wrong to post a new user %v", err)
 		} else {
 			response, err := controller.service.Post_users(use.FirstName, use.LastName, use.Email, use.Age, use.Height, use.Active, use.Date)
 			if err != nil {
-				c.String(http.StatusBadRequest, "Something went wrong to post a new user")
+				c.JSON(http.StatusBadRequest, web.New_response(http.StatusBadRequest, nil, "Something went wrong to post a new user"))
+				// c.String(http.StatusBadRequest, "Something went wrong to post a new user")
 			} else {
-				c.JSON(http.StatusOK, response)
+				c.JSON(http.StatusOK, web.New_response(200, response, ""))
+				// c.JSON(http.StatusOK, response)
 			}
 		}
 	}
@@ -100,19 +109,22 @@ func (controller *Users) Update_users() gin.HandlerFunc {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "The id is not a valid id.")
+			c.JSON(http.StatusBadRequest, web.New_response(404, nil, "The id is not a valid id."))
+			// c.String(http.StatusBadRequest, "The id is not a valid id.")
 		}
 
 		err = c.ShouldBindJSON(&use)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Something went wrong in body.")
+			c.JSON(http.StatusBadRequest, web.New_response(http.StatusBadRequest, nil, "Something went wrong in body."))
+			// c.String(http.StatusBadRequest, "Something went wrong in body.")
 		} else {
 			user_updated, err := controller.service.Update_users(int(id), use.FirstName, use.LastName, use.Email, use.Age, use.Height, use.Active, use.Date)
 			if err != nil {
 				c.JSON(http.StatusBadRequest, err.Error())
 			} else {
-				c.JSON(http.StatusOK, user_updated)
+				c.JSON(http.StatusOK, web.New_response(200, user_updated, ""))
+				// c.JSON(http.StatusOK, user_updated)
 			}
 		}
 	}
@@ -130,15 +142,18 @@ func (controller *Users) Update_users_first_name() gin.HandlerFunc {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "The id is not a valid id.")
+			c.JSON(http.StatusBadRequest, web.New_response(404, nil, "The id is not a valid id."))
+			// c.String(http.StatusBadRequest, "The id is not a valid id.")
 		}
 
 		err = c.ShouldBindJSON(&use)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "Something went wrong in body.")
+			c.JSON(http.StatusBadRequest, web.New_response(http.StatusBadRequest, nil, "Something went wrong in body."))
+			// c.String(http.StatusBadRequest, "Something went wrong in body.")
 		} else {
 			if use.FirstName == "" {
+				c.JSON(http.StatusBadRequest, web.New_response(http.StatusBadRequest, nil, "The Name is required."))
 				c.String(http.StatusBadRequest, "The Name is required.")
 				return
 			}
@@ -146,7 +161,8 @@ func (controller *Users) Update_users_first_name() gin.HandlerFunc {
 			if err != nil {
 				c.JSON(http.StatusBadRequest, err.Error())
 			} else {
-				c.JSON(http.StatusOK, user_updated)
+				c.JSON(http.StatusOK, web.New_response(200, user_updated, ""))
+				// c.JSON(http.StatusOK, user_updated)
 			}
 		}
 	}
@@ -163,7 +179,8 @@ func (controller *Users) Delete_users() gin.HandlerFunc {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 
 		if err != nil {
-			c.String(http.StatusBadRequest, "The id is not a valid id.")
+			c.JSON(http.StatusBadRequest, web.New_response(404, nil, "The id is not a valid id."))
+			// c.String(http.StatusBadRequest, "The id is not a valid id.")
 		}
 
 		err = controller.service.Delete_users(int(id))
@@ -171,7 +188,8 @@ func (controller *Users) Delete_users() gin.HandlerFunc {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err.Error())
 		} else {
-			c.String(http.StatusOK, "The user %v has been deleted.", id)
+			c.JSON(http.StatusOK, web.New_response(201, nil, fmt.Sprintf("The user %v has been deleted.", id)))
+			// c.String(http.StatusOK, "The user %v has been deleted.", id)
 		}
 
 	}
