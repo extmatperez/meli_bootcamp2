@@ -60,9 +60,8 @@ func validate_token(c *gin.Context) bool {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Router /users [get]
-
-// Agregar Get_users handler que va a ser usado en el endpoint por main
 func (us *Users) Get_users() gin.HandlerFunc {
+	// Agregar Get_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
 		if !validate_token(c) {
@@ -89,9 +88,8 @@ func (us *Users) Get_users() gin.HandlerFunc {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Router /users/{id} [post]
-
-// Agregar Post_users handler que va a ser usado en el endpoint por main
 func (controller *Users) Post_users() gin.HandlerFunc {
+	// Agregar Post_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
 		if !validate_token(c) {
@@ -126,9 +124,8 @@ func (controller *Users) Post_users() gin.HandlerFunc {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Router /users/{id} [put]
-
-// Agregar Update_users handler que va a ser usado en el endpoint por main
 func (controller *Users) Update_users() gin.HandlerFunc {
+	// Agregar Update_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
 		if !validate_token(c) {
@@ -169,9 +166,8 @@ func (controller *Users) Update_users() gin.HandlerFunc {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Router /users/{id} [patch]
-
-// Agregar Update_users_fields handler que va a ser usado en el endpoint por main
 func (controller *Users) Update_users_first_name() gin.HandlerFunc {
+	// Agregar Update_users_fields handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
 		if !validate_token(c) {
@@ -217,9 +213,8 @@ func (controller *Users) Update_users_first_name() gin.HandlerFunc {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Router /users/{id} [delete]
-
-// Agregar Delete_users handler que va a ser usado en el endpoint por main
 func (controller *Users) Delete_users() gin.HandlerFunc {
+	// Agregar Delete_users handler que va a ser usado en el endpoint por main
 	return func(c *gin.Context) {
 		// Llamamos a la función validate_token
 		if !validate_token(c) {
