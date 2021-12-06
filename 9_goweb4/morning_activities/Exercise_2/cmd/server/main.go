@@ -43,14 +43,15 @@ func main() {
 		log.Fatal("Something went wrong with the .env file")
 	}
 
-	router := gin.Default()
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
 
 	// Creamos una variable que guarde lo que vamos a escribir en nuestro json y se lo pasamos el repo
 	db := store.New(store.File_type, "./users.json")
 	repo := users.New_repository(db)
 	service := users.New_service(repo)
 	controller := handler.New_user(service)
-	docs.SwaggerInfo.Host = os.Getenv("HOST")
+
+	router := gin.Default()
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.GET("/users", controller.Get_users())
