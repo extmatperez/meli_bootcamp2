@@ -4,7 +4,7 @@ package internal
 import (
 	"fmt"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/8_goweb3/afternoon_activities/Exercise_2_3/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/9_goweb4/morning_activities/Exercise_2/pkg/store"
 )
 
 // Estructura de los datos que voy a manipular
