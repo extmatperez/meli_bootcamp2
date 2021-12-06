@@ -20,6 +20,17 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title MELI Bootcamp API
+// @version 1.0
+// @description This API Handle MELI Users.
+// @termsOfService https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
+
+// @contact.name API Support
+// @contact.url https://developers.mercadolibre.com.ar/support
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
 // Creo la función main, agrego mi router y lo inicializo, creo las rutas necesarias y agrego los handlers (controllers)
 func main() {
 	// Levanto las variables de entorno del archivo .env

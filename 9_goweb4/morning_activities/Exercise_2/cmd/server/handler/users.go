@@ -51,6 +51,16 @@ func validate_token(c *gin.Context) bool {
 	return true
 }
 
+// Store godoc
+// @Summary Stores users
+// @Tags Users
+// @Description posts user
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /users [get]
+
 // Agregar Get_users handler que va a ser usado en el endpoint por main
 func (us *Users) Get_users() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -69,6 +79,16 @@ func (us *Users) Get_users() gin.HandlerFunc {
 		}
 	}
 }
+
+// Post_users godoc
+// @Summary Stores users
+// @Tags Users
+// @Description posts user
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /users/{id} [post]
 
 // Agregar Post_users handler que va a ser usado en el endpoint por main
 func (controller *Users) Post_users() gin.HandlerFunc {
@@ -96,6 +116,16 @@ func (controller *Users) Post_users() gin.HandlerFunc {
 		}
 	}
 }
+
+// Update_users godoc
+// @Summary Edits a user
+// @Tags Users
+// @Description posts user
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /users/{id} [put]
 
 // Agregar Update_users handler que va a ser usado en el endpoint por main
 func (controller *Users) Update_users() gin.HandlerFunc {
@@ -129,6 +159,16 @@ func (controller *Users) Update_users() gin.HandlerFunc {
 		}
 	}
 }
+
+// Update_users_first_name godoc
+// @Summary Edits users name
+// @Tags Users
+// @Description posts user
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /users/{id} [patch]
 
 // Agregar Update_users_fields handler que va a ser usado en el endpoint por main
 func (controller *Users) Update_users_first_name() gin.HandlerFunc {
@@ -167,6 +207,16 @@ func (controller *Users) Update_users_first_name() gin.HandlerFunc {
 		}
 	}
 }
+
+// Delete godoc
+// @Summary Deletes a user
+// @Tags Users
+// @Description Deletes user
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /users/{id} [delete]
 
 // Agregar Delete_users handler que va a ser usado en el endpoint por main
 func (controller *Users) Delete_users() gin.HandlerFunc {
