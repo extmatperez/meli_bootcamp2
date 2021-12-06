@@ -1,14 +1,11 @@
-/* Ejercicio 1 - Manejo de respuestas genéricas
-Se requiere implementar un manejo de respuestas genéricas para enviar siempre el mismo formato en las peticiones. Para lograrlo se deben realizar los
-siguientes pasos:
-Generar el paquete web dentro del directorio pkg.
-Realizar la estructura Response con los capos: code, data y error:
-code tendra el codigo de retorno.
-data tendrá la estructura que envía la aplicación (en caso que no haya error).
-error tendrá el error recibido en formato texto (en caso que haya error).
-Desarrollar una función que reciba el code cómo entero, data como interfaz y error como string.
-La función debe retornar en base al código, si es una respuesta con el data o con el error.
-Implementar esta función en todos los retornos de los controladores, antes de enviar la respuesta al cliente la función debe generar la estructura que definimos.
+/* Ejercicio 2 - Documentación
+Se requiere implementar la documentación del proyecto utilizando swagger, en el mismo deben estar todos los endpoints documentados. Para lograrlo se debe tener en cuenta:
+Utilizar el paquete swaggo.
+Generar las anotaciones en la función main.
+Realizar las anotaciones en los controladores.
+Desarrollar el paquete docs con swaggo en base a las anotaciones.
+Agregar un endpoint mediante GET para visualizar la documentación generada.
+
 */
 
 package main
