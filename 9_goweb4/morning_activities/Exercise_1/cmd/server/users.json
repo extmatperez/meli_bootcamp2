@@ -1,7 +1,7 @@
 [
  {
   "id": 2,
-  "first_name": "Edgar",
+  "first_name": "Edguitar",
   "last_name": "Montenegro",
   "email": "bleftridge1@kickstarter.com",
   "age": 36,
@@ -33,16 +33,6 @@
   "id": 5,
   "first_name": "Miranda",
   "last_name": "Montenegro",
-  "email": "bleftridge1@kickstarter.com",
-  "age": 36,
-  "height": 194,
-  "active": false,
-  "date": "28/01/2021"
- },
- {
-  "id": 6,
-  "first_name": "Cinammon",
-  "last_name": "Barra Soto",
   "email": "bleftridge1@kickstarter.com",
   "age": 36,
   "height": 194,
