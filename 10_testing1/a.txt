@@ -1,0 +1,24 @@
+Ejercicio 1 
+¿Cuáles son las diferencias entre White Box y Black Box? 
+La principal diferencia es que para el Black box testing no se trabaja con el codigo, sino que con el 
+programa y las especificaciones indicadas para el sistema, en este caso no es necesario conocer el interior 
+de los procesos, simplemente se maneja que a determinados datos de entrada se debe obtener determinados resultados.
+
+El resultado de las black box testing estan a nivel usuario, por lo que existen grandes cantidades de caminos que 
+podrian ser no considerados al trabajar de forma superficial, a diferencia de los white box testing, los cuales se 
+puede hilar mas fino para encontrar posibles errores.
+
+Quien realiza las pruebas de caja blanca debe tener conocimientos tecnicos de programacion y del codigo utilizado, 
+para las pruebas de caja negra no es necesario.
+
+Por otro lado existen los testing de caja gris, los cuales corresponden a realizar test de caja negra pero por personas
+que conocen el codigo por dentro, lo cual permitiria llegar a pruebas en lugares mas conflictivos del sistema.
+
+Ejercicio 2
+¿Qué es un test funcional?.
+
+Ejercicio 3
+¿Qué es un Test de Integración?
+
+Ejercicio 4
+Indicar las dimensiones de calidad prioritarias en MELI.
