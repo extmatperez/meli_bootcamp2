@@ -1,0 +1,26 @@
+1) El black box testing o testing de caja negra es un metodo de testing en el que la estructura, diseño o funcionamiento interno es desconocida por quien ejecuta
+la prueba, por lo que la finalidad es la prueba de la funcionalidad, evaluando las respustas y reacciones del componente ante distintos escenarios. 
+El white box testing o testing de caja blanca es, a diferencia del anterior, el metodo de testing en el que quien ejecuta la prueba conoce y tiene visibilidad sobre
+el codigo, por lo que las pruebas no se ejecutan desde la perspectiva de un usuario final, y se centran en los detalles algoritmicos del software.
+
+2) Los test funcionales son pruebas que, luego de la aprobacion de las pruebas unitarias e integración, se basan en la entrada y salida del software, con la
+finalidad de comprobar que la respuesta del software ante cada escenario coincida con el resultado que se espera de dicho escenario. Basicamente, validan el
+comportamiento funcional del software.
+
+3) Los test de integracion son tests en los que se prueban que las funcionalidades que lograron una aprobación en el testing unitario funcionen en un todo del
+sistema, es decir, verificar que las funcionalidades trabajan en conjunto, probando la comunicacion entre distintos componentes o capas de la aplicacion, por ejemplo,
+probar la interaccion con una o multiples bases de datos, y asegurar que los microservicios operen como se espera.
+
+4) Son los principios SOLID y FIRST.
+S: Single Responsability Principle: Un objeto solo debe tener una unica responsabilidad.
+O: Open/Closed Principle: Los objetos deben estar abiertos para su extension pero cerrados a su modificacion.
+L: Liskov Substitution Principle: Los objetos deben ser reemplazables por objetos hijos (osea, subtipos) sin alterar el correcto funcionamiento.
+I: Interface Segregation Principle: Muchas interfaces especificas son mejores que una sola de proposito general.
+D: Dependency Inversion Principle: Es necesario desacoplar los objetos abstractos (por ejemplo, interfaces) de sus implementaciones.
+
+F: FAST (RAPIDOS): Es posible tener miles de tests en el proyecto y todos deben ser rapidos de correr.
+I: ISOLATED/INDEPENDENT: Un metodo de testing debe cumplir con 3A (Arrange, Act, Assert, o GIVEN, WHEN y THEN). No debe ser necesario que se corran en un orden.
+R: REPEATABLE (REPETIBLES): Los resultados son deterministicos, por lo que no dependen de los datos del ambiente mientras corren, por ejemplo la hora del sistema.
+S: SELF-VALIDATING (AUTOVALIDADOS): No debe ser requerida una inspeccion manual para validar los resultados.
+T: THOROUGHT (COMPLETOS): Deben cubrir todos los escenarios de un caso de uso y no solo buscar un coverage del 100%. Como probando mutaciones, casos limites,
+excepciones, errores, etc.
