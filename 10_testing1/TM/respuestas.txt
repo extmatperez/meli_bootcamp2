@@ -1,0 +1,12 @@
+1. La principal diferencia es el nivel al que se hacen las pruebas y quién las realiza. Para Black Box las pruebas las realiza una persona ajena al desarrollo y se hacen a nivel funcional y no funcional pero solo teniendo en cuenta el rendimiento, las pruebas que se realizan son enfocadas a cómo lo ve el usuario final; mientras que White Box puede ser realizado por alguien que estuvo presente en el desarrollo del código y se prueba la implementación de métodos, funciones y el flujo de daso dentro del código.
+
+2. El test funcional, como su nombre lo dice, se basa únicamente en probar al correcta funcionalidad del software a través de las entredas y salidas generadas por éste; éstas salidas deben coincidir con unas salidas esperadas.
+
+3. Los test de integración realizan pruebas de forma conjunta a varios módulos del proyecto, los cuales pasaron por una fase de pruebas unitarias anteriormente; su objetivo es comprobar que estos módulos, funciones o métodos trabajan de forma adecuada en conjunto.
+
+4.
+	- Funcionalidad: El producto cumpla con los requisitos funcionales planteados para considerarse completo.
+	- Rendimiento: A de más de funcionalidad, el producto es eficiente en cuanto a tiempo y consumo de recursos.
+	- Fiabilidad: Confianza en las operaciones, transacciones y respuestas que arroja el producto de software, también contempla el manejo de errores.
+	- Seguridad: El producto cumple con los estándares de seguridad en cuanto a acceso de información por parte de terceros y contempla las vulnerabilidades que puedan presentarse.
+	- Mantenibilidad: Código fácil de mantener y pensado a la escalabilidad del producto, siempre tratando de que sea lo más "limpio" posible.
