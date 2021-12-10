@@ -1,0 +1,4 @@
+¿Qué es un Test de Integración?
+
+Las pruebas de integración verifican que los diferentes módulos y/o servicios
+usados por nuestra aplicación funcione en armonía cuando trabajan en conjunto.
