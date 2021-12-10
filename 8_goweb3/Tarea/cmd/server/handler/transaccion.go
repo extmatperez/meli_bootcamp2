@@ -18,9 +18,9 @@ type Transaccion struct {
 	service transacciones.Service
 }
 
-func NewTransaccion(s transacciones.Service) *Transaccion{
+func NewTransaccion(s transacciones.Service) *Transaccion {
 	return &Transaccion{
-		service: s
+		service: s,
 	}
 }
 
@@ -28,20 +28,20 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
 		if token != "1234567" {
-			ctx.JSON(401, gin.H{ "error" : "Token invalido"})
-			return 
+			ctx.JSON(401, gin.H{"error": "Token invalido"})
+			return
 		}
 		var req request
 		if err := ctx.Bind(&req); err != nil {
 			ctx.JSON(404, gin.H{
 				"error": err.Error(),
 			})
-			return 
+			return
 		}
-		t, err := t.service.Store(req.Codigo, req.Moneda, req.Monto, req.Emisor, req.Receptor)
+		t, err := t.service.Store(10, req.Codigo, req.Moneda, req.Monto, req.Emisor, req.Receptor)
 		if err != nil {
-			ctx.JSON(400, gin.H{ "error" : err.Error()})
-			return 
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
 		}
 		ctx.JSON(200, t)
 	}
