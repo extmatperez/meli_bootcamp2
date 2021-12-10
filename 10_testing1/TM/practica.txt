@@ -1,0 +1,16 @@
+1. 
+Black Box: Desconoce lo que hace la aplicación por dentro - White Box: Conoce la implementación
+Black Box: Se envía una entrada y se espera un comportamiento - White Box: Se hacen apartir de la implementación del código, se hace en pequeñas partes, por funcionalidad.
+
+2. 
+Test Funcional: Se prueba sobre todos los componentes del desarrollo a testear, A partir de una entrada se espera una salida desconociendo lo que pasa en ejecución, validan el comportamiento de la aplicación.
+
+3. 
+Test Integración: Se prueba que los componentes del software estén interactuando de manera correcta en conjunto.
+
+4. 
+Funcionalidad
+Rendimiento
+Fiabilidad
+Seguridad
+Mantenibilidad
