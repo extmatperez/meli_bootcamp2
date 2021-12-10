@@ -1,0 +1,8 @@
+TESTING
+
+Mantenibilidad/Sustentabilidad
+Observa la calidad del codigo desde la perspectiva del codigo fuente.
+
+CODIGO LIMPIO 
+Para mucha gente el codigo limpio es el que es facil de leer
+No se necesita ejecutar para entender 
