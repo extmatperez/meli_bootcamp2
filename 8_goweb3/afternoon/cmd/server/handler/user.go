@@ -29,6 +29,15 @@ func NewUser(ser users.Service) *User {
 	return &User{service: ser}
 }
 
+// List users godoc
+// @Summary List users
+// @Tags Users
+// @Description get users
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /users [get]
 func (u *User) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validateToken(ctx) {
@@ -45,6 +54,16 @@ func (u *User) GetAll() gin.HandlerFunc {
 	}
 }
 
+// Create user godoc
+// @Summary Create user
+// @Tags Users
+// @Description create user
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param data body request true "The user data"
+// @Success 200 {object} web.Response
+// @Router /users [post]
 func (u *User) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validateToken(ctx) {
@@ -69,6 +88,17 @@ func (u *User) Store() gin.HandlerFunc {
 	}
 }
 
+// Create user godoc
+// @Summary Create user
+// @Tags Users
+// @Description create user
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param data body request true "The user data"
+// @Param id path int true "The user id"
+// @Success 200 {object} web.Response
+// @Router /users/{id} [put]
 func (u *User) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !validateToken(ctx) {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/cmd/server/handler"
 	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/internal/users"
@@ -9,8 +10,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title MELI Bootcamp API Documentation
+// @version 1.0
+// @description This API Handle MELI USers
+
+// @contact.name Archuby Federico
+// @contact.email federico.archuby@mercadolibre.com
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -23,6 +34,9 @@ func main() {
 	repo := users.NewRepository(db)
 	service := users.NewService(repo)
 	hand := handler.NewUser(service)
+
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	group := router.Group("/users")
 	group.POST("", hand.Store())

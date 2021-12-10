@@ -1,0 +1,30 @@
+¿Cuáles son las diferencias entre White Box y Black Box? 
+
+    El test de caja negra es un tipo de testen el que se desconoce el funcionamiento interno de aquello que se desea probar.
+    El objetivo es probar la funcionalidad evaluando las diferentes respuestas frente a distintas entradas y escenarios. Tiene una perspectiva desde el punto de vista del usuario final.
+
+    En el caso del test de caja blanca, se tiene visibilidad sobre el código interno de aquello que se desea probar. 
+    Se centra más en los detalles del procedimiento seguido, y esta ligado fuertemente al código. Es un cambio de perspectica con respecto al test de caja negra.
+
+
+¿Qué es un test funcional?.
+
+    Es un tipo de test de caja negra que se centra en evaluar que ante cada escenario,
+    el software devuelva el resultado esperado. 
+    Lo ideal es realizarlo cuando la funcionalidad ya pasó las pruebas unitarias y de integración.
+
+
+¿Qué es un Test de Integración?
+
+    Es un tipo de test de caja blanca. Su objetivo es el de evaluar si diferentes componentes o capas
+    de una misma aplicación, brindan el resultado esperado. De esta forma, se verifica que las partes
+    funcionan correctamente en conjunto.
+
+Indicar las dimensiones de calidad prioritarias en MELI.
+
+    De las 8 dimensiones de calidad, MELI se centra en 5, las cuales son:
+        - Funcionalidad (cumplir con los requerimientos)
+        - Rendimiento (performance)
+        - Fiabilidad (menos fallas en más tiempo)
+        - Seguridad (detectar y evitar vulnerabilidades)
+        - Mantenibilidad (código limpio)
