@@ -1,0 +1,11 @@
+1. ¿Cuáles son las diferencias entre White Box y Black Box? 
+
+Rta: En black box no se conoce que sucede internamente, solo la entrada y salida. En white box si se conoce como funciona.
+
+2. ¿Qué es un test funcional?.
+
+Rta: Un tipo de prueba que valida que el requerimiento de negocio funcione.
+
+3. ¿Qué es un Test de Integración?
+
+Rta: Un tipo de prueba que valida que las diferentes partes de una aplicacion se comuniquen correctamente
