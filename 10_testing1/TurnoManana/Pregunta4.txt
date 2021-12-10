@@ -1,0 +1,7 @@
+Indicar las dimensiones de calidad prioritarias en MELI.
+
+✓ Funcionalidad (Functionality)
+✓ Rendimiento (Performance)
+✓ Fiabilidad (Reliability)
+✓ Seguridad (Security)
+✓ Mantenibilidad (Maintainability)
