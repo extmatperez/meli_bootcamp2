@@ -40,11 +40,5 @@
   "nombre": "jair",
   "apellido": "bolsonaro",
   "edad": 55
- },
- {
-  "id": 7,
-  "nombre": "Donald",
-  "apellido": "Trump",
-  "edad": 65
  }
 ]
