@@ -2,7 +2,6 @@ package calculadora
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 )
 
@@ -34,9 +33,6 @@ func OrdenarAsc(nums []int) []int {
 	sort.Slice(nums, func(i, j int) bool {
 		return nums[i] < nums[j]
 	})
-	for _, v := range nums {
-		fmt.Println(v)
-	}
 	return nums
 }
 
@@ -45,8 +41,5 @@ func OrdenarDesc(nums []int) []int {
 	sort.Slice(nums, func(i, j int) bool {
 		return nums[i] > nums[j]
 	})
-	for _, v := range nums {
-		fmt.Println(v)
-	}
 	return nums
 }

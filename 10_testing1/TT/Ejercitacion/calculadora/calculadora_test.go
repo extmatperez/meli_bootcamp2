@@ -53,7 +53,7 @@ func TestMultiplicar(t *testing.T) {
 
 func TestDividir(t *testing.T) {
 	n1 := 5
-	n2 := 0
+	n2 := 2
 	promisedValue := 2
 
 	res, err := Dividir(n1, n2)
