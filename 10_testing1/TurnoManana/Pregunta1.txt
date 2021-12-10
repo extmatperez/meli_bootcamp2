@@ -1,0 +1,24 @@
+¿Cuáles son las diferencias entre White Box y Black Box? 
+
+Black Box :                                                  White  Box :     
+
+el diseño o funcionamiento interno, es                      quien ejecuta la prueba conoce 
+desconocido por quien ejecuta la prueba.                    y tiene visibilidad sobre el código.          
+
+Su objetivo principal es probar la                          Se centran en los detalles procedimentales 
+funcionalidad del código, evaluando las respuestas          del software, por lo que su diseño
+y reacciones (comportamiento) del componente                está fuertemente ligado al código fuente.
+testeado ante distintos escenarios.
+                                                            Este método se aplica para probar el 
+                                                            * flujo (comprobar la correcta implementación de cada
+                                                            método o función) 
+                                                            * seguridad(detectar vulnerabilidades) 
+                                                            * estructura del código (validar que el flujo 
+                                                            de datos se comporte de acuerdo a lo esperado
+                                                            (condicionales, iteraciones y respuestas).
+
+Usos:                                                       Usos:
+● Tests Funcionales                                         ● Tests Unitarios
+● Tests No Funcionales                                      ● Tests Integración.
+● Test de Regresión
+
