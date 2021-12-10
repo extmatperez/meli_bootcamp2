@@ -1,0 +1,17 @@
+¿Cuáles son las diferencias entre White Box y Black Box? 
+En cuanto a la funcionalidad, estructura o diseño, en la white box se tiene 
+conocimiento de estos aspectos, en cambio en la black box no.
+
+
+¿Qué es un test funcional?
+Son test que validan que el software testeado cumpla con el requerimiento dado.
+Comprueban que ante una entrada se ejecute una salida esperada.
+
+
+¿Qué es un Test de Integración?
+Se utilizan para testear la cominicación entre diferentes elementos
+o capas de una aplicación.
+
+
+Indicar las dimensiones de calidad prioritarias en MELI.
+S.O.L.I.D AND F.I.R.S.T.
