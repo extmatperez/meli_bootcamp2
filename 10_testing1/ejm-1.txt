@@ -1,0 +1,37 @@
+1) ¿Cuáles son las diferencias entre White Box y Black Box? 
+
+El black box es un método de testing mediante el cual, el que se ocupa de realizar el testing no conoce 
+sobre estructura y funcionamiento interno de la aplicación. Se ocupa de evaluar las respuestas y funcionalidad del código
+ante diferentes escenarios, simulando un usuario. 
+
+En el caso del metodo white box, a diferencia del anterior, el que realiza las pruebas SI conoce sobre el desarrollo interno de 
+la aplicación. Esta metodología esta mas enfocada a lo procedimental, y le da principal importancia al diseno del software.
+Tiene como objetivo detectar vulnerabilidades en el codigo.
+Existen dos formas de implementar el metodo white box:
+1) Mediante tests unitarios
+Son aplicados a una parte del codigo, evalúan algo en particular, ya sea una función, un método, etc.
+2) Mediante tests de integración
+Es un poco mas global, ya que su función es analizar y probar la comunicación entre las diferentes capas de la aplicacion. 
+Analiza que todos los compontentes funcionen en armonía.
+
+
+2) ¿Qué es un test funcional?.
+
+Son aquellos tests que validan el comportamiento FUNCIONAL de la aplicacion. Son necesariamente posteriores a los tests unitarios ya 
+que los funcionales sirven justamente para evaluar las respuestas del software poniéndolo en marcha
+
+3) ¿Qué es un Test de Integración?
+
+Los tests de integración son aquellos mediante los cuales se prueba que todas las capas, componentes, bloques de código, etc,
+interactúen en armonía y funcionen correctamente. Al igual que los tests funcionales, los tests de integración se realizan una vez 
+finalizados los tests unitarios.
+
+
+4) Indicar las dimensiones de calidad prioritarias en MELI.
+
+MELI adopta dos principios de calidad fundamentales. El principio SOLID y el principio FIRST.
+SOLID esta mas enfocado en la forma de escribir código. Hace principal incapié en las características que deberían
+tener los objetos (o estructuras en Go) al momento de ser creados. También tiene uno de sus puntos dirigido a las interfaces.
+
+FIRST esta orientado a la forma en la que deberíamos probar/testear nuestro software. Nos da una hoja de ruta indicandonos 
+todas las cosas a tener en cuenta.
