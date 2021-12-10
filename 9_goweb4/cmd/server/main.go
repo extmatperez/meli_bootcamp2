@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/extmatperez/meli_bootcamp2/9_goweb4/cmd/server/handler"
@@ -39,11 +40,39 @@ func main() {
 	transactionURL.GET("/", controller.GetAll())
 	transactionURL.GET("/:id", controller.GetByID())
 	transactionURL.GET("/receivers/:receiver", controller.GetByReceiver())
-	transactionURL.POST("/", controller.Store())
+	transactionURL.POST("/", TokenAuthMiddleware(), controller.Store())
 	//transactionURL.POST("/", controller.CreateTransaction())
-	transactionURL.PUT("/:id", controller.UpdateTransaction())
-	transactionURL.PATCH("/:id/:amount", controller.UpdateAmount())
-	transactionURL.DELETE("/:id", controller.DeleteTransaction())
+	transactionURL.PUT("/:id", TokenAuthMiddleware(), controller.UpdateTransaction())
+	transactionURL.PATCH("/:id/:amount", TokenAuthMiddleware(), controller.UpdateAmount())
+	transactionURL.DELETE("/:id", TokenAuthMiddleware(), controller.DeleteTransaction())
 
-	router.Run()
+	router.Run(":9090")
+}
+
+func respondWithError(c *gin.Context, code int, message interface{}) {
+	c.AbortWithStatusJSON(code, gin.H{"error": message})
+}
+
+func TokenAuthMiddleware() gin.HandlerFunc {
+	requiredToken := os.Getenv("TOKEN")
+
+	if requiredToken == "" {
+		log.Fatal("Please set API_TOKEN environment variable")
+	}
+
+	return func(c *gin.Context) {
+		token := c.GetHeader("token")
+
+		if token == "" {
+			respondWithError(c, 401, "API token required")
+			return
+		}
+
+		if token != requiredToken {
+			respondWithError(c, 401, "Invalid API token")
+			return
+		}
+
+		c.Next()
+	}
 }
