@@ -16,9 +16,17 @@ que conocen el codigo por dentro, lo cual permitiria llegar a pruebas en lugares
 
 Ejercicio 2
 ¿Qué es un test funcional?.
+Corresponden a test en los cuales se validan que las especificacines del software se cumplen segun los requerimientos
+indicados. 
 
 Ejercicio 3
 ¿Qué es un Test de Integración?
 
+
 Ejercicio 4
 Indicar las dimensiones de calidad prioritarias en MELI.
+Funcionalidad
+Rendimiento
+Fiabilidad
+Seguridad
+Mantenibilidad
