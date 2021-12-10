@@ -7,9 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func main() {
 	router := gin.Default()
+
+	//api.Use()
 	//router.GET("/sayHi/:name/:lastName", SayHi)
 	db := stores.New(stores.FileType, "/Users/aghione/Desktop/repositorios/bootcamp/practicas/meli_bootcamp2/7_goweb2/internal/transactions/transactions.json")
 	repository := transactions.NewRepository(db)
