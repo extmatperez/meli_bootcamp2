@@ -1,0 +1,20 @@
+1. ¿cuales son las diferencias entre White Box y Black Box?
+
+RTA: La blackBox es un metodo de testeo donde se el que ejecuta la prueba desconoce como opera o 
+funciona la estructura de testeo, y sirve para probar funcionalidades de codigo, mientras que la
+blackBox es una estructura que permite visualizar el codigo y esta fuertemente ligado a el y nos
+permite el testeo de pruebas de flujo, seguridad y estructura de los programas.
+
+2. ¿que es test funcional?
+
+RTA: Pruebas que revisan la funcionalidad que se exige a los programas, que la entrada corresponda
+a su respectiva salida y este funcionando correctamente con se pidio.
+
+3. ¿que es un test de integración?
+
+RTA: Es un test que prueba la funcionalidad de nuestro modulo creado, que funcione correctamente
+con otros, que no genere conflicto ni deje de funcionar el o otros modulos.
+
+4. ¿Indicar las dimensiones de calidad prioritarias en MELI?
+
+RTA: Funcionalidad, rendimiento, fiabilidad, seguridad, mantenibilidad.
