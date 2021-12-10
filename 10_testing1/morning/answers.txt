@@ -1,0 +1,32 @@
+Ejercicio 1
+
+Black Box Test
+Es un método de testing en el que la estructura, diseño o funcionamiento interno, es desconocida por quien ejecuta la prueba. Su objetivo principal es probar la funcionalidad del código, evaluando las respuestas y reacciones (comportamiento) del componente testeado ante distintos escenarios.
+ 
+White Box Test
+En este método, quien ejecuta la prueba conoce y tiene visibilidad sobre el código. Es la contraparte del Black Box, ya que las pruebas no se ejecutan desde una perspectiva de usuario final. Se centran en los detalles procedimentales del software, por lo que su diseño está fuertemente ligado al código fuente.
+ 
+
+ Ejercicio 2
+
+Test Funcionales
+Son las pruebas que se basan en la entrada y salida del software, con el objetivo final de comprobar que la respuesta del software ante cada escenario, coincida exactamente con el resultado esperado. Son test que validan el comportamiento funcional del software.
+La funcionalidad debe evaluarse cuando una pieza de software ya previamente cumplió con la aprobación de pruebas unitarias y funcionales.
+ 
+
+ Ejercicio 3
+
+Test de Integración
+Las pruebas de integración verifican que los diferentes módulos y/o servicios usados por nuestra aplicación funcione en armonía cuando trabajan en conjunto.
+Por ejemplo
+● Pueden probar la interacción con una o múltiples bases de datos,
+● Asegurar que los microservicios operen como se espera.
+ 
+
+Ejercicio 4
+
+● Funcionalidad (Functionality)
+● Rendimiento (Performance)
+● Fiabilidad (Reliability)
+● Seguridad (Security)
+● Mantenibilidad (Maintainability)
