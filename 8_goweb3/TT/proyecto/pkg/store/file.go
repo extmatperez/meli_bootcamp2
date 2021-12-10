@@ -8,6 +8,7 @@ import (
 type Store interface {
 	Read(data interface{}) error
 	Write(data interface{}) error
+	//Delete(data interface{}) error
 }
 
 type Type string
@@ -45,3 +46,17 @@ func (fs *FileStore) Read(data interface{}) error {
 	}
 	return json.Unmarshal(file, &data)
 }
+
+/* func (fs *FileStore) Delete(data interface{}) error {
+	err := os.Remove(fs.FileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileData, err := json.MarshalIndent(data, "", " ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(fs.FileName, fileData, 0644)
+
+} */

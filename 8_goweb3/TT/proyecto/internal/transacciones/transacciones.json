@@ -898,41 +898,5 @@
   "emisor": "gspaldin2r",
   "receptor": "jhellyer2r",
   "fecha_creacion": "7/7/2021"
- },
- {
-  "id": 101,
-  "codigo_transaccion": "511b67e6-179f-447d-abd3-51cc1e7b68ad",
-  "moneda": "Euro",
-  "monto": 10339.43,
-  "emisor": "rodri",
-  "receptor": "maslaton",
-  "fecha_creacion": "04-12-2021"
- },
- {
-  "id": 102,
-  "codigo_transaccion": "136f542c-0652-4a23-b970-4b95dc0f7d09",
-  "moneda": "Euro",
-  "monto": 10339.43,
-  "emisor": "rodri",
-  "receptor": "maslaton",
-  "fecha_creacion": "04-12-2021"
- },
- {
-  "id": 103,
-  "codigo_transaccion": "f4e1522e-ce09-40cc-bdef-0f480eb7788d",
-  "moneda": "Euro",
-  "monto": 10339.43,
-  "emisor": "rodri",
-  "receptor": "maslaton",
-  "fecha_creacion": "04-12-2021"
- },
- {
-  "id": 104,
-  "codigo_transaccion": "00134047-e6d6-495a-920f-ac32e7ee1117",
-  "moneda": "Euro",
-  "monto": 10339.43,
-  "emisor": "rodri",
-  "receptor": "maslaton",
-  "fecha_creacion": "04-12-2021"
  }
 ]

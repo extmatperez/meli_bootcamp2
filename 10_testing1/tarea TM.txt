@@ -1,0 +1,18 @@
+1- diferencias entre white box y black box
+black box, quien ejecuta las pruebas no ve el codigo. White box si. black se usa para test funcionales ,no funcionales y de regresion
+white box se centra en test unitarios y de integracion.
+
+2- que es un test funcionales
+
+pruebas que se basasn en entrada  y salida de software con el objetivo de comprobar la respuesta de softwareante cada escenario 
+posible y que coincida con el objetivo que coincida con el resultado esperado, son tests que validan el comportamiento funcional 
+de software
+
+
+3- que es un test de integracion
+estas pruebas verifican que los diferentes modulos /servicios usados funcionen en armonia cuando trabajan en conjunto
+
+
+4- dimensiones de calidad prioritarias para meli
+
+funcionalidad, rendimineot, fiabilidad, seguridad, mantenibilidad.

@@ -34,6 +34,7 @@ type Repository interface {
 	UpdateCod(id int, codigotransaccion string) (Transaccion, error)
 	UpdateMon(id int, monto float64) (Transaccion, error)
 	Delete(id int) error
+	//DeleteAll() error
 }
 
 type repository struct {
@@ -205,3 +206,17 @@ func (r *repository) Delete(id int) error {
 	}
 	return fmt.Errorf("la transaccion %d no existe", id)
 }
+
+/* func (r *repository) DeleteAll() error {
+	err :=r.db.Read(&transacciones)
+	 if err != nil {
+		//return err
+	}
+	if len(transacciones) > 0 {
+		transacciones = []Transaccion{}
+		//r.db.Delete(transacciones)
+		return fmt.Errorf("La transacciones fueron eliminadas")
+	}
+	return fmt.Errorf("No habia transacciones para eliminar")
+
+} */

@@ -10,6 +10,7 @@ type Service interface {
 	UpdateCod(id int, codigotransaccion string) (Transaccion, error)
 	UpdateMon(id int, monto float64) (Transaccion, error)
 	Delete(id int) error
+	//DeleteAll() error
 }
 
 type service struct {
@@ -78,3 +79,7 @@ func (s *service) UpdateMon(id int, monto float64) (Transaccion, error) {
 func (s *service) Delete(id int) error {
 	return s.repository.Delete(id)
 }
+
+/* func (s *service) DeleteAll() error {
+	return s.repository.DeleteAll()
+} */

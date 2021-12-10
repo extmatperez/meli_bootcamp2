@@ -37,7 +37,6 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Router /transacciones/load [post]
-
 func (t *Transaccion) Load() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -61,7 +60,6 @@ func (t *Transaccion) Load() gin.HandlerFunc {
 // @Param token header string false "token"
 // @Success 200 {object} web.Response
 // @Router /transacciones/get [get]
-
 func (t *Transaccion) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -83,10 +81,8 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param transaccion body request true "Moneda, Monto, Emisor, Receptor => to store"
 // @Success 200 {object} web.Response
 // @Router /transacciones/add [post]
-
 func (t *Transaccion) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
@@ -124,10 +120,8 @@ func (t *Transaccion) Store() gin.HandlerFunc {
 // @Tags Transaccion
 // @Description find transaccion by id
 // @Produce  json
-// @Param transaccion param request true "id"
 // @Success 200 {object} web.Response
 // @Router /transacciones/find/:id [get]
-
 func (t *Transaccion) FindById() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -156,10 +150,9 @@ func (t *Transaccion) FindById() gin.HandlerFunc {
 // @Description filter transaccion by parameters
 // @Produce  json
 // @Param token header string true "token"
-// @Param transaccion query request true "moneda, emisor, receptor, codigotransaccion, fechacreacion"
+// @Query parameters "emisor, moneda, receptor, fechacreacion, codigotransaccion"
 // @Success 200 {object} web.Response
 // @Router /transacciones/filter [get]
-
 func (t *Transaccion) FilterBy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -185,11 +178,8 @@ func (t *Transaccion) FilterBy() gin.HandlerFunc {
 // @Description update transaccion
 // @Produce  json
 // @Param token header string true "token"
-// @Param transaccion body request true "Moneda, Monto, Emisor, Receptor => to store"
-// @Param transaccion param request true "id"
 // @Success 200 {object} web.Response
 // @Router /transacciones/update/:id [put]
-
 func (t *Transaccion) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
@@ -234,11 +224,8 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 // @Description update transaccion codigo_transaccion
 // @Produce  json
 // @Param token header string true "token"
-// @Param transaccion body request true "codigo_transaccion => to store"
-// @Param transaccion param request true "id"
 // @Success 200 {object} web.Response
 // @Router /transacciones/cod/:id [patch]
-
 func (t *Transaccion) UpdateCod() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
@@ -278,11 +265,8 @@ func (t *Transaccion) UpdateCod() gin.HandlerFunc {
 // @Description update transaccion amount
 // @Produce  json
 // @Param token header string true "token"
-// @Param transaccion body request true "Monto => to store"
-// @Param transaccion param request true "id"
 // @Success 200 {object} web.Response
 // @Router /transacciones/cod/:id [patch]
-
 func (t *Transaccion) UpdateMon() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req request
@@ -321,10 +305,8 @@ func (t *Transaccion) UpdateMon() gin.HandlerFunc {
 // @Description delete transaccion
 // @Produce  json
 // @Param token header string true "token"
-// @Param transaccion param request true "id"
 // @Success 200 {object} web.Response
 // @Router /transacciones/del/:id [patch]
-
 func (t *Transaccion) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
