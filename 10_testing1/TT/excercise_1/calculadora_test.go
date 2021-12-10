@@ -14,5 +14,5 @@ func TestRestar(t *testing.T) {
 
 	resultado := Restar(num1, num2)
 
-	assert.Equal(t, resutlEsp, resultado)
+	assert.Equal(t, resutlEsp, resultado, "la resta esta mal hecha")
 }
