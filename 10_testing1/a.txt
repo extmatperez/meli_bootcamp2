@@ -1,0 +1,29 @@
+ Ejercicio 1 
+¿Cuáles son las diferencias entre White Box y Black Box? 
+Black Box: Es un método de testing en el que la estructura, diseño o funcionamiento interno, es desconocida por quien ejecuta la prueba. Su objetivo principal es probar la funcionalidad del código, evaluando las respuestas y reacciones (comportamiento) del componente testeado ante distintos escenarios.
+White Box: En este método, quien ejecuta la prueba conoce y tiene visibilidad sobre el código. Es la contraparte del Black Box, ya que las pruebas no se ejecutan desde una perspectiva de usuario final. Se centran en los detalles procedimentales del software, por lo que su diseño está fuertemente ligado al código fuente
+ 
+
+
+Ejercicio 2
+¿Qué es un test funcional?.
+
+Son las pruebas que se basan en la entrada y salida del software, con el objetivo final de comprobar que la respuesta del software ante cada escenario, coincida exactamente con el resultado esperado. Son test que validan el comportamiento funcional del software. 
+La funcionalidad debe evaluarse cuando una pieza de software ya previamente cumplió con la aprobación de pruebas unitarias y funcionales. 
+
+Ejercicio 3
+¿Qué es un Test de Integración?
+
+Son aquellos test que prueban la comunicación entre distintos componentes o capas de la aplicación. El objetivo es comprobar que todos aquellos bloques de código que fueron probados de forma unitaria, interactúen y se comuniquen entre sí generando los resultados esperados. 
+
+Ejercicio 4
+Indicar las dimensiones de calidad prioritarias en MELI.
+
+●  Funcionalidad (Functionality) 	
+●  Rendimiento (Performance) 	
+●  Compatibilidad (Compatibility) 
+●  Usabilidad (Usability / Operability) 
+●  Fiabilidad (Reliability) 
+●  Seguridad (Security) 
+●  Mantenibilidad (Maintainability) 
+●  Portabilidad (Portability / Transferability) 
