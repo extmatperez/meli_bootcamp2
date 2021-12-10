@@ -1,0 +1,13 @@
+1- Diferencias entre whiteBox y BlackBox -> La diferencia principal entre estas dos es que la estructura,diseño
+o funcionamiento interno en el caso de BlackBox es desconocida por quien ejecuta la prueba. En el caso de WhiteBox
+el que ejectura la prueba conoce y tiene visibilidad sobre el codigo.
+
+
+2-Que es un test funcional? -> Son las pruebas que se basan en la entrada y salida, su objetivo es que la salida coincida
+ con lo esperado. 
+
+
+3- Que es un test de integracion? -> Los test de integracion prueban que los distintos componentes de la aplicacion funcionen
+en armonia cuando trabajan en conjunto
+
+4- Dimensiones de calidad prioritarias en MELI? ->  Principio S.O.L.I.D y principio F.I.R.S.T
