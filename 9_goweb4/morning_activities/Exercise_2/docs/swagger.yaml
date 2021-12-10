@@ -40,4 +40,85 @@ paths:
       summary: Stores users
       tags:
       - Users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes user
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Deletes a user
+      tags:
+      - Users
+    patch:
+      consumes:
+      - application/json
+      description: posts user
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Edits users name
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: posts user
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Stores users
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: posts user
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Edits a user
+      tags:
+      - Users
 swagger: "2.0"
