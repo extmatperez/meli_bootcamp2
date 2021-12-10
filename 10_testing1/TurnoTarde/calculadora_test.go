@@ -30,13 +30,24 @@ func TestOrdenar(t *testing.T){
 }
 
 
-func TestDividr(t *testing.T){
+func TestDividrError(t *testing.T){
 
 	a := 10
 	b := 0
 
-
 	_,err := Dividir(a,b)
 
 	assert.Nil(t,err,"Hubo un error")
+}
+
+
+func TestDividrCorrect(t *testing.T){
+
+	a := 10
+	b := 10
+	resultadoEsperado := 1
+
+	resultado,_ := Dividir(a,b)
+
+	assert.Equal(t,resultado,resultadoEsperado,"Error")
 }
