@@ -17,8 +17,19 @@ func TestRestar(t *testing.T){
 
 	assert.Equal(t,resultadoEsperado,resultado, "Error al restar")
 
+}
+
+func TestRestarNotEqual(t *testing.T){
+	a := 10
+	b := 5
+	resultadoEsperado := 2
+
+	resultado := Restar(a,b)
+
+	assert.NotEqual(t,resultadoEsperado,resultado, "Error al restar")
 
 }
+
 
 func TestOrdenar(t *testing.T){
 
@@ -30,6 +41,16 @@ func TestOrdenar(t *testing.T){
 }
 
 
+func TestOrdenarNotEqual(t *testing.T){
+
+	resultadoEsperado:= []int{10,4,5,9,7,6,1,2,3,8}
+
+	resultado := OrdernarSilice(10,4,5,9,7,6,1,2,3,8)
+
+	assert.NotEqual(t,resultadoEsperado,resultado, "No deberia ser iguales")
+}
+
+
 func TestDividrError(t *testing.T){
 
 	a := 10
@@ -37,7 +58,7 @@ func TestDividrError(t *testing.T){
 
 	_,err := Dividir(a,b)
 
-	assert.Nil(t,err,"Hubo un error")
+	assert.NotNil(t,err,"No se deberia permtir dividir por 0")
 }
 
 
