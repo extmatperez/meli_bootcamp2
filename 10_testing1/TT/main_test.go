@@ -26,3 +26,20 @@ func TestOrdenar(t *testing.T) {
 	esperado := []int{1, 2, 4, 5, 6, 9}
 	assert.Equal(t, esperado, ordenado, "deben ser iguales")
 }
+
+func TestDividir(t *testing.T) {
+	num := 6.0
+	dem := 0.0
+	esperado := 3.0
+
+	division, err := Dividir(num, dem)
+	if err != nil {
+		if assert.Error(t, err) {
+			assert.Equal(t, err.Error(), "no se puede dividir por 0")
+		}
+	} else {
+		assert.Nil(t, err)
+		assert.Equal(t, esperado, division, "deben ser iguales")
+	}
+
+}
