@@ -1,1 +1,8 @@
 ¿Qué es un test funcional?
+
+✓ Son las pruebas que se basan en la entrada y salida del software, con el objetivo final de
+comprobar que la respuesta del software ante cada escenario, coincida exactamente con el
+resultado esperado. 
+✓ Son test que validan el comportamiento funcional del software.
+✓ La funcionalidad debe evaluarse cuando una pieza de software ya previamente cumplió
+  con la aprobación de pruebas unitarias y funcionales.
