@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "color": "brown",
+        "price": 12.20,
+        "amount": 27
+    },
+    {
+        "id": 2,
+        "color": "green",
+        "price": 14.50,
+        "amount": 10
+    },
+    {
+        "id": 3,
+        "color": "pink",
+        "price": 9.90,
+        "amount": 3
+    },
+    {
+        "id": 4,
+        "color": "teal",
+        "price": 8.50,
+        "amount": 15
+    },
+    {
+        "id": 5,
+        "color": "beige",
+        "price": 3.45,
+        "amount": 32
+       }
+   ]
