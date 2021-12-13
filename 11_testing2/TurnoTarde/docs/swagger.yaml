@@ -1,0 +1,164 @@
+definitions:
+  handler.request:
+    properties:
+      codigo:
+        type: string
+      emisor:
+        type: string
+      fecha:
+        type: string
+      moneda:
+        type: string
+      monto:
+        type: string
+      receptor:
+        type: string
+    type: object
+  web.Response:
+    properties:
+      content: {}
+      error:
+        type: string
+      status:
+        type: integer
+    type: object
+info:
+  contact:
+    name: API Support
+    url: https://developers.mercadolibre.com.ar/support
+  description: This API Handle Transactions
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
+  title: MELI Bootcamp API
+  version: "1.0"
+paths:
+  /transactions:
+    get:
+      description: get Transactions
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: List Transactions
+      tags:
+      - Transactions
+    post:
+      consumes:
+      - application/json
+      description: store Transactions
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Transactions  to store
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/handler.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Store Transactions
+      tags:
+      - Transactions
+  /transactions/filtros:
+    get:
+      consumes:
+      - application/json
+      description: get transactions by filter from json
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: filtros
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/handler.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Transactions
+      tags:
+      - Transactions
+  /transactions:id:
+    get:
+      description: get transactions by id
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Transaction
+      tags:
+      - Transactions
+    put:
+      consumes:
+      - application/json
+      description: store Transactions
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: id
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Transactions  to store
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/handler.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Store Transactions
+      tags:
+      - Transactions
+swagger: "2.0"
