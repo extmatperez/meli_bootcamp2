@@ -59,6 +59,7 @@ func(sto *FileStore) Write(data interface{}) error{
 			return sto.Mock.Err
 		}
 		 sto.Mock.Data = dataBytes
+		 sto.Mock.IsStoreWrite=true
 		return nil
 	}
 

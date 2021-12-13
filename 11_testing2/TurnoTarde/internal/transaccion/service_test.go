@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var transactons string =  `[{
+var transactions string =  `[{
 	"id": 2,
 	"codigo": "24safdsadfasdf385",
 	"moneda": "Peso Colombiano",
@@ -48,6 +48,7 @@ func TestUpdate(t *testing.T){
 
 	assert.Nil(t,err)
 	assert.True(t,mock.IsStoreRead)
+	assert.True(t,mock.IsStoreWrite)
 	assert.Equal(t,transacionTest.Codigo,newTransaction.Codigo)
 	assert.Equal(t,transacionTest.Emisor,newTransaction.Emisor)
 	assert.Equal(t,transacionTest.Fecha,newTransaction.Fecha)
@@ -76,7 +77,36 @@ func TestUpdateError(t *testing.T){
 	newTransaction,err := myService.Store(transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
 										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
 
+	assert.True(t,!mock.IsStoreRead)
+	assert.True(t,!mock.IsStoreWrite)
 	assert.NotNil(t,err,erCreated)
 	assert.Equal(t,Transaction{},newTransaction)
 
+}
+
+
+func TestDelete(t *testing.T){
+	mock := store.Mock{Data: []byte(transactions)}
+	typeFileMock := store.FileStore{Mock: &mock}
+	myRepo := NewRepository(&typeFileMock)
+	myService:= NewService(myRepo)
+
+	err := myService.Delete(2)
+	tranAfterDelete,_:=myService.GetTransactionById(2)
+
+	assert.Nil(t,err)
+	assert.Equal(t,Transaction{},tranAfterDelete)
+
+}
+
+func TestDeleteError(t *testing.T){
+	mock := store.Mock{Data: []byte(transactions)}
+	typeFileMock := store.FileStore{Mock: &mock}
+	myRepo := NewRepository(&typeFileMock)
+	myService:= NewService(myRepo)
+
+	err := myService.Delete(100)
+
+	assert.NotNil(t,err)
+	assert.Error(t,err)
 }
