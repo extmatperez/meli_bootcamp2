@@ -105,7 +105,7 @@ func (r *repository) Delete(id int) error {
 }
 
 func (r *repository) UpdateNombrePrecio(id int, nombre string, precio float64) (Producto, error) {
-
+	r.fileStore.Read(productos)
 	for i, v := range productos {
 		if v.Id == id {
 			v.Nombre = nombre
