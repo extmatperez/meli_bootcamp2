@@ -38,12 +38,12 @@ func TestUpdate(t *testing.T){
 		Fecha: "13/12/2021",
 	}
 
-	mock := store.Mock{Data: []byte("[]"),IsStoreRead: false}
+	mock := store.Mock{Data: []byte(transactions),IsStoreRead: false}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
 	myService:= NewService(myRepo)
 
-	newTransaction,err := myService.Update(50,transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
+	newTransaction,err := myService.Update(2,transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
 										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
 
 	assert.Nil(t,err)
@@ -55,7 +55,7 @@ func TestUpdate(t *testing.T){
 	assert.Equal(t,transacionTest.Moneda,newTransaction.Moneda)
 	assert.Equal(t,transacionTest.Monto,newTransaction.Monto)
 	assert.Equal(t,transacionTest.Receptor,newTransaction.Receptor)
-	assert.Equal(t,50,newTransaction.ID)
+	assert.Equal(t,2,newTransaction.ID)
 }
 
 
