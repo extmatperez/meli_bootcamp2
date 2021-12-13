@@ -5,8 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/internal/productos"
-	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/pkg/web"
+	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/11_testing2/ejTM/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/11_testing2/ejTM/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 

@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/cmd/server/handler"
-	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/internal/productos"
-	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/7_goweb2/ejTTmodified/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/11_testing2/ejTM/cmd/server/handler"
+	internal "github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/11_testing2/ejTM/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/11_testing2/ejTM/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
