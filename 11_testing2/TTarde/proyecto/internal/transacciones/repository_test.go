@@ -87,26 +87,36 @@ func TestUpdateEmisor(t *testing.T) {
 	json.Unmarshal([]byte(per), &esperado)
 
   assert.Equal(t, store.readed, true)
-  assert.Equal(t, esperado.Emisor, actualizado.Emisor)
+  assert.NotEqual(t, esperado.Emisor, actualizado.Emisor)
 
 }
 
-func TestUpdateMock (t *testing.T) {
+func TestUpdateMock(t *testing.T){
   dataByte := []byte(per)
-  var transaccionEsperada Transaccion
 
-  json.Unmarshal(dataByte, &transaccionEsperada)
-  transaccionEsperada.Emisor = "Emisor Actualizado"
+  trNuevo := Transaccion{
+    ID: 1,
+    CodigoTransaccion: 556111,
+    Moneda: "Pesos",
+    Monto: 80.00,
+    Emisor: "Locomotion",
+    Receptor: "Disney",
+    FechaTransaccion: "13/08/2021",
+  }
 
   dbMock := store.Mock{Data: dataByte}
   storeStub := store.FileStore{Mock: &dbMock}
   repo := NewRepository(&storeStub)
 
 
-  per_actualizada, _ := repo.Update(1, 486499, "pesos", 84.16, "Emisor Actualizado", "Hauck-Carter", "13/08/2021")
+  per_actualizada, _ := repo.Update(trNuevo.ID, trNuevo.CodigoTransaccion, trNuevo.Moneda, trNuevo.Monto, trNuevo.Emisor, trNuevo.Receptor, trNuevo.FechaTransaccion)
 
 
-  assert.Equal(t, transaccionEsperada, per_actualizada)
+  assert.Equal(t, trNuevo, per_actualizada)
+}
+
+func  TestDeleteMock(t *testing.T) {
+  
 }
 
 
