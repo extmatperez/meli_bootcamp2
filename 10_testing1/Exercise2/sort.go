@@ -1,4 +1,4 @@
-package ordenar
+package sort
 
 func Sort(list []int) []int {
 	for i := 1; i < len(list); i++ {
