@@ -1,0 +1,17 @@
+1- La principal diferencia es que en el Black Box Test el usuario no conoce el funcionamiento interno de una aplicación, ya que las
+pruebas se ejecutan desde una perspectiva de usuario final, evaluando las respuestas de un determinado componente en diferentes escenarios.
+Por el contrario, las White Box Test las realiza quien tiene conocimiento del codigo fuente del mismo, pudiendo asi realizar las pruebas
+en un punto de vista más técnico.
+
+2- El codigo funcional es asegurar que el producto cumpla con los requerimientos y expectativas del usuario final, yendo de la mano con
+los requerimientos no funcionales para asegurar el estandar de calidad esperado por el cliente.
+
+3- El Test de Integración es un tipo de testing más general que pretende abarcar el funcionamiento colectivo de varios (o todos) los
+componentes y capas de una aplicación.
+
+4- Las dimensiones prioritarias de MELI son:
+-Funcionalidad: que el software cumpla con los requerimientos necesarios.
+-Rendimiento: que ejecute las tareas de manera óptima.
+-Fiabilidad: que se ejecute sin problemas ni errores.
+-Seguridad: que cumpla con los requisitos minimos de integridad en una aplicación.
+-Mantenibilidad: que el codigo esté modularizado y tenga un bajo costo de mantenimiento.
