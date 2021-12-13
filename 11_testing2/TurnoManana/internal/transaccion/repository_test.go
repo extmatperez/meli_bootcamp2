@@ -13,8 +13,8 @@ type mockStore struct{
 	transactionBeforeUpdate Transaction
 }
 
-func (m *mockStore) Read(trans Transaction) bool {
-	m.transactionBeforeUpdate = trans
+func (m *mockStore) Read(tran Transaction) bool {
+	m.transactionBeforeUpdate = tran
 	return true
 }
 
@@ -40,27 +40,27 @@ var Datos string =  `[{
 
 
 type StubStore struct{
-	useMethodRed bool
+	useMethodRead bool
 }
 
 func(s *StubStore) Write(data interface{}) error{
 	return nil
 }
 func(s *StubStore) Read(data interface{}) error{
-	s.useMethodRed = true
+	s.useMethodRead = true
 	return json.Unmarshal([]byte(Datos), &data)
 }
 
 
 type StubStoreError struct{
-	useMethodRed bool
+	useMethodRead bool
 }
 
 func(s *StubStoreError) Write(data interface{}) error{
 	return errors.New("Error al cargar transaccion")
 }
 func(s *StubStoreError) Read(data interface{}) error{
-	s.useMethodRed = true
+	s.useMethodRead = true
 	return errors.New("No hay un archivo con trasnacciones")
 }
 
@@ -86,7 +86,7 @@ func TestGetAllError(t *testing.T){
 
 
 	assert.Nil(t,tran)
-	assert.True(t,stubStored.useMethodRed)
+	assert.True(t,stubStored.useMethodRead)
 	assert.Error(t,err)
 }
 
@@ -99,7 +99,7 @@ func TestUpdateCodigo(t *testing.T){
 
 	tranUpdate,err := repo.Update(2,codgUpdate,"Peso","55.6","pepe","luis","13/12/2021")
 
-	assert.True(t,stubStore.useMethodRed)
+	assert.True(t,stubStore.useMethodRead)
 	assert.Equal(t,tran2.ID,tranUpdate.ID)
 	assert.Equal(t,codgUpdate, codgUpdate)
 	assert.Nil(t,err)
@@ -113,7 +113,7 @@ func TestUpdateCodigoError(t *testing.T){
 
 	tranUpdate,err := repo.Update(2,codgUpdate,"Peso","55.6","pepe","luis","13/12/2021")
 
-	assert.True(t,stubStore.useMethodRed)
+	assert.True(t,stubStore.useMethodRead)
 	assert.Equal(t,Transaction{},tranUpdate)
 	assert.Error(t,err)
 }
@@ -130,7 +130,7 @@ func TestUpdateCodigoAndMonto(t *testing.T){
 
 	tranUpdate,err := repo.UpdateCodigoAndMonto(2,codgUpdate,monto)
 
-	assert.True(t,stubStore.useMethodRed)
+	assert.True(t,stubStore.useMethodRead)
 	assert.Nil(t,err)
 	assert.Equal(t,tranUpdate,mock.transactionBeforeUpdate)
 	assert.True(t,isRead)
