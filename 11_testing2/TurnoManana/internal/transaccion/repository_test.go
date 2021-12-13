@@ -55,7 +55,7 @@ func TestGetAll(t *testing.T){
 }
 
 
-func TestUpdateName(t *testing.T){
+func TestUpdateCodigo(t *testing.T){
 	stubStore := &StubStore{false}
 	repo := NewRepository(stubStore)
 	tran2,_ := repo.GetTransactionById(2)
