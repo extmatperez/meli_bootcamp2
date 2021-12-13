@@ -1,6 +1,5 @@
 package internal
 
-
 type Service interface {
 	GetAll() ([]Transaccion, error)
 	Store(codigo int, moneda string, monto float64, emisor string, receptor string, fecha string)(Transaccion, error)
