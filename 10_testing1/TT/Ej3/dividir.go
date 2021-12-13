@@ -10,8 +10,13 @@
 
 package dividir
 
+import "errors"
+
 func Dividir(a, b int) (int, error) {
 
+	if b == 0 {
+		return 0, errors.New("error: El divisor no puede ser 0")
+	}
 	div := a / b
 
 	return div, nil

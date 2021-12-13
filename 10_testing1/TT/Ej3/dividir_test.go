@@ -9,7 +9,7 @@ import (
 
 func TestDividir1(t *testing.T) {
 	a := 5
-	b := 2
+	b := 1
 
 	div, err := dividir.Dividir(a, b)
 	if err != nil {
@@ -18,4 +18,13 @@ func TestDividir1(t *testing.T) {
 	resultadoEsperado := 5
 
 	assert.Equal(t, resultadoEsperado, div, "Deberian ser 5")
+}
+func TestDividir2(t *testing.T) {
+	a := 5
+	b := 0
+
+	_, err := dividir.Dividir(a, b)
+
+	assert.NotNil(t, err)
+
 }
