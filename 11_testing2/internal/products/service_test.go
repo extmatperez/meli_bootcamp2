@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/pkg/store"
@@ -76,4 +77,40 @@ func TestUpdateMockError(t *testing.T) {
 	// Assert
 	assert.Error(t, err)
 	assert.Equal(t, Product{}, result, "should be equal")
+}
+
+// Delete tests
+func TestDeleteMock(t *testing.T) {
+	// Arrange
+	productBytes := []byte(productsServiceTest)
+	dbMock := store.Mock{Data: productBytes}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+	expectedErrorAfterDelete := errors.New("Product not found")
+
+	// Act
+	errDelete := service.Delete(1)
+	product, errFindById := service.FindById(1)
+
+	// Assert
+	assert.Nil(t, errDelete)
+
+	assert.Equal(t, expectedErrorAfterDelete, errFindById)
+	assert.Equal(t, Product{}, product)
+}
+
+func TestDeleteMockIdNotExists(t *testing.T) {
+	// Arrange
+	productBytes := []byte(productsServiceTest)
+	dbMock := store.Mock{Data: productBytes}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	// Act
+	err := service.Delete(3)
+
+	// Assert
+	assert.Error(t, err)
 }

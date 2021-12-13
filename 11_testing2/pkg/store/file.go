@@ -40,7 +40,7 @@ func (fs *FileStore) Write(data interface{}) error {
 	}
 
 	if fs.Mock != nil {
-		if fs.Mock.Data != nil {
+		if fs.Mock.Error != nil {
 			return fs.Mock.Error
 		}
 
