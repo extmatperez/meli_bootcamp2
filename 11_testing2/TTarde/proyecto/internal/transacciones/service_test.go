@@ -43,6 +43,8 @@ func TestServiceDeleteMock(t *testing.T) {
 	service := NewService(repo)
 
 	err := service.Delete(1)
+	todos, _ := service.GetAll()
   
 	assert.Equal(t, err, nil)
+	assert.Equal(t, len(todos), 1)
   }

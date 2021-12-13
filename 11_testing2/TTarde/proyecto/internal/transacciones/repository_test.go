@@ -123,8 +123,23 @@ func TestDeleteMock(t *testing.T) {
   repo := NewRepository(&storeStub)
 
   err := repo.Delete(1)
+  todos, _ := repo.GetAll()
 
   assert.Equal(t, err, nil)
+  assert.Equal(t, len(todos), 1)
+}
+
+
+func TestDeleteErrorMock(t *testing.T) {
+  dataByte := []byte(perso)
+
+  dbMock := store.Mock{Data: dataByte}
+  storeStub := store.FileStore{Mock: &dbMock}
+  repo := NewRepository(&storeStub)
+
+  err := repo.Delete(5)
+
+  assert.NotEqual(t, err, nil)
 }
 
 
