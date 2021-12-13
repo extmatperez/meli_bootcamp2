@@ -9,6 +9,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type mockStore struct{
+	transactionBeforeUpdate Transaction
+}
+
+func (m *mockStore) Read(trans Transaction) bool {
+	m.transactionBeforeUpdate = trans
+	return true
+}
+
 
 var Datos string =  `[{
 	"id": 2,
@@ -107,4 +116,22 @@ func TestUpdateCodigoError(t *testing.T){
 	assert.True(t,stubStore.useMethodRed)
 	assert.Equal(t,Transaction{},tranUpdate)
 	assert.Error(t,err)
+}
+
+
+func TestUpdateCodigoAndMonto(t *testing.T){
+	stubStore := &StubStore{false}
+	repo := NewRepository(stubStore)
+	codgUpdate :="AfterUpdatecod-123"
+	monto :="88.5"
+	transactionTest := Transaction{2, codgUpdate, "Peso Colombiano", monto, "Luis", "Perez", "01/01/2001"}
+	mock := &mockStore{transactionTest}
+	isRead := mock.Read(transactionTest)
+
+	tranUpdate,err := repo.UpdateCodigoAndMonto(2,codgUpdate,monto)
+
+	assert.True(t,stubStore.useMethodRed)
+	assert.Nil(t,err)
+	assert.Equal(t,tranUpdate,mock.transactionBeforeUpdate)
+	assert.True(t,isRead)
 }
