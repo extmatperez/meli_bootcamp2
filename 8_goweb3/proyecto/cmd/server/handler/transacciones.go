@@ -4,7 +4,8 @@ import (
 	"os"
 	"strconv"
 
-	transacciones "github.com/extmatperez/meli_bootcamp2/7_goweb3/proyecto/internal/transacciones"
+	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,14 +27,15 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 	return &Transaccion{service: t}
 }
 
+
 func (t Transaccion)GetAll() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 			data, err := t.service.GetAll()
 			if err != nil{
-			ctx.String(200, "Ocurrio un error")
+			ctx.JSON(400, web.NewResponse(400, nil, "No se pudieron obtener los datos"))
 			return
 			}
-			ctx.JSON(200, data)
+			ctx.JSON(200, web.NewResponse(200, data, "No se pudieron obtener los datos"))
 		}
 	}
 
@@ -50,7 +52,7 @@ func (t *Transaccion) Store() gin.HandlerFunc{
 		} else {
 			p, err := t.service.Store(req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaTransaccion)
 			if err != nil {
-				ctx.String(400, "Ha ocurrido un error al escribir")
+				ctx.JSON(400, web.NewResponse(400, nil, "Ocurrio un error al almacenar"))
 				return
 			}
 			ctx.JSON(200, p)
@@ -77,7 +79,7 @@ func (t *Transaccion) Update() gin.HandlerFunc{
 		var req request
 		err = ctx.ShouldBind(&req)
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(401, web.NewResponse(401, nil, "No se procesó la solicitud"))
 			return
 		}
 
@@ -86,7 +88,7 @@ func (t *Transaccion) Update() gin.HandlerFunc{
 		ctx.JSON(404, gin.H{"error": err.Error()})
 		return
 		}
-		ctx.JSON(200, t)
+		ctx.JSON(200, web.NewResponse(200, t, ""))
 	}
 }
 

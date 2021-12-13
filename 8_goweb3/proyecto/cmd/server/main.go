@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	handler "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/cmd/server/handler"
-	transacciones "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/internal/transacciones"
-	"github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/pkg/store"
+	handler "github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/cmd/server/handler"
+	transacciones "github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/8_goweb3/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

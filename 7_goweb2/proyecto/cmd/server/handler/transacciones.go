@@ -26,6 +26,17 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 	return &Transaccion{service: t}
 }
 
+
+// ListTransacciones godoc
+// @Summary List transacciones
+// @Tags Transacciones
+// @Description get transacciones
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /transacciones [get]
+
 func (t Transaccion)GetAll() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 			data, err := t.service.GetAll()
@@ -37,6 +48,16 @@ func (t Transaccion)GetAll() gin.HandlerFunc{
 		}
 	}
 
+
+// ListTransacciones godoc
+// @Summary List transacciones
+// @Tags Transacciones
+// @Description post transacciones
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /transacciones [post]
 
 func (t *Transaccion) Store() gin.HandlerFunc{
 	return func(ctx *gin.Context){
