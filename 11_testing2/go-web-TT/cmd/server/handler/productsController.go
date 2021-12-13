@@ -5,8 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	product "github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/11_testing2/go-web-TTMM/internal/products"
-	"github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/8_goweb3/go-web-TTMM/pkg/web"
+	product "github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/11_testing2/go-web-TT/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/tree/castillo_walter/11_testing2/go-web-TT/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
