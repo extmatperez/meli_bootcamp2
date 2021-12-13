@@ -18,5 +18,7 @@ func Dividir(a,b int) (int,error){
 
 func OrdernarSilice(silice ...int) []int{
 	 sort.Ints(silice)
+//	desc sort.Sort(sort.Reverse(sort.IntSlice(silice)))
+//	fmt.Println(silice)
 	return silice
 }
