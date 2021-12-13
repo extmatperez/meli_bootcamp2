@@ -1,0 +1,167 @@
+definitions:
+  handler.request:
+    properties:
+      codigo:
+        type: string
+      emisor:
+        type: string
+      fecha:
+        type: string
+      moneda:
+        type: string
+      monto:
+        type: number
+      receptor:
+        type: string
+    type: object
+  web.response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      error:
+        type: string
+    type: object
+info:
+  contact:
+    name: API Support
+    url: https://developers.mercadolibre.com.ar/support
+  description: This API Handle MELI Products.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
+  title: MELI Bootcamp API
+  version: "1.0"
+paths:
+  /payments:
+    get:
+      consumes:
+      - application/json
+      description: get all the payments
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: List payments
+      tags:
+      - Payments
+    post:
+      consumes:
+      - application/json
+      description: store payments
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Payment to store
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/handler.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: Store payments
+      tags:
+      - Payments
+  /payments/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete one payment
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: Delete payment
+      tags:
+      - Payments
+    put:
+      consumes:
+      - application/json
+      description: update some fields of one payment
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: Update payments
+      tags:
+      - Payments
+  /payments/amount/:id:
+    patch:
+      consumes:
+      - application/json
+      description: change one payment's amount
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: Update payment amount
+      tags:
+      - Payments
+  /payments/code/:id:
+    patch:
+      consumes:
+      - application/json
+      description: change one payment's code
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: Update payment code
+      tags:
+      - Payments
+swagger: "2.0"

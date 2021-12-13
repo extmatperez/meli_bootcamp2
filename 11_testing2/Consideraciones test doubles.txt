@@ -1,0 +1,10 @@
+Los test doubles son los previamente descritos en los ejercicios vistos en clase.
+Se puede considerar en base a las similitudes que de cierta manera un Stub es ligeramente parecido a un Dummy, pero devuelve un valor especifico.
+Un Spy es un tipo de Stub, pero con la responsabilidad adicional de guardar informacion.
+El Mock es una clase de Spy pero en el que las validaciones se hacen sobre la informacion guardada en el Mock.
+Un Fake podria pasar por un Stub pero se distingue porque tiene logica de negocio y devuelve distintas respuestas de acuerdo al escenario.
+
+Aplicar uno u otro depende de la necesidad del objeto de prueba (en este caso, de la funcion a testear).
+El testing esta para comprobar la calidad del codigo, pero sin perder la simplicidad y legibilidad del mismo, por lo que siempre debe ser seleccionado
+el Double test mas simple para aplicar para testear el objeto de prueba y todas sus condiciones y flujos. 
+Siempre es recomendable evitar la complejidad innecesaria y no descartar la continua posibilidad de refactorizacion o simplificacion de los test.
