@@ -38,7 +38,7 @@ func TestUpdate(t *testing.T){
 		Fecha: "13/12/2021",
 	}
 
-	mock := store.Mock{Data: []byte("[]")}
+	mock := store.Mock{Data: []byte("[]"),IsStoreRead: false}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
 	myService:= NewService(myRepo)
@@ -47,6 +47,7 @@ func TestUpdate(t *testing.T){
 										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
 
 	assert.Nil(t,err)
+	assert.True(t,mock.IsStoreRead)
 	assert.Equal(t,transacionTest.Codigo,newTransaction.Codigo)
 	assert.Equal(t,transacionTest.Emisor,newTransaction.Emisor)
 	assert.Equal(t,transacionTest.Fecha,newTransaction.Fecha)

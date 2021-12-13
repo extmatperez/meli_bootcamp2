@@ -23,6 +23,8 @@ type Store interface {
 type Mock struct{
 	Data []byte
 	Err error
+	IsStoreRead bool
+	IsStoreWrite bool
 }
 
 func (fs *FileStore) AddMock(mock *Mock){
@@ -32,10 +34,7 @@ func (fs *FileStore) AddMock(mock *Mock){
 func (fs *FileStore) DeleteMock(mock *Mock){
 	fs.Mock = nil
 }
-func (fs *Mock) ReadMock(Data []byte) bool{
-	fs.Data = Data
-	return true;
-}
+
 
 
 func New(typeFile TypeFile,filename string) Store{
@@ -77,6 +76,7 @@ func(sto *FileStore) Read(data interface{}) error{
 		if sto.Mock.Err != nil{
 			return sto.Mock.Err
 		}
+		sto.Mock.IsStoreRead = true
 		return json.Unmarshal(sto.Mock.Data, &data)
 	}
 
