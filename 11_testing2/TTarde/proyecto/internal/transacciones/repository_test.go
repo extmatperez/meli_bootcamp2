@@ -115,8 +115,16 @@ func TestUpdateMock(t *testing.T){
   assert.Equal(t, trNuevo, per_actualizada)
 }
 
-func  TestDeleteMock(t *testing.T) {
-  
+func TestDeleteMock(t *testing.T) {
+  dataByte := []byte(perso)
+
+  dbMock := store.Mock{Data: dataByte}
+  storeStub := store.FileStore{Mock: &dbMock}
+  repo := NewRepository(&storeStub)
+
+  err := repo.Delete(1)
+
+  assert.Equal(t, err, nil)
 }
 
 
