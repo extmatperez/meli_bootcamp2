@@ -43,7 +43,7 @@ func TestUpdate(t *testing.T){
 	myRepo := NewRepository(&typeFileMock)
 	myService:= NewService(myRepo)
 
-	newTransaction,err := myService.Store(transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
+	newTransaction,err := myService.Update(50,transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
 										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
 
 	assert.Nil(t,err)
@@ -55,7 +55,7 @@ func TestUpdate(t *testing.T){
 	assert.Equal(t,transacionTest.Moneda,newTransaction.Moneda)
 	assert.Equal(t,transacionTest.Monto,newTransaction.Monto)
 	assert.Equal(t,transacionTest.Receptor,newTransaction.Receptor)
-
+	assert.Equal(t,50,newTransaction.ID)
 }
 
 
@@ -69,12 +69,12 @@ func TestUpdateError(t *testing.T){
 		Fecha: "13/12/2021",
 	}
 	erCreated:= errors.New("Error al updtear transaction")
-	mock := store.Mock{Data: []byte("[]"),Err: erCreated}
+	mock := store.Mock{Data: []byte(transactions),Err: erCreated}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
 	myService:= NewService(myRepo)
 
-	newTransaction,err := myService.Store(transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
+	newTransaction,err := myService.Update(2,transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
 										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
 
 	assert.True(t,!mock.IsStoreRead)
