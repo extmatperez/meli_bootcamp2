@@ -28,14 +28,14 @@ var Datos string =  `[{
 
 
 type StubStore struct{
-	useMethodRead bool
+	useMethodRed bool
 }
 
 func(s *StubStore) Write(data interface{}) error{
-	s.useMethodRead = true
 	return nil
 }
 func(s *StubStore) Read(data interface{}) error{
+	s.useMethodRed = true
 	return json.Unmarshal([]byte(Datos), &data)
 }
 
@@ -56,7 +56,7 @@ func TestGetAll(t *testing.T){
 
 
 func TestUpdateName(t *testing.T){
-	stubStore := &StubStore{}
+	stubStore := &StubStore{false}
 	repo := NewRepository(stubStore)
 	tran2,_ := repo.GetTransactionById(2)
 	codgUpdate :="AfterUpdatecod-123"
@@ -64,9 +64,8 @@ func TestUpdateName(t *testing.T){
 
 	tranUpdate,err := repo.Update(2,codgUpdate,"Peso","55.6","pepe","luis","13/12/2021")
 
-	
+	assert.True(t,stubStore.useMethodRed)
 	assert.Equal(t,tran2.ID,tranUpdate.ID)
 	assert.Equal(t,codgUpdate, codgUpdate)
-	assert.True(t,stubStore.useMethodRead)
 	assert.Nil(t,err)
 }
