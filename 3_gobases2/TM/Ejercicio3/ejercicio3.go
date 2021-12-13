@@ -12,9 +12,9 @@ const (
 )
 
 func main() {
-	your_salary, err := salary_calculator(10800, a_cat)
-	if err != nil {
-		fmt.Printf("Su salario es de: %.2f", your_salary)
+	your_salary, err := salary_calculator(10800.00, a_cat)
+	if err == nil {
+		fmt.Printf("Su salario es de: %.2f\n", your_salary)
 	} else {
 		fmt.Printf("Error: %v", err)
 	}
