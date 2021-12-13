@@ -2,11 +2,13 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
 
 	internal "github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/internal/transactions"
+	"github.com/extmatperez/meli_bootcamp2/7_goweb2/proyecto/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,6 +29,16 @@ func NewTransaction(serv internal.Service) *Transaction {
 	return &Transaction{service: serv}
 }
 
+// ListProducts godoc
+// @Summary List transactions
+// @Tags Transactions
+// @Description get all transactions
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Router /transactions [get]
 func (t *Transaction) GetAll() gin.HandlerFunc { //TODO: implement filters
 	return func(ctx *gin.Context) {
 
@@ -34,177 +46,197 @@ func (t *Transaction) GetAll() gin.HandlerFunc { //TODO: implement filters
 
 		response, err := t.service.GetAll(filters)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
+
 			return
 		}
-		if len(response) == 0 {
-			ctx.JSON(http.StatusOK, gin.H{})
-			return
-		}
-		ctx.JSON(http.StatusOK, response)
+		ctx.JSON(200, web.NewResponse(200, response, ""))
 
 	}
 }
 
+// ListProducts godoc
+// @Summary Get transaction by ID
+// @Tags Transactions
+// @Description get transaction by ID
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "invalid id"
+// @Failure 404 {object} web.Response "id not found"
+// @Router /transactions:id [get]
 func (t *Transaction) GetTransactionByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "invalid id",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "ID inválido"))
 			return
 		}
 		response, err := t.service.GetTransactionByID(id)
 
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusOK, response)
+		ctx.JSON(200, web.NewResponse(200, response, ""))
 		return
 
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store transaction
+// @Tags Transactions
+// @Description store transaction
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Param product body request true "Transaction to store"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "invalid params"
+// @Router /transactions [post]
 func (t *Transaction) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var tr request
 		err := ctx.ShouldBindJSON(&tr)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "invalid arguments",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "Invalid arguments"))
 			return
 		}
 		err = validarCampos(tr)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 		respuesta, err := t.service.Store(tr.CodigoDeTransaccion, tr.Moneda, tr.Monto, tr.Emisor, tr.Receptor, tr.FechaDeTransaccion)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(400, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusOK, respuesta)
+		ctx.JSON(200, web.NewResponse(200, respuesta, ""))
 		return
 
 	}
 }
 
+// ListProducts godoc
+// @Summary Update transaction
+// @Tags Transactions
+// @Description update transactions
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "invalid arguments"
+// @Failure 404 {object} web.Response "transaction not found"
+// @Router /transactions:id [put]
 func (t *Transaction) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "id is mandatory",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "El ID es obligatorio"))
 			return
 		}
 
 		var tr request
 		err = ctx.ShouldBindJSON(&tr)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "invalid arguments",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "Invalid arguments"))
 			return
 		}
 		err = validarCampos(tr)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		respuesta, err := t.service.Update(id, tr.CodigoDeTransaccion, tr.Moneda, tr.Monto, tr.Emisor, tr.Receptor, tr.FechaDeTransaccion)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusOK, respuesta)
+		ctx.JSON(200, web.NewResponse(200, respuesta, ""))
 		return
 
 	}
 }
 
+// ListProducts godoc
+// @Summary Delete transaction
+// @Tags Transactions
+// @Description delete transactions
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "invalid arguments"
+// @Failure 404 {object} web.Response "transaction not found"
+// @Router /transactions [put]
 func (t *Transaction) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "id is mandatory",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "El ID es obligatorio"))
 			return
 		}
 
 		err = t.service.Delete(id)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.String(http.StatusOK, "transaction %d deleted", id)
+		ctx.JSON(200, web.NewResponse(200, fmt.Sprintf("transaction %d deleted", id), ""))
 		return
 
 	}
 }
 
+// ListProducts godoc
+// @Summary Update Code and Amount of transaction
+// @Tags Transactions
+// @Description update transactions
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "invalid arguments"
+// @Failure 404 {object} web.Response "transaction not found"
+// @Router /transactions:id [patch]
 func (t *Transaction) UpdateCodigoYMonto() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "id is mandatory",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "El ID es obligatorio"))
+
 			return
 		}
 
 		var tr request
 		err = ctx.ShouldBindJSON(&tr)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "invalid arguments",
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, "Invalid arguments"))
 			return
 		}
 		err = validarCampos(tr, "CodigoDeTransaccion", "Monto")
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		respuesta, err := t.service.UpdateCodigoYMonto(id, tr.CodigoDeTransaccion, tr.Monto)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusOK, respuesta)
+		ctx.JSON(200, web.NewResponse(200, respuesta, ""))
 		return
 
 	}
@@ -219,11 +251,11 @@ func (t *Transaction) ValidateToken() gin.HandlerFunc {
 			if token == os.Getenv("TOKEN") { //"123456" {
 				return
 			}
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, "Token incorrecto")
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, web.NewResponse(401, nil, "Token incorrecto"))
 
 			return
 		}
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, "No se ingresó un token")
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, web.NewResponse(401, nil, "No se ingresó un token"))
 	}
 }
 
