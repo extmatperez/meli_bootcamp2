@@ -9,9 +9,18 @@ import (
 
 type StrubStore struct{}
 
+type mockStorages struct {
+	BeforeUpdate Transaction
+}
+
+func (m *mockStorages) Read(trans Transaction) bool {
+	m.BeforeUpdate = trans
+	return true
+}
+
 var transacciones string = `[
-	{"transaction_code": "12345", "coin": "USD", "amount": 300.00, "emitor": "Juan", "receptor": "Enrique", "transaction_date": "12/12/21"}, 
-	{"transaction_code": "54321", "coin": "Euro", "amount": 150.00, "emitor": "Miguel", "receptor": "Luis", "transaction_date": "13/12/21"}
+	{"id": 1, "transaction_code": "12345", "coin": "USD", "amount": 300.00, "emitor": "Juan", "receptor": "Enrique", "transaction_date": "12/12/21"}, 
+	{"id": 2, "transaction_code": "54321", "coin": "Euro", "amount": 150.00, "emitor": "Miguel", "receptor": "Luis", "transaction_date": "13/12/21"}
 ]`
 
 func (s *StrubStore) Read(data interface{}) error {
@@ -32,4 +41,21 @@ func TestGetAll(t *testing.T) {
 	assert.Equal(t, expected, trans)
 
 	assert.Nil(t, err)
+}
+
+func TestUpdateReceptor(t *testing.T) {
+	store := &StrubStore{}
+	repo := NewRepository(store)
+	transactionTest := Transaction{1, "12345", "USD", 300.00, "Juan", "After Update", "12/12/21"}
+
+	myMock := &mockStorages{}
+	changed := myMock.Read(transactionTest)
+
+	transUpdated, err := repo.UpdateReceptor(1, "After Update")
+
+	assert.Equal(t, myMock.BeforeUpdate, transUpdated)
+	assert.Nil(t, err)
+
+	assert.Equal(t, true, changed)
+
 }
