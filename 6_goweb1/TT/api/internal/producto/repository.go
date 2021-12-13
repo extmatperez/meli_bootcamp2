@@ -130,6 +130,12 @@ func (repo *repository) Update(id int64, name string, color string, price float6
 }
 
 func (repo *repository) UpdateNombre(id int64, name string) (Product, error) {
+
+	err := repo.db.Read(&products)
+
+	if err != nil {
+		return Product{}, err
+	}
 	for i, v := range products {
 		if v.ID == id {
 			products[i].Name = name
