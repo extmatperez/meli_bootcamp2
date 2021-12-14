@@ -69,6 +69,34 @@ func TestServiceGetAllMockError(t *testing.T) {
 	assert.Error(t, err)
 }
 
+// Get all tests
+func TestServiceGetByIdMock(t *testing.T) {
+	// Arrange
+	productBytes := []byte(productsServiceTest)
+	dbMock := store.Mock{Data: productBytes, ReadUsed: false}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	expectedResult := Product{
+		Id:         1,
+		Name:       "Pelota",
+		Color:      "Negro",
+		Price:      1505.5,
+		Stock:      200,
+		Code:       "#0000000f1",
+		Published:  true,
+		Created_at: "21/11/2021",
+	}
+
+	// Act
+	result, _ := service.FindById(1)
+
+	// Assert
+	assert.Equal(t, expectedResult, result, "should be equal")
+	assert.True(t, dbMock.ReadUsed)
+}
+
 // Update tests
 func TestServiceUpdateMock(t *testing.T) {
 	// Arrange
@@ -117,6 +145,25 @@ func TestServiceUpdateMockError(t *testing.T) {
 	// Assert
 	assert.Error(t, err)
 	assert.Equal(t, Product{}, result, "should be equal")
+}
+
+func TestServiceUpdateNameAndPriceMock(t *testing.T) {
+	// Arrange
+	productBytes := []byte(productsServiceTest)
+	dbMock := store.Mock{Data: productBytes, ReadUsed: false}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	expectedResult := Product{1, "Pelota actualizada", "", 2000.05, 0, "", false, ""}
+
+	// Act
+	result, _ := service.UpdateNameAndPrice(1, "Pelota actualizada", 2000.05)
+
+	// Assert
+	assert.Equal(t, expectedResult.Name, result.Name, "should be equal")
+	assert.Equal(t, expectedResult.Price, result.Price, "should be equal")
+	assert.True(t, dbMock.ReadUsed)
 }
 
 // Delete tests
@@ -185,4 +232,28 @@ func TestServiceStoreMockError(t *testing.T) {
 	// Assert
 	assert.Error(t, err)
 	assert.Equal(t, Product{}, result, "should be equal")
+}
+
+// Filter tests
+func TestServiceFilterMock(t *testing.T) {
+	// Arrange
+	productBytes := []byte(productsServiceTest)
+	dbMock := store.Mock{Data: productBytes}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	var productsToFilter []Product
+	_ = json.Unmarshal(productBytes, &productsToFilter)
+
+	var queryParams = map[string]string{
+		"name": "pel",
+	}
+
+	// Act
+	productsFiltered := service.FilterProducts(productsToFilter, queryParams)
+
+	// Assert
+	assert.Equal(t, 1, len(productsFiltered), "should be equal")
+	assert.Equal(t, "Pelota", productsFiltered[0].Name, "should be equal")
 }

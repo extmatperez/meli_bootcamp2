@@ -42,6 +42,16 @@ func (s *StubStore) Write(data interface{}) error {
 	return nil
 }
 
+type StubStoreReadError struct{}
+
+func (s *StubStoreReadError) Read(data interface{}) error {
+	return fmt.Errorf("error")
+}
+
+func (s *StubStoreReadError) Write(data interface{}) error {
+	return fmt.Errorf("error")
+}
+
 func TestGetAll(t *testing.T) {
 	// Arrange
 	stubStore := &StubStore{}
@@ -55,6 +65,67 @@ func TestGetAll(t *testing.T) {
 	// Assert
 	assert.Equal(t, result, expectedResult, "deben ser iguales")
 	assert.Nil(t, err)
+}
+
+func TestFindByID(t *testing.T) {
+	// Arrange
+	stubStore := &StubStore{}
+	repository := NewRepository(stubStore)
+	expectedResult := Product{
+		Id:         1,
+		Name:       "Pelota",
+		Color:      "Negro",
+		Price:      1505.5,
+		Stock:      200,
+		Code:       "#0000000f1",
+		Published:  true,
+		Created_at: "21/11/2021",
+	}
+
+	// Act
+	result, err := repository.FindById(1)
+
+	// Assert
+	assert.Equal(t, result, expectedResult, "deben ser iguales")
+	assert.Nil(t, err)
+}
+
+func TestFindByIDError(t *testing.T) {
+	// Arrange
+	stubStoreReadError := &StubStoreReadError{}
+	repository := NewRepository(stubStoreReadError)
+
+	// Act
+	_, err := repository.FindById(1)
+
+	// Assert
+	assert.Error(t, err)
+}
+
+func TestLastID(t *testing.T) {
+	// Arrange
+	stubStore := &StubStore{}
+	repository := NewRepository(stubStore)
+	expectedResult := int64(2)
+
+	// Act
+	result, err := repository.LastId()
+
+	// Assert
+	assert.Equal(t, result, expectedResult, "deben ser iguales")
+	assert.Nil(t, err)
+}
+
+func TestDeleteError(t *testing.T) {
+	// Arrange
+	stubStoreReadError := &StubStoreReadError{}
+	repository := NewRepository(stubStoreReadError)
+
+	// Act
+	err := repository.Delete(1)
+
+	// Assert
+	assert.Error(t, err)
 }
 
 type MockStore struct {
@@ -98,5 +169,18 @@ func TestUpdateNameAndPrice(t *testing.T) {
 	assert.Equal(t, result.Name, mockStore.name, "deben ser iguales")
 	assert.Equal(t, result.Price, mockStore.price, "deben ser iguales")
 	assert.Nil(t, err)
+	assert.True(t, mockStore.readUsed)
+}
+
+func TestUpdateNameAndPriceNotFound(t *testing.T) {
+	// Arrange
+	mockStore := &MockStore{1, "Before update", 0.00, false}
+	repository := NewRepository(mockStore)
+
+	// Act
+	_, err := repository.UpdateNameAndPrice(5, "After update", 100.00)
+
+	// Assert
+	assert.Error(t, err)
 	assert.True(t, mockStore.readUsed)
 }
