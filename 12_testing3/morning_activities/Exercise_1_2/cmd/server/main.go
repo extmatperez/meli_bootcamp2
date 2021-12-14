@@ -95,5 +95,9 @@ func main() {
 	router.PATCH("/users/:id", controller.Update_users_first_name())
 	router.DELETE("/users/:id", controller.Delete_users())
 
-	router.Run()
+	err = router.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

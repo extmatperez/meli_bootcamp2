@@ -57,11 +57,14 @@ func (repo *repository) Get_users() ([]Users, error) {
 // Implementamos la funcionalidad para agregar usuarios a nuestro slice
 func (repo *repository) Post_users(id int, first_name string, last_name string, email string, age int, height int, active bool, date string) (Users, error) {
 	// Leemos lo que exista en nuestro slice (base de datos)
-	repo.db.Read(&users)
+	err := repo.db.Read(&users)
+	if err != nil {
+		return Users{}, err
+	}
 
 	user := Users{id, first_name, last_name, email, age, height, active, date}
 	users = append(users, user)
-	err := repo.db.Write(users)
+	err = repo.db.Write(users)
 
 	if err != nil {
 		return Users{}, err
