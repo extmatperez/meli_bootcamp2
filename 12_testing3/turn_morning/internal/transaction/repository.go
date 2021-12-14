@@ -1,12 +1,9 @@
 package internal
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/turn_morning/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/turn_morning/pkg/store"
 )
 
 type Transaction struct {
@@ -20,40 +17,6 @@ type Transaction struct {
 }
 
 var transactions []Transaction
-
-func readTransactions() []Transaction {
-	transacionFile := "../../internal/transaction/transaction.json"
-	data, err := os.ReadFile(transacionFile)
-
-	if err != nil {
-		fmt.Printf("There was a error %v", err)
-	}
-
-	return toDeserializer(data)
-}
-
-func toDeserializer(data []byte) []Transaction {
-	var transactions []Transaction
-
-	if err := json.Unmarshal(data, &transactions); err != nil {
-		fmt.Printf("There was a error during deserializer %v", err)
-	}
-
-	return transactions
-}
-
-func toSaveTransaction(tran *[]Transaction) {
-
-	reqBodyBytes := new(bytes.Buffer)
-	json.NewEncoder(reqBodyBytes).Encode(transactions)
-	data := reqBodyBytes.Bytes()
-
-	err := os.WriteFile("../../internal/transaction/transaction.json", data, 0644)
-
-	if err != nil {
-		panic(err)
-	}
-}
 
 type Repository interface {
 	LastId() (int, error)
@@ -129,8 +92,12 @@ func (repo *repository) Store(id int, transactionCode string, currency string, a
 	isExists, err := repo.db.Read(&transactions)
 
 	if !isExists {
-		repo.db.Write(&transactions)
-		_, err := repo.db.Read(&transactions)
+		_, err := repo.db.Write(&transactions)
+
+		if err != nil {
+			return Transaction{}, err
+		}
+		_, err = repo.db.Read(&transactions)
 
 		if err != nil {
 			return Transaction{}, err
@@ -253,5 +220,5 @@ func (repo *repository) DeleteTransaction(id int) error {
 			return nil
 		}
 	}
-	return fmt.Errorf("La persona %d no existe", id)
+	return fmt.Errorf("The transaction %d no exists", id)
 }
