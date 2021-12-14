@@ -1,0 +1,29 @@
+[
+ {
+  "id": 3,
+  "code": "newCode",
+  "currency": "USD",
+  "amount": 123,
+  "sender": "Mike",
+  "receiver": "Not mike",
+  "date": "01/01/2010"
+ },
+ {
+  "id": 4,
+  "code": "newCode",
+  "currency": "USD",
+  "amount": 123,
+  "sender": "Mike",
+  "receiver": "Not mike",
+  "date": "01/01/2010"
+ },
+ {
+  "id": 5,
+  "code": "newCode",
+  "currency": "USD",
+  "amount": 123,
+  "sender": "put sender",
+  "receiver": "put receiver",
+  "date": "21/1/2021"
+ }
+]
