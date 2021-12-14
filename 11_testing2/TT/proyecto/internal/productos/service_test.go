@@ -18,14 +18,108 @@ producto, y el error cuando el producto no existe. Para lograrlo puede:
 package internal
 
 import (
+	"encoding/json"
+	"errors"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TT/proyecto/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUpdateSeriveMock(t *testing.T) {
+func TestCreateServiceMock(t *testing.T) {
+	//Arrenge
+	newProduct := Producto{
+		ID:            1,
+		Nombre:        "Asdf",
+		Color:         "Negro",
+		Precio:        "$ 50",
+		Stock:         2,
+		Codigo:        "123456R",
+		Publicado:     true,
+		FechaCreacion: "01/06/1996",
+	}
 
+	dbMock := store.Mock{Data: []byte(productosTest)}
+
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	//Act
+	createdProduct, err := service.Store(newProduct.Nombre, newProduct.Color, newProduct.Precio, newProduct.Stock, newProduct.Codigo, newProduct.Publicado, newProduct.FechaCreacion)
+
+	//Assert
+	assert.Equal(t, newProduct.Nombre, createdProduct.Nombre)
+	assert.Equal(t, newProduct.Codigo, createdProduct.Codigo)
+	assert.Nil(t, err)
+	assert.True(t, dbMock.Used)
+}
+
+func TestCreateServiceMockError(t *testing.T) {
+	//Arrenge
+	newProduct := Producto{
+		ID:            1,
+		Nombre:        "Asdf",
+		Color:         "Negro",
+		Precio:        "$ 50",
+		Stock:         2,
+		Codigo:        "123456R",
+		Publicado:     true,
+		FechaCreacion: "01/06/1996",
+	}
+
+	expectedError := errors.New("error en los datos del Mock")
+
+	dbMock := store.Mock{Data: []byte(productosTest), Err: expectedError}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	//Act
+	_, err := service.Store(newProduct.Nombre, newProduct.Color, newProduct.Precio, newProduct.Stock, newProduct.Codigo, newProduct.Publicado, newProduct.FechaCreacion)
+
+	//Assert
+	assert.Equal(t, expectedError, err)
+	assert.True(t, dbMock.Used)
+}
+
+func TestGetAllMock(t *testing.T) {
+	//Arrenge
+	dbMock := store.Mock{Data: []byte(productosTest)}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	var expectedList []Producto
+	json.Unmarshal([]byte(productosTest), &expectedList)
+
+	//Act
+	productsList, err := service.GetAll()
+
+	//Assert
+	assert.Equal(t, expectedList, productsList)
+	assert.Nil(t, err)
+	assert.True(t, dbMock.Used)
+}
+
+func TestGetAllMockError(t *testing.T) {
+	//Arrenge
+	expectedError := errors.New("The Mock is empty")
+
+	dbMock := store.Mock{Data: []byte(``), Err: expectedError}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	//Act
+	_, err := service.GetAll()
+
+	//Assert
+	assert.Equal(t, expectedError, err)
+	assert.True(t, dbMock.Used)
+}
+
+func TestUpdateServiceMock(t *testing.T) {
 	//Arrenge
 	productToUpdate := Producto{
 		ID:            1,
@@ -53,8 +147,7 @@ func TestUpdateSeriveMock(t *testing.T) {
 	assert.True(t, dbMock.Used)
 }
 
-func TestUpdateSeriveMockError(t *testing.T) {
-
+func TestUpdateServiceMockError(t *testing.T) {
 	//Arrenge
 	productToUpdate := Producto{
 		ID:            0,
@@ -81,8 +174,7 @@ func TestUpdateSeriveMockError(t *testing.T) {
 	assert.True(t, dbMock.Used)
 }
 
-func TestDeleteSeriveMock(t *testing.T) {
-
+func TestDeleteServiceMock(t *testing.T) {
 	//Arrenge
 	productToUpdateID := 1
 
@@ -100,8 +192,7 @@ func TestDeleteSeriveMock(t *testing.T) {
 	assert.True(t, dbMock.Used)
 }
 
-func TestDeleteSeriveMockError(t *testing.T) {
-
+func TestDeleteServiceMockError(t *testing.T) {
 	//Arrenge
 	productToUpdateID := 0
 

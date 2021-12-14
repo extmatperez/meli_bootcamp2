@@ -62,7 +62,11 @@ func (r *repository) GetAll() ([]Producto, error) {
 
 	//cargarProductos()
 
-	r.db.Read(&productos)
+	err := r.db.Read(&productos)
+
+	if err != nil {
+		return []Producto{}, err
+	}
 
 	return productos, nil
 }
@@ -71,7 +75,11 @@ func (r *repository) Store(id int, nombre string, color string, precio string, s
 
 	//cargarProductos()
 
-	r.db.Read(&productos)
+	err := r.db.Read(&productos)
+
+	if err != nil {
+		return Producto{}, err
+	}
 
 	nuevoProducto := Producto{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
 
@@ -79,7 +87,7 @@ func (r *repository) Store(id int, nombre string, color string, precio string, s
 
 	//err := escribirJSON(productos)
 
-	err := r.db.Write(&productos)
+	err = r.db.Write(&productos)
 
 	if err != nil {
 		return Producto{}, err
