@@ -11,9 +11,12 @@ import (
 
 func TestGetAllServiceMock(t *testing.T) {
 
-	dataByte := []byte(produc)                    //* obtengo los bytes de product
-	var productosEsperados []Productos            //* declaro una variable
-	json.Unmarshal(dataByte, &productosEsperados) //* guardo los datos en la variable
+	dataByte := []byte(produc)                           //* obtengo los bytes de product
+	var productosEsperados []Productos                   //* declaro una variable
+	err := json.Unmarshal(dataByte, &productosEsperados) //* guardo los datos en la variable
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	dbMock := store.Mock{Data: dataByte}    //* paso los datos en bytes
 	store := store.FileStore{Mock: &dbMock} //* creo un store y le paso el mock que cree

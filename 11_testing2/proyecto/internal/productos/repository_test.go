@@ -34,7 +34,10 @@ func TestGetAll(t *testing.T) {
 	productos, _ := repo.GetAll()
 
 	var resultadoEsperado []Productos
-	json.Unmarshal([]byte(produc), &resultadoEsperado)
+	err := json.Unmarshal([]byte(produc), &resultadoEsperado)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	assert.Equal(t, resultadoEsperado, productos)
 
@@ -42,9 +45,12 @@ func TestGetAll(t *testing.T) {
 
 func TestGetAllMock(t *testing.T) {
 
-	dataByte := []byte(produc)                    //* obtengo los bytes de product
-	var productosEsperados []Productos            //* declaro una variable
-	json.Unmarshal(dataByte, &productosEsperados) //* guardo los datos en la variable
+	dataByte := []byte(produc)                           //* obtengo los bytes de product
+	var productosEsperados []Productos                   //* declaro una variable
+	err := json.Unmarshal(dataByte, &productosEsperados) //* guardo los datos en la variable
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	dbMock := store.Mock{Data: dataByte}    //* paso los datos en bytes
 	store := store.FileStore{Mock: &dbMock} //* creo un store y le paso el mock que cree
@@ -82,9 +88,12 @@ func TestUpdateMoke(t *testing.T) {
 
 func TestLastIdMock(t *testing.T) {
 
-	dataByte := []byte(produc)                    //* obtengo los bytes de product
-	var productosEsperados []Productos            //* declaro una variable
-	json.Unmarshal(dataByte, &productosEsperados) //* guardo los datos en la variable
+	dataByte := []byte(produc)                           //* obtengo los bytes de product
+	var productosEsperados []Productos                   //* declaro una variable
+	err := json.Unmarshal(dataByte, &productosEsperados) //* guardo los datos en la variable
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	dbMock := store.Mock{Data: dataByte}    //* paso los datos en bytes
 	store := store.FileStore{Mock: &dbMock} //* creo un store y le paso el mock que cree

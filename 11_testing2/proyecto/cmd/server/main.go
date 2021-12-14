@@ -45,5 +45,10 @@ func main() {
 	router.PATCH("/modifyNaPr/:id", controller.ModifyNamePrice())
 	router.DELETE("/delete/:id", controller.Delete())
 
-	router.Run()
+	err = router.Run()
+
+	if err != nil {
+		return
+	}
+
 }
