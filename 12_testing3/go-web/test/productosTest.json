@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "nombre": "ProductoTesting",
+    "color": "Rojo",
+    "precio": "$45.00",
+    "stock": 24,
+    "codigo": "abcd",
+    "publicado": true,
+    "creado": "25/12/2003"
+  }
+]

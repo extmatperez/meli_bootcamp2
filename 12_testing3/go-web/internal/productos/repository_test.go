@@ -73,3 +73,21 @@ func TestCreate(t *testing.T) {
 
 	assert.Equal(t, respuestaEsperada, nuevoProducto, "Deben ser iguales")
 }
+
+func TestDelete(t *testing.T) {
+	store := StubStore{}
+	repo := NewRepository(&store)
+
+	err := repo.Delete(3)
+
+	assert.Nil(t, err)
+}
+
+func TestDeleteFalseUser(t *testing.T) {
+	store := StubStore{}
+	repo := NewRepository(&store)
+
+	err := repo.Delete(2)
+
+	assert.NotNil(t, err)
+}

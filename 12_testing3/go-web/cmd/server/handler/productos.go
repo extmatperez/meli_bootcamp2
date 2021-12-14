@@ -108,8 +108,8 @@ func (c *Product) Edit() gin.HandlerFunc {
 			return
 		}
 		var req request
-		id, existeId := ctx.GetQuery("id")
-		if !existeId {
+		id := ctx.Param("id")
+		if id == "" {
 			ctx.JSON(400, web.NewResponse(400, nil, "Producto no especificado"))
 			return
 		}
@@ -121,10 +121,10 @@ func (c *Product) Edit() gin.HandlerFunc {
 		}
 		p, err := c.service.Edit(parsedId, req.Nombre, req.Color, req.Precio, req.Stock, req.Codigo, req.Publicado, req.Creado)
 		if err != nil {
-			ctx.JSON(404, web.NewResponse(400, nil, err.Error()))
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, p)
+		ctx.JSON(200, web.NewResponse(200, p, ""))
 	}
 }
 
@@ -159,7 +159,7 @@ func (c *Product) Delete() gin.HandlerFunc {
 			ctx.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
-		ctx.JSON(200, nil)
+		ctx.JSON(200, web.NewResponse(200, "Eliminado", ""))
 	}
 }
 
