@@ -1,4 +1,4 @@
-package internal
+package tests
 
 import (
 	"encoding/json"
@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/internal/users"
 )
 
 var usersJson string = `
@@ -67,7 +69,7 @@ func (s *mockStore) Write(data interface{}) error {
 
 func TestLastId(t *testing.T) {
 	store := stubStore{}
-	repo := NewRepository(&store)
+	repo := users.NewRepository(&store)
 	var idExpected int = 2
 
 	id, err := repo.LastID()
@@ -77,8 +79,8 @@ func TestLastId(t *testing.T) {
 
 func TestGetAll(t *testing.T) {
 	store := stubStore{}
-	repo := NewRepository(&store)
-	var usersExpected []User
+	repo := users.NewRepository(&store)
+	var usersExpected []users.User
 	err := json.Unmarshal([]byte(usersJson), &usersExpected)
 
 	users, _ := repo.GetAll()
@@ -88,7 +90,7 @@ func TestGetAll(t *testing.T) {
 
 func TestGetAllError(t *testing.T) {
 	store := stubStoreError{}
-	repo := NewRepository(&store)
+	repo := users.NewRepository(&store)
 
 	_, err := repo.GetAll()
 	assert.Error(t, err)
@@ -96,7 +98,7 @@ func TestGetAllError(t *testing.T) {
 
 func TestUpdateName(t *testing.T) {
 	store := mockStore{}
-	repo := NewRepository(&store)
+	repo := users.NewRepository(&store)
 
 	var lastNameExpected string = "After Update"
 
@@ -109,8 +111,8 @@ func TestUpdateName(t *testing.T) {
 
 func TestUpdateNameError(t *testing.T) {
 	store := mockStore{}
-	repo := NewRepository(&store)
-	var userExpected User
+	repo := users.NewRepository(&store)
+	var userExpected users.User
 	var lastName string = "After Update"
 
 	user, err := repo.UpdateLastNameAge(5, lastName, 10)

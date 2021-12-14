@@ -11,12 +11,12 @@
 	},
 	{
 		"id": 2,
-		"name": "Juan",
-		"last_name": "Ramirez",
-		"email": "juan@perez.com",
-		"age": 45,
-		"height": 1.75,
-		"active": true,
-		"created": "01/12/2021"
+		"name": "Federico",
+		"last_name": "Archuby",
+		"email": "",
+		"age": 0,
+		"height": 0,
+		"active": false,
+		"created": ""
 	}
 ]

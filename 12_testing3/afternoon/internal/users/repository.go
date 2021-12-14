@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"fmt"
-
 	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/pkg/store"
 )
 
@@ -56,7 +54,6 @@ func (r *repository) LastID() (int, error) {
 	if len(users) == 0 || err != nil {
 		return 0, nil
 	}
-	fmt.Println(users[len(users)-1])
 	return users[len(users)-1].ID, nil
 }
 

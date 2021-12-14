@@ -1,4 +1,4 @@
-package internal
+package tests
 
 import (
 	"encoding/json"
@@ -7,13 +7,15 @@ import (
 
 	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/pkg/store"
 	"github.com/stretchr/testify/assert"
+
+	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/internal/users"
 )
 
 func TestServiceGetAll(t *testing.T) {
 	user := getMockUser()
 
-	users := []User{}
-	users = append(users, user)
+	usersExpected := []users.User{}
+	usersExpected = append(usersExpected, user)
 
 	jsonData := getJsonData(user)
 
@@ -24,13 +26,13 @@ func TestServiceGetAll(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	usersObtained, err := service.GetAll()
 
 	assert.Nil(t, err)
-	assert.Equal(t, users, usersObtained)
+	assert.Equal(t, usersExpected, usersObtained)
 	assert.True(t, dbMock.EnterRead)
 }
 
@@ -43,8 +45,8 @@ func TestServiceGetAllError(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	_, err := service.GetAll()
 
@@ -64,8 +66,8 @@ func TestStore(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	editedUser, err := service.Store(user.Name, user.LastName, user.Email, 42, user.Height, true, user.Created)
 
@@ -87,13 +89,13 @@ func TestStoreError(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	editedUser, err := service.Store(user.Name, user.LastName, user.Email, 42, user.Height, true, user.Created)
 
 	assert.Error(t, err)
-	assert.Equal(t, User{}, editedUser)
+	assert.Equal(t, users.User{}, editedUser)
 	assert.True(t, dbMock.EnterRead)
 }
 
@@ -109,8 +111,8 @@ func TestUpdate(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	editedUser, err := service.Update(user.ID, user.Name, user.LastName, user.Email, 42, user.Height, true, user.Created)
 
@@ -132,13 +134,13 @@ func TestUpdateError(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	editedUser, err := service.Update(2, user.Name, user.LastName, user.Email, 42, user.Height, true, user.Created)
 
 	assert.Error(t, err)
-	assert.Equal(t, User{}, editedUser)
+	assert.Equal(t, users.User{}, editedUser)
 	assert.True(t, dbMock.EnterRead)
 }
 
@@ -154,8 +156,8 @@ func TestDelete(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	couldDelete, err := service.Delete(1)
 
@@ -177,8 +179,8 @@ func TestDeleteError(t *testing.T) {
 		Mock: &dbMock,
 	}
 
-	repo := NewRepository(&storeStub)
-	service := NewService(repo)
+	repo := users.NewRepository(&storeStub)
+	service := users.NewService(repo)
 
 	_, err := service.Delete(2)
 
@@ -186,8 +188,8 @@ func TestDeleteError(t *testing.T) {
 	assert.True(t, dbMock.EnterRead)
 }
 
-func getMockUser() User {
-	return User{
+func getMockUser() users.User {
+	return users.User{
 		ID:       1,
 		Name:     "Juan",
 		LastName: "Carlos",
@@ -199,8 +201,8 @@ func getMockUser() User {
 	}
 }
 
-func getJsonData(user User) []byte {
-	users := []User{}
+func getJsonData(user users.User) []byte {
+	users := []users.User{}
 	users = append(users, user)
 
 	jsonData, _ := json.Marshal(users)

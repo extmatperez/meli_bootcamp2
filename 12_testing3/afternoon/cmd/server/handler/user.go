@@ -195,12 +195,12 @@ func (u *User) Delete() gin.HandlerFunc {
 			return
 		}
 
-		if couldDelete {
-			ctx.JSON(500, web.NewResponse(404, nil, fmt.Sprintf("User %d not found", id)))
+		if !couldDelete {
+			ctx.JSON(404, web.NewResponse(404, nil, fmt.Sprintf("User %d not found", id)))
 			return
 		}
 
-		ctx.JSON(200, web.NewResponse(500, fmt.Sprintf("The user %d has been deleted", id), ""))
+		ctx.JSON(200, web.NewResponse(200, fmt.Sprintf("The user %d has been deleted", id), ""))
 	}
 }
 
