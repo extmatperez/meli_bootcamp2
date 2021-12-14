@@ -10,8 +10,8 @@
   "created": "8/28/2021"
  },
  {
-  "id": 1,
-  "name": "Strawberry",
+  "id": 2,
+  "name": "Rasberry",
   "color": "red",
   "price": 23,
   "stock": 30,
@@ -20,7 +20,7 @@
   "created": "8/28/2021"
  },
  {
-  "id": 2,
+  "id": 3,
   "name": "Watermelon",
   "color": "green",
   "price": 23,
@@ -30,7 +30,7 @@
   "created": "8/28/2021"
  },
  {
-  "id": 3,
+  "id": 4,
   "name": "Lemon",
   "color": "yellow",
   "price": 23,
@@ -40,9 +40,9 @@
   "created": "8/28/2021"
  },
  {
-  "id": 4,
-  "name": "",
-  "color": "yellow",
+  "id": 1,
+  "name": "Fruit",
+  "color": "red",
   "price": 23,
   "stock": 30,
   "code": 656,
@@ -50,9 +50,19 @@
   "created": "8/28/2021"
  },
  {
-  "id": 5,
-  "name": "",
-  "color": "yellow",
+  "id": 1,
+  "name": "Fruit",
+  "color": "red",
+  "price": 23,
+  "stock": 30,
+  "code": 656,
+  "published": "5/17/2021",
+  "created": "8/28/2021"
+ },
+ {
+  "id": 1,
+  "name": "Fruit",
+  "color": "red",
   "price": 23,
   "stock": 30,
   "code": 656,

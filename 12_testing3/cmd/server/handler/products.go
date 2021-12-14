@@ -51,9 +51,9 @@ func ValidateToken(c *gin.Context) bool {
 func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		if !ValidateToken(c) {
-			return
-		}
+		// if !ValidateToken(c) {
+		// 	return
+		// }
 
 		products, err := prod.service.GetAll()
 
@@ -73,9 +73,9 @@ func (prod *Product) GetAll() gin.HandlerFunc {
 func (prod *Product) AddProduct() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		if !ValidateToken(c) {
-			return
-		}
+		// if !ValidateToken(c) {
+		// 	return
+		// }
 
 		var newProd request
 
@@ -103,9 +103,9 @@ func (prod *Product) AddProduct() gin.HandlerFunc {
 func (prod *Product) UpdateProduct() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		if !ValidateToken(c) {
-			return
-		}
+		// if !ValidateToken(c) {
+		// 	return
+		// }
 
 		var prodToUpdate request
 
@@ -137,21 +137,21 @@ func (prod *Product) UpdateProduct() gin.HandlerFunc {
 
 //------------------------- PATCH --------------------------//
 
-func (prod *Product) ModifyPrice() gin.HandlerFunc {
-	return func(c *gin.Context) {
+// func (prod *Product) ModifyPrice() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
 
-		if !ValidateToken(c) {
-			return
-		}
+// 		if !ValidateToken(c) {
+// 			return
+// 		}
 
-		var prodModified request
+// 		var prodModified request
 
-		id, err := strconv.Atoi(c.Param("id"))
+// 		id, err := strconv.Atoi(c.Param("id"))
 
-		if err != nil {
-			c.JSON(400, web.NewResponse(400, nil, "El id no es válido"))
+// 		if err != nil {
+// 			c.JSON(400, web.NewResponse(400, nil, "El id no es válido"))
 
-		}
+// 		}
 
-	}
-}
+// 	}
+// }
