@@ -1,0 +1,29 @@
+¿Cuáles son las diferencias entre White Box y Black Box? 
+
+R: Las pruebas de Caja blanca estan dirigidas a las funciones internas del modulo a probar, mientras que las de caja negra prueba de manera externa.
+
+¿Qué es un test funcional?
+
+R: Un test funcional es aquel que se realiza desde la perspectiva del usuario, para buscar errores y/o mejoras.
+
+¿Qué es un Test de Integración?
+
+R: Son aquellos test que comprueban que todos los componentes se comuniquen de manera efectiva.
+
+Indicar las dimensiones de calidad prioritarias en MELI.
+
+R:  Los principios de calidad son S.O.L.I.D por sus siglas:
+
+S.- "Single responsability principle"
+O.- "Open/Closed principle"
+L.- "Liskov substitution principle"
+I.- "Interface Segregation principle"
+D.- "Dependency integration principle"
+
+y el otro principio es F.I.R.S.T que por sus siglas significa:
+
+F.- "Fast"
+I.- "Isolated/Independent"
+R.- "Repeatable"
+S.- "Self-Validating"
+T.- "Thorough"
