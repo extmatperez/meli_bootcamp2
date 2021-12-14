@@ -87,7 +87,7 @@ func (r *repository) Update(id int, nombre string, color string, precio int, sto
 		return Product{}, err
 	}
 
-	for i, _ := range products {
+	for i := range products {
 		if products[i].ID == id {
 			products[i] = prod
 			err = r.Db.Write(products)
@@ -108,7 +108,7 @@ func (r *repository) Delete(id int) error {
 		return err
 	}
 
-	for i, _ := range products {
+	for i := range products {
 		if products[i].ID == id {
 			position = i
 			break
@@ -134,7 +134,7 @@ func (r *repository) UpdateNameAndPrice(id int, nombre string, precio int) (Prod
 		return Product{}, err
 	}
 
-	for i, _ := range products {
+	for i := range products {
 		if products[i].ID == id {
 			products[i].Nombre = nombre
 			products[i].Precio = precio

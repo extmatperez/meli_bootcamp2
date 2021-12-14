@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
-	products "github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/internal/products"
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/pkg/store"
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/cmd/server/handler"
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/docs"
+	products "github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
@@ -47,5 +48,9 @@ func main() {
 	productsRoute.DELETE("/:id", controller.Delete())
 	productsRoute.PATCH("/:id", controller.UpdateNameAndPrice())
 
-	router.Run()
+	err = router.Run()
+	if err != nil {
+		fmt.Println("Error subiendo las rutas")
+	}
+
 }
