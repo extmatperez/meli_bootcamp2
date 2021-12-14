@@ -51,3 +51,16 @@ func TestRestar(t *testing.T) {
 		t.Errorf("La función Restar obtuvo %v pero el resultado esperado era %v", resultado, resultadoEsperado)
 	}
 }
+
+func TestDividir(t *testing.T) {
+	//Arrange
+	num := 10
+	den := 0
+
+	//Act
+	_, err := Dividir(num, den)
+
+	//Assert
+
+	assert.Nil(t, err)
+}
