@@ -89,11 +89,7 @@ func TestUpdateEmisor(t *testing.T) {
   actualizado, _ := repo.UpdateEmisor(1, "Emisor actualizado")
 
   var esperado Transaccion
-	err := json.Unmarshal([]byte(per), &esperado)
-
-  if err != nil {
-    log.Fatal(err)
-  }
+  json.Unmarshal([]byte(per), &esperado)
 
   assert.Equal(t, store.readed, true)
   assert.NotEqual(t, esperado.Emisor, actualizado.Emisor)
@@ -149,6 +145,28 @@ func TestDeleteErrorMock(t *testing.T) {
   err := repo.Delete(5)
 
   assert.NotEqual(t, err, nil)
+}
+
+func TestStoreMock(t *testing.T) {
+  dataByte := []byte(per)
+  trNuevo := Transaccion{
+    ID: 2,
+    CodigoTransaccion: 556111,
+    Moneda: "Pesos",
+    Monto: 80.00,
+    Emisor: "Locomotion",
+    Receptor: "Disney",
+    FechaTransaccion: "13/08/2021",
+  }
+
+  dbMock := store.Mock{Data: dataByte}
+  storeStub := store.FileStore{Mock: &dbMock}
+  repo := NewRepository(&storeStub)
+
+  tr, _ := repo.Store(trNuevo.ID, trNuevo.CodigoTransaccion, trNuevo.Moneda, trNuevo.Monto, trNuevo.Emisor, trNuevo.Receptor, trNuevo.FechaTransaccion)
+
+  assert.Equal(t, trNuevo, tr)
+
 }
 
 

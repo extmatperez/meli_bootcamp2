@@ -48,3 +48,28 @@ func TestServiceDeleteMock(t *testing.T) {
 	assert.Equal(t, err, nil)
 	assert.Equal(t, len(todos), 1)
   }
+
+
+  func TestServiceStoreMock(t *testing.T) {
+	dataByte := []byte(per)
+	trNuevo := Transaccion{
+	  ID: 2,
+	  CodigoTransaccion: 556111,
+	  Moneda: "Pesos",
+	  Monto: 80.00,
+	  Emisor: "Locomotion",
+	  Receptor: "Disney",
+	  FechaTransaccion: "13/08/2021",
+	}
+  
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+	service := NewService(repo)
+
+  
+	tr, _ := service.Store(trNuevo.CodigoTransaccion, trNuevo.Moneda, trNuevo.Monto, trNuevo.Emisor, trNuevo.Receptor, trNuevo.FechaTransaccion)
+  
+	assert.Equal(t, trNuevo, tr)
+  
+  }
