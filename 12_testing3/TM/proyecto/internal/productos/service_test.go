@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/TT/proyecto/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/TT/proyecto/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
