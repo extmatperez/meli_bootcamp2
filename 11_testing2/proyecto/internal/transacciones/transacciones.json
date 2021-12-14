@@ -1,0 +1,902 @@
+[
+ {
+  "id": 1,
+  "codigo_transaccion": "cybqf7i0bo",
+  "moneda": "Baht",
+  "monto": 3011534.4,
+  "emisor": "aburdis0",
+  "receptor": "fodoireidh0",
+  "fecha_creacion": "9/25/2021"
+ },
+ {
+  "id": 2,
+  "codigo_transaccion": "w9fm5sk8gt",
+  "moneda": "Yuan Renminbi",
+  "monto": 5069586,
+  "emisor": "lfilyushkin1",
+  "receptor": "nwestmancoat1",
+  "fecha_creacion": "4/24/2021"
+ },
+ {
+  "id": 3,
+  "codigo_transaccion": "f7gu72mf7o",
+  "moneda": "Dollar",
+  "monto": 7989726.63,
+  "emisor": "fvillalta2",
+  "receptor": "msaffer2",
+  "fecha_creacion": "5/11/2021"
+ },
+ {
+  "id": 4,
+  "codigo_transaccion": "liqicydced",
+  "moneda": "Peso",
+  "monto": 5333272,
+  "emisor": "cdowd3",
+  "receptor": "kduchateau3",
+  "fecha_creacion": "5/4/2021"
+ },
+ {
+  "id": 5,
+  "codigo_transaccion": "xemdlccy4q",
+  "moneda": "Dinar",
+  "monto": 7990187,
+  "emisor": "jthor4",
+  "receptor": "fbraunle4",
+  "fecha_creacion": "11/29/2020"
+ },
+ {
+  "id": 6,
+  "codigo_transaccion": "2rcgl3334k",
+  "moneda": "Real",
+  "monto": 6857620,
+  "emisor": "msabater5",
+  "receptor": "pnoli5",
+  "fecha_creacion": "11/21/2021"
+ },
+ {
+  "id": 7,
+  "codigo_transaccion": "shvkpipq8s",
+  "moneda": "Yuan Renminbi",
+  "monto": 5118478.44,
+  "emisor": "wkleiner6",
+  "receptor": "scolchett6",
+  "fecha_creacion": "11/27/2021"
+ },
+ {
+  "id": 8,
+  "codigo_transaccion": "45ocfeqt35",
+  "moneda": "Ruble",
+  "monto": 2071644.28,
+  "emisor": "caimable7",
+  "receptor": "dclouter7",
+  "fecha_creacion": "5/12/2021"
+ },
+ {
+  "id": 9,
+  "codigo_transaccion": "ottwjouqlo",
+  "moneda": "Peso",
+  "monto": 984603.72,
+  "emisor": "tchampken8",
+  "receptor": "ndominik8",
+  "fecha_creacion": "4/29/2021"
+ },
+ {
+  "id": 10,
+  "codigo_transaccion": "8j1bv74v5c",
+  "moneda": "Yuan Renminbi",
+  "monto": 7087888,
+  "emisor": "caphale9",
+  "receptor": "gsutch9",
+  "fecha_creacion": "12/5/2020"
+ },
+ {
+  "id": 11,
+  "codigo_transaccion": "kuogf8bafm",
+  "moneda": "Krona",
+  "monto": 9074816,
+  "emisor": "hoakenfielda",
+  "receptor": "qlavrinova",
+  "fecha_creacion": "3/17/2021"
+ },
+ {
+  "id": 12,
+  "codigo_transaccion": "v6u6f6qwmq",
+  "moneda": "Zloty",
+  "monto": 5592236,
+  "emisor": "alegoodb",
+  "receptor": "sdavydkovb",
+  "fecha_creacion": "4/29/2021"
+ },
+ {
+  "id": 13,
+  "codigo_transaccion": "824gey4o2b",
+  "moneda": "Yuan Renminbi",
+  "monto": 7415400,
+  "emisor": "tgummoryc",
+  "receptor": "gkubachc",
+  "fecha_creacion": "4/24/2021"
+ },
+ {
+  "id": 14,
+  "codigo_transaccion": "fb3xy5wi0g",
+  "moneda": "Euro",
+  "monto": 9613355,
+  "emisor": "bwatsond",
+  "receptor": "slufkind",
+  "fecha_creacion": "10/29/2021"
+ },
+ {
+  "id": 15,
+  "codigo_transaccion": "4ladxmpi81",
+  "moneda": "Euro",
+  "monto": 6699534.18,
+  "emisor": "mmcalinione",
+  "receptor": "schatere",
+  "fecha_creacion": "8/28/2021"
+ },
+ {
+  "id": 16,
+  "codigo_transaccion": "ecap5709pc",
+  "moneda": "Peso",
+  "monto": 3459438.79,
+  "emisor": "rlidgatef",
+  "receptor": "scollimoref",
+  "fecha_creacion": "4/29/2021"
+ },
+ {
+  "id": 17,
+  "codigo_transaccion": "l1xl8l91ft",
+  "moneda": "Rupiah",
+  "monto": 2021993.63,
+  "emisor": "sstedeg",
+  "receptor": "calbong",
+  "fecha_creacion": "8/23/2021"
+ },
+ {
+  "id": 18,
+  "codigo_transaccion": "j8ix7ffarl",
+  "moneda": "Rial",
+  "monto": 1396854.23,
+  "emisor": "cbruffellh",
+  "receptor": "eyaakovh",
+  "fecha_creacion": "9/27/2021"
+ },
+ {
+  "id": 19,
+  "codigo_transaccion": "h4mhg2ms8g",
+  "moneda": "Rupiah",
+  "monto": 6721765.94,
+  "emisor": "rmiettineni",
+  "receptor": "ibrislanei",
+  "fecha_creacion": "5/25/2021"
+ },
+ {
+  "id": 20,
+  "codigo_transaccion": "x5lcf1lu9p",
+  "moneda": "Lev",
+  "monto": 5763077.62,
+  "emisor": "ehymansj",
+  "receptor": "hamerj",
+  "fecha_creacion": "2/17/2021"
+ },
+ {
+  "id": 21,
+  "codigo_transaccion": "b6g4felvgu",
+  "moneda": "Euro",
+  "monto": 1264073.02,
+  "emisor": "esilverk",
+  "receptor": "pkohtlerk",
+  "fecha_creacion": "4/9/2021"
+ },
+ {
+  "id": 22,
+  "codigo_transaccion": "yj8zeapv5x",
+  "moneda": "Baht",
+  "monto": 7456456,
+  "emisor": "svalerol",
+  "receptor": "dbearhaml",
+  "fecha_creacion": "4/19/2021"
+ },
+ {
+  "id": 23,
+  "codigo_transaccion": "l9fac7szu8",
+  "moneda": "Rupiah",
+  "monto": 1689741,
+  "emisor": "sraulstonm",
+  "receptor": "ewyerm",
+  "fecha_creacion": "12/17/2020"
+ },
+ {
+  "id": 24,
+  "codigo_transaccion": "ifzebc2xno",
+  "moneda": "Zloty",
+  "monto": 4886842.36,
+  "emisor": "mvanrembrandtn",
+  "receptor": "awillcotn",
+  "fecha_creacion": "12/20/2020"
+ },
+ {
+  "id": 25,
+  "codigo_transaccion": "p36lqhoi55",
+  "moneda": "Tenge",
+  "monto": 4281263.28,
+  "emisor": "adeeryo",
+  "receptor": "glouyso",
+  "fecha_creacion": "12/31/2020"
+ },
+ {
+  "id": 26,
+  "codigo_transaccion": "bw8hto11y3",
+  "moneda": "Yuan Renminbi",
+  "monto": 3904171,
+  "emisor": "ebugbirdp",
+  "receptor": "cchaffep",
+  "fecha_creacion": "9/5/2021"
+ },
+ {
+  "id": 27,
+  "codigo_transaccion": "v0lcsj3oez",
+  "moneda": "Zloty",
+  "monto": 2012414.45,
+  "emisor": "jdennisq",
+  "receptor": "rgratrexq",
+  "fecha_creacion": "11/16/2021"
+ },
+ {
+  "id": 28,
+  "codigo_transaccion": "ay7t0rxho5",
+  "moneda": "Ariary",
+  "monto": 3129625.86,
+  "emisor": "gattrillr",
+  "receptor": "tkettlestringesr",
+  "fecha_creacion": "10/13/2021"
+ },
+ {
+  "id": 29,
+  "codigo_transaccion": "4gl2knmz9d",
+  "moneda": "Yuan Renminbi",
+  "monto": 4162460.04,
+  "emisor": "mrasps",
+  "receptor": "blattkas",
+  "fecha_creacion": "8/3/2021"
+ },
+ {
+  "id": 30,
+  "codigo_transaccion": "uy3jtf8tv7",
+  "moneda": "Real",
+  "monto": 910077.14,
+  "emisor": "lsiredt",
+  "receptor": "llefridget",
+  "fecha_creacion": "10/6/2021"
+ },
+ {
+  "id": 31,
+  "codigo_transaccion": "r946akisav",
+  "moneda": "Yuan Renminbi",
+  "monto": 1711557.41,
+  "emisor": "egabbotu",
+  "receptor": "rluxenu",
+  "fecha_creacion": "6/15/2021"
+ },
+ {
+  "id": 32,
+  "codigo_transaccion": "n2ug3fgykh",
+  "moneda": "Dram",
+  "monto": 2189132.95,
+  "emisor": "maleevyv",
+  "receptor": "zasaafv",
+  "fecha_creacion": "1/30/2021"
+ },
+ {
+  "id": 33,
+  "codigo_transaccion": "pwztffqiui",
+  "moneda": "Yuan Renminbi",
+  "monto": 5686221.99,
+  "emisor": "mmckintoshw",
+  "receptor": "bleishmanw",
+  "fecha_creacion": "7/3/2021"
+ },
+ {
+  "id": 34,
+  "codigo_transaccion": "6e2nlu3z7b",
+  "moneda": "Ruble",
+  "monto": 6540631.35,
+  "emisor": "xleevesx",
+  "receptor": "amelatox",
+  "fecha_creacion": "9/3/2021"
+ },
+ {
+  "id": 35,
+  "codigo_transaccion": "69yqhjjl36",
+  "moneda": "Dollar",
+  "monto": 9978172,
+  "emisor": "mbearey",
+  "receptor": "amelviny",
+  "fecha_creacion": "2/28/2021"
+ },
+ {
+  "id": 36,
+  "codigo_transaccion": "h9ffqqtjia",
+  "moneda": "Sol",
+  "monto": 3201621.21,
+  "emisor": "ybrosiusz",
+  "receptor": "nenricoz",
+  "fecha_creacion": "11/5/2021"
+ },
+ {
+  "id": 37,
+  "codigo_transaccion": "o72ureoy50",
+  "moneda": "Baht",
+  "monto": 5111452,
+  "emisor": "erayworth10",
+  "receptor": "kburchett10",
+  "fecha_creacion": "8/26/2021"
+ },
+ {
+  "id": 38,
+  "codigo_transaccion": "u6gndclfqv",
+  "moneda": "Rupiah",
+  "monto": 4931028.38,
+  "emisor": "gwaddilove11",
+  "receptor": "aupex11",
+  "fecha_creacion": "3/17/2021"
+ },
+ {
+  "id": 39,
+  "codigo_transaccion": "1i80hscyep",
+  "moneda": "Yen",
+  "monto": 319006.98,
+  "emisor": "gtallman12",
+  "receptor": "hnowell12",
+  "fecha_creacion": "11/17/2021"
+ },
+ {
+  "id": 40,
+  "codigo_transaccion": "0j78lnx0c9",
+  "moneda": "Rupiah",
+  "monto": 5502563,
+  "emisor": "rsimoes13",
+  "receptor": "cumfrey13",
+  "fecha_creacion": "11/3/2021"
+ },
+ {
+  "id": 41,
+  "codigo_transaccion": "d7ja7i1avn",
+  "moneda": "Koruna",
+  "monto": 2263168.17,
+  "emisor": "agulley14",
+  "receptor": "cpaffett14",
+  "fecha_creacion": "11/29/2020"
+ },
+ {
+  "id": 42,
+  "codigo_transaccion": "wlqtpcm8vb",
+  "moneda": "Euro",
+  "monto": 9181964,
+  "emisor": "mfaulkener15",
+  "receptor": "gdumpleton15",
+  "fecha_creacion": "3/1/2021"
+ },
+ {
+  "id": 43,
+  "codigo_transaccion": "4nxr78fsgo",
+  "moneda": "Yuan Renminbi",
+  "monto": 4002306.36,
+  "emisor": "smcgeachey16",
+  "receptor": "jpomphrett16",
+  "fecha_creacion": "11/19/2021"
+ },
+ {
+  "id": 44,
+  "codigo_transaccion": "44vq3iqeng",
+  "moneda": "Rupiah",
+  "monto": 7161208,
+  "emisor": "csenner17",
+  "receptor": "adover17",
+  "fecha_creacion": "3/6/2021"
+ },
+ {
+  "id": 45,
+  "codigo_transaccion": "i11plr4bjz",
+  "moneda": "Yen",
+  "monto": 8321589,
+  "emisor": "sknobell18",
+  "receptor": "swoolstenholmes18",
+  "fecha_creacion": "12/10/2020"
+ },
+ {
+  "id": 46,
+  "codigo_transaccion": "ubdf12qnv7",
+  "moneda": "Zloty",
+  "monto": 5352798.2,
+  "emisor": "mpancoast19",
+  "receptor": "pchinnery19",
+  "fecha_creacion": "9/24/2021"
+ },
+ {
+  "id": 47,
+  "codigo_transaccion": "01b06inhjg",
+  "moneda": "Baht",
+  "monto": 4699385,
+  "emisor": "emacgilmartin1a",
+  "receptor": "mhoneyghan1a",
+  "fecha_creacion": "1/1/2021"
+ },
+ {
+  "id": 48,
+  "codigo_transaccion": "wjsw6vh2kr",
+  "moneda": "Ruble",
+  "monto": 7485176.07,
+  "emisor": "hridehalgh1b",
+  "receptor": "uokieran1b",
+  "fecha_creacion": "2/7/2021"
+ },
+ {
+  "id": 49,
+  "codigo_transaccion": "vf9pcjuupo",
+  "moneda": "Dollar",
+  "monto": 4944484,
+  "emisor": "hainsley1c",
+  "receptor": "rwinson1c",
+  "fecha_creacion": "12/16/2020"
+ },
+ {
+  "id": 50,
+  "codigo_transaccion": "7u7quhrh26",
+  "moneda": "Yuan Renminbi",
+  "monto": 861116.66,
+  "emisor": "rmaryman1d",
+  "receptor": "rmapletoft1d",
+  "fecha_creacion": "9/10/2021"
+ },
+ {
+  "id": 51,
+  "codigo_transaccion": "m855o5r4ly",
+  "moneda": "Real",
+  "monto": 338685.85,
+  "emisor": "blinkleter1e",
+  "receptor": "mpfaffe1e",
+  "fecha_creacion": "6/1/2021"
+ },
+ {
+  "id": 52,
+  "codigo_transaccion": "6zoqesprgm",
+  "moneda": "Real",
+  "monto": 7479950.1,
+  "emisor": "msermin1f",
+  "receptor": "asilburn1f",
+  "fecha_creacion": "12/19/2020"
+ },
+ {
+  "id": 53,
+  "codigo_transaccion": "n6mxixq3pf",
+  "moneda": "Gourde",
+  "monto": 4799148,
+  "emisor": "wdibbe1g",
+  "receptor": "fstainton1g",
+  "fecha_creacion": "2/3/2021"
+ },
+ {
+  "id": 54,
+  "codigo_transaccion": "767b9zllds",
+  "moneda": "Rupiah",
+  "monto": 1861794,
+  "emisor": "eforgie1h",
+  "receptor": "npercifer1h",
+  "fecha_creacion": "8/30/2021"
+ },
+ {
+  "id": 55,
+  "codigo_transaccion": "jhv0exdg40",
+  "moneda": "Denar",
+  "monto": 2464240.92,
+  "emisor": "flawler1i",
+  "receptor": "thannond1i",
+  "fecha_creacion": "6/13/2021"
+ },
+ {
+  "id": 56,
+  "codigo_transaccion": "wkd720oobe",
+  "moneda": "Krone",
+  "monto": 2840211,
+  "emisor": "hmayoh1j",
+  "receptor": "dsaywell1j",
+  "fecha_creacion": "1/29/2021"
+ },
+ {
+  "id": 57,
+  "codigo_transaccion": "rzx2kj9jg6",
+  "moneda": "Pound",
+  "monto": 4413127.67,
+  "emisor": "mmackness1k",
+  "receptor": "hspore1k",
+  "fecha_creacion": "11/25/2021"
+ },
+ {
+  "id": 58,
+  "codigo_transaccion": "xmbhxo4rwt",
+  "moneda": "Real",
+  "monto": 2640294.03,
+  "emisor": "ahunsworth1l",
+  "receptor": "ccandey1l",
+  "fecha_creacion": "12/21/2020"
+ },
+ {
+  "id": 59,
+  "codigo_transaccion": "n55rxvnxil",
+  "moneda": "Zloty",
+  "monto": 9380612,
+  "emisor": "jofallone1m",
+  "receptor": "dgager1m",
+  "fecha_creacion": "5/10/2021"
+ },
+ {
+  "id": 60,
+  "codigo_transaccion": "0evsn8f2qq",
+  "moneda": "Yuan Renminbi",
+  "monto": 2616595.14,
+  "emisor": "ahrishanok1n",
+  "receptor": "jjoynt1n",
+  "fecha_creacion": "8/7/2021"
+ },
+ {
+  "id": 61,
+  "codigo_transaccion": "hcojl1rgi3",
+  "moneda": "Yuan Renminbi",
+  "monto": 4367343,
+  "emisor": "jatyea1o",
+  "receptor": "gmacy1o",
+  "fecha_creacion": "12/23/2020"
+ },
+ {
+  "id": 62,
+  "codigo_transaccion": "dfzhucysp3",
+  "moneda": "Peso",
+  "monto": 3291519.51,
+  "emisor": "qsolway1p",
+  "receptor": "bhupka1p",
+  "fecha_creacion": "6/10/2021"
+ },
+ {
+  "id": 63,
+  "codigo_transaccion": "xjitklskx2",
+  "moneda": "Lek",
+  "monto": 3868071.76,
+  "emisor": "rspinola1q",
+  "receptor": "ktriggel1q",
+  "fecha_creacion": "2/14/2021"
+ },
+ {
+  "id": 64,
+  "codigo_transaccion": "fpmpjagmpf",
+  "moneda": "Peso",
+  "monto": 790625.46,
+  "emisor": "sstandley1r",
+  "receptor": "jisland1r",
+  "fecha_creacion": "6/9/2021"
+ },
+ {
+  "id": 65,
+  "codigo_transaccion": "f6ue88sof5",
+  "moneda": "Rial",
+  "monto": 231329.42,
+  "emisor": "ltemplar1s",
+  "receptor": "cmatysiak1s",
+  "fecha_creacion": "3/15/2021"
+ },
+ {
+  "id": 66,
+  "codigo_transaccion": "djzagv4p0f",
+  "moneda": "Real",
+  "monto": 3120834.63,
+  "emisor": "rtennant1t",
+  "receptor": "wrousby1t",
+  "fecha_creacion": "10/26/2021"
+ },
+ {
+  "id": 67,
+  "codigo_transaccion": "lxn06n0rh7",
+  "moneda": "Peso",
+  "monto": 1668954,
+  "emisor": "bmackerley1u",
+  "receptor": "dcasterou1u",
+  "fecha_creacion": "12/10/2020"
+ },
+ {
+  "id": 68,
+  "codigo_transaccion": "ijg6urau7r",
+  "moneda": "Euro",
+  "monto": 5937415.87,
+  "emisor": "sflindall1v",
+  "receptor": "nsackur1v",
+  "fecha_creacion": "8/16/2021"
+ },
+ {
+  "id": 69,
+  "codigo_transaccion": "sfwpjeipjn",
+  "moneda": "Rand",
+  "monto": 7484443,
+  "emisor": "ccolebeck1w",
+  "receptor": "aschultze1w",
+  "fecha_creacion": "9/27/2021"
+ },
+ {
+  "id": 70,
+  "codigo_transaccion": "121j6irwuz",
+  "moneda": "Real",
+  "monto": 2968681.26,
+  "emisor": "ggentzsch1x",
+  "receptor": "bgollard1x",
+  "fecha_creacion": "7/22/2021"
+ },
+ {
+  "id": 71,
+  "codigo_transaccion": "b5pis26f7p",
+  "moneda": "Rupiah",
+  "monto": 1233879.65,
+  "emisor": "eoverill1y",
+  "receptor": "nabramov1y",
+  "fecha_creacion": "5/11/2021"
+ },
+ {
+  "id": 72,
+  "codigo_transaccion": "2d83j9fwk6",
+  "moneda": "Yuan Renminbi",
+  "monto": 5602370,
+  "emisor": "jmickleburgh1z",
+  "receptor": "jtallon1z",
+  "fecha_creacion": "8/11/2021"
+ },
+ {
+  "id": 73,
+  "codigo_transaccion": "se96o13r9l",
+  "moneda": "Zloty",
+  "monto": 6988558,
+  "emisor": "yewer20",
+  "receptor": "cmaccarroll20",
+  "fecha_creacion": "10/2/2021"
+ },
+ {
+  "id": 74,
+  "codigo_transaccion": "uhuuqmsvee",
+  "moneda": "Zloty",
+  "monto": 7052336,
+  "emisor": "pbadsworth21",
+  "receptor": "sfilippazzo21",
+  "fecha_creacion": "2/11/2021"
+ },
+ {
+  "id": 75,
+  "codigo_transaccion": "2d08d4knt0",
+  "moneda": "Euro",
+  "monto": 424107.45,
+  "emisor": "wbadby22",
+  "receptor": "jroscam22",
+  "fecha_creacion": "3/18/2021"
+ },
+ {
+  "id": 76,
+  "codigo_transaccion": "b259r0cuwh",
+  "moneda": "Ruble",
+  "monto": 6438535.91,
+  "emisor": "tgiraudou23",
+  "receptor": "lminster23",
+  "fecha_creacion": "1/9/2021"
+ },
+ {
+  "id": 77,
+  "codigo_transaccion": "trzm2fgrzm",
+  "moneda": "Euro",
+  "monto": 7632497.54,
+  "emisor": "bboulton24",
+  "receptor": "lpelos24",
+  "fecha_creacion": "3/8/2021"
+ },
+ {
+  "id": 78,
+  "codigo_transaccion": "b6d8hbhh2i",
+  "moneda": "Yuan Renminbi",
+  "monto": 3346365.14,
+  "emisor": "drosa25",
+  "receptor": "wslisby25",
+  "fecha_creacion": "6/18/2021"
+ },
+ {
+  "id": 79,
+  "codigo_transaccion": "i0j3gj7szi",
+  "moneda": "Zloty",
+  "monto": 5706368.27,
+  "emisor": "ewisdish26",
+  "receptor": "lsprakes26",
+  "fecha_creacion": "1/13/2021"
+ },
+ {
+  "id": 80,
+  "codigo_transaccion": "4dxgpcc828",
+  "moneda": "Ruble",
+  "monto": 6285342,
+  "emisor": "vcandwell27",
+  "receptor": "cabbey27",
+  "fecha_creacion": "3/25/2021"
+ },
+ {
+  "id": 81,
+  "codigo_transaccion": "7bmd6azpa5",
+  "moneda": "Yuan Renminbi",
+  "monto": 1419712.71,
+  "emisor": "jivery28",
+  "receptor": "oedge28",
+  "fecha_creacion": "7/24/2021"
+ },
+ {
+  "id": 82,
+  "codigo_transaccion": "cweddn6j37",
+  "moneda": "Euro",
+  "monto": 8556004,
+  "emisor": "rruselin29",
+  "receptor": "htruesdale29",
+  "fecha_creacion": "1/5/2021"
+ },
+ {
+  "id": 83,
+  "codigo_transaccion": "rnruv8qsb8",
+  "moneda": "Ruble",
+  "monto": 5777203,
+  "emisor": "mrigate2a",
+  "receptor": "bnevinson2a",
+  "fecha_creacion": "4/14/2021"
+ },
+ {
+  "id": 84,
+  "codigo_transaccion": "96aklbehuw",
+  "moneda": "Euro",
+  "monto": 3725807,
+  "emisor": "gmalloy2b",
+  "receptor": "ldransfield2b",
+  "fecha_creacion": "12/8/2020"
+ },
+ {
+  "id": 85,
+  "codigo_transaccion": "we7szm4ggp",
+  "moneda": "Ruble",
+  "monto": 410832.68,
+  "emisor": "ebresnahan2c",
+  "receptor": "dculleford2c",
+  "fecha_creacion": "5/3/2021"
+ },
+ {
+  "id": 86,
+  "codigo_transaccion": "lh1lt0yxyq",
+  "moneda": "Rupiah",
+  "monto": 6340854,
+  "emisor": "asaiens2d",
+  "receptor": "jlongmuir2d",
+  "fecha_creacion": "12/23/2020"
+ },
+ {
+  "id": 87,
+  "codigo_transaccion": "m2hsq5y4ej",
+  "moneda": "Yuan Renminbi",
+  "monto": 2687434.58,
+  "emisor": "bsyseland2e",
+  "receptor": "klestrange2e",
+  "fecha_creacion": "9/30/2021"
+ },
+ {
+  "id": 88,
+  "codigo_transaccion": "jkxdi9bvj8",
+  "moneda": "Quetzal",
+  "monto": 5582200,
+  "emisor": "obenzie2f",
+  "receptor": "ggardner2f",
+  "fecha_creacion": "5/13/2021"
+ },
+ {
+  "id": 89,
+  "codigo_transaccion": "5thlu8dtw3",
+  "moneda": "Peso",
+  "monto": 881864.64,
+  "emisor": "cbodman2g",
+  "receptor": "eklain2g",
+  "fecha_creacion": "8/16/2021"
+ },
+ {
+  "id": 90,
+  "codigo_transaccion": "tj1mcbiq5s",
+  "moneda": "Yuan Renminbi",
+  "monto": 8686873,
+  "emisor": "tedgworth2h",
+  "receptor": "rgregg2h",
+  "fecha_creacion": "2/9/2021"
+ },
+ {
+  "id": 91,
+  "codigo_transaccion": "9qbb4v3e5u",
+  "moneda": "Rupiah",
+  "monto": 4153556.63,
+  "emisor": "tmacknocker2i",
+  "receptor": "ggeldert2i",
+  "fecha_creacion": "3/4/2021"
+ },
+ {
+  "id": 92,
+  "codigo_transaccion": "mhfubpjr2m",
+  "moneda": "Yuan Renminbi",
+  "monto": 4270912.23,
+  "emisor": "asmithe2j",
+  "receptor": "ediaper2j",
+  "fecha_creacion": "5/26/2021"
+ },
+ {
+  "id": 93,
+  "codigo_transaccion": "m1ecjfg40h",
+  "moneda": "Peso",
+  "monto": 3400772.17,
+  "emisor": "jabbay2k",
+  "receptor": "mjoss2k",
+  "fecha_creacion": "9/28/2021"
+ },
+ {
+  "id": 94,
+  "codigo_transaccion": "u0e6t789mp",
+  "moneda": "Zloty",
+  "monto": 3870012.76,
+  "emisor": "bgovier2l",
+  "receptor": "vspellicy2l",
+  "fecha_creacion": "5/9/2021"
+ },
+ {
+  "id": 95,
+  "codigo_transaccion": "bjl8l2bvxt",
+  "moneda": "Yuan Renminbi",
+  "monto": 8504767,
+  "emisor": "atipple2m",
+  "receptor": "imeaden2m",
+  "fecha_creacion": "10/17/2021"
+ },
+ {
+  "id": 96,
+  "codigo_transaccion": "tfsdj7wde5",
+  "moneda": "Euro",
+  "monto": 8065974,
+  "emisor": "gbeverstock2n",
+  "receptor": "aoseman2n",
+  "fecha_creacion": "7/3/2021"
+ },
+ {
+  "id": 97,
+  "codigo_transaccion": "bwrtsqivgx",
+  "moneda": "Hryvnia",
+  "monto": 3663458.82,
+  "emisor": "msivyour2o",
+  "receptor": "lkrier2o",
+  "fecha_creacion": "2/2/2021"
+ },
+ {
+  "id": 98,
+  "codigo_transaccion": "tekwy5b5c0",
+  "moneda": "Dinar",
+  "monto": 9976300,
+  "emisor": "kdelazenne2p",
+  "receptor": "hmorkham2p",
+  "fecha_creacion": "1/16/2021"
+ },
+ {
+  "id": 99,
+  "codigo_transaccion": "ccpwfpcuzw",
+  "moneda": "Quetzal",
+  "monto": 8519394,
+  "emisor": "wsilversmid2q",
+  "receptor": "asimenon2q",
+  "fecha_creacion": "5/5/2021"
+ },
+ {
+  "id": 100,
+  "codigo_transaccion": "8332xngty5",
+  "moneda": "Afghani",
+  "monto": 3475072.8,
+  "emisor": "gspaldin2r",
+  "receptor": "jhellyer2r",
+  "fecha_creacion": "7/7/2021"
+ }
+]
