@@ -3,17 +3,40 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/cmd/server/handler"
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/docs"
 	products "github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/internal/products"
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/11_testing2/TM/go-web/pkg/web"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+func TokenAuthMiddleware() gin.HandlerFunc {
+	requiredToken := os.Getenv("TOKEN")
+
+	// We want to make sure the token is set, bail if not
+	if requiredToken == "" {
+		log.Fatal("Please set API_TOKEN environment variable")
+	}
+
+	return func(c *gin.Context) {
+		token := c.GetHeader("token")
+		if token == "" {
+			c.AbortWithStatusJSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Falta Token"))
+		} else if token != os.Getenv("TOKEN") {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "No tiene permisos para realizar la petición solicitada"))
+
+		}
+
+		c.Next()
+	}
+}
 
 // @title MELI Bootcamp API
 // @version 1.0
@@ -38,7 +61,7 @@ func main() {
 	router := gin.Default()
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
+	router.Use(TokenAuthMiddleware())
 	productsRoute := router.Group("products")
 	productsRoute.GET("", controller.GetAll())
 	productsRoute.GET("/filter", controller.Filter())

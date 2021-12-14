@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -13,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type request struct {
+type Request struct {
 	Nombre        string `json:"nombre" binding:"required"`
 	Color         string `json:"color" binding:"required"`
 	Precio        int    `json:"precio" binding:"required"`
@@ -23,7 +22,7 @@ type request struct {
 	FechaCreacion string `json:"fechaCreacion" binding:"required"`
 }
 
-type requestPatchNamePrice struct {
+type RequestPatchNamePrice struct {
 	Nombre string `json:"nombre" binding:"required"`
 	Precio int    `json:"precio" binding:"required"`
 }
@@ -34,19 +33,6 @@ type Product struct {
 
 func NewProduct(s products.Service) *Product {
 	return &Product{serv: s}
-}
-
-func validToken(c *gin.Context) bool {
-	token := c.GetHeader("token")
-	if token == "" {
-		c.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "Falta Token"))
-		return false
-	}
-	if token != os.Getenv("TOKEN") {
-		c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "No tiene permisos para realizar la petición solicitada"))
-		return false
-	}
-	return true
 }
 
 // ListProducts godoc
@@ -60,9 +46,7 @@ func validToken(c *gin.Context) bool {
 // @Router /products [get]
 func (p *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
+
 		prods, err := p.serv.GetAll()
 
 		if err != nil {
@@ -80,16 +64,13 @@ func (p *Product) GetAll() gin.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product to store"
+// @Param product body Request true "Product to store"
 // @Success 200 {object} web.Response
 // @Router /products [post]
 func (p *Product) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
 
-		var newRequest request
+		var newRequest Request
 		err := c.ShouldBindJSON(&newRequest)
 		if err != nil {
 			validRequired(err.Error(), newRequest, c)
@@ -120,9 +101,6 @@ func (p *Product) Store() gin.HandlerFunc {
 // @Router /products/{id} [get]
 func (p *Product) FindById() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
 
 		id, err := strconv.Atoi(c.Param("id"))
 
@@ -149,16 +127,14 @@ func (p *Product) FindById() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param token header string true "token"
-// @Param product body request true "Product to edit"
+// @Param product body Request true "Product to edit"
 // @Param id path int true "id"
 // @Success 200 {object} web.Response
 // @Router /products/{id} [put]
 func (p *Product) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
-		var updateRequest request
+
+		var updateRequest Request
 		err := c.ShouldBindJSON(&updateRequest)
 		if err != nil {
 			validRequired(err.Error(), updateRequest, c)
@@ -185,9 +161,6 @@ func (p *Product) Update() gin.HandlerFunc {
 
 func (p *Product) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
 
 		id, err := strconv.Atoi(c.Param("id"))
 
@@ -209,9 +182,6 @@ func (p *Product) Delete() gin.HandlerFunc {
 
 func (p *Product) Filter() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
 
 		prods, err := p.serv.Filter(c.Request.URL.Query())
 		if err != nil {
@@ -224,9 +194,6 @@ func (p *Product) Filter() gin.HandlerFunc {
 
 func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !validToken(c) {
-			return
-		}
 
 		id, err := strconv.Atoi(c.Param("id"))
 
@@ -236,7 +203,7 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 			return
 		}
 
-		var updateRequest requestPatchNamePrice
+		var updateRequest RequestPatchNamePrice
 		err = c.ShouldBindJSON(&updateRequest)
 		if err != nil {
 			validRequired(err.Error(), updateRequest, c)
@@ -254,10 +221,10 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	}
 }
 
-func validRequired(err string, request interface{}, c *gin.Context) {
+func validRequired(err string, Request interface{}, c *gin.Context) {
 
 	if strings.Contains(err, "required") {
-		tipos := reflect.TypeOf(request)
+		tipos := reflect.TypeOf(Request)
 		i := 0
 		errores := ""
 		for i = 0; i < tipos.NumField(); i++ {
