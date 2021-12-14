@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type request struct {
+type Request struct {
 	Codigo   string `json:"codigo"`
 	Moneda   string `json:"moneda"`
 	Monto    string `json:"monto"`
@@ -122,7 +122,7 @@ func (tran Transaction) GetTransactionsExlusive() gin.HandlerFunc {
 			return
 		}
 
-		var parametros request
+		var parametros Request
 		err = c.BindJSON(&parametros)
 		if err != nil {
 			c.JSON(http.StatusForbidden, web.NewResponse(http.StatusForbidden, nil, err.Error()))
@@ -168,7 +168,7 @@ func (tran Transaction) Store() gin.HandlerFunc {
 			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, err.Error()))
 			return
 		}
-		var transactionRecived request
+		var transactionRecived Request
 
 		err = c.ShouldBindJSON(&transactionRecived)
 
@@ -225,7 +225,7 @@ func (tran Transaction) Update() gin.HandlerFunc {
 			return
 		}
 
-		var transactionRecived request
+		var transactionRecived Request
 
 		err = c.ShouldBindJSON(&transactionRecived)
 
@@ -271,7 +271,7 @@ func (tran Transaction) UpdateCodigoAndMonto() gin.HandlerFunc {
 			return
 		}
 
-		var transactionRecived request
+		var transactionRecived Request
 
 		err = c.ShouldBindJSON(&transactionRecived)
 
@@ -329,7 +329,7 @@ func (tran Transaction) Delete() gin.HandlerFunc {
 	}
 }
 
-func ValidParms(transactionRecived request, parametrosRequired []string) []string {
+func ValidParms(transactionRecived Request, parametrosRequired []string) []string {
 	var diff []string
 
 	parametrosFromBody := GetParamsFromBody(transactionRecived)
@@ -351,7 +351,7 @@ func ValidParms(transactionRecived request, parametrosRequired []string) []strin
 	return diff
 }
 
-func GetParamsFromBody(parametros request) []string {
+func GetParamsFromBody(parametros Request) []string {
 	var list []string
 	r := reflect.ValueOf(parametros)
 
@@ -366,7 +366,7 @@ func GetParamsFromBody(parametros request) []string {
 	return list
 }
 
-func InValidParams(parametros request) []string {
+func InValidParams(parametros Request) []string {
 	var list []string
 	r := reflect.ValueOf(parametros)
 

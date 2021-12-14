@@ -1,14 +1,16 @@
 package internal
 
 import (
+	"encoding/json"
 	"errors"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/11_testing2/TurnoTarde/pkg/store"
 	"github.com/stretchr/testify/assert"
+
 )
 
-var transactions string =  `[{
+var transactions string = `[{
 	"id": 2,
 	"codigo": "24safdsadfasdf385",
 	"moneda": "Peso Colombiano",
@@ -27,142 +29,172 @@ var transactions string =  `[{
 	"fecha": "1/4/2021"
    }]`
 
-
-func TestUpdate(t *testing.T){
+func TestUpdate(t *testing.T) {
 	transacionTest := Transaction{
-		Codigo: "New001",
-		Moneda: "ARS",
-		Monto: "850",
-		Emisor: "Luis",
+		Codigo:   "New001",
+		Moneda:   "ARS",
+		Monto:    "850",
+		Emisor:   "Luis",
 		Receptor: "Ppepe",
-		Fecha: "13/12/2021",
+		Fecha:    "13/12/2021",
 	}
 
-	mock := store.Mock{Data: []byte(transactions),IsStoreRead: false}
+	mock := store.Mock{Data: []byte(transactions), IsStoreRead: false}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
-	myService:= NewService(myRepo)
+	myService := NewService(myRepo)
 
-	newTransaction,err := myService.Update(2,transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
-										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
+	newTransaction, err := myService.Update(2, transacionTest.Codigo, transacionTest.Moneda, transacionTest.Monto,
+		transacionTest.Emisor, transacionTest.Receptor, transacionTest.Fecha)
 
-	assert.Nil(t,err)
-	assert.True(t,mock.IsStoreRead)
-	assert.True(t,mock.IsStoreWrite)
-	assert.Equal(t,transacionTest.Codigo,newTransaction.Codigo)
-	assert.Equal(t,transacionTest.Emisor,newTransaction.Emisor)
-	assert.Equal(t,transacionTest.Fecha,newTransaction.Fecha)
-	assert.Equal(t,transacionTest.Moneda,newTransaction.Moneda)
-	assert.Equal(t,transacionTest.Monto,newTransaction.Monto)
-	assert.Equal(t,transacionTest.Receptor,newTransaction.Receptor)
-	assert.Equal(t,2,newTransaction.ID)
+	assert.Nil(t, err)
+	assert.True(t, mock.IsStoreRead)
+	assert.True(t, mock.IsStoreWrite)
+	assert.Equal(t, transacionTest.Codigo, newTransaction.Codigo)
+	assert.Equal(t, transacionTest.Emisor, newTransaction.Emisor)
+	assert.Equal(t, transacionTest.Fecha, newTransaction.Fecha)
+	assert.Equal(t, transacionTest.Moneda, newTransaction.Moneda)
+	assert.Equal(t, transacionTest.Monto, newTransaction.Monto)
+	assert.Equal(t, transacionTest.Receptor, newTransaction.Receptor)
+	assert.Equal(t, 2, newTransaction.ID)
 }
 
-
-func TestUpdateError(t *testing.T){
+func TestUpdateError(t *testing.T) {
 	transacionTest := Transaction{
-		Codigo: "New001",
-		Moneda: "ARS",
-		Monto: "850",
-		Emisor: "Luis",
+		Codigo:   "New001",
+		Moneda:   "ARS",
+		Monto:    "850",
+		Emisor:   "Luis",
 		Receptor: "Ppepe",
-		Fecha: "13/12/2021",
+		Fecha:    "13/12/2021",
 	}
-	erCreated:= errors.New("Error al updtear transaction")
-	mock := store.Mock{Data: []byte(transactions),Err: erCreated}
+	erCreated := errors.New("Error al updtear transaction")
+	mock := store.Mock{Data: []byte(transactions), Err: erCreated}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
-	myService:= NewService(myRepo)
+	myService := NewService(myRepo)
 
-	newTransaction,err := myService.Update(2,transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
-										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
+	newTransaction, err := myService.Update(2, transacionTest.Codigo, transacionTest.Moneda, transacionTest.Monto,
+		transacionTest.Emisor, transacionTest.Receptor, transacionTest.Fecha)
 
-	assert.True(t,!mock.IsStoreRead)
-	assert.True(t,!mock.IsStoreWrite)
-	assert.NotNil(t,err,erCreated)
-	assert.Equal(t,Transaction{},newTransaction)
+	assert.True(t, !mock.IsStoreRead)
+	assert.True(t, !mock.IsStoreWrite)
+	assert.NotNil(t, err, erCreated)
+	assert.Equal(t, Transaction{}, newTransaction)
 
 }
 
-
-func TestDelete(t *testing.T){
+func TestDelete(t *testing.T) {
 	mock := store.Mock{Data: []byte(transactions)}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
-	myService:= NewService(myRepo)
+	myService := NewService(myRepo)
 
 	err := myService.Delete(2)
-	tranAfterDelete,_:=myService.GetTransactionById(2)
+	tranAfterDelete, _ := myService.GetTransactionById(2)
 
-	assert.Nil(t,err)
-	assert.Equal(t,Transaction{},tranAfterDelete)
+	assert.Nil(t, err)
+	assert.Equal(t, Transaction{}, tranAfterDelete)
 
 }
 
-func TestDeleteError(t *testing.T){
+func TestDeleteError(t *testing.T) {
 	mock := store.Mock{Data: []byte(transactions)}
 	typeFileMock := store.FileStore{Mock: &mock}
 	myRepo := NewRepository(&typeFileMock)
-	myService:= NewService(myRepo)
+	myService := NewService(myRepo)
 
 	err := myService.Delete(100)
 
-	assert.NotNil(t,err)
+	assert.NotNil(t, err)
+	assert.Error(t, err)
+}
+
+func TestStore(t *testing.T) {
+	transacionTest := Transaction{
+		Codigo:   "New001",
+		Moneda:   "ARS",
+		Monto:    "850",
+		Emisor:   "Luis",
+		Receptor: "Ppepe",
+		Fecha:    "13/12/2021",
+	}
+
+	mock := store.Mock{Data: []byte(transactions), IsStoreRead: false}
+	typeFileMock := store.FileStore{Mock: &mock}
+	myRepo := NewRepository(&typeFileMock)
+	myService := NewService(myRepo)
+
+	newTransaction, err := myService.Store(transacionTest.Codigo, transacionTest.Moneda, transacionTest.Monto,
+		transacionTest.Emisor, transacionTest.Receptor, transacionTest.Fecha)
+
+	assert.Nil(t, err)
+	assert.True(t, mock.IsStoreRead)
+	assert.True(t, mock.IsStoreWrite)
+	assert.Equal(t, transacionTest.Codigo, newTransaction.Codigo)
+	assert.Equal(t, transacionTest.Emisor, newTransaction.Emisor)
+	assert.Equal(t, transacionTest.Fecha, newTransaction.Fecha)
+	assert.Equal(t, transacionTest.Moneda, newTransaction.Moneda)
+	assert.Equal(t, transacionTest.Monto, newTransaction.Monto)
+	assert.Equal(t, transacionTest.Receptor, newTransaction.Receptor)
+}
+
+func TestStoreError(t *testing.T) {
+	transacionTest := Transaction{
+		Codigo:   "New001",
+		Moneda:   "ARS",
+		Monto:    "850",
+		Emisor:   "Luis",
+		Receptor: "Ppepe",
+		Fecha:    "13/12/2021",
+	}
+	erCreated := errors.New("Error al updtear transaction")
+	mock := store.Mock{Data: []byte(transactions), Err: erCreated}
+	typeFileMock := store.FileStore{Mock: &mock}
+	myRepo := NewRepository(&typeFileMock)
+	myService := NewService(myRepo)
+
+	newTransaction, err := myService.Store(transacionTest.Codigo, transacionTest.Moneda, transacionTest.Monto,
+		transacionTest.Emisor, transacionTest.Receptor, transacionTest.Fecha)
+
+	assert.True(t, !mock.IsStoreRead)
+	assert.True(t, !mock.IsStoreWrite)
+	assert.NotNil(t, err, erCreated)
+	assert.Equal(t, Transaction{}, newTransaction)
+
+}
+
+func TestGetAll1(t *testing.T) {
+	
+	mock := store.Mock{Data: []byte(transactions)}
+	typeFileMock := store.FileStore{Mock: &mock}
+	myRepo := NewRepository(&typeFileMock)
+	myService := NewService(myRepo)
+
+	var excepted []Transaction
+
+	err := json.Unmarshal([]byte(transactions), &excepted)
+	assert.Nil(t, err)
+	
+	newTransactions, err := myService.GetAll()
+
+	assert.Equal(t,len(excepted),len(newTransactions))
+	assert.True(t, mock.IsStoreRead)
+	assert.Nil(t, err)
+}
+
+func TestGetAll1Error(t *testing.T) {
+
+	erCreated := errors.New("Error al obtener transaction")
+	mock := store.Mock{Data: []byte(transactions), Err: erCreated}
+	typeFileMock := store.FileStore{Mock: &mock}
+	myRepo := NewRepository(&typeFileMock)
+	myService := NewService(myRepo)
+
+	_, err := myService.GetAll()
+
 	assert.Error(t,err)
-}
-
-
-func TestStore(t *testing.T){
-	transacionTest := Transaction{
-		Codigo: "New001",
-		Moneda: "ARS",
-		Monto: "850",
-		Emisor: "Luis",
-		Receptor: "Ppepe",
-		Fecha: "13/12/2021",
-	}
-
-	mock := store.Mock{Data: []byte(transactions),IsStoreRead: false}
-	typeFileMock := store.FileStore{Mock: &mock}
-	myRepo := NewRepository(&typeFileMock)
-	myService:= NewService(myRepo)
-
-	newTransaction,err := myService.Store(transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
-										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
-
-	assert.Nil(t,err)
-	assert.True(t,mock.IsStoreRead)
-	assert.True(t,mock.IsStoreWrite)
-	assert.Equal(t,transacionTest.Codigo,newTransaction.Codigo)
-	assert.Equal(t,transacionTest.Emisor,newTransaction.Emisor)
-	assert.Equal(t,transacionTest.Fecha,newTransaction.Fecha)
-	assert.Equal(t,transacionTest.Moneda,newTransaction.Moneda)
-	assert.Equal(t,transacionTest.Monto,newTransaction.Monto)
-	assert.Equal(t,transacionTest.Receptor,newTransaction.Receptor)
-}
-
-
-func TestStoreError(t *testing.T){
-	transacionTest := Transaction{
-		Codigo: "New001",
-		Moneda: "ARS",
-		Monto: "850",
-		Emisor: "Luis",
-		Receptor: "Ppepe",
-		Fecha: "13/12/2021",
-	}
-	erCreated:= errors.New("Error al updtear transaction")
-	mock := store.Mock{Data: []byte(transactions),Err: erCreated}
-	typeFileMock := store.FileStore{Mock: &mock}
-	myRepo := NewRepository(&typeFileMock)
-	myService:= NewService(myRepo)
-
-	newTransaction,err := myService.Store(transacionTest.Codigo,transacionTest.Moneda,transacionTest.Monto,
-										transacionTest.Emisor,transacionTest.Receptor,transacionTest.Fecha)
-
-	assert.True(t,!mock.IsStoreRead)
-	assert.True(t,!mock.IsStoreWrite)
-	assert.NotNil(t,err,erCreated)
-	assert.Equal(t,Transaction{},newTransaction)
+	assert.Equal(t, err, erCreated)
+	
 
 }

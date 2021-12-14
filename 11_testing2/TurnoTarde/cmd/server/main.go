@@ -24,7 +24,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-func main(){
+func main() {
 	server := gin.Default()
 	err := godotenv.Load()
 
@@ -32,23 +32,16 @@ func main(){
 		log.Fatal("error al cargar el archivo .env")
 	}
 
-
 	//inicializaciones
-	db := store.New(store.FileType,os.Getenv("STOREPATH"))
+	db := store.New(store.FileType, os.Getenv("STOREPATH"))
 	repo := tran.NewRepository(db)
 	service := tran.NewService(repo)
 	controller := handler.NewTransaction(service)
 
-	
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
 	server.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-   
-
-
 
 	transaction := server.Group("/transactions")
-
-
 
 	{
 		//get
@@ -59,16 +52,18 @@ func main(){
 		//post
 		transaction.POST("/", controller.Store())
 
-
 		//put
 		transaction.PUT("/:id", controller.Update())
 
 		//patch
 		transaction.PATCH("/:id", controller.UpdateCodigoAndMonto())
 
-
 		//delete
 		transaction.DELETE("/:id", controller.Delete())
-	}	
-	server.Run()
+	}
+	err = server.Run()
+
+	if err != nil {
+		log.Fatal("error al iniciar el servidor.",err)
+	}
 }

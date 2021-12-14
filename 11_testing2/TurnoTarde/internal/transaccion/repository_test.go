@@ -70,8 +70,11 @@ func TestGetAll(t *testing.T){
 	repo := NewRepository(stubStore)
 
 	var excepted []Transaction
-	json.Unmarshal([]byte(Datos), &excepted)
 
+	err := json.Unmarshal([]byte(Datos), &excepted)
+
+	assert.Nil(t,err)
+	
 	tran,err := repo.GetAll()
 
 	assert.Nil(t,err)

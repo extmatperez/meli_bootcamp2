@@ -59,7 +59,8 @@ func createRequestTest(method string, url string, body []byte) (*http.Request, *
 }
 
 func Test_Update_OK(t *testing.T) {
-	// crear el Server y definir las Rutas
+
+
 	r := createServer()
 	id := 2
 	transaction := handler.Request{
@@ -74,14 +75,15 @@ func Test_Update_OK(t *testing.T) {
 	bodyByte, _ := json.Marshal(transaction)
 	url := fmt.Sprintf("/transactions/%v", id)
 
-	// crear Request del tipo POST y Response para obtener el resultado
+
 	req, rr := createRequestTest(http.MethodPut, url, bodyByte)
 
-	// indicar al servidor que pueda atender la solicitud
+
 	r.ServeHTTP(rr, req)
 
 	var bodyRecived web.Response
 	var transactionRecived tran.Transaction
+	
 	json.Unmarshal(rr.Body.Bytes(), &bodyRecived)
 
 	byt, _ := json.Marshal(bodyRecived.Content)
