@@ -60,13 +60,43 @@
   "fechaCreacion": "26/04/2021"
  },
  {
-  "id": 7,
-  "nombre": "Kee63",
-  "color": "Indigo",
-  "precio": "$3778.23",
-  "stock": 45,
-  "codigo": "786649b1-0f59-4ef9-8cee-96827b7a4d04",
+  "id": 9,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
   "publicado": true,
-  "fechaCreacion": "26/04/2021"
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 10,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 11,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 12,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
  }
 ]

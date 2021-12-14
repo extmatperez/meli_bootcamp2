@@ -34,6 +34,7 @@ import (
 	productos "github.com/extmatperez/meli_bootcamp2/12_testing3/TT/proyecto/internal/productos"
 	"github.com/extmatperez/meli_bootcamp2/12_testing3/TT/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -69,9 +70,13 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 
 func createServer() *gin.Engine {
 
-	router := gin.Default()
+	err := godotenv.Load()
 
-	_ = os.Setenv("TOKEN", "123")
+	if err != nil {
+		log.Fatal("No se pudo abrir el archivo .env")
+	}
+
+	router := gin.Default()
 
 	db := store.New(store.FileType, "/Users/beconti/Desktop/meli_bootcamp2/12_testing3/TT/proyecto/tests/productosTest.json")
 
@@ -100,6 +105,33 @@ func createRequestTest(method string, url string, body string) (*http.Request, *
 	req.Header.Add("token", "123")
 
 	return req, httptest.NewRecorder()
+}
+
+func Test_CreateProducto(t *testing.T) {
+	//Arrenge
+	router := createServer()
+
+	newProduct := productos.Producto{
+		Nombre:        "Asdf",
+		Color:         "Negro",
+		Precio:        "$ 50",
+		Stock:         2,
+		Codigo:        "123456R",
+		Publicado:     true,
+		FechaCreacion: "01/06/1996",
+	}
+
+	data, _ := json.Marshal(newProduct)
+
+	url := "/productos/"
+	request, response := createRequestTest(http.MethodPost, url, string(data))
+
+	//Act
+	router.ServeHTTP(response, request)
+
+	//Assert
+	assert.Equal(t, 201, response.Code)
+
 }
 
 func Test_UpdateProducto(t *testing.T) {
@@ -134,11 +166,24 @@ func Test_DeleteProducto(t *testing.T) {
 	//Arrenge
 	router := createServer()
 
-	productID := 7
+	productID := 8
 
 	url := fmt.Sprintf("/productos/%v", productID)
-
 	request, response := createRequestTest(http.MethodDelete, url, "")
+
+	//Act
+	router.ServeHTTP(response, request)
+
+	//Assert
+	assert.Equal(t, 200, response.Code)
+}
+
+func Test_GetAll(t *testing.T) {
+	//Arrenge
+	router := createServer()
+
+	url := "/productos/"
+	request, response := createRequestTest(http.MethodGet, url, "")
 
 	//Act
 	router.ServeHTTP(response, request)
