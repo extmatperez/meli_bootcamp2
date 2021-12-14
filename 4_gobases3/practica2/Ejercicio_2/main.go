@@ -41,12 +41,13 @@ func main() {
 
 	addProduct(&u, &p, 5)
 	addProduct(&u, &p2, 4)
+	fmt.Println("El usuario: ", u)
 
-	fmt.Println("El usuario: ", u)
 	addProduct(&u, &p, 5)
-	fmt.Println("El usuario: ", u)
+	fmt.Println("El usuario Modificado: ", u)
+
 	deleteProducts(&u)
-	fmt.Println("Sin productos", u)
+	fmt.Println("El usuario sin productos", u)
 }
 func newProduct(name string, price int) Products {
 	nProduct := Products{name, price, 0}
