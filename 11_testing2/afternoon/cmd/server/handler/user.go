@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/internal/users"
+	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/afternoon/internal/users"
 	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/pkg/web"
 
 	"github.com/gin-gonic/gin"

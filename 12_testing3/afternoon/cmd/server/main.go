@@ -4,14 +4,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/noon/cmd/server/handler"
-	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/noon/internal/users"
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/noon/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/cmd/server/handler"
+	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/pkg/store"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/noon/docs"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -45,5 +45,8 @@ func main() {
 	group.PATCH("/:id", hand.UpdateLastNameAge())
 	group.DELETE("/:id", hand.Delete())
 
-	router.Run()
+	err = router.Run()
+	if err != nil {
+		log.Fatal("Can't start server")
+	}
 }

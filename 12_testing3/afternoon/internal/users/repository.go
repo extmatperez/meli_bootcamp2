@@ -3,21 +3,19 @@ package internal
 import (
 	"fmt"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/afternoon/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/12_testing3/afternoon/pkg/store"
 )
 
 type User struct {
 	ID       int     `json:"id"`
-	Name     string  `json:"name""`
-	LastName string  `json:"last_name""`
-	Email    string  `json:"email""`
-	Age      int     `json:"age""`
-	Height   float64 `json:"height""`
-	Active   bool    `json:"active""`
-	Created  string  `json:"created""`
+	Name     string  `json:"name"`
+	LastName string  `json:"last_name"`
+	Email    string  `json:"email"`
+	Age      int     `json:"age"`
+	Height   float64 `json:"height"`
+	Active   bool    `json:"active"`
+	Created  string  `json:"created"`
 }
-
-var lastID int
 
 type Repository interface {
 	GetAll() ([]User, error)
@@ -51,6 +49,9 @@ func (r *repository) GetAll() ([]User, error) {
 func (r *repository) LastID() (int, error) {
 	var users []User
 	err := r.db.Read(&users)
+	if err != nil {
+		return 0, err
+	}
 
 	if len(users) == 0 || err != nil {
 		return 0, nil
@@ -61,12 +62,15 @@ func (r *repository) LastID() (int, error) {
 
 func (r *repository) Store(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error) {
 	var users []User
-	r.db.Read(&users)
+	err := r.db.Read(&users)
+	if err != nil {
+		return User{}, err
+	}
 
 	u := User{id, name, lastName, email, age, height, active, created}
 	users = append(users, u)
 
-	err := r.db.Write(users)
+	err = r.db.Write(users)
 	if err != nil {
 		return User{}, err
 	}
@@ -77,6 +81,9 @@ func (r *repository) Store(id int, name, lastName, email string, age int, height
 func (r *repository) Update(id int, name, lastName, email string, age int, height float64, active bool, created string) (User, error) {
 	var users []User
 	err := r.db.Read(&users)
+	if err != nil {
+		return User{}, err
+	}
 
 	if err != nil {
 		return User{}, err
@@ -104,7 +111,10 @@ func (r *repository) Update(id int, name, lastName, email string, age int, heigh
 
 func (r *repository) UpdateLastNameAge(id int, lastName string, age int) (User, error) {
 	var users []User
-	r.db.Read(&users)
+	err := r.db.Read(&users)
+	if err != nil {
+		return User{}, err
+	}
 
 	i := 0
 	for i < len(users) && users[i].ID != id {
@@ -118,7 +128,7 @@ func (r *repository) UpdateLastNameAge(id int, lastName string, age int) (User, 
 	users[i].LastName = lastName
 	users[i].Age = age
 
-	err := r.db.Write(users)
+	err = r.db.Write(users)
 	if err != nil {
 		return User{}, err
 	}
