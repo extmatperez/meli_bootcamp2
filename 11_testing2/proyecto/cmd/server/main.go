@@ -77,8 +77,10 @@ func main() {
 		routerTransactions.DELETE("/:id", controller.Delete())
 		routerTransactions.PATCH("/:id", controller.UpdateCodigoYMonto())
 	}
-	router.Run()
-
+	err = router.Run()
+	if err != nil {
+		log.Fatal("Error en el servidor.")
+	}
 	// //List Endpoints
 	// rutas := router.Routes()
 	// for _, r := range rutas {

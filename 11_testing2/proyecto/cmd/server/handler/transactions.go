@@ -80,7 +80,6 @@ func (t *Transaction) GetTransactionByID() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(200, web.NewResponse(200, response, ""))
-		return
 
 	}
 }
@@ -116,7 +115,6 @@ func (t *Transaction) Store() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(200, web.NewResponse(200, respuesta, ""))
-		return
 
 	}
 }
@@ -160,7 +158,6 @@ func (t *Transaction) Update() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(200, web.NewResponse(200, respuesta, ""))
-		return
 
 	}
 }
@@ -192,7 +189,6 @@ func (t *Transaction) Delete() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(200, web.NewResponse(200, fmt.Sprintf("transaction %d deleted", id), ""))
-		return
 
 	}
 }
@@ -237,7 +233,6 @@ func (t *Transaction) UpdateCodigoYMonto() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(200, web.NewResponse(200, respuesta, ""))
-		return
 
 	}
 }

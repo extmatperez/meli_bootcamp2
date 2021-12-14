@@ -32,7 +32,6 @@ type repository struct {
 }
 
 var transactions []Transaction
-var lastID int
 
 func NewRepository(db store.Store) Repository {
 	return &repository{db}
@@ -67,7 +66,6 @@ func (repo *repository) Store(id int, codigo_de_transaccion, moneda string, mont
 		return Transaction{}, err
 	}
 	transac := Transaction{id, codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion}
-	lastID = id
 	transactions = append(transactions, transac)
 	err = repo.db.Write(transactions)
 	if err != nil {
