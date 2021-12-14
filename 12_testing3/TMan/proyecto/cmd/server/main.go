@@ -29,6 +29,10 @@ func main() {
 	tr.PATCH(":/id", t.UpdateEmisor())
 	tr.DELETE(":/id", t.Delete())
 
-	r.Run()
+	err = r.Run()
+
+	if err != nil{
+		log.Fatal("Ocurrio un error al correr:", err)
+	}
 
 }

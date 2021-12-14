@@ -37,7 +37,10 @@ func NewRepository(db store.Store) Repository {
 
 func (r *repository) GetAll() ([]Transaccion, error) {
 	var ts []Transaccion
-	r.db.Read(&ts)
+	err := r.db.Read(&ts)
+	if err != nil{
+		return []Transaccion{}, err
+	}
 	return ts, nil
 }
 
@@ -74,12 +77,22 @@ func (r *repository) Store(id int, codigo int, moneda string, monto float64, emi
 func (r *repository) Update(id int, codigo int, moneda string, monto float64, emisor string, receptor string, fecha string) (Transaccion, error) {
 	t := Transaccion{id, codigo, moneda, monto, emisor, receptor, fecha}
 	var ts []Transaccion
-	r.db.Read(&ts)
+	err := r.db.Read(&ts)
+
+	if err != nil{
+		return Transaccion{}, err
+	}
+
 	for i := range ts{
 		if ts[i].ID == id{
 			t.ID = id
 			ts[i] = t
-			r.db.Write(&ts)
+			err := r.db.Write(&ts)
+
+			if err != nil{
+				return Transaccion{}, err
+			}
+
 			return t, nil
 		}
 	}
@@ -89,12 +102,20 @@ func (r *repository) Update(id int, codigo int, moneda string, monto float64, em
 func(r *repository) UpdateEmisor(id int, emisor string)(Transaccion, error){
 	var t Transaccion
 	var ts []Transaccion
-	r.db.Read(&ts)
+	err := r.db.Read(&ts)
+
+	if err != nil{
+		return Transaccion{}, err
+	}
+
 	for i := range ts{
 		if ts[i].ID == id{
 			ts[i].Emisor = emisor
 			t = ts[i]
-			r.db.Write(&ts)
+			err := r.db.Write(&ts)
+			if err != nil{
+				return Transaccion{}, err
+			}
 			return t, nil
 		}
 	}
@@ -104,12 +125,21 @@ func(r *repository) UpdateEmisor(id int, emisor string)(Transaccion, error){
 func(r *repository) Delete(id int) error{
 	var index int
 	var ts []Transaccion
-	r.db.Read(&ts)
+	err := r.db.Read(&ts)
+
+	if err != nil{
+		return err
+	}
+
+
 	for i := range ts{
 		if ts[i].ID == id{
 			index = i
 			ts = append(ts[:index], ts[index+1:]...)
-			r.db.Write(ts)
+			err := r.db.Write(ts)
+			if err != nil{
+				return err
+			}
 			return nil
 		}
 	}

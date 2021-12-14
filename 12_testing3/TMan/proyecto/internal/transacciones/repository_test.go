@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"log"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/11_testing2/TTarde/proyecto/pkg/store"
@@ -70,7 +71,11 @@ func TestGetAll(t *testing.T){
 
 	personas, _ := repo.GetAll()
 	var esperado []Transaccion
-	json.Unmarshal([]byte(perso), &esperado)
+	err := json.Unmarshal([]byte(perso), &esperado)
+
+  if err != nil {
+    log.Fatal(err)
+  }
 
 	assert.Equal(t, esperado, personas)
 }
@@ -84,7 +89,11 @@ func TestUpdateEmisor(t *testing.T) {
   actualizado, _ := repo.UpdateEmisor(1, "Emisor actualizado")
 
   var esperado Transaccion
-	json.Unmarshal([]byte(per), &esperado)
+	err := json.Unmarshal([]byte(per), &esperado)
+
+  if err != nil {
+    log.Fatal(err)
+  }
 
   assert.Equal(t, store.readed, true)
   assert.NotEqual(t, esperado.Emisor, actualizado.Emisor)
