@@ -142,5 +142,23 @@
   "emisor": "perez",
   "receptor": "palacio",
   "fecha": "01/12/2015"
+ },
+ {
+  "id": 26,
+  "codigo": "Cod123456",
+  "moneda": "Ars",
+  "monto": "5000",
+  "emisor": "PANCHO",
+  "receptor": "AGUSTO",
+  "fecha": "14/12/21"
+ },
+ {
+  "id": 27,
+  "codigo": "Cod123456",
+  "moneda": "Ars",
+  "monto": "5000",
+  "emisor": "PANCHO",
+  "receptor": "AGUSTO",
+  "fecha": "14/12/21"
  }
 ]

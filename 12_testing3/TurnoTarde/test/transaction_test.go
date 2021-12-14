@@ -58,9 +58,7 @@ func createRequestTest(method string, url string, body []byte) (*http.Request, *
 	return req, httptest.NewRecorder()
 }
 
-func Test_Update_OK(t *testing.T) {
-
-
+func TestUpdateSucces(t *testing.T) {
 	r := createServer()
 	id := 2
 	transaction := handler.Request{
@@ -88,7 +86,6 @@ func Test_Update_OK(t *testing.T) {
 
 	byt, _ := json.Marshal(bodyRecived.Content)
 	json.Unmarshal(byt, &transactionRecived)
-	fmt.Println(rr)
 	assert.Equal(t, 200, rr.Code)
 	assert.Equal(t, transaction.Codigo, transactionRecived.Codigo)
 	assert.Equal(t, transaction.Emisor, transactionRecived.Emisor)
@@ -96,4 +93,52 @@ func Test_Update_OK(t *testing.T) {
 	assert.Equal(t, id, transactionRecived.ID)
 	assert.Equal(t, transaction.Moneda, transactionRecived.Moneda)
 	assert.Equal(t, transaction.Monto, transactionRecived.Monto)
+}
+
+
+
+
+func TestDeleteSucces(t *testing.T) {
+	r := createServer()
+	transaction := handler.Request{
+		Codigo:   "Cod123456",
+		Moneda:   "Ars",
+		Monto:    "5000",
+		Emisor:   "PANCHO",
+		Receptor: "AGUSTO",
+		Fecha:    "14/12/21",
+	}
+
+	bodyByte, _ := json.Marshal(transaction)
+	url := fmt.Sprintf("/transactions/")
+
+	req, rr := createRequestTest(http.MethodPost, url, bodyByte)
+
+	r.ServeHTTP(rr, req)
+
+	var bodyRecived web.Response
+	var transactionRecived tran.Transaction
+	
+	json.Unmarshal(rr.Body.Bytes(), &bodyRecived)
+
+	byt, _ := json.Marshal(bodyRecived.Content)
+	json.Unmarshal(byt, &transactionRecived)
+	assert.Equal(t, 200, rr.Code)
+	assert.Equal(t, transaction.Codigo, transactionRecived.Codigo)
+	assert.Equal(t, transaction.Emisor, transactionRecived.Emisor)
+	assert.Equal(t, transaction.Fecha, transactionRecived.Fecha)
+	assert.Equal(t, transaction.Moneda, transactionRecived.Moneda)
+	assert.Equal(t, transaction.Monto, transactionRecived.Monto)
+
+
+	url = fmt.Sprintf("/transactions/%d",transactionRecived.ID)
+
+	req, rr = createRequestTest(http.MethodDelete, url, bodyByte)
+	
+	r.ServeHTTP(rr, req)
+	json.Unmarshal(rr.Body.Bytes(), &bodyRecived)
+	assert.Equal(t, 200, rr.Code)
+
+
+
 }
