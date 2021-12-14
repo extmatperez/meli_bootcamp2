@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/8_goweb3/ClaseTM/ProyectoEstructura/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/11_testing2/ProyectoEstructura/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
