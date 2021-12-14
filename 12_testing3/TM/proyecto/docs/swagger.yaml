@@ -1,0 +1,147 @@
+definitions:
+  handler.request:
+    properties:
+      codigo:
+        type: string
+      color:
+        type: string
+      fechaCreacion:
+        type: string
+      nombre:
+        type: string
+      precio:
+        type: string
+      publicado:
+        type: boolean
+      stock:
+        type: integer
+    type: object
+  web.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      error:
+        type: string
+    type: object
+info:
+  contact:
+    name: API Support
+    url: https://developers.mercadolibre.com.ar/support
+  description: This API Handle MELI Products.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
+  title: MELI Bootcamp API
+  version: "1.0"
+paths:
+  /productos:
+    get:
+      consumes:
+      - application/json
+      description: get productos
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: List productos
+      tags:
+      - Productos
+    post:
+      consumes:
+      - application/json
+      description: store producto
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Product to store
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/handler.request'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Store productos
+      tags:
+      - Productos
+  /productos/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete producto
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Delete producto
+      tags:
+      - Productos
+    patch:
+      consumes:
+      - application/json
+      description: update Nombre and Precio of a producto
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update(Nombre and Precio) producto
+      tags:
+      - Productos
+    put:
+      consumes:
+      - application/json
+      description: update producto
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update producto
+      tags:
+      - Productos
+swagger: "2.0"
