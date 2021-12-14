@@ -60,3 +60,12 @@ func TestUpdateTransaccion(t *testing.T){
 
 	assert.Equal(t, 200, rr.Code)
 }
+
+
+
+func TestDeleteTransaccion(t *testing.T){
+	r := createServer()
+	req, rr := createRequestTest(http.MethodDelete, "/transacciones/3", "")
+	r.ServeHTTP(rr, req)
+	assert.Equal(t, 200, rr.Code)
+}
