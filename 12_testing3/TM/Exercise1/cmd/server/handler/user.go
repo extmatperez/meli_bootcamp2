@@ -102,7 +102,10 @@ func (controller *User) Update() gin.HandlerFunc {
 		}
 
 		err = ctx.ShouldBindJSON(&req)
-
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "Errors in should bind json"})
+			return
+		}
 		if req.FirstName == "" {
 			ctx.JSON(400, gin.H{"error": "First Name is required"})
 			return

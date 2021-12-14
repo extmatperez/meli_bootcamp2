@@ -31,5 +31,9 @@ func main() {
 	routerUser.PATCH("/lastname/:id", controller.UpdateLastName())
 	routerUser.PATCH("/age/:id", controller.UpdateAge())
 
-	router.Run()
+	err = router.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

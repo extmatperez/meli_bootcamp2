@@ -28,8 +28,9 @@ func TestGetAll(t *testing.T) {
 
 	myUsers, _ := repoTest.GetAll()
 	var userExpected []User
-	json.Unmarshal([]byte(usersFake), &userExpected)
+	err := json.Unmarshal([]byte(usersFake), &userExpected)
 
+	assert.Nil(t, err)
 	assert.Equal(t, userExpected, myUsers)
 }
 
@@ -56,7 +57,7 @@ func TestUpdateLastNameSuccess(t *testing.T) {
 func TestGetAllRepositoryMock(t *testing.T) {
 	dataByte := []byte(usersFake)
 	var usersExpected []User
-	json.Unmarshal(dataByte, &usersExpected)
+	err := json.Unmarshal(dataByte, &usersExpected)
 
 	dbMock := store.Mock{Data: dataByte}
 	storeStub := store.FileStore{Mock: &dbMock}
@@ -64,5 +65,6 @@ func TestGetAllRepositoryMock(t *testing.T) {
 
 	myUsers, _ := repo.GetAll()
 
+	assert.Nil(t, err)
 	assert.Equal(t, usersExpected, myUsers)
 }

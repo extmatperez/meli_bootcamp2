@@ -28,7 +28,6 @@ type User struct {
 }
 
 var users []User
-var lastID int
 
 type Repository interface {
 	GetAll() ([]User, error)
@@ -53,13 +52,15 @@ func (repo *repository) GetAll() ([]User, error) {
 }
 
 func (repo *repository) Store(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {
-	repo.db.Read(&users)
-
+	err := repo.db.Read(&users)
+	if err != nil {
+		return User{}, err
+	}
 	us := User{id, first_name, last_name, email, age, height, active, create_date}
 
 	users = append(users, us)
 
-	err := repo.db.Write(users)
+	err = repo.db.Write(users)
 
 	if err != nil {
 		return User{}, err
