@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/extmatperez/meli_bootcamp2/11_testing2/C2_Testing/TT/Exercise1/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,23 +26,43 @@ func TestGetAll(t *testing.T) {
 	stubStore := StubStore{}
 	repoTest := NewRepository(&stubStore)
 
-	// fmt.Println("REPO: ", repoTest)
 	myUsers, _ := repoTest.GetAll()
-	// fmt.Println("USUARIOS", myUsers)
-
 	var userExpected []User
-
 	json.Unmarshal([]byte(usersFake), &userExpected)
-	// fmt.Println("USUARIOS ESPERADOS: ", userExpected)
+
 	assert.Equal(t, userExpected, myUsers)
 }
 
-func TestUpdateLastName(t *testing.T) {
-	store := StubStore{}
-	repoTest := NewRepository(&store)
+func TestLastID(t *testing.T) {
+	stubStore := StubStore{}
+	repoTest := NewRepository(&stubStore)
+	lastIdExpected := 2
+
+	lastId, _ := repoTest.LastId()
+
+	assert.Equal(t, lastIdExpected, lastId)
+}
+
+func TestUpdateLastNameSuccess(t *testing.T) {
+	stubStore := StubStore{}
+	repoTest := NewRepository(&stubStore)
 	last_nameExpected := "Golang"
 
 	userAct, _ := repoTest.UpdateLastName(2, last_nameExpected)
 
 	assert.Equal(t, last_nameExpected, userAct.LastName)
+}
+
+func TestGetAllRepositoryMock(t *testing.T) {
+	dataByte := []byte(usersFake)
+	var usersExpected []User
+	json.Unmarshal(dataByte, &usersExpected)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	myUsers, _ := repo.GetAll()
+
+	assert.Equal(t, usersExpected, myUsers)
 }

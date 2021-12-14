@@ -11,9 +11,7 @@ Repositorio, debe tener el acceso a la variable guardada en memoria.
 package internal
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/extmatperez/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTT/pkg/store"
 )
@@ -36,7 +34,6 @@ type Repository interface {
 	GetAll() ([]User, error)
 	Store(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 	LastId() (int, error)
-	LoadUser() error
 	Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 	Delete(id int) error
 	UpdateLastName(id int, last_name string) (User, error)
@@ -80,24 +77,6 @@ func (repo *repository) LastId() (int, error) {
 		return 0, nil
 	}
 	return users[len(users)-1].ID, nil
-}
-
-func (r *repository) LoadUser() error {
-	// bytes, err := os.ReadFile("../../Exercise1/internal/users/users.json")
-	bytes, err := os.ReadFile("/Users/joserios/Desktop/bootcamp/meli_bootcamp2/9_goweb4/C4_GoWeb/C4-GoWeb-Sincronic/ExampleTM2/internal/users/users.json")
-	if err != nil {
-		return err
-	}
-
-	var allUsers []User
-
-	errUnmarshall := json.Unmarshal(bytes, &allUsers)
-	if errUnmarshall != nil {
-		return err
-	}
-
-	users = allUsers
-	return nil
 }
 
 func (repo *repository) Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {

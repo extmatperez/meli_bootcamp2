@@ -12,7 +12,6 @@ package internal
 type Service interface {
 	GetAll() ([]User, error)
 	Store(first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
-	LoadUser() error
 	Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error)
 	Delete(id int) error
 	UpdateLastName(id int, last_name string) (User, error)
@@ -44,15 +43,6 @@ func (ser *service) Store(first_name string, last_name string, email string, age
 	}
 
 	return us, nil
-}
-
-func (ser *service) LoadUser() error {
-	err := ser.repository.LoadUser()
-
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (ser *service) Update(id int, first_name string, last_name string, email string, age int, height int, active bool, create_date string) (User, error) {
