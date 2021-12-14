@@ -1,0 +1,22 @@
+[
+ {
+  "id": 1,
+  "nombre": "Espejo",
+  "color": "Azul",
+  "precio": 40,
+  "stock": 10,
+  "codigo": "156ujma8ssssDA",
+  "publicado": true,
+  "fecha_creacion": "25/10/2020"
+ },
+ {
+  "id": 3,
+  "nombre": "Auricular",
+  "color": "Verde",
+  "precio": 25.3,
+  "stock": 10,
+  "codigo": "156ujma8ssssDA",
+  "publicado": true,
+  "fecha_creacion": "25/10/2020"
+ }
+]
