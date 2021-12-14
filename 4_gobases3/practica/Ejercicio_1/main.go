@@ -1,27 +1,30 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/csv"
 	"fmt"
 	"os"
 )
 
-type Product struct {
-	Id 			int
-	Price		int
-	Quantity	int
-}
 func main() {
 
-	p1 := Product{68, 6000, 4}
-	p2 := Product{67, 4000, 2}
+	var data = [][]string{{"1", "2000", "4"}, {"2", "3560", "3"}}
 
-	var list []Product
-	list = append(list, p1)
-	list = append(list, p2)
+	file, err := os.Create("product.csv")
 
 	if err != nil {
-		fmt.Println("No se pudo escribir")
+		fmt.Println("No se pudo crear el archivo")
+	} else {
+		defer file.Close()
+
+		writer := csv.NewWriter(file)
+		defer writer.Flush()
+		for _, value := range data {
+			err := writer.Write(value)
+			if err != nil {
+				break
+			}
+		}
 	}
 
 }
