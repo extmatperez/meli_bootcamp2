@@ -34,12 +34,42 @@ func TestUpdate(t *testing.T) {
 	//Arrange
 	store := StubStore{}
 	repo := NewRepository(&store)
-	nombreExpected := "Pedro"
+	nombreExpected := "ProductoPrueba"
 
 	//Act
-	personaActualizada, err := repo.Edit(1, nombreExpected, "Rojo", "$45.00", 24, "abcd", true, "25/12/2003")
+	productoActualizado, err := repo.Edit(1, nombreExpected, "Rojo", "$45.00", 24, "abcd", true, "25/12/2003")
 
 	//Assert
-	assert.Equal(t, nombreExpected, personaActualizada.Nombre)
+	assert.Equal(t, nombreExpected, productoActualizado.Nombre)
 	assert.Nil(t, err)
+}
+
+func TestUpdateError(t *testing.T) {
+	store := StubStore{}
+	repo := NewRepository(&store)
+
+	_, err := repo.Edit(6, "ProductoPrueba!", "Amarillo", "$25.00", 21, "dcba", false, "21/12/2020")
+
+	assert.Error(t, err)
+}
+
+func TestLastID(t *testing.T) {
+	store := StubStore{}
+	repo := NewRepository(&store)
+	lastID := 4
+
+	ultimoID, _ := repo.LastID()
+
+	assert.Equal(t, lastID, ultimoID)
+}
+
+func TestCreate(t *testing.T) {
+	store := StubStore{}
+	repo := NewRepository(&store)
+	idEsperada, _ := repo.LastID()
+	respuestaEsperada := Producto{idEsperada, "ProductoPrueba!", "Amarillo", "$25.00", 21, "dcba", false, "21/12/2020"}
+
+	nuevoProducto, _ := repo.Store(idEsperada, "ProductoPrueba!", "Amarillo", "$25.00", 21, "dcba", false, "21/12/2020")
+
+	assert.Equal(t, respuestaEsperada, nuevoProducto, "Deben ser iguales")
 }
