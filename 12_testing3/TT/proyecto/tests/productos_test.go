@@ -8,6 +8,16 @@ Para lograrlo realizar los siguientes pasos:
 	Validar Response.
 */
 
+/*
+Se solicita probar la funcionalidad de “eliminar producto”, pudiendo reutilizar las funciones creadas en la clase.
+Para lograrlo realizar los siguientes pasos:
+	Dentro de la carpeta /test, crear un archivo products_test.go.
+	Levantar el Servidor y definir la ruta para este test.
+	Crear Request y Response apropiados.
+	Solicitar al servidor que atienda al Request.
+	Validar Response.
+*/
+
 package tests
 
 import (
@@ -112,6 +122,23 @@ func Test_UpdateProducto(t *testing.T) {
 	data, _ := json.Marshal(productToUpdate)
 
 	request, response := createRequestTest(http.MethodPut, url, string(data))
+
+	//Act
+	router.ServeHTTP(response, request)
+
+	//Assert
+	assert.Equal(t, 200, response.Code)
+}
+
+func Test_DeleteProducto(t *testing.T) {
+	//Arrenge
+	router := createServer()
+
+	productID := 7
+
+	url := fmt.Sprintf("/productos/%v", productID)
+
+	request, response := createRequestTest(http.MethodDelete, url, "")
 
 	//Act
 	router.ServeHTTP(response, request)
