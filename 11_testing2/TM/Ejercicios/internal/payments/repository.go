@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/11_testing2/TM/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/11_testing2/TM/Ejercicios/pkg/store"
 )
 
 type Payment struct {
@@ -19,7 +19,6 @@ type Payment struct {
 }
 
 var payments []Payment
-var lastId int
 
 type Repository interface {
 	GetAll() ([]Payment, error)

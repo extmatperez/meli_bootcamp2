@@ -5,8 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	payments "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/internal/payments"
-	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/8_goweb3/TM/pkg/web"
+	payments "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/11_testing2/TM/Ejercicios/internal/payments"
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/11_testing2/TM/Ejercicios/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
