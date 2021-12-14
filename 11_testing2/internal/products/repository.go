@@ -45,7 +45,7 @@ func (r *repository) GetAll() ([]Product, error) {
 
 func (r *repository) Store(id int64, name string, color string, price float64, stock int, code string, published bool, createdAt string) (Product, error) {
 	var products []Product
-	r.db.Read(&products) // if there is an error with the file, the error is not handled so that it can be written
+	_ = r.db.Read(&products) // if there is an error with the file, the error is not handled so that it can be written
 
 	product := Product{
 		Id:         id,

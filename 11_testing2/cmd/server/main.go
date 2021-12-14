@@ -48,5 +48,9 @@ func main() {
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
 	router.GET("/documentation/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.Run()
+	err = router.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
