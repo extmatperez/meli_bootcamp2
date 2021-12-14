@@ -1,0 +1,39 @@
+LINTER
+Linter sirve para realizar analisis automatico y estatico de codigo y permite detectar tempranamente errores y posibles malas practicas.
+Usaremos golangci-lint que es un linter runner para go que combine distintos linters de Go para mejorar la calidad del codigo.
+Por ejemplo, cuando no controlamos una situacion de error en el codigo y corremos el linter nos salta que es necesario realizar ese control.
+Lo ideal de ahora en mas es aplicar un linter.
+Se corre con golangci-lint run, y devuelve todas las posibles mejoras.
+
+COVERAGE
+El code coverage es una metrica que nos hace saber cuanto del codigo fuente de un SW fue testeado.
+El coverage report es un reporte que tambien brinda info para saber que partes del SW fueron cubiertos por las pruebas.
+El coverage es importante porque nos permite conocer acerca de la calidad de nuestro codigo.
+
+Generamos el archivo coverage con go tool cover -coverage
+Vemos todo mas legible en un html mostrando que parte del codigo esta testeada con go tool cover -html=coverage
+TODO DESDE LA RAIZ DE INTERNAL/ENTITY.
+Esto es ideal para cuando tenemos un 79% de coverage del 80% que exije MELI y no sabemos que falto.
+
+Tranquilamente puede haber codigo malo con 100% de coverage, porque las metricas no aseguran la calidad del codigo.
+
+BENCHMARK
+Es un test que permite examinar y poner a prueba la eficiencia del SW. Go tiene herramientas nativas para esto.
+El nombre de cada funcion de prueba debe iniciar con Benchmark, porque asi permite ser reconocida como un benchmark test.
+El parametro debe ser b *testing.B
+No es necesario chequear el resultado ya que el objetivo es validar la performance.
+Se corren con go test -bench .
+
+TESTING FUNCIONAL
+Es un tipo de test de caja negra que tiene como objetivo probar un requerimiento funcional especifico del SW, con datos de entrada y salida.
+Es necesario que se integren multiples componentes, y son mas costosos de realizar ya que es necesario que el sistema completo este operativo y leventado.
+Son lentos a comparacion de los unit tests.
+
+httptest
+Es un paquete que nos permite realizar testing funcional, end to end tests e integration tests. Puede ser usado junto con librerias nativas como de terceros.
+
+TDD (TEST DRIVEN DEVELOPMENT)
+Es una tecnica de desarrollo que implica entender todos los casos de uso del SW, por lo tanto a medida que se desarrolla se desarrollan los respectivos
+tests para probar cierta funcionalidad. La filosofia es primero desarrollar el test y despues el codigo, por eso los tests dirigen al desarrollo.
+Toda linea de codigo debe tener un unit test asociado.
+
