@@ -2,8 +2,10 @@ package internal
 
 import (
 	"encoding/json"
+	"errors"
 	"testing"
 
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/TM/Exercise1/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -60,4 +62,84 @@ func TestLastIdService(t *testing.T) {
 	err := service.Delete(1)
 
 	assert.Nil(t, err)
+}
+
+func TestGetAllServiceMock(t *testing.T) {
+	//Arrange
+	dataByte := []byte(usersFakeService)
+	var usersExpected []User
+	json.Unmarshal(dataByte, &usersExpected)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	myUsers, _ := service.GetAll()
+
+	assert.Equal(t, usersExpected, myUsers)
+}
+
+func TestGetAllServiceMockError(t *testing.T) {
+	errExpected := errors.New("No data in the mock")
+
+	dbMock := store.Mock{Err: errExpected}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	myUsers, err := service.GetAll()
+
+	assert.Equal(t, errExpected, err)
+	assert.Nil(t, myUsers)
+}
+
+func TestStoreServiceMock(t *testing.T) {
+	newUser := User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	dbMock := store.Mock{Data: []byte(`[]`)}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	userCreated, _ := service.Store(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	assert.Equal(t, newUser.FirstName, userCreated.FirstName)
+	assert.Equal(t, newUser.LastName, userCreated.LastName)
+}
+
+func TestStoreServiceMockError(t *testing.T) {
+	newUser := User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	errExpected := errors.New("No data in the mock")
+
+	dbMock := store.Mock{Data: []byte(`[]`), Err: errExpected}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	userCreated, err := service.Store(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	assert.Equal(t, errExpected, err)
+	assert.Equal(t, User{}, userCreated)
 }

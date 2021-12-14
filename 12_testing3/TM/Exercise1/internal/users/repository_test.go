@@ -22,7 +22,7 @@ func (s *StubStore) Write(data interface{}) error {
 	return nil
 }
 
-func TestGetAll(t *testing.T) {
+func TestGetAllSuccess(t *testing.T) {
 	stubStore := StubStore{}
 	repoTest := NewRepository(&stubStore)
 
@@ -34,6 +34,15 @@ func TestGetAll(t *testing.T) {
 	assert.Equal(t, userExpected, myUsers)
 }
 
+// func TestGetAllError(t *testing.T) {
+// 	stubStore := StubStore{}
+// 	repoTest := NewRepository(&stubStore)
+
+// 	myUsers, err := repoTest.GetAll()
+
+// 	assert.Nil(t, myUsers)
+// 	assert.Error(t, err)
+// }
 func TestLastID(t *testing.T) {
 	stubStore := StubStore{}
 	repoTest := NewRepository(&stubStore)
