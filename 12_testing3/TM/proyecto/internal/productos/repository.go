@@ -37,30 +37,7 @@ func NewRepository(db store.Store) Repository {
 	return &repository{db}
 }
 
-// func cargarProductos() {
-
-// 	data, _ := os.ReadFile("/Users/beconti/Desktop/meli_bootcamp2/7_goweb2/productos.json")
-
-// 	json.Unmarshal(data, &productos)
-
-// }
-
-// func escribirJSON(nuevaLista []Producto) error {
-
-// 	nuevaListaFormateada, _ := json.Marshal(nuevaLista)
-
-// 	err := os.WriteFile("/Users/beconti/Desktop/meli_bootcamp2/7_goweb2/productos.json", nuevaListaFormateada, 0644)
-
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return nil
-// }
-
 func (r *repository) GetAll() ([]Producto, error) {
-
-	//cargarProductos()
 
 	err := r.db.Read(&productos)
 
@@ -73,8 +50,6 @@ func (r *repository) GetAll() ([]Producto, error) {
 
 func (r *repository) Store(id int, nombre string, color string, precio string, stock int, codigo string, publicado bool, fechaCreacion string) (Producto, error) {
 
-	//cargarProductos()
-
 	err := r.db.Read(&productos)
 
 	if err != nil {
@@ -84,8 +59,6 @@ func (r *repository) Store(id int, nombre string, color string, precio string, s
 	nuevoProducto := Producto{id, nombre, color, precio, stock, codigo, publicado, fechaCreacion}
 
 	productos = append(productos, nuevoProducto)
-
-	//err := escribirJSON(productos)
 
 	err = r.db.Write(&productos)
 
@@ -97,8 +70,6 @@ func (r *repository) Store(id int, nombre string, color string, precio string, s
 }
 
 func (r *repository) LastId() (int, error) {
-
-	//cargarProductos()
 
 	err := r.db.Read(&productos)
 
@@ -117,8 +88,6 @@ func (r *repository) LastId() (int, error) {
 
 func (r *repository) Update(id int, nombre string, color string, precio string, stock int, codigo string, publicado bool, fechaCreacion string) (Producto, error) {
 
-	//cargarProductos()
-
 	err := r.db.Read(&productos)
 
 	if err != nil {
@@ -131,7 +100,6 @@ func (r *repository) Update(id int, nombre string, color string, precio string, 
 		if p.ID == id {
 			productos[i] = productoActualizado
 
-			//escribirJSON(productos)
 			err := r.db.Write(&productos)
 
 			if err != nil {
@@ -147,8 +115,6 @@ func (r *repository) Update(id int, nombre string, color string, precio string, 
 
 func (r *repository) Delete(id int) error {
 
-	//cargarProductos()
-
 	err := r.db.Read(&productos)
 
 	if err != nil {
@@ -163,7 +129,6 @@ func (r *repository) Delete(id int) error {
 			index = i
 			productos = append(productos[:index], productos[index+1:]...)
 
-			//escribirJSON(productos)
 			err := r.db.Write(&productos)
 
 			if err != nil {
@@ -180,8 +145,6 @@ func (r *repository) Delete(id int) error {
 
 func (r *repository) UpdateNombrePrecio(id int, nombre string, precio string) (Producto, error) {
 
-	//cargarProductos()
-
 	err := r.db.Read(&productos)
 
 	if err != nil {
@@ -194,7 +157,6 @@ func (r *repository) UpdateNombrePrecio(id int, nombre string, precio string) (P
 			productos[i].Nombre = nombre
 			productos[i].Precio = precio
 
-			//escribirJSON(productos)
 			err := r.db.Write(&productos)
 
 			if err != nil {

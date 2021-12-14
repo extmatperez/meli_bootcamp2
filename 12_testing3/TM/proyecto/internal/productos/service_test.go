@@ -193,3 +193,46 @@ func TestDeleteServiceMockError(t *testing.T) {
 	assert.Error(t, err)
 	assert.True(t, dbMock.Used)
 }
+
+func TestUpdateNombrePrecioServiceMock(t *testing.T) {
+	//Arrenge
+	productToUpdateID := 1
+	productToUpdateNombre := "Coca"
+	productToUpdatePrecio := "$150"
+
+	dbMock := store.Mock{Data: []byte(productosTest)}
+
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	//Act
+	updatedProduct, err := service.UpdateNombrePrecio(productToUpdateID, productToUpdateNombre, productToUpdatePrecio)
+
+	//Assert
+	assert.Equal(t, productToUpdateID, updatedProduct.ID)
+	assert.Equal(t, productToUpdateNombre, updatedProduct.Nombre)
+	assert.Equal(t, productToUpdatePrecio, updatedProduct.Precio)
+	assert.Nil(t, err)
+	assert.True(t, dbMock.Used)
+}
+
+func TestUpdateNombrePrecioServiceMockError(t *testing.T) {
+	//Arrenge
+	productToUpdateID := 0
+	productToUpdateNombre := "Coca"
+	productToUpdatePrecio := "$150"
+
+	dbMock := store.Mock{Data: []byte(productosTest)}
+
+	storeStub := store.FileStore{Mock: &dbMock}
+	repository := NewRepository(&storeStub)
+	service := NewService(repository)
+
+	//Act
+	_, err := service.UpdateNombrePrecio(productToUpdateID, productToUpdateNombre, productToUpdatePrecio)
+
+	//Assert
+	assert.Error(t, err)
+	assert.True(t, dbMock.Used)
+}
