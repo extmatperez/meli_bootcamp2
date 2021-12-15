@@ -37,8 +37,8 @@ func NewRepository(db store.Store) Repository {
 }
 
 func (repo *repository) GetAll() ([]Usuario, error) {
-	repo.db.Read(&usuarios)
-	return usuarios, nil
+	err := repo.db.Read(&usuarios)
+	return usuarios, err
 }
 
 func (repo *repository) Store(id int, nombre, apellido, email string, edad, altura int, activo bool, fecha string) (Usuario, error) {

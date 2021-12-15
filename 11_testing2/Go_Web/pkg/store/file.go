@@ -17,6 +17,13 @@ const (
 
 type FileStore struct {
 	FileName string
+	Mock     *Mock
+}
+
+type Mock struct {
+	Data      []byte
+	Err       error
+	ValidRead bool
 }
 
 func New(store Type, fileName string) Store {
@@ -28,16 +35,40 @@ func New(store Type, fileName string) Store {
 	return nil
 }
 
+func (fs *FileStore) AddMock(mock *Mock) {
+	fs.Mock = mock
+}
+
+func (fs *FileStore) ClearMock(mock *Mock) {
+	fs.Mock = nil
+}
+
 func (fs *FileStore) Write(data interface{}) error {
 	file, err := json.MarshalIndent(data, "", "	")
 	if err != nil {
 		return err
 	}
+
+	if fs.Mock != nil {
+		if fs.Mock.Err != nil {
+			return fs.Mock.Err
+		}
+		fs.Mock.Data = file
+		return nil
+	}
+
 	return os.WriteFile(fs.FileName, file, 0644)
 
 }
 
 func (fs *FileStore) Read(data interface{}) error {
+	if fs.Mock != nil {
+		fs.Mock.ValidRead = true
+		if fs.Mock.Err != nil {
+			return fs.Mock.Err
+		}
+		return json.Unmarshal(fs.Mock.Data, data)
+	}
 	file, err := os.ReadFile(fs.FileName)
 	if err != nil {
 		return err

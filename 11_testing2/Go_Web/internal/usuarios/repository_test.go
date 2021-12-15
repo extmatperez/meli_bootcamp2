@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/11_testing2/Go_Web/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -99,4 +100,34 @@ func TestEditarNombreEdad(t *testing.T) {
 	assert.Equal(t, Usuario{2, nuevoNombre, "Lafee", "llafee1@barnesandnoble.com", nuevaEdad, 142, true, "07/12/2021"}, actualizado)
 	assert.True(t, store.ValidRead)
 	assert.True(t, store.ValidWrite)
+}
+
+func TestGetAllRepositoryMock(t *testing.T) {
+	dataByte := []byte(users)
+	dbMock := store.Mock{Data: dataByte}
+	var usuariosEsperados []Usuario
+	json.Unmarshal(dataByte, &usuariosEsperados)
+
+	storeStub := store.FileStore{Mock: &dbMock}
+
+	repo := NewRepository(&storeStub)
+
+	misUsuarios, _ := repo.GetAll()
+
+	assert.Equal(t, usuariosEsperados, misUsuarios)
+}
+
+func TestGetLasIDRepositoryMock(t *testing.T) {
+	dataByte := []byte(users)
+	dbMock := store.Mock{Data: dataByte}
+	var usuariosEsperados []Usuario
+	json.Unmarshal(dataByte, &usuariosEsperados)
+
+	storeStub := store.FileStore{Mock: &dbMock}
+
+	repo := NewRepository(&storeStub)
+
+	lastID, _ := repo.LastID()
+
+	assert.Equal(t, usuariosEsperados[len(usuariosEsperados)-1].ID, lastID)
 }
