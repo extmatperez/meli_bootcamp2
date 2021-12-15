@@ -1,0 +1,182 @@
+[
+ {
+  "id": 1,
+  "nombre": "producto1modificadoconpatch",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 2,
+  "nombre": "producto1",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 3,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 4,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 5,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 6,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 7,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 8,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 9,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 10,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 11,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 12,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 13,
+  "nombre": "producto test",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 14,
+  "nombre": "producto ",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 15,
+  "nombre": "producto",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 16,
+  "nombre": "producto",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 17,
+  "nombre": "producto",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 18,
+  "nombre": "producto",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ }
+]
