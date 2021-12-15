@@ -14,7 +14,7 @@ github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/int
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:73.134,75.16 2 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:79.2,80.32 2 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:90.2,90.68 1 1
-github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:75.16,77.3 1 0
+github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:75.16,77.3 1 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:80.32,81.20 1 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:81.20,84.18 3 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/repository.go:87.4,87.26 1 1
@@ -46,7 +46,7 @@ github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/int
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:34.16,36.3 1 0
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:40.131,43.16 2 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:47.2,47.24 1 1
-github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:43.16,45.3 1 0
+github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:43.16,45.3 1 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:50.43,52.16 2 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:55.2,55.12 1 1
 github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/12_testing3/Go_Web/internal/usuarios/service.go:52.16,54.3 1 1

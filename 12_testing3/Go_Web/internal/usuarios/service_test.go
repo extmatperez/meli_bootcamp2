@@ -138,6 +138,25 @@ func TestUpdateServiceMock(t *testing.T) {
 	assert.True(t, dbMock.ValidRead)
 }
 
+func TestUpdateServiceMockError(t *testing.T) {
+	// Arrange
+	usuarioUp := Usuario{2, "Juan", "Perez", "correo", 20, 180, true, "fecha"}
+
+	dataByte := []byte(userss)
+	var usuariosEsperados []Usuario
+	json.Unmarshal(dataByte, &usuariosEsperados)
+
+	errorEsperado := errors.New("No hay datos en el mock")
+
+	dbMock := store.Mock{Data: []byte(`[]`), Err: errorEsperado}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	_, err := service.Update(usuarioUp.ID, usuarioUp.Nombre, usuarioUp.Apellido, usuarioUp.Email, usuarioUp.Edad, usuarioUp.Altura, usuarioUp.Activo, usuarioUp.FechaCreacion)
+	assert.Equal(t, errorEsperado, err)
+}
 func TestDeleteServiceMock(t *testing.T) {
 	// Arrange
 
@@ -170,6 +189,23 @@ func TestDeleteServiceMockError(t *testing.T) {
 
 	err := service.Delete(5)
 	assert.Equal(t, errorEsperado, err)
+}
+
+func TestDeleteServiceMockError2(t *testing.T) {
+	// Arrange
+
+	dataByte := []byte(userss)
+	var usuariosEsperados []Usuario
+	json.Unmarshal(dataByte, &usuariosEsperados)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	err := service.Delete(5)
+	assert.NotNil(t, err)
 }
 func TestDeleteService(t *testing.T) {
 	stubRepo := StubRepository{false}
