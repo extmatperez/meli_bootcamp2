@@ -73,6 +73,27 @@ func TestUpdateService(t *testing.T) {
 
 }
 
+func TestUpdateServiceError(t *testing.T) {
+	//arrange
+	dataByte := []byte(trans)
+
+	dbMock := store.Mock{Data: dataByte}
+
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	nameExpected := "rodri"
+
+	//act
+	_, err := service.Update(5, "cybqf7i0bo", "Baht", 3011534.4, nameExpected, "fodoireidh0", "9/25/2021")
+
+	//assert
+	assert.Error(t, err)
+
+}
+
 func TestDeleteService(t *testing.T) {
 	//arrange
 
@@ -100,5 +121,34 @@ func TestDeleteService(t *testing.T) {
 	//assert
 	assert.Equal(t, err, expectedResult)
 	assert.Equal(t, len(transEliminadas), len(expected)-1)
+
+}
+
+func TestDeleteServiceError(t *testing.T) {
+	//arrange
+
+	// pre borrado
+	var expected []Transaccion
+	json.Unmarshal([]byte(trans), &expected)
+
+	//
+	dataByte := []byte(trans)
+
+	dbMock := store.Mock{Data: dataByte}
+
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	id := 10
+	//expectedResult := fmt.Errorf("la transaccion %d fue eliminada", id)
+
+	//act
+	err := service.Delete(id)
+	//transEliminadas, _ := service.GetAll()
+
+	//assert
+	assert.Error(t, err)
 
 }
