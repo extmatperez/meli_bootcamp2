@@ -1,0 +1,10 @@
+1- Tanto legajo como DNI son buenas candidatas para ser claves primarias, ya que ambas deberían ser únicas.
+    Sin embargo, elegí crear un id autoincremental para que actue como clave primaria. 
+    De esta forma, no utilizó un campo que, si bien no debería modificarse, puede llegar a hacerse por alguna corrección.
+
+2- En este caso la única candidata como clave primaria, es el campo Id, ya que es el único identificador único (en una misma dirección pueden haber varios departamentos)
+
+3- Entre las tablas existe una relacion de 1 a N. Un departamento puede tener muchos empleados, pero un empleado solo debería trabajar en un departamento.
+    En este caso, se debería agregar un nuevo campo a la tabla empleados, que sea el id del departamento en el que trabaja. 
+    Este campo es la clave foranea que se relaciona con el id de la tabla departamento.
+
