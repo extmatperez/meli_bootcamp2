@@ -49,6 +49,7 @@ func (repo *repository) Store(id, stock int, nombre, color, codigo, fecha_de_cre
 	if err != nil {
 		return Productos{}, err
 	}
+	fmt.Println(lastId)
 	prod := Productos{id, nombre, color, precio, stock, codigo, publicado, fecha_de_creacion}
 	lastId = id
 	productos = append(productos, prod)

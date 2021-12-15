@@ -20,7 +20,11 @@ var produc string = `[
    ]`
 
 func (s *Store) Read(data interface{}) error {
-	return json.Unmarshal([]byte(produc), &data)
+	err := json.Unmarshal([]byte(produc), &data)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 func (s *Store) Write(data interface{}) error {
 	return nil
@@ -83,6 +87,18 @@ func TestUpdateMoke(t *testing.T) {
 	productoActualizado, _ := repo.Modify(1, 10, nombreEsperado, "rojo", "cod", "20/11/2021", 10.0, false)
 
 	assert.Equal(t, nombreEsperado, productoActualizado.Nombre)
+
+}
+
+func TestUpdateMokeErr(t *testing.T) {
+
+	store := Store{}
+	repo := NewRepository(&store)
+	nombreEsperado := "nuevoNombre"
+
+	_, err := repo.Modify(1000, 10, nombreEsperado, "rojo", "cod", "20/11/2021", 10.0, false)
+
+	assert.NotNil(t, err)
 
 }
 
