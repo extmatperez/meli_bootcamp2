@@ -1,0 +1,7 @@
+  var 1nombre string                MAL 
+  var apellido string               BIEN
+  var int edad                      MAL var edad int
+  1apellido := 6                    MAL apellido1 :=6
+  var licencia_de_conducir = true   BIEN 
+  var estatura de la persona int    MAL var estatura_de_la_persona int
+  cantidadDeHijos := 2              BIEN
