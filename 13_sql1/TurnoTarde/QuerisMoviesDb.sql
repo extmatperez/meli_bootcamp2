@@ -54,13 +54,13 @@ con más de 1 premio y con fecha de lanzamiento entre el año 1988 al 2009.
  release_date between "1988-01-01" and "2009-12-31"
  and rating > 3 
  and awards > 1
- order by rating desc;
+ order by rating ;
  
  /*Traer el top 3 a partir del registro 10 de la consulta anterior.*/
 select title from movies where 
  year(release_date) between "1988" and "2009"
  and rating > 3 
  and awards > 1
- order by rating desc
+ order by rating 
  limit 3 offset 9
  
