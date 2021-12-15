@@ -1,0 +1,62 @@
+Escenario
+La empresa Super Software SRL desea una base de datos para gestionar los departamentos en los cuales se encuentra cada 
+uno de sus empleados. Para ello, brinda la siguiente información en donde detalla los datos que necesita: 
+
+De sus Empleados necesita almacenar: Nº de legajo, dni, apellido, nombre, fecha de nacimiento, fecha de incorporación, 
+cargo, sueldo neto.
+
+De sus Departamentos necesita almacenar: ID departamento, nombre departamento, dirección departamento.
+
+
+Ejercicio 1
+
+A partir del planteo de los requerimientos de la empresa, se solicita modelar los mismos mediante un DER 
+(Diagrama entidad relación), teniendo en cuenta las posibles entidades y relaciones necesarias.
+Además, se solicita crear una nueva base de datos llamada “emple_dep”. 
+
+
+Ejercicio 2 
+
+Una vez modelada y planteada la base de datos, responder a las siguientes preguntas:
+a.	¿Cuál es la primary key para la tabla empleados? Justificar respuesta.
+    Creé un id_employees con el fin de que sea un número único y que sea autoincremental para que 
+    no se repita en mi base de datos.
+
+b. ¿Cuál es la primary key para la tabla departamentos? Justificar respuesta.
+    La primary_key sería department_id el cual será un número que tampoco se repetiría entre los department_id.
+
+c. ¿Qué relación/es existirían entre las tablas? ¿En qué tabla debería haber foreign key? ¿A qué campo de qué tabla 
+hace referencia dicha foreign key? Justificar respuesta.
+    Como yo lo veo, la relación sería un empleado pertenece a un departamento, pero un departamento tiene muchos empleados.
+    La foreing key estaría en la tabla employees ya que esta sería la tabla secundaria; y hace referencia a la tabla
+    employees (tabla secundaria) la cual se relaciona con la tabla departments mediante el campo department_id. 
+
+
+
+Ejercicio 3
+
+Una vez realizado el planteo del diagrama y de haber respondido estas preguntas, ingresar a PHPMyAdmin o MySQL Workbench 
+(según haya sido elegido) e incorporar 5 registros en la tabla departamentos y 15 en la tabla empleados. 
+Realizar las asociaciones/relaciones correspondientes entre estos registros.
+
+INSERT INTO `employees_department`.`departments` (`department_id`, `department_name`) VALUES ('1','Biology','Posta 4789');
+INSERT INTO `employees_department`.`departments` (`department_id`, `department_name`) VALUES ('2','Maths','Dorrego1234');
+INSERT INTO `employees_department`.`departments` (`department_id`, `department_name`) VALUES ('3','language','Cabildo 4321');
+INSERT INTO `employees_department`.`departments` (`department_id`, `department_name`) VALUES ('4','IT','Blanco Encalada 666');
+INSERT INTO `employees_department`.`departments` (`department_id`, `department_name`) VALUES ('5','Antropology','Ever Green 1234');
+
+
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('3', 'Earl', 'Blacksell', 49751098, 3228, 'Accounting', 463206, '2020-12-16', 3);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('4', 'Drusi', 'Avraam', 53221510, 7998, 'Engineering', 638546, '2021-09-06', 3);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('5', 'Patsy', 'Milward', 9416551, 8998, 'Training', 679850, '2021-05-30', 1);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('6', 'Scarlett', 'Ciraldo', 87338083, 9680, 'Support', 183928, '2021-04-06', 2);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('7', 'Javier', 'Ede', 73543694, 2213, 'Business Development', 646885, '2021-02-05', 4);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('8', 'Camellia', 'Stobbs', 79287670, 7607, 'Research and Development', 282680, '2021-04-29', 3);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('9', 'Tillie', 'Jaram', 36014435, 4872, 'Support', 317399, '2021-07-20', 1);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('10', 'Candis', 'Margach', 78648277, 1642, 'Sales', 725127, '2021-05-03', 1);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('11', 'Homere', 'Cleaves', 50684366, 8905, 'Training', 739797, '2021-10-13', 5);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('12', 'Rica', 'Ambrogioni', 77303391, 3563, 'Sales', 747372, '2021-03-26', 3);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('13', 'Amalie', 'Fairnington', 30153278, 1166, 'Accounting', 542933, '2021-04-11', 1);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('14', 'Barbaraanne', 'Bodsworth', 19110413, 3458, 'Accounting', 658497, '2020-12-26', 3);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('15', 'Garry', 'Buchanan', 37099761, 1276, 'Legal', 449574, '2021-09-15', 3);
+insert into `employees_department`.`employees` (`id_employees`, `name`, `surname`, `dni`, `file_number`, `position`, `salary`, `incorporation_date`, `departments_department_id`) values ('16', 'Cleveland', 'McKechnie', 77762892, 5441, 'Human Resources', 134874, '2021-01-07', 1);
