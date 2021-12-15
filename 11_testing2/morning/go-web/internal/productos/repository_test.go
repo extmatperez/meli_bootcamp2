@@ -82,3 +82,32 @@ func TestUpdateName(t *testing.T) {
 	// Se validan los resultados
 	assert.Equal(t, mockProducts, afterUpdate, "deben ser iguales")
 }
+
+// VARIANTE DEL TEST
+/* func TestUpdateName(t *testing.T) {
+	// Se inicializan los datos a usar en el test (input/output)
+	store := mockStore{}
+	repo := NewRepository(&store)
+
+	//creo mi estructura para compararla con la que viene de UpdateName
+	mockProducts := Producto{
+		Id:            1,
+		Nombre:        "After Update",
+		Color:         "gris",
+		Precio:        999,
+		Stock:         12,
+		Codigo:        "sfsdf 444 3 www",
+		Publicado:     true,
+		FechaCreacion: "12/9/1999",
+	}
+
+	// Se ejecuta el test
+	afterUpdate, _ := repo.UpdateName(1, "After Update")
+
+	// Se validan los resultados
+	//testeo que se haya usado la funcion Read
+	assert.Equal(t, "Before Update", store.produc[0].Nombre, "deben ser iguales")
+
+	//testeo que el metodo UpdateName del repo funcione correctamente
+	assert.Equal(t, mockProducts, afterUpdate, "deben ser iguales")
+} */
