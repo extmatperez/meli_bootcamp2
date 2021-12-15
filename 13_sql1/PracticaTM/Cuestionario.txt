@@ -1,0 +1,10 @@
+1) Datos adicionales que no aportan nueva infomación, sino que son información ya existente (redundante)
+2)
+3) mongodb y redis
+4) Structured Query Language. Lenguaje de 
+5) Es un identificador único de una entidad que la identifica de forma unívoca e irrepetible
+6) Es el identificador único de otra tabla-entidad a la que se hace referencia
+7) UNO a UNO: Relación en la que una unidad de una entidad se relaciona con una unidad de la otra. Ejemplo: Una persona tiene un DNI, y un DNI es para una persona
+8) UNO a MUCHOS: Relación en la que una unidad de una entidad se relaciona con varias unidades de la otra. Ejemplo: 
+9) MUCHOS a MUCHOS: Relación en la que varios elementos de una entidad se relaciona con varios de otra.
+10) 
