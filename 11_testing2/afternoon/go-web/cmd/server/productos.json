@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nombre": "termo",
+    "color": "gris",
+    "precio": 999,
+    "stock": 12,
+    "codigo": "sfsdf 444 3 www",
+    "publicado": true,
+    "fechaCreacion": "12/9/1999"
+  },
+  {
+    "id": 2,
+    "nombre": "termo",
+    "color": "gris",
+    "precio": 999,
+    "stock": 12,
+    "codigo": "sfsdf 444 3 www",
+    "publicado": true,
+    "fechaCreacion": "12/9/1999"
+  },
+  {
+    "id": 3,
+    "nombre": "cuchara",
+    "color": "asd",
+    "precio": 16,
+    "stock": 33,
+    "codigo": "7-050 - asdfsdf asd fsd f",
+    "publicado": true,
+    "fechaCreacion": "12/9/2021"
+  },
+  {
+    "id": 4,
+    "nombre": "vaso",
+    "color": "asd",
+    "precio": 16,
+    "stock": 33,
+    "codigo": "7-050 - asdfsdf asd fsd f",
+    "publicado": true,
+    "fechaCreacion": "12/9/2021"
+  },
+  {
+    "id": 6,
+    "nombre": "termo",
+    "color": "gris",
+    "precio": 999,
+    "stock": 12,
+    "codigo": "sfsdf 444 3 www",
+    "publicado": true,
+    "fechaCreacion": "12/9/1999"
+  },
+  {
+    "id": 7,
+    "nombre": "vaso",
+    "color": "asd",
+    "precio": 16,
+    "stock": 33,
+    "codigo": "7-050 - asdfsdf asd fsd f",
+    "publicado": true,
+    "fechaCreacion": "12/9/2021"
+  }
+]
