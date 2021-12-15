@@ -1,0 +1,7 @@
+a.	¿Cuál es la primary key para la tabla empleados? Justificar respuesta.
+La primary key es "legajo" ya que es un número que identifica a cada empleado unívocamente y no se va a repetir para ningún otro empleado.
+b. ¿Cuál es la primary key para la tabla departamentos? Justificar respuesta.
+Para departamentos la primary key es "id departamento". Tampoco se va a 
+c. ¿Qué relación/es existirían entre las tablas? ¿En qué tabla debería haber foreign key? ¿A qué campo de qué tabla hace referencia dicha foreign key? Justificar respuesta.
+Existiría una relación 1 a N (1 empleado corresponde a un departamento, y a un departamento corresponden muchos empleados).
+Debería haber foreign key en la tabla de empleado (id de departamento), de manera de identificar a que departamento corresponde el empleado.
