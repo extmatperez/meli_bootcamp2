@@ -58,6 +58,8 @@ func (fs *FileStore) Write(data interface{}) error {
 		if fs.Mock.Err != nil {
 			return fs.Mock.Err
 		}
+		//aqui traigo la data actualizada y la deberia grabar en la bd mockeada, lo guardo en la data solo para hacer algo...
+		//no puedo guardarlo en la bd mockeada porque se hace una llamada ciclica, service_test llama a este package y por lo tanto, este no puede llamar al package internal(donde esta service_test), se podria almacenar la bd mockeada en un tercer package o en un json y cambiar la logica para que ambos packages puedan acceder a la misma y hacer persistir los datos, en fin:
 		dataBytes, err := json.Marshal(data)
 
 		fs.Mock.Data = dataBytes
