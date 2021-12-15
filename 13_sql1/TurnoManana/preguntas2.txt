@@ -1,0 +1,11 @@
+a.	¿Cuál es la primary key para la tabla empleados? Justificar respuesta.
+La primary key es el identificador de la tabla, ya que identifica univocamente al emplado
+
+b. ¿Cuál es la primary key para la tabla departamentos? Justificar respuesta.
+La primary key es el identificador de la tabla, ya que identifica univocamente al emplado
+
+c. ¿Qué relación/es existirían entre las tablas? ¿En qué tabla debería haber foreign key? 
+¿A qué campo de qué tabla hace referencia dicha foreign key? Justificar respuesta.
+Un empleado pertence a un departamento y un departamento tiene muchos empelados
+El foreignKey lo puse en empleados en el campo departamentoId, para permitir asociarle un 
+departamento a un emplado

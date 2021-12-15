@@ -1,0 +1,30 @@
+1. ¿Qué es la Redundancia de datos?
+- Es almacenar los mismos datos en distintas entidades
+
+2. ¿Qué es la inconsistencia de datos?
+- Significa que un mismo dato no sea homogeneo en todos sus registros
+
+3. Nombre al menos 2 bases de datos entre Consistencia y Tolerancia al particionamiento
+-Redis y MongoDB
+
+4. ¿Qué significa SQL?
+- Sructured Query Language
+
+5. En una tabla de datos que es la Primary Key o Llave primaria
+- Es un identificador unico del registro, tambien es un indice
+6. En una tabla de datos que es la Foreign Key o Llave foránea
+-Es un indice que apunta a la PK existente de otro registro, creando entre estas una relacion.
+
+7. ¿Qué significa que una relación entre dos entidades es UNO a UNO?
+- Significa que un registro de la tabla A solo puede relaionarse con un registro de la tabla B.
+
+8. ¿Qué significa que una relación entre dos entidades es UNO a MUCHOS?
+- Significa que un registro de la tabla A  puede relaionarse con muchos registro de la tabla B.
+9. ¿Qué significa que una relación entre dos entidades es MUCHOS a MUCHOS?
+- Significa que muchos registro de la tabla A  pueden relaionarse con muchos registro de la tabla B.
+
+10. Defina que es una base de datos
+- Una base de datos es un conjuntos de datos almacenados y estructurados
+
+11. Defina el concepto atributo
+- Son todos los datos que describen una entidad
