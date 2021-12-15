@@ -1,0 +1,43 @@
+Ejercicio 3 - Aumentar el Coverage
+
+coverage inicial:
+    service: 33.3%
+    repository: 34.5%
+
+    metodos testeados: 
+        1. Update (TestUdate)
+        2. Delete (TestDelete)
+
+
+primer cambio de coverage:
+    service: 44.4%
+    repository: 41.8%
+
+    metodos testeados:
+        1. Update (TestUdate)
+        2. Delete (TestDelete)
+        3. GetAll (TestGetAll)
+
+
+segundo cambio de coverage:
+    service: 44.4%
+    repository: 43.6%
+
+    metodos testeados:
+        1. Update (TestUdate)
+        2. Delete (TestDelete)
+        3. GetAll (TestGetAll y TestErrorGetAll)
+
+
+tercer cambio de coverage:
+    service: 77.8%
+    repository: 63.6%
+
+    metodos testeados:
+        1. Update (TestUdate)
+        2. Delete (TestDelete)
+        3. GetAll (TestGetAll y TestErrorGetAll)
+        4. Store (TestStore)
+
+
+continuará ...
