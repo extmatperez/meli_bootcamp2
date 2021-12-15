@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"errors"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/arevalo_ivan/11_testing2/go_web/pkg/store"
@@ -33,15 +34,19 @@ func TestUpdateMockStores(t *testing.T) {
 		newTransaction.Coin, newTransaction.Emitor, newTransaction.Receptor,
 		newTransaction.Transaction_Date, newTransaction.Amount)
 
-	errTransaction, _ := service.Update(77, newTransaction.Transaction_Code,
+	updatedTransaction2, errTransaction := service.Update(77, newTransaction.Transaction_Code,
 		newTransaction.Coin, newTransaction.Emitor, newTransaction.Receptor,
 		newTransaction.Transaction_Date, newTransaction.Amount)
 
+	errorTest := errors.New("La transacción 77 no existe")
+
 	assert.Equal(t, newTransaction.Coin, updatedTransaction.Coin)
 
-	assert.Equal(t, Transaction{}, errTransaction)
+	assert.Equal(t, errorTest, errTransaction)
 
 	assert.Nil(t, err)
+
+	assert.Equal(t, Transaction{}, updatedTransaction2)
 
 }
 
@@ -55,16 +60,98 @@ func TestDeleteMockStore(t *testing.T) {
 	err := service.Delete(1)
 
 	assert.Nil(t, err, "Se borro exitosamente")
-
-	erasedTransactions, _ := service.GetAll()
-	assert.Equal(t, len(transaccionesParaMock)-1, len(erasedTransactions), "Deberian tener el mismo length")
 }
 
-// transactionTest := Transaction{1, "12345", "USD", 300.00, "Juan", "After Update", "12/12/21"}
+func TestDeleteErrMockStore(t *testing.T) {
+	transByte, _ := json.Marshal(transaccionesParaMock)
+	mock := store.Mock{Data: transByte}
+	filestore := store.FileStore{Mock: &mock}
+	repo := NewRepository(&filestore)
+	service := NewService(repo)
 
-// transUpdated, err := repo.UpdateReceptor(1, "After Update")
+	err := service.Delete(3)
 
-// assert.Equal(t, myMock.BeforeUpdate, transUpdated)
-// assert.Nil(t, err)
+	errorTest := errors.New("La transacción 3 no existe")
 
-// assert.Equal(t, true, changed)
+	assert.Equal(t, errorTest, err)
+
+}
+
+func TestGetAllMockStore(t *testing.T) {
+	transByte, _ := json.Marshal(transaccionesParaMock)
+	mock := store.Mock{Data: transByte}
+	filestore := store.FileStore{Mock: &mock}
+	repo := NewRepository(&filestore)
+	service := NewService(repo)
+
+	transactionsGetAll, err := service.GetAll()
+
+	assert.Equal(t, transaccionesParaMock, transactionsGetAll)
+	assert.Nil(t, err)
+
+}
+
+func TestUpdateReceptorMockStore(t *testing.T) {
+	transByte, _ := json.Marshal(transaccionesParaMock)
+	mock := store.Mock{Data: transByte}
+	filestore := store.FileStore{Mock: &mock}
+	repo := NewRepository(&filestore)
+	service := NewService(repo)
+
+	var transactionTest Transaction = Transaction{
+		ID:               1,
+		Transaction_Code: "12345",
+		Coin:             "USD",
+		Amount:           300.00,
+		Emitor:           "Juan",
+		Receptor:         "Mariano",
+		Transaction_Date: "12/12/21",
+	}
+
+	transactionReceptorUpdated, err := service.UpdateReceptor(1, "Mariano")
+
+	assert.Equal(t, transactionTest, transactionReceptorUpdated)
+	assert.Nil(t, err)
+
+}
+func TestUpdateReceptorErrorMockStore(t *testing.T) {
+	transByte, _ := json.Marshal(transaccionesParaMock)
+	mock := store.Mock{Data: transByte}
+	filestore := store.FileStore{Mock: &mock}
+	repo := NewRepository(&filestore)
+	service := NewService(repo)
+
+	transactionReceptorUpdated, err := service.UpdateReceptor(3, "Mariano")
+
+	errorTest := errors.New("La transacción 3 no existe")
+
+	assert.Equal(t, errorTest, err)
+	assert.Equal(t, Transaction{}, transactionReceptorUpdated)
+
+}
+
+func TestStoreMockStore(t *testing.T) {
+	transByte, _ := json.Marshal(transaccionesParaMock)
+	mock := store.Mock{Data: transByte}
+	filestore := store.FileStore{Mock: &mock}
+	repo := NewRepository(&filestore)
+	service := NewService(repo)
+
+	var transactionTest Transaction = Transaction{
+		ID:               3,
+		Transaction_Code: "90909",
+		Coin:             "Real",
+		Amount:           300.00,
+		Emitor:           "Peter",
+		Receptor:         "Parker",
+		Transaction_Date: "12/12/21",
+	}
+
+	transactionStored, err := service.Store(transactionTest.Transaction_Code,
+		transactionTest.Coin, transactionTest.Emitor, transactionTest.Receptor,
+		transactionTest.Transaction_Date, transactionTest.Amount)
+
+	assert.Equal(t, transactionTest, transactionStored)
+	assert.Nil(t, err)
+
+}

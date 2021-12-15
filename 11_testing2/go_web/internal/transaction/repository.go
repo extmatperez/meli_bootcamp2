@@ -9,13 +9,13 @@ import (
 var transactions []Transaction
 
 type Transaction struct {
-	ID               int     `form:"id", json:"id"`
-	Transaction_Code string  `form:"transaction_code", json:"transaction_code"`
-	Coin             string  `form:"coin", json:"coin"`
-	Amount           float64 `form:"amount", json:"amount"`
-	Emitor           string  `form:"emitor", json:"emitor"`
-	Receptor         string  `form:"receptor", json:"receptor"`
-	Transaction_Date string  `form:"transaction_date", json:"transaction_date"`
+	ID               int     `form:"id" json:"id"`
+	Transaction_Code string  `form:"transaction_code" json:"transaction_code"`
+	Coin             string  `form:"coin" json:"coin"`
+	Amount           float64 `form:"amount" json:"amount"`
+	Emitor           string  `form:"emitor" json:"emitor"`
+	Receptor         string  `form:"receptor" json:"receptor"`
+	Transaction_Date string  `form:"transaction_date" json:"transaction_date"`
 }
 
 type Repository interface {
@@ -49,7 +49,7 @@ func (repo *repository) Store(id int, transaction_code, coin, emitor, receptor, 
 	//var transactions []Transaction
 	repo.db.Read(&transactions)
 
-	trans := Transaction{id, transaction_code, coin, amount, receptor, transaction_date, transaction_date}
+	trans := Transaction{id, transaction_code, coin, amount, emitor, receptor, transaction_date}
 	transactions = append(transactions, trans)
 
 	err := repo.db.Write(transactions)
