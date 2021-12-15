@@ -1,0 +1,22 @@
+[
+ {
+  "id": 1,
+  "nombre": "producto1modificadoconpatch",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ },
+ {
+  "id": 2,
+  "nombre": "producto1",
+  "color": "rojo",
+  "precio": 20,
+  "stock": "alguno",
+  "codigo": "SADFHJK9",
+  "publicado": true,
+  "fecha_creacion": "01/12/2021"
+ }
+]
