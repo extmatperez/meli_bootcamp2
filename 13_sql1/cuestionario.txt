@@ -1,0 +1,35 @@
+
+1. ¿Qué es la Redundancia de datos?
+En ingeniería, la redundancia en datos es la duplicación o re-escritura de información con la intención de aumentar la confiabilidad del sistema, generalmente en forma de respaldo de almacenamiento o prueba de fallas.
+Por ejemplo, puedes colocar tu base de datos en dos equipos distintos. Es decir, la base de datos está redundada en otro equipo. Si un equipo cae, el mismo dato está disponible en el otro equipo.
+
+2. ¿Qué es la inconsistencia de datos?
+Una base de datos es inconsistente si dos datos que deberían ser iguales no lo son. Por ejemplo, un empleado aparece en una tabla como activo y en otra como jubilado.
+
+3. Nombre al menos 2 bases de datos entre Consistencia y Tolerancia al particionamiento
+2 bases de datos CP serían MongoDB y Redis.
+
+4. ¿Qué significa SQL?
+Structured query language o lenguaje estructurado de consultas.
+
+5. En una tabla de datos que es la Primary Key o Llave primaria
+Es una columna o conjunto de columnas cuyos valores identifican de forma única una fila de la tabla
+
+6. En una tabla de datos que es la Foreign Key o Llave foránea
+Es una columna o conjunto de columnas en una tabla cuyos valores corresponden a los valores de la clave primaria de otra tabla.
+
+7. ¿Qué significa que una relación entre dos entidades es UNO a UNO?
+Significa que una entidad solo se relaciona con una única entidad.
+
+8. ¿Qué significa que una relación entre dos entidades es UNO a MUCHOS?
+Significa que cada instancia de una entidad  se relaciona con varias instancias de otra entidad.
+
+9. ¿Qué significa que una relación entre dos entidades es MUCHOS a MUCHOS?
+Significa que cualquier instancia de la entidad A se relaciona con cualquier instancia de la entidad B
+
+10. Defina que es una base de datos
+Las bases de datos son un conjunto de datos que se encuentran almacenados en un determinado lugar, de forma organizada para ser utilizada de manera eficiente
+
+11. Defina el concepto atributo
+Los atributos definen o identifican las características de entidad (es el contenido de esta entidad). Cada entidad contiene distintos atributos, que dan información sobre esta entidad. Estos atributos pueden ser de distintos tipos (numéricos, texto, fecha...).
+

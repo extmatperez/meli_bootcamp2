@@ -1,0 +1,10 @@
+a.	¿Cuál es la primary key para la tabla empleados? Justificar respuesta.
+La primary key podria ser el dni pero tambien se puede usar una columna extra que se llame ID.
+
+b. ¿Cuál es la primary key para la tabla departamentos? Justificar respuesta.
+La primary key es una columna extra que se llama ID.
+
+c. ¿Qué relación/es existirían entre las tablas? ¿En qué tabla debería haber foreign key? ¿A qué campo de qué tabla hace referencia dicha foreign key? Justificar respuesta.
+Existe una relacion de uno a muchos, debido a que en un departamento pueden trabajar unos o muchos empleados.
+En la tabla 'employees' deberia haber una clave foranea para poder identificar al departamento en el que trabaja.
+Dicho campo debe hacer referencia a la clave primaria de la tabla 'departments'.
