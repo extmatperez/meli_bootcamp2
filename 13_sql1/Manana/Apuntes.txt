@@ -1,0 +1,26 @@
+BASES DE DATOS 
+
+TEOREMA DE CAP
+Tiene una base de 3 propiedades
+
+    -Consistencia 
+    -Disponibilidad
+    -Tolerancia al particionamiento
+
+Estas 3 propiedades formam un triangulo y uno siempre puede asegurarse dos de ellas 
+
+
+
+SQL VS NoSQL
+Las bases de datos pueden ser Relacionales o Transaccionales
+
+CARACTERISTICAS DE LAS BASES DE DATOS
+Independencia logica y fisica de los datos 
+Redundancia minima 
+Acceso concurrente por parte de multiples usuarios 
+Integridad de los datos 
+COnsultas complejas optimizadas 
+Seguridad de acceso y auditoria 
+Respaldo y recuperacion
+Acceso a traves de lenguajes de programacion estandar 
+

@@ -1,0 +1,8 @@
+TEST DOBLE
+Se le llama Test Double haciendo referencia a los dobles de las peliculas 
+Son 5 tipos de test 
+
+DUMMY TEST
+El dummy es un objeto vacio que implementa una interfaz especifica 
+
+STUB 
