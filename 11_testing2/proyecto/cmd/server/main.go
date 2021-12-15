@@ -78,4 +78,5 @@ func main() {
 	//tr.DELETE("/delAll",TokenAuthMiddleware(), t.Delete())
 
 	r.Run()
+
 }
