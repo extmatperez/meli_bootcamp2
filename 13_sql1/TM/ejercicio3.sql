@@ -1,0 +1,30 @@
+use emp_dep;
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (1, 'Accounting', '275 Badeau Park');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (2, 'Services', '0 Esker Lane');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (3, 'Accounting', '47 Burrows Avenue');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (4, 'Product Management', '518 Loeprich Court');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (5, 'Services', '94027 Grayhawk Court');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (6, 'Human Resources', '749 Welch Way');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (7, 'Support', '33 Farragut Way');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (8, 'Training', '714 Huxley Point');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (9, 'Marketing', '498 Shopko Junction');
+insert into departamento (id_departamento, nombre_dep, direccion_dep) values (10, 'Accounting', '935 Prairieview Plaza');
+select * from departamento;
+
+select * from empleado;
+insert into empleado (id_empleado, nombre_em, dni, legajo, cargo, sueldo, fehca_nac, fecha_inco, Departamento_id_departamento) values (1, 'Accounting', '500-22-4497', '317-01-6363', 'Quality Engineer', '9.61', '23/12/2020', '14/10/2021', 4);
+insert into empleado (id_empleado, nombre_em, dni, legajo, cargo, sueldo, feha_nac, fecha_inco, Departamento_id_departamento) values (2, 'Support', '318-56-3615', '614-60-4797', 'Payment Adjustment Coordinator', '5.05', '12/07/2021', '20/03/2021', 2);
+insert into empleado (id_empleado, nombre_em, dni, legajo, cargo, sueldo, fecha_nac, feha_inco, Departamento_id_departamento) values (3, 'Research and Development', '101-82-9520', '416-44-7421', 'Senior Sales Associate', '4.18', '02/03/2021', '27/09/2021', 4);
+insert into empleado (id_empleado, nombre_em, dni, legajo, cargo, sueldo, fecha_nac, feha_inco, Departamento_id_departamento) values (4, 'Research and Development', '267-21-2687', '377-44-7205', 'General Manager', '6.03', '11/10/2021', '30/10/2021', 2);
+insert into empleado (id_empleado, nombre_em, dni, legajo, cargo, sueldo, fecha_nac, feha_inco, Departamento_id_departamento) values (5, 'Services', '387-14-8886', '538-09-4712', 'Geologist III', '0.32', '22/10/2021', '16/12/2020', 2);
+
+insert into empleado (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (6, 'Product Management', '512-10-7778', '870-27-0270', 'Help Desk Technician', '$8.59', '22/10/2021', '30/06/2021', 4);
+insert into empleado (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (7, 'Support', '300-03-6739', '120-95-3371', 'Safety Technician IV', '$7.88', '06/01/2021', '17/10/2021', 2);
+insert into empleado (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (8, 'Research and Development', '309-55-1686', '163-20-3694', 'Software Test Engineer II', '$7.66', '29/12/2020', '28/08/2021', 2);
+insert into empleado (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (9, 'Support', '521-87-7245', '898-97-7042', 'Sales Associate', '$0.92', '20/01/2021', '25/05/2021', 3);
+insert into empleado (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (10, 'Support', '554-53-9283', '601-74-4937', 'Legal Assistant', '$6.86', '18/10/2021', '04/05/2021', 3);
+insert into departamento (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (11, 'Accounting', '659-87-9479', '827-89-2861', 'Design Engineer', '$0.63', '25/02/2021', '13/03/2021', 2);
+insert into departamento (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (12, 'Legal', '264-10-1706', '755-53-9270', 'Community Outreach Specialist', '$0.11', '21/10/2021', '17/04/2021', 3);
+insert into departamento (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (13, 'Legal', '799-29-3478', '123-72-8632', 'Staff Scientist', '$2.90', '04/08/2021', '28/07/2021', 3);
+insert into departamento (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (14, 'Business Development', '194-95-7768', '179-52-0755', 'VP Sales', '$9.61', '13/11/2021', '27/09/2021', 4);
+insert into departamento (id_empleado, nombre_emp, dni, legajo, cargo, sueldo, fecha_nac, fecha_inco, Departamento_id_departamento) values (15, 'Support', '899-93-3515', '413-99-8356', 'Research Assistant IV', '$0.84', '07/03/2021', '14/02/2021', 1);
