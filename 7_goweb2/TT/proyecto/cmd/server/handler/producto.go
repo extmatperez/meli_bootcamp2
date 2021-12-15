@@ -70,7 +70,7 @@ func (prod *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if token != os.Getenv("TOKEN") {
-			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			c.JSON(401, web.NewResponse(401, nil, fmt.Sprintf("Token invalido")))
 			return
 		}
 		p, err := prod.service.GetAll()
@@ -96,7 +96,7 @@ func (controller *Product) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if token != os.Getenv("TOKEN") {
-			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			c.JSON(401, web.NewResponse(401, nil, fmt.Sprintf("Token invalido")))
 			return
 		}
 		var prod request
@@ -178,7 +178,7 @@ func (controller *Product) UpdateProd() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if token != os.Getenv("TOKEN") {
-			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			c.JSON(401, web.NewResponse(401, nil, fmt.Sprintf("Token invalido")))
 			return
 		}
 		var prod request
@@ -215,7 +215,7 @@ func (controller *Product) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if token != os.Getenv("TOKEN") {
-			c.JSON(401, web.NewResponse(400, nil, fmt.Sprintf("Token invalido")))
+			c.JSON(401, web.NewResponse(401, nil, fmt.Sprintf("Token invalido")))
 			return
 		}
 		id, err1 := strconv.Atoi(c.Param("id"))
