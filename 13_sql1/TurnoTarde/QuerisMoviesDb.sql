@@ -39,13 +39,13 @@ select * from actors limit 10 offset 40;
 
 /*Mostrar el título y rating de todas las películas
  cuyo título sea de Toy Story.*/
- select title,rating from movies where title="Toy Story";
+ select title,rating from movies where title like "%Toy Story%";
 
 /*Mostrar a todos los actores cuyos nombres empiecen con Sam.*/
 select * from actors where first_name like "Sam%";
 
 /*Mostrar el título de las películas que salieron entre el 2004 y 2008.*/
-select title from movies where release_date between "2004-01-01" and "2008-12-31";
+select title from movies where year(release_date) between "2004" and "2008";
 
 /*Traer el título de las películas con el rating mayor a 3, 
 con más de 1 premio y con fecha de lanzamiento entre el año 1988 al 2009.
@@ -58,7 +58,7 @@ con más de 1 premio y con fecha de lanzamiento entre el año 1988 al 2009.
  
  /*Traer el top 3 a partir del registro 10 de la consulta anterior.*/
 select title from movies where 
- release_date between "1988-01-01" and "2009-12-31"
+ year(release_date) between "1988" and "2009"
  and rating > 3 
  and awards > 1
  order by release_date desc
