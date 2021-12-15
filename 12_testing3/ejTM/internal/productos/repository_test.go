@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/11_testing2/ejTM/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/12_testing3/ejTM/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
