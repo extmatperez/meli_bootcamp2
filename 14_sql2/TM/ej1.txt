@@ -1,0 +1,73 @@
+PRIMERA PARTE
+PRIMERA PARTE
+
+1. ¿A qué se denomina JOIN en una base de datos?
+
+Join es el proceso de tomar datos de varias tablas y colocarlos en una vista generada. Por tanto, una instrucción
+ de “SQL JOIN” en un comando Select combina las columnas entre una o más tablas en una base de datos relacional y 
+ retorna a un conjunto de datos.
+
+2. Nombre y explique 2 tipos de JOIN.
+
+INNER JOIN 
+
+Permite consultar datos de dos tablas que se relacionan entre sí.
+
+LEFT JOIN
+
+Permite consultar datos de dos tablas devolviendo todas las filas de la tabla izquierda con solo las coincidentes
+con la tabla de la derecha.
+
+3. ¿Para qué se utiliza el GROUP BY?
+
+El group by se utiliza para agrupar resultados según las columnas indicadas.
+
+4. ¿Para qué se utiliza el HAVING?
+
+El HAVING nos permite filtrar datos luego de haber agrupado con un GROUP BY.
+
+5. Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+
+IMAGEN 1: INNER JOIN
+IMAGEN 2: LEFT JOIN
+
+Escriba una consulta genérica por cada uno de los diagramas a continuación:
+
+RIGHT JOIN
+
+SELECT * FROM Tabla1 a
+RIGHT JOIN Tabla2 b ON a.id = b.id;
+
+FULL JOIN
+
+SELECT * FROM Tabla1 a
+FULL JOIN Tabla2 b ON a.id = b.id;
+
+
+
+
+SEGUNDA PARTE
+
+1.Mostrar el título y el nombre del género de todas las series.
+
+USE movies_db;
+select se.title, ge.name from  series se join genres ge on se.genre_id = ge.id ;
+
+2.Mostrar el título de los episodios, el nombre y apellido de los actores que trabajan en cada uno de ellos.
+
+SELECT ac.first_name,ac.last_name,ep.title from actor_episode ae join actors ac on ae.actor_id = ac.id join episodes ep on ep.id= ae.episode_id;
+
+3.Mostrar el título de todas las series y el total de temporadas que tiene cada una de ellas.
+
+select se.title, max(sea.number) as "Total de temporadas" from series se join seasons sea on sea.serie_id = se.id group by title;
+
+4.Mostrar el nombre de todos los géneros y la cantidad total de películas por cada uno, siempre que sea mayor o igual a 3.
+
+SELECT ge.name, count(ge.name) as cont FROM genres ge JOIN movies mo ON mo.genre_id = ge.id GROUP BY ge.name
+HAVING cont >= 3;
+
+5.
+
+Mostrar sólo el nombre y apellido de los actores que trabajan en todas las películas de la guerra de las galaxias y que estos no se repitan.
+
+SELECT ac.first_name, ac.last_name FROM actor_movie acm JOIN movies mo ON acm.movie_id = mo.id  JOIN actors ac ON acm.actor_id = ac.id WHERE mo.title LIKE 'La Guerra de las%' GROUP BY ac.id ;
