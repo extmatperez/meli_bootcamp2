@@ -1,0 +1,16 @@
+COMANDOS SQL 
+
+SELECT
+SELECT Campos FROM Tabla;
+
+WHERE
+SELECT Campos FROM Tabla
+WHERE campo1=valor;
+
+SELECT id
+ ,amount
+FROM mov_cuenta_corriente
+WHERE id=1;
+
+
+ORDER BY
