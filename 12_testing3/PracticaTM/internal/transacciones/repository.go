@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/9_goweb4/PracticaTM/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/pkg/store"
 )
 
 type Transaccion struct {
@@ -43,16 +43,22 @@ func NewRepository(db store.Store) Repository {
 
 func (repo *repository) getAll() ([]Transaccion, error) {
 	//Leo las transacciones desde store
-	repo.db.Read(&transacciones)
+	err := repo.db.Read(&transacciones)
+	if err != nil {
+		return []Transaccion{}, err
+	}
 	return transacciones, nil
 }
 
 func (repo *repository) Store(codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
 	//Leo las transacciones
-	repo.db.Read(&transacciones)
+	err := repo.db.Read(&transacciones)
+	if err != nil {
+		return Transaccion{}, err
+	}
 
 	trans := Transaccion{0, codTransaccion, moneda, monto, emisor, receptor, fechaTrans}
-	err := repo.verificarCampos(trans)
+	err = repo.verificarCampos(trans)
 	if err != nil {
 		return Transaccion{}, err
 	} else {
@@ -63,14 +69,20 @@ func (repo *repository) Store(codTransaccion, moneda string, monto float64, emis
 		trans.Id = lastID + 1
 		transacciones = append(transacciones, trans)
 		//Guardo las nuevas transacciones una vez agregada la nueva
-		repo.db.Write(transacciones)
+		err := repo.db.Write(transacciones)
+		if err != nil {
+			return Transaccion{}, err
+		}
 
 		return trans, nil
 	}
 }
 
 func (repo *repository) LastId() (int, error) {
-	repo.db.Read(&transacciones)
+	err := repo.db.Read(&transacciones)
+	if err != nil {
+		return 0, err
+	}
 
 	cantTrans := len(transacciones)
 	if cantTrans == 0 {
@@ -139,7 +151,10 @@ func (repo *repository) Filter(mapEtiquetas, mapRelacionEtiquetas map[string]str
 
 func (repo *repository) Update(id int, codTransaccion, moneda string, monto float64, emisor, receptor, fechaTrans string) (Transaccion, error) {
 	//Leo las transacciones desde el db
-	repo.db.Read(&transacciones)
+	err := repo.db.Read(&transacciones)
+	if err != nil {
+		return Transaccion{}, err
+	}
 
 	trans := Transaccion{id, codTransaccion, moneda, monto, emisor, receptor, fechaTrans}
 	updated := false
@@ -155,7 +170,7 @@ func (repo *repository) Update(id int, codTransaccion, moneda string, monto floa
 	}
 
 	//Una vez que modifico la transacción, lo guardo en la bd
-	err := repo.db.Write(&transacciones)
+	err = repo.db.Write(&transacciones)
 	if err != nil {
 		return Transaccion{}, err
 	}
@@ -165,7 +180,10 @@ func (repo *repository) Update(id int, codTransaccion, moneda string, monto floa
 
 func (repo *repository) Delete(id int) (Transaccion, error) {
 	//Leo las transacciones desde el db
-	repo.db.Read(&transacciones)
+	err := repo.db.Read(&transacciones)
+	if err != nil {
+		return Transaccion{}, err
+	}
 
 	var transEliminated Transaccion
 	found := false
@@ -182,7 +200,7 @@ func (repo *repository) Delete(id int) (Transaccion, error) {
 	}
 
 	//Una vez que modifico la transacción, lo guardo en la bd
-	err := repo.db.Write(&transacciones)
+	err = repo.db.Write(&transacciones)
 	if err != nil {
 		return Transaccion{}, err
 	}
@@ -191,11 +209,14 @@ func (repo *repository) Delete(id int) (Transaccion, error) {
 
 func (repo *repository) UpdateCodigoYMonto(id int, codTransaccion string, monto float64) (Transaccion, error) {
 	//Leo las transacciones desde el db
-	repo.db.Read(&transacciones)
+	err := repo.db.Read(&transacciones)
+	if err != nil {
+		return Transaccion{}, err
+	}
 
 	var transacUpdated Transaccion
 	found := false
-	for i, _ := range transacciones {
+	for i := range transacciones {
 		if transacciones[i].Id == id {
 			found = true
 			transacciones[i].CodTransaccion = codTransaccion
@@ -209,7 +230,7 @@ func (repo *repository) UpdateCodigoYMonto(id int, codTransaccion string, monto 
 	}
 
 	//Una vez que modifico la transacción, lo guardo en la bd
-	err := repo.db.Write(&transacciones)
+	err = repo.db.Write(&transacciones)
 	if err != nil {
 		return Transaccion{}, err
 	}

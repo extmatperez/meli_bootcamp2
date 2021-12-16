@@ -5,8 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/9_goweb4/PracticaTT/internal/transacciones"
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/9_goweb4/PracticaTT/pkg/web"
+	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 

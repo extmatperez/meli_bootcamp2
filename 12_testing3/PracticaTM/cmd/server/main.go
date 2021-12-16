@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/11_testing2/PracticaTM/cmd/server/handler"
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/11_testing2/PracticaTM/docs"
-	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/11_testing2/PracticaTM/internal/transacciones"
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/11_testing2/PracticaTM/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/docs"
+	transacciones "github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -90,5 +90,8 @@ func main() {
 	// Endpoint Patch
 	groupTransac.PATCH("/:id", transac.UpdateCodigoYMonto())
 
-	router.Run()
+	err = router.Run()
+	if err != nil {
+		return
+	}
 }
