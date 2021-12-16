@@ -22,13 +22,8 @@ HAVING Total > 2;
 SELECT DISTINCT a.last_name, a.first_name
 FROM actors a
 INNER JOIN actor_movie am ON am.actor_id = a.id
-WHERE a.id NOT IN(
-	SELECT suba.id
-	FROM actors suba
-	INNER JOIN actor_movie subam ON subam.actor_id = suba.id
-	INNER JOIN movies m ON subam.movie_id = m.id
-	WHERE m.title NOT LIKE "%guerra de las galaxias%"
-)
+INNER JOIN movies m ON am.movie_id = m.id
+WHERE m.title LIKE "%guerra de las galaxias%"
 GROUP BY a.id
 HAVING count(am.movie_id) >= (
 	SELECT COUNT(*)
