@@ -7,14 +7,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUpdateAmount(t *testing.T) {
+func TestFibonacci(t *testing.T) {
 
 	///Arrange
 
 	//Act
-	result := fibonacci()
+	result := Fibonacci()
 	fmt.Println(result)
 
 	//Assert
-	assert.Equal(t, 0, 0)
+	assert.Equal(t, result, Fibonacci())
+
 }
