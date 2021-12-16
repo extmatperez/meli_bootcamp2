@@ -1,0 +1,18 @@
+1. Se denomina join a una operación en BD en la cual se combinan y relacionan datos entre dos tablas.
+2. 
+	- INNER JOIN: Se puede representar como una operación de intersección, ya que solo toma los elementos en común de ambos conjuntos de datos.
+	- FULL JOIN: Se realiza una operación de unión en los conjuntos de datos, como resultado une ambas tablas y permuta todos sus registros.
+3. Agrupa los resultados de una consulta con el fin de resumir.
+4. Con el HAVING es posible generar restricciones a unos datos agrupados con GROUP BY, es similar al WHERE.
+
+5. 
+	- INNER JOIN
+	- LEFT JOIN.
+
+6. 
+	- SELECT * 
+	FROM tableA tA 
+	RIGHT JOIN tableB as tB ON tA.id = tB.id.
+	- SELECT * 
+	FROM tableA tA 
+	FULL JOIN tableB as tB ON tA.id = tB.id.
