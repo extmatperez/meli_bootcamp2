@@ -23,3 +23,16 @@ EJ2 : SELECT * FROM personas per FULL JOIN mascota m ON per.id != m.duenioId
 
 
 
+Actividad TT
+
+Explicar el concepto de normalización y para que se utiliza.
+-La normalización es un proceso de estandarización y validación de datos que consiste en eliminar
+las redundancias o inconsistencias, completando datos mediante una serie de reglas que actualizan
+la información, protegiendo su integridad y favoreciendo la interpretación, para que así sea más
+simple de consultar y más eficiente para quien la gestiona.
+
+¿Qué son los índices? ¿Para qué sirven?
+ Son un mecanismo para optimizar consultas en SQL.
+ Mejoran sustancialmente los tiempos de respuesta en Queries complejas.
+ Mejoran el acceso a los datos al proporcionar una ruta más directa a los registros.
+ Evitan realizar escaneos (barridas) completas o lineales de los datos en una tabla
