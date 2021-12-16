@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/8_goweb3/tarde/ejercicio1/cmd/server/handler"
 
-	users "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/8_goweb3/tarde/ejercicio1/internal/users"
+	users "github.com/extmatperez/meli_bootcamp2/tree/brian_beltran/8_goweb3/manana/ejercicio1/internal/users"
 
 	"github.com/gin-gonic/gin"
 )

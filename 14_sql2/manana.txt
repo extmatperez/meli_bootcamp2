@@ -1,0 +1,16 @@
+¿A qué se denomina JOIN en una base de datos?
+sentencia para combinar datos entre dos tablas con una o varias condiciones
+
+Nombre y explique 2 tipos de JOIN.
+inner join es la interseccion de las dos tablas
+left join es la diferencia entre la primera - segunda tabla
+
+¿Para qué se utiliza el GROUP BY?
+agrupa los resultados por la columna seleccionada
+
+¿Para qué se utiliza el HAVING?
+es un where donde afecta los grupos
+
+Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+inner join 
+left join
