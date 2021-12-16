@@ -28,4 +28,10 @@ WHERE a.id NOT IN(
 	INNER JOIN actor_movie subam ON subam.actor_id = suba.id
 	INNER JOIN movies m ON subam.movie_id = m.id
 	WHERE m.title NOT LIKE "%guerra de las galaxias%"
+)
+GROUP BY a.id
+HAVING count(am.movie_id) >= (
+	SELECT COUNT(*)
+    FROM movies subm
+    WHERE subm.title LIKE "%guerra de las galaxias%"
 );
