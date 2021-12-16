@@ -1,0 +1,57 @@
+PRIMERA PARTE
+
+¿A qué se denomina JOIN en una base de datos?
+A combinar datos de una tabla, con datos de otra tabla a partir de una o varias condiciones en común.
+
+Nombre y explique 2 tipos de JOIN.
+Los JOINs en SQL sirven para combinar filas de dos o más tablas basándose en un campo común entre ellas, 
+devolviendo por tanto datos de diferentes tablas. 
+1) INNER JOIN: Devuelve todas las filas cuando hay al menos una coincidencia en ambas tablas.
+2) FULL JOIN: Devuelve todas las filas de las dos tablas, la izquierda y la derecha. También se llama FULL OUTER JOIN o 
+   OUTER JOIN.
+3) LEFT JOIN: Devuelve todas las filas de la tabla de la izquierda, y las filas coincidentes de la tabla de la derecha.
+4) RIGHT JOIN: Devuelve todas las filas de la tabla de la derecha, y las filas coincidentes de la tabla de la izquierda.
+
+¿Para qué se utiliza el GROUP BY?
+* Agrupa los resultados por las columnas indicadas.
+* Genera un solo registro por cada grupo de filas que compartan las columnas indicadas.
+* Reduce la cantidad de filas de la consulta.
+* Se suele utilizar en conjunto con funciones de agregación, para obtener datos resumidos 
+  y agrupados por las columnas que se necesiten.
+
+
+¿Para qué se utiliza el HAVING?
+Es muy similar a la cláusula WHERE, pero en lugar de afectar a las filas de la tabla, afecta a los grupos obtenidos
+por el GROUP BY. (se utiliza para incluir condiciones con alguna función SQL del tipo SUM, MAX, ..)
+
+
+Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+1) INNER JOIN --> Agrupa las coincidencias de ambos diagramas.
+2) LEFT JOIN --> Agrupa las filas de la tabla izquierda con las filas que coinciden de la derecha.
+
+Escriba una consulta genérica por cada uno de los diagramas a continuación:
+1) RIGHT JOIN -->
+    SELECT nombre_columna(s)
+    FROM tabla_1
+    RIGHT JOIN tabla_2
+    ON tabla1.nombre_columna=tabla2.nombre_columna;
+
+2) FULL JOIN --> 
+    SELECT nombre_columna(s)
+    FROM tabla_1
+    OUTER JOIN tabla_2
+    ON tabla1.nombre_columna=tabla2.nombre_columna;
+
+La sintaxis de OUTER JOIN o FULL OUTER JOIN no existen en MySQL, pero se puede conseguir el mismo resultado de diferentes 
+formas, esta es una:
+    SELECT nombre_columna(s)
+    FROM tabla_1
+    LEFT JOIN tabla_2 ON tabla1.nombre_columna=tabla2.nombre_columna;
+
+    UNION
+
+    SELECT nombre_columna(s)
+    FROM tabla_1
+    RIGHT JOIN tabla_2 ON tabla1.nombre_columna=tabla2.nombre_columna;
+
+
