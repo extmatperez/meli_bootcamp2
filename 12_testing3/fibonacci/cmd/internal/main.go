@@ -1,9 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	f := internal.fibonacci()
+	f := fibonacci()
 	for i := 0; i < 20; i++ {
 		fmt.Println(f(i))
 	}
