@@ -1,0 +1,4 @@
+1 - La normalización es un proceso mediante el cual se estandarizan las tablas de una base de datos, para eliminar las redundancias e inconsistencias.
+    De esta forma, se logra mejorar la integridad de las tablas y facilita el mantenimiento de las mismas.
+
+11 - Son mecanismos que permiten optimizar las consultas en las bases de datos. Al brindarle a los campos la propiedad de index, el filtrado por ellos se hace mucho más eficiente.
