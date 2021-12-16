@@ -45,7 +45,7 @@ func (s *service) GetAll() ([]Transaccion, error) {
 
 func (s *service) Store(id int, codigotransaccion string, moneda string, monto float64, emisor string, receptor string, fechacreacion string) (Transaccion, error) {
 
-	if len(transacciones) == 0 {
+	if len(transacciones) == 0 || id == 0 {
 
 		id = 1
 	} else {
