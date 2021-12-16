@@ -22,4 +22,5 @@ type Producto struct {
 }
 
 func escribir_csv(headers string, data []string) {
+
 }

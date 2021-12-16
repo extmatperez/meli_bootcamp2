@@ -1,7 +1,14 @@
 package main
 
-func main() {
+import "fmt"
 
+func main() {
+	usuario := Usuario{Nombre: "Pedro", Apellido: "Garcia", Correo: "pg@gmail.com"}
+	prod := nuevo_producto("Lavarropas", 350)
+	agregar_producto(&usuario, &prod, 2)
+	fmt.Printf("%v\n", usuario.Productos)
+	borrar_productos(&usuario)
+	fmt.Printf("%v\n", usuario.Productos)
 }
 
 type Usuario struct {
@@ -18,5 +25,14 @@ type Producto struct {
 }
 
 func nuevo_producto(nombre string, precio int) Producto {
+	return Producto{Nombre: nombre, Precio: precio}
+}
 
+func agregar_producto(usuario *Usuario, producto *Producto, cantidad int) {
+	producto.Cantidad = cantidad
+	usuario.Productos = append(usuario.Productos, *producto)
+}
+
+func borrar_productos(usuario *Usuario) {
+	usuario.Productos = []Producto{}
 }
