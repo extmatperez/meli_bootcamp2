@@ -3,7 +3,6 @@ package test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -75,11 +74,11 @@ func Test_StorePersonas(t *testing.T) {
 
 	assert.Equal(t, 200, rr.Code)
 
-	var respuesta transacciones.Transaccion
-	fmt.Println("esto es =====>", respuesta)
+	var respuesta web.Response
 
 	err := json.Unmarshal(rr.Body.Bytes(), &respuesta)
-	assert.Equal(t, "roro", respuesta.Emisor)
+	trans := respuesta.Data.(map[string]interface{})
+	assert.Equal(t, "roro", trans["emisor"])
 	assert.Nil(t, err)
 }
 
@@ -95,10 +94,14 @@ func Test_UpdatePersonas(t *testing.T) {
 
 	assert.Equal(t, 200, rr.Code)
 
-	var respuesta transacciones.Transaccion
+	//var respuesta transacciones.Transaccion
+	var respuesta web.Response
 
 	err := json.Unmarshal(rr.Body.Bytes(), &respuesta)
-	assert.Equal(t, "roasro", respuesta.Emisor)
+	trans := respuesta.Data.(map[string]interface{})
+	//assert.Equal(t, "roasro", respuesta.Emisor)
+	assert.Equal(t, "roasro", trans["emisor"])
+
 	assert.Nil(t, err)
 
 }

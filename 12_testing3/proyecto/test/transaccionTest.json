@@ -1,7 +1,7 @@
 [
  {
   "id": 1,
-  "codigo_transaccion": "799db4fd-5930-46ca-9ecd-553713804fff",
+  "codigo_transaccion": "17b6b6e2-1b01-4f82-b3b5-8c45a3f86d78",
   "moneda": "pesrg",
   "monto": 301.4,
   "emisor": "roasro",
@@ -992,6 +992,33 @@
  {
   "id": 112,
   "codigo_transaccion": "6f3be31e-bd61-459d-9170-a51a3327fc6a",
+  "moneda": "pesoArg",
+  "monto": 3014.4,
+  "emisor": "roro",
+  "receptor": "maslata",
+  "fecha_creacion": "16-12-2021"
+ },
+ {
+  "id": 113,
+  "codigo_transaccion": "1e929bd6-f30c-4ef3-bf73-a23651ffd12b",
+  "moneda": "pesoArg",
+  "monto": 3014.4,
+  "emisor": "roro",
+  "receptor": "maslata",
+  "fecha_creacion": "16-12-2021"
+ },
+ {
+  "id": 114,
+  "codigo_transaccion": "845ac94f-4004-4b6d-ac85-c7ce5746b962",
+  "moneda": "pesoArg",
+  "monto": 3014.4,
+  "emisor": "roro",
+  "receptor": "maslata",
+  "fecha_creacion": "16-12-2021"
+ },
+ {
+  "id": 115,
+  "codigo_transaccion": "992e2f36-68cd-47d4-9b1d-f0eaa127416c",
   "moneda": "pesoArg",
   "monto": 3014.4,
   "emisor": "roro",
