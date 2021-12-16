@@ -1,0 +1,23 @@
+1) ¿A qué se denomina JOIN en una base de datos?
+Es un producto cartesiano entre dos tablas. Genera una tabla donde se interceptan todos los registros de una tabla con todos los registros de la otra
+
+2) Nombre y explique 2 tipos de JOIN.
+El INNER JOIN es un JOIN en el cual se mantienen los registros que poseen un dato igual entre ambas tablas (intersección)
+El LEFT JOIN es como el INNER JOIN, pero además la consulta devuelve todos los registros de la tabla de la izquierda (intersección + tabla izquierda)
+
+3) ¿Para qué se utiliza el GROUP BY?
+El GROUP BY se utiliza para agrupar los resultados según una columna específica. Por ejemplo, si quisiera agrupar las ventas por empresa en una tabla de ventas
+
+4) ¿Para qué se utiliza el HAVING?
+El HAVING se utiliza para filtrar resultados de un GROUP BY. Siguiendo con el ejemplo anterior, podría filtrar aquellas empresas cuyas ventas totales fueron mayores a 100000
+
+5) Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+a) INNER JOIN
+b) LEFT JOIN
+
+6) Escriba una consulta genérica por cada uno de los diagramas a continuación:
+a) SELECT *
+FROM TablaA RIGHT JOIN TablaB
+
+b) SELECT *
+FROM TablaA FULL JOIN TablaB
