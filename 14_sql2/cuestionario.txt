@@ -1,0 +1,23 @@
+1 - La instrucción JOIN sirve para combinar las tuplas de una tabla con otra. Dependiendo de que tipo de JOIN se haga, se realizará algún tipo de filtrado o no. 
+    El JOIN más básico es un producto cartesiano
+
+2 - El INNER JOIN es un tipo de JOIN que junta las tuplas de una tabla, que se relacionan mediante un campo, con las tuplas de una segunda tabla.
+    Visto desde el punto de vista de conjuntos, sería hacer una intersección. De esta forma, se evita relacionar tuplas que no tienen una relación lógica en el dominio.
+    El RIGHT JOIN es aquel en el que se juntan los datos que se obtendrían en un INNER JOIN, sumados a todos los datos de la segunda tabla.
+
+3 - El GROUP BY es una instrucción que agrupa las tuplas a través del valor de un campo específico. Muestra una sola tupla por grupo. 
+    Su utilidad mayor es junto a las funciones de agregación. Su
+
+4 - El HAVING es una instrucción que permite filtrar los grupos formados a través del GROUP BY. De esta forma, se pueden descartar grupos que no cumplan alguna condición. Se
+
+5 - El primer diagrama pertenece a un INNER JOIN y el segundo a un LEFT JOIN.
+
+6 - 
+
+SELECT a.first_name, a.last_name, m.title
+FROM movies m
+RIGHT JOIN actors a ON m.id = a.favorite_movie_id
+
+SELECT ser.title
+FROM series ser
+JOIN seasons sea
