@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/cmd/server/handler"
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/docs"
-	transacciones "github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/internal/transacciones"
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/docs"
+	transacciones "github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -77,10 +77,6 @@ func main() {
 	tr.DELETE("/del/:id", TokenAuthMiddleware(), t.Delete())
 	//tr.DELETE("/delAll",TokenAuthMiddleware(), t.Delete())
 
-	err := r.Run()
-
-	if err != nil {
-		panic(err)
-	}
+	r.Run()
 
 }

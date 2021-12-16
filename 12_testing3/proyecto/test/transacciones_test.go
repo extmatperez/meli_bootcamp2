@@ -94,12 +94,10 @@ func Test_UpdatePersonas(t *testing.T) {
 
 	assert.Equal(t, 200, rr.Code)
 
-	//var respuesta transacciones.Transaccion
 	var respuesta web.Response
 
 	err := json.Unmarshal(rr.Body.Bytes(), &respuesta)
 	trans := respuesta.Data.(map[string]interface{})
-	//assert.Equal(t, "roasro", respuesta.Emisor)
 	assert.Equal(t, "roasro", trans["emisor"])
 
 	assert.Nil(t, err)

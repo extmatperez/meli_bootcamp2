@@ -1,0 +1,171 @@
+definitions:
+  web.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      error:
+        type: string
+    type: object
+info:
+  contact:
+    name: API Support
+    url: https://developers.mercadolibre.com.ar/support
+  description: This API Handle MELI Products.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
+  title: MELI Bootcamp API
+  version: "1.0"
+paths:
+  /transacciones/add:
+    post:
+      consumes:
+      - application/json
+      description: store transaccion
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Store transaccion
+      tags:
+      - Transaccion
+  /transacciones/cod/:id:
+    patch:
+      description: update transaccion amount
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: update transaccion amount
+      tags:
+      - Transaccion
+  /transacciones/del/:id:
+    patch:
+      description: delete transaccion
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: delete transaccion
+      tags:
+      - Transaccion
+  /transacciones/filter:
+    get:
+      description: filter transaccion by parameters
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: filter transaccion
+      tags:
+      - Transaccion
+  /transacciones/find/:id:
+    get:
+      description: find transaccion by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: find transaccion
+      tags:
+      - Transaccion
+  /transacciones/get:
+    get:
+      consumes:
+      - application/json
+      description: get transacciones
+      parameters:
+      - description: token
+        in: header
+        name: token
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: List transacciones
+      tags:
+      - Transaccion
+  /transacciones/load:
+    post:
+      description: load transaccion
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Load json stored transactionstransaccion
+      tags:
+      - Transaccion
+  /transacciones/update/:id:
+    put:
+      description: update transaccion
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: update transaccion
+      tags:
+      - Transaccion
+swagger: "2.0"

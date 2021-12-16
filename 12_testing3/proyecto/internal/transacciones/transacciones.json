@@ -1,12 +1,12 @@
 [
  {
   "id": 1,
-  "codigo_transaccion": "4cfd750f-cfb8-4fe7-9710-3f9a8f0d1e22",
-  "moneda": "pesrg",
-  "monto": 301.4,
-  "emisor": "roasro",
-  "receptor": "masdfglata",
-  "fecha_creacion": "16-12-2021"
+  "codigo_transaccion": "cybqf7i0bo",
+  "moneda": "Baht",
+  "monto": 3011534.4,
+  "emisor": "aburdis0",
+  "receptor": "fodoireidh0",
+  "fecha_creacion": "9/25/2021"
  },
  {
   "id": 2,
@@ -898,149 +898,5 @@
   "emisor": "gspaldin2r",
   "receptor": "jhellyer2r",
   "fecha_creacion": "7/7/2021"
- },
- {
-  "id": 101,
-  "codigo_transaccion": "2906a604-5a21-4732-808f-1d073f5fe9f9",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 103,
-  "codigo_transaccion": "843419dd-20bc-4962-8415-b92d902ccb8e",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 104,
-  "codigo_transaccion": "ea1ea0a3-a047-4186-bc06-e526e4a609fb",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 105,
-  "codigo_transaccion": "02fd9882-0dda-428e-ab68-eec957ccf422",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 106,
-  "codigo_transaccion": "08c0fb37-3862-47fd-8995-d20c2bafb2da",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 107,
-  "codigo_transaccion": "ba1ad39c-f739-4e09-bba2-0859135b93ec",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 108,
-  "codigo_transaccion": "4f9b8ceb-46e8-4a18-9706-30d1207091f4",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 109,
-  "codigo_transaccion": "0ed9d444-76c4-4392-8e58-afbfa0181d39",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 110,
-  "codigo_transaccion": "fbc83812-3960-41bd-9f29-c03d4175f7ed",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 111,
-  "codigo_transaccion": "64b58d7b-84a5-44a1-9ec9-84b1efca1d48",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 112,
-  "codigo_transaccion": "6f3be31e-bd61-459d-9170-a51a3327fc6a",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 113,
-  "codigo_transaccion": "1e929bd6-f30c-4ef3-bf73-a23651ffd12b",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 114,
-  "codigo_transaccion": "845ac94f-4004-4b6d-ac85-c7ce5746b962",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 115,
-  "codigo_transaccion": "992e2f36-68cd-47d4-9b1d-f0eaa127416c",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 116,
-  "codigo_transaccion": "04ba4ca8-30b3-44ee-9fb5-a616ed478f19",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
- },
- {
-  "id": 117,
-  "codigo_transaccion": "1b7207f8-0b51-4019-86fb-04b0efc160d8",
-  "moneda": "pesoArg",
-  "monto": 3014.4,
-  "emisor": "roro",
-  "receptor": "maslata",
-  "fecha_creacion": "16-12-2021"
  }
 ]

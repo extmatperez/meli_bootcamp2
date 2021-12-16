@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/pkg/store"
 )
 
 type StubRepository struct {

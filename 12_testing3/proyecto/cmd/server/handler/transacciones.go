@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	transacciones "github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/internal/transacciones"
-	"github.com/extmatperez/meli_bootcamp2/11_testing2/proyecto/pkg/web"
+	transacciones "github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/internal/transacciones"
+	"github.com/extmatperez/meli_bootcamp2/12_testing3/proyecto/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
