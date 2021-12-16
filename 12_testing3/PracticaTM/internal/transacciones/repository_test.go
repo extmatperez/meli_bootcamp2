@@ -12,7 +12,7 @@ var transac string = `[
 	"id": 1,
 	"cod_transaccion": "123asd456",
 	"moneda": "dolar",
-	"monto": "20.55",
+	"monto": 20.55,
 	"emisor": "Facundo",
 	"receptor": "Ezequiel",
 	"fecha_trans": "21/01/2021"
@@ -21,7 +21,7 @@ var transac string = `[
 	"id": 2,
 	"cod_transaccion": "BeforeUpdate",
 	"moneda": "dolar",
-	"monto": "999.999",
+	"monto": 999.999,
 	"emisor": "Facundo",
 	"receptor": "Ezequiel",
 	"fecha_trans": "21/01/2021"
@@ -30,7 +30,7 @@ var transac string = `[
 	"id": 3,
 	"cod_transaccion": "123asd456",
 	"moneda": "dolar",
-	"monto": "20.55",
+	"monto": 20.55,
 	"emisor": "Facundo",
 	"receptor": "Ezequiel",
 	"fecha_trans": "21/01/2021"
@@ -72,11 +72,12 @@ func TestGetAll(t *testing.T) {
 	repo := NewRepository(&store)
 	var transacExpected []Transaccion
 
-	_ = json.Unmarshal([]byte(transac), &transacExpected)
+	json.Unmarshal([]byte(transac), &transacExpected)
 
-	myTransac, _ := repo.getAll()
+	myTransac, err := repo.getAll()
 
 	assert.Equal(t, transacExpected, myTransac, "Los datos no son iguales")
+	assert.Nil(t, err)
 
 }
 
