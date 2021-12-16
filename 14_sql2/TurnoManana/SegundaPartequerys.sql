@@ -20,10 +20,10 @@ group by s.id;
 /*Mostrar el nombre de todos los géneros y la cantidad total de películas por cada uno, 
 siempre que sea mayor o igual a 3.*/
 
-select ge.name, count(mo.id) as "total peliculas" from movies mo 
+select ge.name, count(mo.id) as "totalpeliculas" from movies mo 
 join genres ge on mo.genre_id = ge.id
 group by  ge.id
-having total > 3;
+having totalpeliculas > 3;
 
 /*Mostrar sólo el nombre y apellido de los actores que trabajan en todas las películas 
 de la guerra de las galaxias y que estos no se repitan*/
