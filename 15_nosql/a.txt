@@ -1,0 +1,11 @@
+1)db.claseMongo.findOne({},{"restaurante_id":1,"nombre":1,"barrio":1,"tipo_cocina":1,_id:0})
+2)db.claseMongo.find({},{"restaurante_id":1,"nombre":1,"barrio":1,"tipo_cocina":1,_id:0}).limit(3)
+3)db.claseMongo.count({barrio:"Bronx",$or:[{tipo_cocina:"Chinese"},{tipo_cocina:"Thai"}]},{"restaurante_id":1,"nombre":1,"tipo_cocina":1,_id:0})
+//db.claseMongo.count({ "tipo_cocina": { $in: [ "Chinese", "Thai" ] }, "barrio": "Bronx" })
+4)db.claseMongo.find({ "grados": { $elemMatch: { "grado":"A", "puntaje": { $gt: 20 } } }}).limit(3)
+5)db.claseMongo.count({ "direccion.coord": { $size: 0 }})
+6)db.claseMongo.find({},{"nombre":1,"barrio":1,"tipo_cocina":1,"grados":{$slice:-1}}).limit(3)
+7)db.claseMongo.aggregate([{$group:{_id: "$tipo_cocina",Cantidad:{$sum:1}}},{$sort:{"Cantidad":-1}},{$limit:3}])
+8)db.claseMongo.
+9)db.claseMongo.createIndex({"direccion.coord":"2dsphere"})
+db.claseMongo.find({"direccion.coord": {$nearSphere: [ -73.93414657, 40.82302903 ],$maxDistance: 500}})
