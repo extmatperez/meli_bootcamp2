@@ -1,0 +1,29 @@
+1 - La base tiene una sola colección.
+
+2 - La colección tiene un total de 25359 documentos, con un peso total de 11.1 MB.
+
+3 - La colección tiene 1 sólo índice con un peso de 4.1 KB.
+
+
+Ejercicio 1: SQL
+
+1 - Con limit:
+
+        db.restaurantes.find({},{barrio: 1, tipo_cocina: 1, nombre: 1, restaurante_id: 1, _id: 0}).limit(1)
+
+    Sin Limit:
+
+        db.restaurantes.findOne({},{barrio: 1, tipo_cocina: 1, nombre: 1, restaurante_id: 1, _id: 0})
+
+2 - db.restaurantes.find({nombre: /Bake/ },{barrio: 1, tipo_cocina: 1, nombre: 1, restaurante_id: 1, _id: 0}).limit(3)
+
+3 - db.restaurantes.countDocuments({tipo_cocina: {$in: ["Chinese", "Thai"]}, barrio: "Bronx"})
+
+
+Ejercicio 2: NoSQL:
+
+1 - db.restaurantes.find({ grados: { $elemMatch: {grado: "A", puntaje: {$gt: 20} } }}).limit(3)
+
+2 - db.restaurantes.countDocuments({"direccion.coord": {$size: 0} })
+
+3 - db.restaurantes.find({}, { nombre: 1, barrio: 1, tipo_cocina: 1, grados: {$slice: -1}}).limit(3)
