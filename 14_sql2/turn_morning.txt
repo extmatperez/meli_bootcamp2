@@ -1,0 +1,33 @@
+¿A qué se denomina JOIN en una base de datos?
+Es el proceso de tomar datos de varias tablas y colocarlos en un filtro general de manera visual. Podría relacionarse a un SELECT que combina columnas entre varias tablas.
+
+Nombre y explique 2 tipos de JOIN.
+Inner Join: Toma datos no nulos en común entre dos tablas y los une. Es decir quiere decir que solamente traiga los datos que esten en común en ambas tablas
+Left join: Toma datos de la primera tabla e intenta relacionarlos con la segunda tabla, mostrando la totalidad de la primera tabla 
+¿Para qué se utiliza el GROUP BY?
+Este identifica una columna seleccionada para utilizarla para agrupar resultados iguales. Divide datos en grupos por los valores de la columna especificada y devuelve una fila de resultados para cada grupo.
+
+¿Para qué se utiliza el HAVING?
+El having se utiliza para filtrar los contenidos de la consulta luego de haber realizado un group by
+Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+   Inner join				Left Join
+Escriba una consulta genérica por cada uno de los diagramas a continuación:
+
+  Right join				Full Join
+
+SELECT
+  one.name,
+  two.name
+FROM table1 AS one
+RIGHT JOIN table2 AS two
+ON one.table1id = two.table2id;
+
+Select * tablaA tA
+FULL JOIN tablaB tB ON tB.id == tA.id
+
+SELECT
+  m.title as 'Movie Title',
+  g.name as 'Genre Name'
+FROM movies AS m
+FULL JOIN genres AS g
+ON m.genre_id = g.id;

@@ -87,7 +87,7 @@ func Test_UpdateTransaction(t *testing.T) {
 	router := createServer()
 
 	//updateTrans := transaction.Transaction{Amount: 1.00}
-	req, rr := createRequestTest(http.MethodPatch, "/transactions/:id/:amount", "")
+	req, rr := createRequestTest(http.MethodPatch, "/transactions/1/200.00", "")
 	router.ServeHTTP(rr, req)
 
 	assert.Equal(t, 200, rr.Code)

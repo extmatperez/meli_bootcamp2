@@ -9,7 +9,6 @@ func Fibonacci() func(int) int {
 			a = append(a, xf)
 			return xf
 		}
-
 		a = append(a, x)
 		return (a[x])
 	}

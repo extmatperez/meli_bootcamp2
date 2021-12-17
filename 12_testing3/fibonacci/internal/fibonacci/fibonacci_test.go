@@ -1,21 +1,19 @@
 package internal
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestFibonacci(t *testing.T) {
-
 	///Arrange
-
+	var real int
 	//Act
 	result := Fibonacci()
-	fmt.Println(result)
-
+	for i := 0; i < 5; i++ {
+		real = result(i)
+	}
 	//Assert
-	assert.Equal(t, result, Fibonacci())
-
+	assert.Equal(t, 3, real, "Should be equals")
 }
