@@ -1,0 +1,9 @@
+Ejercicio1
+La principal diferencia es que Black Box Test no tienes conocimiento del diseño funcionamiento o estructura, en cambio White Box Test tenes
+Visibilidad del código, y su diseño esta ligado al mismo
+
+Ejercicio2
+Es un test que valida el funcionamiento general del software , deben ser evaluados una vez que pasen los test unitarios y funcionales
+
+Ejercicio3
+Los test de integración comprueban comunicación entre componentes , capas , modulos, servicios que estos funcionen de forma armoniosa.
