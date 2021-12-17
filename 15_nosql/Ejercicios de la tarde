@@ -1,0 +1,4 @@
+Primera parte
+1- db.ejercicios.find({}, {restaurante_id: 1,barrio: 1, tipo_cocina: 1, _id: 0})
+2- db.ejercicios.find({nombre: /Bake/}, {restaurante_id: 1, nombre: 1, tipo_cocina: 1, _id: 0})
+3- db.ejercicios.find({tipo_cocina: {$in:["Chinese","Thai"]}}).count()
