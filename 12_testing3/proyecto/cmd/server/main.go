@@ -77,6 +77,10 @@ func main() {
 	tr.DELETE("/del/:id", TokenAuthMiddleware(), t.Delete())
 	//tr.DELETE("/delAll",TokenAuthMiddleware(), t.Delete())
 
-	r.Run()
+	err := r.Run()
+
+	if err != nil {
+		panic(err)
+	}
 
 }
