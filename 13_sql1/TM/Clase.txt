@@ -1,0 +1,8 @@
+Teorema CAP:
+Consistency, Availability, Partition Tolerance.
+Hay varias combinaciones.
+CP (Consistencia y tolerancia al particionamiento): pero no garantiza que esten disponibles el 100% del tiempo
+AP (disponibilidad y tolerancia al particionamiento): se asegura que el sistema este disponible aunque sufra particiones, pero no que los datos sean los
+mas actuales e iguales en todos los nodos al mismo tiempo.
+CA (consistencia y disponibilidad): los datos siempre son iguales y el sistema esta disponible el 100% del tiempo respondiendo peticiones, pero no se
+permite el particionamiento de datos.

@@ -77,7 +77,6 @@ func main() {
 	payments := router.Group("/payments")
 	{
 		payments.GET("/get", controller.GetAll())
-		payments.GET("/filter", controller.Filtrar())
 		payments.POST("/", controller.Store())
 		payments.PUT("/:id", controller.Update())
 		payments.PATCH("/code/:id", controller.UpdateCodigo())
