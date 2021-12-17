@@ -71,7 +71,7 @@ func main() {
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.Use(TokenAuthMiddleware())
+	//router.Use(TokenAuthMiddleware())
 
 	router.GET("/usuarios/get", controller.GetAll())
 	router.POST("/usuarios/add", controller.Store())

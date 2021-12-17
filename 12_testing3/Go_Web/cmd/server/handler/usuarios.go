@@ -82,7 +82,7 @@ func (control *Usuario) Store() gin.HandlerFunc {
 				if err != nil {
 					c.JSON(400, web.NewResponse(400, nil, fmt.Sprintf("No se pudo cargar la persona %v", err)))
 				} else {
-					c.JSON(200, web.NewResponse(200, response, ""))
+					c.JSON(200, response)
 				}
 			}
 		}
