@@ -143,3 +143,136 @@ func TestStoreServiceMockError(t *testing.T) {
 	assert.Equal(t, errExpected, err)
 	assert.Equal(t, User{}, userCreated)
 }
+
+func TestUpdateServiceMock(t *testing.T) {
+	newUser := User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	userUpdate, _ := service.Update(1, newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	assert.Equal(t, newUser.FirstName, userUpdate.FirstName)
+	assert.Equal(t, newUser.LastName, userUpdate.LastName)
+	assert.Equal(t, 1, userUpdate.ID)
+}
+
+func TestUpdateServiceMockError(t *testing.T) {
+	newUser := User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	_, err := service.Update(22, newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	assert.NotNil(t, err)
+}
+func TestUpdateLastNameServiceMock(t *testing.T) {
+	newLastName := "Prado"
+
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	userUpdate, _ := service.UpdateLastName(2, newLastName)
+
+	assert.Equal(t, newLastName, userUpdate.LastName)
+	assert.Equal(t, 2, userUpdate.ID)
+}
+
+func TestUpdateLastNameServiceMockError(t *testing.T) {
+	newLastName := "Prado"
+
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	_, err := service.UpdateLastName(22, newLastName)
+
+	assert.NotNil(t, err)
+}
+
+func TestUpdateAgeServiceMock(t *testing.T) {
+	newAge := 44
+
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	userUpdate, _ := service.UpdateAge(2, newAge)
+
+	assert.Equal(t, newAge, userUpdate.Age)
+	assert.Equal(t, 2, userUpdate.ID)
+}
+
+func TestUpdateAgeServiceMockError(t *testing.T) {
+	newAge := 44
+
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	_, err := service.UpdateAge(22, newAge)
+
+	assert.NotNil(t, err)
+}
+
+func TestDeleteServiceMock(t *testing.T) {
+	dataByte := []byte(usersFakeService)
+
+	dbMock := store.Mock{Data: dataByte}
+	storeStub := store.FileStore{Mock: &dbMock}
+	repo := NewRepository(&storeStub)
+
+	service := NewService(repo)
+
+	err := service.Delete(2)
+
+	assert.Nil(t, err)
+
+	allUsers, _ := service.GetAll()
+
+	assert.Equal(t, 1, len(allUsers))
+}
