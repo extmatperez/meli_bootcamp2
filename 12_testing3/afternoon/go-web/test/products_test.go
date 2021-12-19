@@ -34,7 +34,7 @@ func createServer() *gin.Engine {
 func createRequestTest(method string, url string, body string) (*http.Request, *httptest.ResponseRecorder) {
 	req := httptest.NewRequest(method, url, bytes.NewBuffer([]byte(body)))
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("token", "123456")
+	req.Header.Add("TOKEN", "123456")
 	return req, httptest.NewRecorder()
 }
 
@@ -51,7 +51,6 @@ func Test_UpdateProduct_OK(t *testing.T) {
 		"fechaCreacion": "12/9/1999"
 	  }`
 	var objRes web.Response
-
 	// crear Request del tipo Put y Response para obtener el resultado
 	req, rr := createRequestTest(http.MethodPut, "/productos/1", sentProd)
 	//guardo la respuesta en una estructura de tipo web.Response para hacer una evaluacion
