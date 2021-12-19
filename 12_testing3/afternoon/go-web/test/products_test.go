@@ -27,6 +27,7 @@ func createServer() *gin.Engine {
 
 	pr := r.Group("/productos")
 	pr.PUT("/:id", handler.Update())
+	pr.DELETE("/:id", handler.Delete())
 
 	return r
 }
@@ -53,18 +54,18 @@ func Test_UpdateProduct_OK(t *testing.T) {
 	var objRes web.Response
 	// crear Request del tipo Put y Response para obtener el resultado
 	req, rr := createRequestTest(http.MethodPut, "/productos/1", sentProd)
-	//guardo la respuesta en una estructura de tipo web.Response para hacer una evaluacion
-	err := json.Unmarshal(rr.Body.Bytes(), &objRes)
 
 	// indicar al servidor que pueda atender la solicitud
 	r.ServeHTTP(rr, req)
+	//guardo la respuesta en una estructura de tipo web.Response para hacer una evaluacion mas especifica
+	err := json.Unmarshal(rr.Body.Bytes(), &objRes)
 	assert.Equal(t, 200, rr.Code)
 
 	assert.Nil(t, err)
 	assert.Equal(t, 200, objRes.StatusCode, "deben ser iguales")
 }
 
-/* func Test_UpdateProduct_Fail(t *testing.T) { //falla porque se le envia un numero de id que no existe
+func Test_UpdateProduct_Fail(t *testing.T) { //falla porque se le envia un numero de id que no existe
 	// crear el Server y definir las Rutas
 	r := createServer()
 	sentProd := `{
@@ -76,17 +77,38 @@ func Test_UpdateProduct_OK(t *testing.T) {
 		"publicado": false,
 		"fechaCreacion": "12/9/1999"
 	  }`
-	//var objRes web.Response
+	var objRes web.Response
 
 	// crear Request del tipo Put y Response para obtener el resultado
 	req, rr := createRequestTest(http.MethodPut, "/productos/9999", sentProd)
-	//guardo la respuesta en una estructura de tipo web.Response para hacer una evaluacion
-	//err := json.Unmarshal(rr.Body.Bytes(), &objRes)
 
 	// indicar al servidor que pueda atender la solicitud
 	r.ServeHTTP(rr, req)
+	//guardo la respuesta en una estructura de tipo web.Response para hacer una evaluacion mas especifica
+	err := json.Unmarshal(rr.Body.Bytes(), &objRes)
 	assert.Equal(t, 400, rr.Code, "debe ser 400")
 
-	/* assert.Nil(t, err)
-	assert.Equal(t, 400, objRes, "deben ser iguales")
-} */
+	assert.Nil(t, err)
+	assert.Equal(t, 400, objRes.StatusCode, "deben ser iguales")
+}
+
+func Test_DeleteProduct_Ok(t *testing.T) {
+	// crear el Server y definir las Rutas
+	r := createServer()
+
+	var objRes web.Response
+
+	// crear Request del tipo Delete y Response para obtener el resultado
+	req, rr := createRequestTest(http.MethodDelete, "/productos/7", "")
+
+	// indicar al servidor que pueda atender la solicitud
+	r.ServeHTTP(rr, req)
+
+	//guardo la respuesta en una estructura de tipo web.Response para hacer una evaluacion mas especifica
+	err := json.Unmarshal(rr.Body.Bytes(), &objRes)
+
+	assert.Equal(t, 200, rr.Code, "debe ser 200")
+
+	assert.Nil(t, err)
+	assert.Equal(t, 200, objRes.StatusCode, "deben ser iguales")
+}
