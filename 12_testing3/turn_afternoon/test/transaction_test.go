@@ -3,6 +3,7 @@ package test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -17,17 +18,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var router *gin.Engine
+
+func TestMain(m *testing.M) {
+	router = createServer()
+	log.Println("Do stuff BEFORE the tests!")
+	exitVal := m.Run()
+	log.Println("Do stuff AFTER the tests!")
+	os.Exit(exitVal)
+}
+
 func respondWithError(c *gin.Context, code int, message interface{}) {
 	c.AbortWithStatusJSON(code, gin.H{"error": message})
 }
 func TokenAuthMiddleware() gin.HandlerFunc {
 	requiredToken := os.Getenv("TOKEN")
-
-	// We want to make sure the token is set, bail if not
 	if requiredToken == "" {
 		log.Fatal("Please set API_TOKEN environment variable")
 	}
-
 	return func(c *gin.Context) {
 		token := c.GetHeader("token")
 
@@ -40,7 +48,6 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 			respondWithError(c, 401, "Invalid API token")
 			return
 		}
-
 		c.Next()
 	}
 }
@@ -52,9 +59,15 @@ func createServer() *gin.Engine {
 	service := transaction.NewService(repo)
 	t := handler.NewTransaction(service)
 	router := gin.Default()
-	pr := router.Group("/transactions")
-	pr.PATCH("/", t.UpdateAmount())
-	pr.GET("/", t.GetAll())
+
+	transactionURL := router.Group("/transactions")
+	transactionURL.PATCH("/:id/:amount", t.UpdateAmount())
+	transactionURL.GET("/", t.GetAll())
+	transactionURL.GET("/:id", t.GetByID())
+	transactionURL.GET("/receivers/:receiver", t.GetByReceiver())
+	transactionURL.POST("/", t.Store())
+	transactionURL.PUT("/:id", t.UpdateTransaction())
+	transactionURL.DELETE("/:id", t.DeleteTransaction())
 	return router
 }
 
@@ -67,9 +80,8 @@ func createRequestTest(method string, url string, body string) (*http.Request, *
 }
 
 func Test_GetAll(t *testing.T) {
-	router := createServer()
 
-	req, rr := createRequestTest(http.MethodGet, "/transactions", "")
+	req, rr := createRequestTest(http.MethodGet, "/transactions/", "")
 
 	router.ServeHTTP(rr, req)
 
@@ -82,21 +94,72 @@ func Test_GetAll(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+//Store
+func Test_StoreTransactions(t *testing.T) {
+
+	newTransaction := transaction.Transaction{
+		ID:              13,
+		TransactionCode: "1234-2124",
+		Currency:        "$",
+		Amount:          100.00,
+		Receiver:        "receiver",
+		Sender:          "sender",
+		TransactionDate: "12/12/2021",
+	}
+
+	newDataTrans, _ := json.Marshal(newTransaction)
+	fmt.Println(string(newDataTrans))
+	req, rr := createRequestTest(http.MethodPost, "/transactions/", string(newDataTrans))
+
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, 200, rr.Code)
+	fmt.Println("Body response: ", rr.Body)
+	var response transaction.Transaction
+
+	err := json.Unmarshal(rr.Body.Bytes(), &response)
+	fmt.Println("response: ", response)
+
+	assert.Nil(t, err)
+
+}
+
+//Delete
+func Test_DeleteTransaction(t *testing.T) {
+
+	req, rr := createRequestTest(http.MethodGet, "/transactions/", "")
+
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, 200, rr.Code)
+
+	var response web.Response
+
+	err := json.Unmarshal(rr.Body.Bytes(), &response)
+	fmt.Println("response delete: ", response.Transaction)
+
+	assert.Nil(t, err)
+
+	trans := []transaction.Transaction{}
+	bodyBytes, _ := json.Marshal(response.Transaction)
+	json.Unmarshal(bodyBytes, &trans)
+	fmt.Println(trans)
+
+	delete := fmt.Sprintf("/transactions/%d", trans[len(trans)-1].ID)
+	req, rr = createRequestTest(http.MethodDelete, delete, "")
+
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, 200, rr.Code)
+
+}
+
 //Update
 func Test_UpdateTransaction(t *testing.T) {
-	router := createServer()
 
 	//updateTrans := transaction.Transaction{Amount: 1.00}
 	req, rr := createRequestTest(http.MethodPatch, "/transactions/1/200.00", "")
 	router.ServeHTTP(rr, req)
 
 	assert.Equal(t, 200, rr.Code)
-
-	var respuesta web.Response
-
-	err := json.Unmarshal(rr.Body.Bytes(), &respuesta)
-	assert.Equal(t, 200, respuesta.Code)
-	assert.Nil(t, err)
 }
-
-//Delete
