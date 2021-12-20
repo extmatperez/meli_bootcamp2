@@ -1,0 +1,12 @@
+1) Devolver restaurante_id, nombre, barrio y tipo_cocina pero excluyendo _id para un documento (el primero).
+db.restaurantes.find(
+    {}, {restaurante_id:1, nombre:1, barrio:1, tipo_cocina:1, _id:0})
+    .pretty().limit(1)
+
+2) Devolver restaurante_id, nombre, barrio y tipo_cocina para los primeros 3 restaurantes que contengan 'Bake' en alguna parte de su nombre.
+db.restaurantes.find(
+    {nombre: /bake/}, {restaurante_id:1, nombre:1, barrio:1, tipo_cocina:1})
+    .pretty().limit(3)
+
+3) Contar los restaurantes de comida (tipo_cocina) china (Chinese) o tailandesa (Thai) del barrio (barrio) Bronx. Consultar or versus in.
+db.restaurantes.countDocuments({tipo_cocina: { $in: ["Chinese", "Thai"]}, barrio: "Bronx"})
