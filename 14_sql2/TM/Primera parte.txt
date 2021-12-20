@@ -19,4 +19,4 @@ El having se utiliza para afectar a los grupos obtenidos por el group by.
 
 6. Escriba una consulta genérica por cada uno de los diagramas a continuación:
     a. SELECT * FROM table 1 RIGHT JOIN table2 ON t1.id = t2.id; 
-    b. SELECT * FROM table1 UNION SELECT * FROM table2;
+    b. SELECT * FROM table1 FULL JOIN table2;  // FULL JOIN no anda en mysql, anda en sql server
