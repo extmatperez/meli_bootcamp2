@@ -1,0 +1,87 @@
+## PARA EMPEZAR ##
+1. ¿Cuántas colecciones tiene la base de datos?
+La base de datos tiene 1 coleccion, la de restaurantes.
+
+2. ¿Cuántos documentos en cada colección? ¿Cuánto pesa cada colección?
+En cada colección hay 25.4k y cada colección pesa 11.1 mb.
+
+3. ¿Cuántos índices en cada colección? ¿Cuánto espacio ocupan los índices de cada colección?
+En cada colección hay 1 indice, el _id y pesan 266.2 kb.
+
+4. Traer un documento de ejemplo de cada colección. db.collection.find(...).pretty() nos da un formato más legible.
+db.restaurantes.find({}).pretty()
+
+5. Para cada colección, listar los campos a nivel raíz (ignorar campos dentro de documentos anidados) y sus tipos de datos.
+db.restaurantes.find({}).pretty()
+#No se como se consulta
+
+## Primera parte ## 
+1. Devolver restaurante_id, nombre, barrio y tipo_cocina pero excluyendo _id para un documento (el primero).
+db.restaurantes.findOne(
+    {}, 
+    {
+        restaurante_id: 1,
+        nombre:1,
+        barrio:1,
+        tipo_cocina: 1,
+        _id:0
+    }
+)
+
+2. Devolver restaurante_id, nombre, barrio y tipo_cocina para los primeros 3 restaurantes que contengan 'Bake' en alguna parte de su nombre.
+db.restaurantes.find(
+    {
+        nombre: /Bake/
+    }, 
+    {
+        restaurante_id: 1, 
+        nombre:1, 
+        barrio:1, 
+        tipo_cocina: 1, 
+        _id:0
+    }
+).limit(3)
+
+3. Contar los restaurantes de comida (tipo_cocina) china (Chinese) o tailandesa (Thai) del barrio (barrio) Bronx. Consultar or versus in.
+db.restaurantes.countDocuments(
+    {
+        tipo_cocina: { $in: ["Chinese", "Thai"]},
+        barrio: "Bronx"
+    }
+)
+
+## Segunda parte ##
+1. Traer 3 restaurantes que hayan recibido al menos una calificación de grado 'A' con puntaje mayor a 20. Una misma calificación debe cumplir con ambas condiciones simultáneamente; investigar el operador elemMatch.
+db.restaurantes.find(
+    {
+        grados: { $elemMatch: { grado: "A", puntaje: { $gte: 20 } } }
+    },
+    {
+        grados: 1
+    }
+)
+.limit(3)
+.pretty()
+
+2. ¿A cuántos documentos les faltan las coordenadas geográficas? En otras palabras, revisar si el tamaño de direccion.coord es 0 y contar.
+db.restaurantes.countDocuments(
+    {
+        "direccion.coord": { $size: 0 }
+    }
+)
+
+3. Devolver nombre, barrio, tipo_cocina y grados para los primeros 3 restaurantes; de cada documento solo la última calificación. Ver el operador slice.
+db.restaurantes.find(
+    {},
+    {
+        nombre: 1,
+        barrio: 1,
+        tipo_cocina: 1,
+        grados: { $slice: -1 },
+        _id: 0
+    }
+)
+.limit(3)
+
+
+
