@@ -22,6 +22,15 @@ func TestStoreSql(t *testing.T) {
 	}
 
 	userCreated, err := repo.Store(user)
-	assert.Equal(t, 3, userCreated.ID)
+	assert.NotEqual(t, 0, userCreated.ID)
+	assert.Nil(t, err)
+}
+
+func TestGetOneSql(t *testing.T) {
+	repo := users.NewRepositorySql()
+
+	userObtained, err := repo.GetOne(1)
+	assert.Equal(t, 1, userObtained.ID)
+	assert.Equal(t, "Archuby", userObtained.LastName)
 	assert.Nil(t, err)
 }
