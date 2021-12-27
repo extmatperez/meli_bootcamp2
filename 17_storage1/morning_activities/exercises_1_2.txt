@@ -1,0 +1,28 @@
+Ejercicio Nº 1
+
+Si tengo que almacenar archivos binarios (recibos) para mi sistema de procesamiento de Billing…. 
+¿Qué tipo de base de datos debo utilizar? ¿Por qué?
+* Debería decidirme por un object storage (almacenamiento basado en objetos), ya que tiene ventajas como:	
+    - Alta escalabilidad.	
+    - Estructura plana.	 
+    - Gran número de metadatos.
+
+y pocas desventajas, como podría ser que las modificaciones son lentas.
+
+
+Ejercicio Nº 2
+
+
+Si tengo que guardar todos los datos de los usuarios de MELI 
+¿Qué tipo de base de datos debo utilizar? ¿Por qué?
+* Para este caso creo que escogería un sistema de gestión de bases de datos relacionales (RDBMS), ya que este provee 
+  herramientas que:
+  - Evitan la duplicidad de registros.
+  - Garantizan integridad referencial (por ejemplo al eliminar un registro, elimina todos los registros relacionados).
+  - Favorece la normalización por ser más comprensible y aplicable.
+
+A su vez, como desventajas presentan: 
+  - Presentan deficiencias con datos gráficos, multimedia, CAD y sistemas de información geográfica.
+  - No se manipulan de forma manejable los bloques de texto como tipo de dato.
+  - Las bases de datos orientadas a objetos (BDOO) se propusieron con el objetivo de satisfacer las necesidades de las 
+    aplicaciones anteriores y así, complementar pero no sustituir a las bases de datos relacionales. 
