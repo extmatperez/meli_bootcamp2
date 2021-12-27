@@ -15,7 +15,7 @@ type RepositorySql interface {
 
 type repositorySql struct{}
 
-func NewRepo() RepositorySql {
+func NewRepositorySql() RepositorySql {
 	return &repositorySql{}
 }
 

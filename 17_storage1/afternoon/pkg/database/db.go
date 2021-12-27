@@ -8,7 +8,7 @@ import (
 
 var StorageDB *sql.DB
 
-func Init() {
+func init() {
 	datasource := "test_db_user:Test_DB#123@/bootcamp"
 
 	var err error
