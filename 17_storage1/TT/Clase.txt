@@ -1,0 +1,2 @@
+Debe ser conjuntamente usado con un driver de base de datos, y hace uso del type sql.DB para gestionar la conexion y la ejecucion.
+Puede generar una conexion o administrar un pool de conexiones.
