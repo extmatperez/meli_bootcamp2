@@ -6,11 +6,12 @@ import (
 
 	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/17_storage1/TurnoTarde/db"
 	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/17_storage1/TurnoTarde/internal/transaccion/models"
+
 )
 
 type RepositorySql interface{
 	Store(transaction models.Transaction) (models.Transaction,error)
-	GetByCodigo(codigo string) (models.Transaction,error)
+	GetById(id int) (models.Transaction,error)
 
 }
 
@@ -26,7 +27,7 @@ func NewRepositorySQL() RepositorySql{
 const (
 	InsertOne = "INSERT INTO transaction(Codigo,Moneda,Monto,Emisor,Receptor,Fecha)" +
 										"VALUES(?, ?, ?, ?, ?, ?)"
-	GetByCodigo = "SELECT (Id, Codigo,Moneda,Monto,Emisor,Receptor,Fecha) FROM transaction WHERE Codigo=?"
+	GetById= "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction WHERE Id=?"
 )
 
 
@@ -50,16 +51,16 @@ func (r *repositorySQL) Store(transaction models.Transaction) (models.Transactio
 
 }
 
-func (r *repositorySQL) GetByCodigo(codigo string) (models.Transaction,error){
+func (r *repositorySQL) GetById(id int) (models.Transaction,error){
 	var transaction models.Transaction
 	db := db.StorageDB
-	rows, err := db.Query(GetByCodigo, codigo)
+	rows, err := db.Query(GetById, id)
 	if err != nil {
 	log.Println(err)
 	return transaction,err
 	}
 	for rows.Next() {
-	if err := rows.Scan(&transaction.Codigo,&transaction.Moneda,&transaction.Monto,&transaction.Emisor,
+	if err := rows.Scan(&transaction.ID,&transaction.Codigo,&transaction.Moneda,&transaction.Monto,&transaction.Emisor,
 		&transaction.Receptor,&transaction.Fecha); err != nil {
 	log.Println(err.Error())
 	return transaction,err

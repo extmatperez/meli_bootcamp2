@@ -164,3 +164,27 @@ func TestInsert(t *testing.T){
 	assert.Equal(t,transaction.Receptor,tranUpdate.Receptor)
 	assert.Nil(t,err)
 }
+
+
+func TestGetById(t *testing.T){
+
+	transaction := models.Transaction{
+		Codigo: "24safdsadfasdf385",
+		Moneda: "Peso Colombiano",
+		Monto: "$8228845654645678",
+		Emisor: "Luis",
+		Receptor: "Perez",
+		Fecha: "01/01/2001",
+	   }
+
+	repo := NewRepositorySQL()
+	tranUpdate,err := repo.GetById(1)
+
+	assert.Equal(t,transaction.Codigo,tranUpdate.Codigo)
+	assert.Equal(t,transaction.Moneda,tranUpdate.Moneda)
+	assert.Equal(t,transaction.Moneda,tranUpdate.Moneda)
+	assert.Equal(t,transaction.Emisor,tranUpdate.Emisor)
+	assert.Equal(t,transaction.Emisor,tranUpdate.Emisor)
+	assert.Equal(t,transaction.Receptor,tranUpdate.Receptor)
+	assert.Nil(t,err)
+}
