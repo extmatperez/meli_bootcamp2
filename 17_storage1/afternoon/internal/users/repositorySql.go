@@ -9,6 +9,7 @@ import (
 )
 
 type RepositorySql interface {
+	GetOne(id int) (models.User, error)
 	Store(user models.User) (models.User, error)
 }
 
@@ -16,6 +17,28 @@ type repositorySql struct{}
 
 func NewRepo() RepositorySql {
 	return &repositorySql{}
+}
+
+func (s *repositorySql) GetOne(id int) (models.User, error) {
+	var user models.User
+	db := db.StorageDB
+
+	rows, err := db.Query("SELECT * FROM users WHERE id = ?", id)
+
+	if err != nil {
+		log.Println(err)
+		return user, err
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&user.ID, &user.Name, &user.LastName, &user.Email, &user.Age, &user.Height, &user.Active, &user.Created)
+		if err != nil {
+			log.Println(err)
+			return user, err
+		}
+	}
+
+	return user, nil
 }
 
 func (s *repositorySql) Store(user models.User) (models.User, error) {
