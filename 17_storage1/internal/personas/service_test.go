@@ -38,7 +38,7 @@ func TestGetOneServiceSQL(t *testing.T) {
 
 	service := NewServiceSQL(repo)
 
-	personaCargada := service.GetOne(2)
+	personaCargada := service.GetOne(1)
 
 	assert.Equal(t, personaNueva.Nombre, personaCargada.Nombre)
 	assert.Equal(t, personaNueva.Apellido, personaCargada.Apellido)
@@ -49,8 +49,8 @@ func TestUpdateServiceSQL(t *testing.T) {
 	//Arrange
 	personaUpdate := models.Persona{
 		ID:       2,
-		Nombre:   "Juan",
-		Apellido: "Rivera",
+		Nombre:   "Rogelio",
+		Apellido: "Fernandez",
 		Edad:     25,
 	}
 
@@ -58,11 +58,11 @@ func TestUpdateServiceSQL(t *testing.T) {
 
 	service := NewServiceSQL(repo)
 
-	personaCargada, _ := service.Update(personaUpdate)
+	personaCargada, err := service.Update(personaUpdate)
 
 	assert.Equal(t, personaUpdate.Nombre, personaCargada.Nombre)
 	assert.Equal(t, personaUpdate.Apellido, personaCargada.Apellido)
-	// assert.Nil(t, misPersonas)
+	assert.Nil(t, err)
 }
 
 func TestUpdateServiceSQL_Failed(t *testing.T) {
@@ -80,6 +80,6 @@ func TestUpdateServiceSQL_Failed(t *testing.T) {
 
 	_, err := service.Update(personaUpdate)
 
-	assert.Equal(t, "No se encontro la persona", err.Error())
+	assert.Equal(t, "no se encontro la persona", err.Error())
 	// assert.Nil(t, misPersonas)
 }

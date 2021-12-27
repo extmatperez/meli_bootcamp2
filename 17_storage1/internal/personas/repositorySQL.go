@@ -75,7 +75,7 @@ func (r *repositorySQL) Update(persona models.Persona) (models.Persona, error) {
 	}
 	filasActualizadas, _ := result.RowsAffected()
 	if filasActualizadas == 0 {
-		return models.Persona{}, errors.New("No se encontro la persona")
+		return models.Persona{}, errors.New("no se encontro la persona")
 	}
 
 	return persona, nil

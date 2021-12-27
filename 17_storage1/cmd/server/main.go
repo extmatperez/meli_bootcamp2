@@ -4,7 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/11_testing2/go-web/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/17_storage1/cmd/server/handler"
+	personas "github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/17_storage1/internal/personas"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -55,10 +56,8 @@ func main() {
 	}
 
 	router := gin.Default()
-
-	db := store.New(store.FileType, "./personasSalida.json")
-	repo := personas.NewRepository(db)
-	service := personas.NewService(repo)
+	repo := personas.NewRepositorySQL()
+	service := personas.NewServiceSQL(repo)
 	controller := handler.NewPersona(service)
 
 	//docs.SwaggerInfo.Host = os.Getenv("HOST")
