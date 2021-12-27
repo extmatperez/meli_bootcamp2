@@ -1,0 +1,16 @@
+1- JOIN es una sentencia que sirve para combinar datos de una tabla con otras a partir de condiciones definidas.
+
+2- INNER JOIN: Trae algunos datos en comun entre un par de tablas.
+FULL JOIN: Trae TODOS los datos entre un par de tablas.
+
+3- El GROUP BY agrupa los datos segun las columnas que se le pasen y las condiciones que se definan.
+
+4- HAVING cumple la funcion del WHERE pero al resultado de utilizar GROUP BY.
+
+5- Tabla A: INNER JOIN
+Tabla B: LEFT JOIN
+
+6- Tabla A: select * from series as se right join genres as gen on se.genre_id = gen.id;
+Tabla B: select * from series as se full join genres as gen on se.genre_id = gen.id;
+
+
