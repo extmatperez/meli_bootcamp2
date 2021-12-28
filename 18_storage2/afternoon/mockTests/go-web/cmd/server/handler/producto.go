@@ -4,8 +4,8 @@ import (
 	"os"
 	"strconv"
 
-	productos "github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/internal/productos"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/pkg/web"
+	productos "github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/mockTests/go-web/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/mockTests/go-web/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 

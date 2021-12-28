@@ -8,10 +8,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/cmd/server/handler"
-	internal "github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/internal/productos"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/pkg/store"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/pkg/web"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/txdbTests/go-web/cmd/server/handler"
+	internal "github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/txdbTests/go-web/internal/productos"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/txdbTests/go-web/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/txdbTests/go-web/pkg/web"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )

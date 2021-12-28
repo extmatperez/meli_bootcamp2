@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/mockTests/go-web/internal/models"
 	"github.com/stretchr/testify/assert"
 )
 

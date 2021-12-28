@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/txdbTests/go-web/internal/models"
 )
 
 const (

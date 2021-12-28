@@ -1,6 +1,6 @@
 package internal
 
-import "github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/go-web/internal/models"
+import "github.com/extmatperez/meli_bootcamp2/18_storage2/afternoon/mockTests/go-web/internal/models"
 
 type ServiceSQLMock interface {
 	Store(product models.Producto) (models.Producto, error)
