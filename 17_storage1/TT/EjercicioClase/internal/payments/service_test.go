@@ -1,9 +1,12 @@
 package internal
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/12_testing3/TM/Ejercicios/pkg/store"
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/17_storage1/TT/EjercicioClase/internal/models"
@@ -36,14 +39,30 @@ var pays_bis string = `[
 
 var pays_bis_sql string = `[
 	{
-		"id": 1,
+		"id": 11,
 		"codigo": "AAA001",
 		"moneda": "ARS",
-		"monto": 956.56,
+		"monto": 895.45,
 		"emisor": "Rodrigo Vega",
 		"receptor": "Cristian Lopez",
-		"fecha": "2021-12-17"
+		"fecha": "2021-12-28"
 	   }]`
+
+var pays_bis_sql_full_data string = `[
+		{
+			"id": 12,
+			"codigo": "AAA001",
+			"moneda": "ARS",
+			"monto": 956.56,
+			"emisor": "Rodrigo Vega",
+			"receptor": "Cristian Lopez",
+			"fecha": "2021-12-17"
+			"box_closing": {
+				"id": 1,
+				"responsable": "Federico Gutierrez",
+				"fecha": "2021-12-27"
+			}
+		   }]`
 
 func (s *StubRepository) GetAll() ([]Payment, error) {
 	var out []Payment
@@ -349,7 +368,7 @@ func TestDeleteErrorServiceMock(t *testing.T) {
 	assert.Error(t, err)
 }
 
-// AQUI COMIENZAN LOS TESTS DEL SERVICIO CON SQL.
+// AQUI COMIENZAN LOS TESTS DEL SERVICIO CON SQL, ES DECIR SE USARA LA ESTRUCTURA DE SERVICESQL.
 func TestStoreServiceSql(t *testing.T) {
 	newPayment := models.Payment{
 		Codigo:   "AAA001",
@@ -373,8 +392,9 @@ func TestStoreServiceSql(t *testing.T) {
 
 func TestGetByIdServiceSql(t *testing.T) {
 	newPayment := models.Payment{
+		Id:       11,
 		Codigo:   "AAA001",
-		Moneda:   "ARS",
+		Moneda:   "R$$",
 		Monto:    956.56,
 		Emisor:   "Rodrigo Vega",
 		Receptor: "Cristian Lopez",
@@ -385,7 +405,7 @@ func TestGetByIdServiceSql(t *testing.T) {
 
 	service := NewServiceSql(repo)
 
-	obtainedPayment := service.GetById(1)
+	obtainedPayment := service.GetById(11)
 
 	assert.Equal(t, newPayment.Codigo, obtainedPayment.Codigo)
 	assert.Equal(t, newPayment.Moneda, obtainedPayment.Moneda)
@@ -420,20 +440,35 @@ func TestGetAllPaymentsServiceSql(t *testing.T) {
 
 	service := NewServiceSql(repo)
 
-	obtainedPayments := service.GetAllPayments()
+	obtainedPayments, _ := service.GetAllPayments()
 
 	assert.Equal(t, expectedPayments, obtainedPayments)
+	assert.True(t, len(obtainedPayments) >= 0)
+}
+
+func TestGetAllPaymentsServiceSql_Failed(t *testing.T) {
+	dataByte := []byte(pays_bis_sql)
+	var expectedPayments []models.Payment
+	json.Unmarshal(dataByte, &expectedPayments)
+
+	repo := NewRepositorySql()
+
+	service := NewServiceSql(repo)
+
+	obtainedPayments, _ := service.GetAllPayments()
+
+	assert.NotEqual(t, expectedPayments, obtainedPayments)
 }
 
 func TestUpdateServiceSql(t *testing.T) {
 	expectedPayment := models.Payment{
-		Id:       1,
+		Id:       11,
 		Codigo:   "AAA001",
-		Moneda:   "R$$",
-		Monto:    float64(95.80),
+		Moneda:   "ARS",
+		Monto:    float64(895.45),
 		Emisor:   "Rodrigo Vega",
-		Receptor: "Cristiano Lope",
-		Fecha:    "2021-12-18",
+		Receptor: "Cristian Lopez",
+		Fecha:    "2021-12-28",
 	}
 
 	repo := NewRepositorySql()
@@ -466,4 +501,60 @@ func TestUpdateServiceSql_Failed(t *testing.T) {
 	_, err := service.Update(expectedPayment)
 
 	assert.Equal(t, "No se encontró la transacción.", err.Error())
+}
+
+func TestDeleteServiceSql(t *testing.T) {
+	newPayment := models.Payment{
+		Codigo:   "AAA001",
+		Moneda:   "ARS",
+		Monto:    956.56,
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Cristian Lopez",
+		Fecha:    "2021-12-17",
+	}
+
+	repo := NewRepositorySql()
+
+	service := NewServiceSql(repo)
+
+	_, err := service.Store(newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+
+	err = service.Delete(newPayment.Id)
+	assert.Nil(t, err)
+}
+
+func TestDeleteServiceSql_Failed(t *testing.T) {
+	repo := NewRepositorySql()
+
+	service := NewServiceSql(repo)
+
+	err := service.Delete(0)
+	assert.Equal(t, "No se encontró la transacción.", err.Error())
+}
+
+func TestGetByIdWithContextServiceSql(t *testing.T) {
+	newPayment := models.Payment{
+		Id:       12,
+		Codigo:   "AAA001",
+		Moneda:   "ARS",
+		Monto:    956.56,
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Cristian Lopez",
+		Fecha:    "2021-12-17",
+	}
+
+	repo := NewRepositorySql()
+
+	service := NewServiceSql(repo)
+
+	// Definimos el context.
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	obtainedPayment, err := service.GetByIdWithContext(ctx, 12)
+
+	fmt.Println(err)
+
+	assert.Equal(t, newPayment.Codigo, obtainedPayment.Codigo)
+	assert.Equal(t, newPayment.Moneda, obtainedPayment.Moneda)
 }
