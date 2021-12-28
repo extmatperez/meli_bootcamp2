@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"database/sql"
 	"log"
 
@@ -12,6 +13,8 @@ type RepositorySQL interface{
 	GetByName(name string) models.Transaccion
 	Store(transaccion models.Transaccion) (models.Transaccion, error)
 	GetAll() []models.Transaccion
+
+	UpdateWithContext(ctx context.Context, transaccion models.Transaccion)(models.Transaccion, error)
 }
 
 type repositorySQL struct{}
@@ -85,4 +88,27 @@ func (r *repositorySQL) GetAll() []models.Transaccion {
 		transaccionesLeidas = append(transaccionesLeidas, transaccionLeida)
 	}
 	return transaccionesLeidas
+}
+
+func (r *repositorySQL) UpdateWithContext(ctx context.Context, transaccion models.Transaccion)(models.Transaccion, error){
+	db := db.StorageDB
+
+	stmt, err := db.PrepareContext(ctx, "UPDATE transacciones SET codigo_transaccion = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha_transaccion = ? WHERE id = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(transaccion.CodigoTransaccion, transaccion.Moneda, transaccion.Monto, transaccion.Emisor, transaccion.Receptor, transaccion.FechaTransaccion, transaccion.ID)
+
+	if err != nil {
+		return models.Transaccion{}, err
+	}
+
+	filasActualizadas, _ := result.RowsAffected()
+
+	if filasActualizadas == 0{
+		return models.Transaccion{}, err
+	}
+
+	return transaccion, nil
 }
