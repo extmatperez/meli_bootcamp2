@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"context"
 	"encoding/json"
+	"strconv"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/12_testing3/PracticaTM/pkg/store"
@@ -72,7 +74,7 @@ func TestStoreServiceSQL(t *testing.T) {
 	//Arrange
 	transaccionNueva := models.Transaccion{
 		Moneda:   "Pesos",
-		Monto:    6500.45,
+		Monto:    65002.45,
 		Emisor:   "Facundo",
 		Receptor: "Matias",
 	}
@@ -121,4 +123,81 @@ func TestGetByNameSQL(t *testing.T) {
 
 	assert.Equal(t, len(transaccionesFacundo), 3)
 	assert.Equal(t, len(transaccionesRebeca), 2)
+}
+
+func TestGetAllServiceSQL(t *testing.T) {
+	//Arrange
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	misPersonasDB, err := service.GetAll()
+
+	assert.Nil(t, err)
+	assert.True(t, len(misPersonasDB) > 0)
+}
+
+func TestDeleteServiceSQL(t *testing.T) {
+	//Arrange
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	transaccionNueva := models.Transaccion{
+		Moneda:   "Pesos",
+		Monto:    6500.45,
+		Emisor:   "Facundo",
+		Receptor: "Matias",
+	}
+
+	transaccionCreada, _ := service.Store(transaccionNueva.Moneda, transaccionNueva.Monto, transaccionNueva.Emisor, transaccionNueva.Receptor)
+
+	idTransaccion, _ := strconv.Atoi(transaccionCreada.CodTransaccion)
+	err := service.Delete(idTransaccion)
+
+	assert.Nil(t, err)
+}
+
+func TestDeleteNotFoundServiceSQL(t *testing.T) {
+	//Arrange
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	err := service.Delete(0)
+
+	assert.Error(t, err)
+	assert.Equal(t, "no se encontro la transaccion", err.Error())
+}
+
+func TestGetFullDataServiceSQL(t *testing.T) {
+	//Arrange
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	misPersonasDB, err := service.GetFullData()
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Cordoba", misPersonasDB[1].Ciudad.Nombre)
+}
+
+func TestGetOneContextServiceSQL(t *testing.T) {
+	//Arrange
+	transaccionNueva := models.Transaccion{
+		Moneda:   "Pesos",
+		Monto:    6500.45,
+		Emisor:   "Facundo",
+		Receptor: "Matias",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	transaccionCargada, err := service.GetOneWithContext(context.Background(), 1)
+
+	assert.Equal(t, transaccionNueva.Moneda, transaccionCargada.Moneda)
+	assert.Equal(t, transaccionNueva.Monto, transaccionCargada.Monto)
+	assert.Nil(t, err)
 }
