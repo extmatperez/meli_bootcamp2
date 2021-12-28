@@ -4,14 +4,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/cmd/server/handler"
-	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/internal/users"
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/afternoon/cmd/server/handler"
+	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/afternoon/internal/users"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/afternoon/pkg/store"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/8_goweb3/afternoon/docs"
+	"github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/11_testing2/afternoon/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

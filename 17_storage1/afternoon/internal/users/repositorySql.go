@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"database/sql"
 	"log"
 
@@ -19,7 +20,7 @@ type RepositorySql interface {
 	GetAll() ([]models.User, error)
 	GetOne(id int) (models.User, error)
 	Store(user models.User) (models.User, error)
-	Update(user models.User) (models.User, error)
+	Update(user models.User, ctx context.Context) (models.User, error)
 }
 
 type repositorySql struct{}
@@ -94,7 +95,7 @@ func (s *repositorySql) Store(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func (s *repositorySql) Update(user models.User) (models.User, error) {
+func (s *repositorySql) Update(user models.User, ctx context.Context) (models.User, error) {
 	db := db.StorageDB
 
 	stmt, err := db.Prepare(updateQuery)
@@ -104,7 +105,7 @@ func (s *repositorySql) Update(user models.User) (models.User, error) {
 		return models.User{}, err
 	}
 
-	_, err = stmt.Exec(user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created, user.ID)
+	_, err = stmt.ExecContext(ctx, user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created, user.ID)
 	if err != nil {
 		return models.User{}, err
 	}
