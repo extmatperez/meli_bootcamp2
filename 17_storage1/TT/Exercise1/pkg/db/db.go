@@ -13,8 +13,9 @@ var (
 )
 
 func init() {
-	dataSource := "root:root@tcp(localhost:3306)/dbpersonas"
-	StorageDB, err := sql.Open("mysql", dataSource)
+	dataSource := "root@tcp(localhost:3306)/dbUser"
+	var err error
+	StorageDB, err = sql.Open("mysql", dataSource)
 
 	if err != nil {
 		panic(err)

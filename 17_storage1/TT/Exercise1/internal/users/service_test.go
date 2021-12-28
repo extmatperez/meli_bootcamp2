@@ -276,3 +276,24 @@ func TestDeleteServiceMock(t *testing.T) {
 
 	assert.Equal(t, 1, len(allUsers))
 }
+
+func TestStoreServiceSQL(t *testing.T) {
+	newUser := User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	userCreated, _ := service.Store(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	assert.Equal(t, newUser.FirstName, userCreated.FirstName)
+	assert.Equal(t, newUser.LastName, userCreated.LastName)
+}
