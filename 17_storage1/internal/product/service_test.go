@@ -66,6 +66,9 @@ func TestStore(t *testing.T) {
 	assert.Equal(t, expectedResult.Price, result.Price, "result price should be equal to expected result price")
 	assert.Equal(t, expectedResult.Description, result.Description, "result description should be equal to expected result description")
 	assert.Nil(t, err, "error should be nil")
+
+	err = service.Delete(context.Background(), result.Id)
+	assert.Nil(t, err, "error should be nil")
 }
 
 func TestUpdate(t *testing.T) {

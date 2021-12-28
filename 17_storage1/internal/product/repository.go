@@ -91,7 +91,7 @@ func (r *repository) GetByName(ctx context.Context, name string) ([]domain.Produ
 func (r *repository) Store(ctx context.Context, product domain.Product) (domain.Product, error) {
 	db := database.StorageDB
 
-	stmt, err := db.Prepare(StoreStatement)
+	stmt, err := db.PrepareContext(ctx, StoreStatement)
 	if err != nil {
 		return domain.Product{}, err
 	}
@@ -116,7 +116,7 @@ func (r *repository) Store(ctx context.Context, product domain.Product) (domain.
 func (r *repository) Update(ctx context.Context, product domain.Product) (domain.Product, error) {
 	db := database.StorageDB
 
-	stmt, err := db.Prepare(UpdateStatement)
+	stmt, err := db.PrepareContext(ctx, UpdateStatement)
 	if err != nil {
 		return domain.Product{}, err
 	}
@@ -139,7 +139,7 @@ func (r *repository) Update(ctx context.Context, product domain.Product) (domain
 func (r *repository) Delete(ctx context.Context, id int) error {
 	db := database.StorageDB
 
-	stmt, err := db.Prepare(DeleteStatement)
+	stmt, err := db.PrepareContext(ctx, DeleteStatement)
 	if err != nil {
 		return err
 	}
