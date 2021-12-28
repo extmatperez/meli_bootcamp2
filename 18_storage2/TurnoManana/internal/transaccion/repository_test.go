@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -208,5 +209,30 @@ func TestDeletelSql(t *testing.T) {
 	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
 
 	err = repo.Delete(tranUpdate.ID)
+	assert.Nil(t, err)
+}
+
+
+func TestUpdateSql(t *testing.T) {
+
+	transaction := models.Transaction{
+		ID: 2,
+		Codigo:   "878885",
+		Moneda:   "Peso ARGENTINO",
+		Monto:    "$55",
+		Emisor:   "Luis",
+		Receptor: "jose",
+		Fecha:    "01/01/2001",
+	}
+
+	repo := NewRepositorySQL()
+	tranUpdate, err := repo.Update(transaction,context.Background())
+
+	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
+	assert.Equal(t, transaction.Moneda, tranUpdate.Moneda)
+	assert.Equal(t, transaction.Moneda, tranUpdate.Moneda)
+	assert.Equal(t, transaction.Emisor, tranUpdate.Emisor)
+	assert.Equal(t, transaction.Emisor, tranUpdate.Emisor)
+	assert.Equal(t, transaction.Receptor, tranUpdate.Receptor)
 	assert.Nil(t, err)
 }

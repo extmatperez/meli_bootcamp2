@@ -31,7 +31,7 @@ const (
 	GetById = "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction WHERE Id=?"
 	GetAll  = "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction"
 	Delete  = "DELETE FROM transaction WHERE Id=?"
-	Update = "UPDATE transaction SET Codigo= ?,Moneda= ?,Monto= ?,Emisor= ?,Receptor= ?,Fecha= ?" +
+	Update = "UPDATE transaction SET Codigo=?,Moneda=?,Monto=?,Emisor=?,Receptor=?,Fecha=? " +
 	"WHERE Id= ?"
 )
 
