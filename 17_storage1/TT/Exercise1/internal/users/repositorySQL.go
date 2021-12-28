@@ -10,7 +10,7 @@ import (
 
 type RepositorySQL interface {
 	Store(user models.User) (models.User, error)
-	// GetOne(id int) models.User
+	GetOne(id int) models.User
 	// Update(user models.User) (models.User, error)
 }
 
@@ -39,25 +39,25 @@ func (r *repositorySQL) Store(user models.User) (models.User, error) {
 	return user, nil
 }
 
-// func (r *repositorySQL) GetOne(id int) models.User {
-// 	db := db.StorageDB
-// 	var userRead models.User
-// 	rows, err := db.Query("SELECT id,first_name, last_name FROM users WHERE id = ?", id)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 		return userRead
-// 	}
-// 	for rows.Next() {
-// 		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 			return userRead
-// 		}
-// 		// // En caso de querer devolver mas de uno, por ejemplo un getFirstName
-// 		// myUsers = append(myUsers, userRead)
-// 	}
-// 	return userRead
-// }
+func (r *repositorySQL) GetOne(id int) models.User {
+	db := db.StorageDB
+	var userRead models.User
+	rows, err := db.Query("SELECT id,first_name, last_name FROM users WHERE id = ?", id)
+	if err != nil {
+		log.Fatal(err)
+		return userRead
+	}
+	for rows.Next() {
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName)
+		if err != nil {
+			log.Fatal(err)
+			return userRead
+		}
+		// // En caso de querer devolver mas de uno, por ejemplo un getFirstName
+		// myUsers = append(myUsers, userRead)
+	}
+	return userRead
+}
 
 // func (r *repositorySQL) Update(user models.User) (models.User, error) {
 // 	db := db.StorageDB

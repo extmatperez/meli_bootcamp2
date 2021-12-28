@@ -4,6 +4,7 @@ import "github.com/extmatperez/meli_bootcamp2/17_storage1/TT/Exercise1/internal/
 
 type ServiceSQL interface {
 	Store(first_name, last_name, email string, age, height int, active bool, cration_date string) (models.User, error)
+	GetOne(id int) models.User
 }
 
 type serviceSQL struct {
@@ -22,4 +23,8 @@ func (ser *serviceSQL) Store(first_name, last_name, email string, age, height in
 		return models.User{}, err
 	}
 	return userCreated, nil
+}
+
+func (ser *serviceSQL) GetOne(id int) models.User {
+	return ser.repository.GetOne(id)
 }

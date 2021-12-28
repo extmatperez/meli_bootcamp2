@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/extmatperez/meli_bootcamp2/17_storage1/TT/Exercise1/internal/models"
 	"github.com/extmatperez/meli_bootcamp2/17_storage1/TT/Exercise1/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
@@ -278,7 +279,7 @@ func TestDeleteServiceMock(t *testing.T) {
 }
 
 func TestStoreServiceSQL(t *testing.T) {
-	newUser := User{
+	newUser := models.User{
 		FirstName:   "Juan",
 		LastName:    "Orfali",
 		Email:       "Carsan@cloudflare.com",
@@ -296,4 +297,25 @@ func TestStoreServiceSQL(t *testing.T) {
 
 	assert.Equal(t, newUser.FirstName, userCreated.FirstName)
 	assert.Equal(t, newUser.LastName, userCreated.LastName)
+}
+
+func TestGetOneServiceSQL(t *testing.T) {
+	newUser := models.User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	userLoader := service.GetOne(1)
+
+	assert.Equal(t, newUser.FirstName, userLoader.FirstName)
+	assert.Equal(t, newUser.LastName, userLoader.LastName)
 }
