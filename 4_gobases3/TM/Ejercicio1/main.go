@@ -35,10 +35,15 @@ func main() {
 	err = os.WriteFile("./productos.txt", listaFormateado, 0644)
 	data, err := os.ReadFile("./productos.txt")
 	fmt.Println(err)
-	fmt.Println(string(data))
+	//fmt.Println(string(data))
 
 	var listRead []Products
 	json.Unmarshal(data, &listRead)
-	fmt.Printf("El archivo contiene:\n %v\n", listRead)
+	for i := 0; i < len(listRead); i++ {
+		fmt.Printf("%+v,", listRead[i])
+	}
+	fmt.Println()
+
+	//fmt.Printf("El archivo contiene:\n %+v\n", listRead[0])
 
 }
