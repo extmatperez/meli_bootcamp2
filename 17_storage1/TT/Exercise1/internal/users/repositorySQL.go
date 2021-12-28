@@ -13,6 +13,7 @@ type RepositorySQL interface {
 	Store(user models.User) (models.User, error)
 	GetOne(id int) models.User
 	Update(user models.User) (models.User, error)
+	GetAll() ([]models.User, error)
 }
 
 type repositorySQL struct{}
@@ -78,4 +79,25 @@ func (r *repositorySQL) Update(user models.User) (models.User, error) {
 		// return models.User{FirstName: user.FirstName, LastName: user.LastName, Age: user.Age, Height: user.Height, Active: user.Active, CrationDate: user.CrationDate}, nil
 	}
 	return user, nil
+}
+
+func (r *repositorySQL) GetAll() ([]models.User, error) {
+	db := db.StorageDB
+	var myUsers []models.User
+	var userRead models.User
+	rows, err := db.Query("SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users")
+	if err != nil {
+		log.Fatal(err)
+		return myUsers, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
+		if err != nil {
+			log.Fatal(err)
+			return myUsers, err
+		}
+		// En caso de querer devolver mas de uno, por ejemplo un getFirstName
+		myUsers = append(myUsers, userRead)
+	}
+	return myUsers, nil
 }
