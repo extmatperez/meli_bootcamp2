@@ -8,7 +8,9 @@ import (
 
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/internal/transaccion/models"
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoTarde/db"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoTarde/internal/transaccion/models"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -39,6 +41,10 @@ var Datos string = `[{
 	"receptor": "sinnott2",
 	"fecha": "1/4/2021"
    }]`
+
+func GetColumns() []string {
+	return []string{"ID", "Codigo", "Moneda", "Monto", "Emisor", "Receptor", "Fecha"}
+}
 
 type StubStore struct {
 	useMethodRead bool
@@ -136,7 +142,7 @@ func TestUpdateCodigoAndMonto(t *testing.T) {
 }
 
 func TestInsert(t *testing.T) {
-
+	db := db.StorageDB
 	transaction := models.Transaction{
 		Codigo:   "24safdsadfasdf385",
 		Moneda:   "Peso Colombiano",
@@ -146,7 +152,7 @@ func TestInsert(t *testing.T) {
 		Fecha:    "01/01/2001",
 	}
 
-	repo := NewRepositorySQL()
+	repo := NewRepositorySQL(db)
 	tranUpdate, err := repo.Store(transaction)
 
 	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
@@ -168,8 +174,8 @@ func TestGetById(t *testing.T) {
 		Receptor: "Perez",
 		Fecha:    "01/01/2001",
 	}
-
-	repo := NewRepositorySQL()
+	db := db.StorageDB
+	repo := NewRepositorySQL(db)
 	tranUpdate, err := repo.GetById(1)
 
 	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
@@ -182,8 +188,8 @@ func TestGetById(t *testing.T) {
 }
 
 func TestGetAllSql(t *testing.T) {
-
-	repo := NewRepositorySQL()
+	db := db.StorageDB
+	repo := NewRepositorySQL(db)
 	transUpdate, err := repo.GetAll()
 	fmt.Println(transUpdate)
 	assert.NotNil(t, transUpdate)
@@ -192,7 +198,8 @@ func TestGetAllSql(t *testing.T) {
 }
 func TestDeletelSql(t *testing.T) {
 
-	repo := NewRepositorySQL()
+	db := db.StorageDB
+	repo := NewRepositorySQL(db)
 
 	transaction := models.Transaction{
 		Codigo:   "24safdsadfasdf385",
@@ -224,7 +231,8 @@ func TestUpdateSql(t *testing.T) {
 		Fecha:    "01/01/2001",
 	}
 
-	repo := NewRepositorySQL()
+	db := db.StorageDB
+	repo := NewRepositorySQL(db)
 	tranUpdate, err := repo.Update(transaction, context.Background())
 
 	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
@@ -234,4 +242,138 @@ func TestUpdateSql(t *testing.T) {
 	assert.Equal(t, transaction.Emisor, tranUpdate.Emisor)
 	assert.Equal(t, transaction.Receptor, tranUpdate.Receptor)
 	assert.Nil(t, err)
+}
+
+func TestInsertMock(t *testing.T) {
+
+	transaction := models.Transaction{
+		Codigo:   "24safdsadfasdf385",
+		Moneda:   "Peso Colombiano",
+		Monto:    "$8228845654645678",
+		Emisor:   "Luis",
+		Receptor: "Perez",
+		Fecha:    "01/01/2001",
+	}
+
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	mock.ExpectPrepare(InsertOneTest)
+	mock.ExpectExec(InsertOneTest).WillReturnResult(sqlmock.NewResult(5, 1))
+
+	repo := NewRepositorySQL(db)
+	tranUpdate, err := repo.Store(transaction)
+
+	// rows := sqlmock.NewRows(GetColumns())
+	// rows.AddRow(1, "24safdsadfasdf385", "Peso Colombiano", "$8228845654645678", "Luis",
+	// 	"Perez", "01/01/2001")
+
+	assert.Equal(t, 5, tranUpdate.ID)
+	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
+	assert.Equal(t, transaction.Moneda, tranUpdate.Moneda)
+	assert.Equal(t, transaction.Emisor, tranUpdate.Emisor)
+	assert.Equal(t, transaction.Receptor, tranUpdate.Receptor)
+	assert.Nil(t, err)
+}
+
+func TestGetOneMock(t *testing.T) {
+
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+	columns := GetColumns()
+	rows := sqlmock.NewRows(columns)
+	rows.AddRow(1, "24safdsadfasdf385", "Peso Colombiano", "$8228845654645678", "Luis",
+		"Perez", "01/01/2001")
+
+	mock.ExpectQuery(GetByIdTest).WithArgs(1).WillReturnRows(rows)
+
+	repo := NewRepositorySQL(db)
+	tranRecived, err := repo.GetById(1)
+
+	assert.Equal(t, 1, tranRecived.ID)
+	assert.Equal(t, "24safdsadfasdf385", tranRecived.Codigo)
+	assert.Nil(t, err)
+}
+
+func TestUpdateMock(t *testing.T) {
+	transactionUpdate := models.Transaction{
+		ID:       5,
+		Codigo:   "ca455",
+		Moneda:   "PesoColombianosadfsad",
+		Monto:    "$8",
+		Emisor:   "L",
+		Receptor: "P",
+		Fecha:    "01/01/2001",
+	}
+
+
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	 columns := GetColumns()
+	 rows := sqlmock.NewRows(columns)
+
+	rows.AddRow(5, "24safdsadfasdf385", "Peso Colombiano", "$8228845654645678", "Luis",
+	 	"Perez", "01/01/2001")
+
+	 mock.ExpectQuery(GetByIdTest).WithArgs(5).WillReturnRows(rows)
+	
+	mock.ExpectPrepare(UpdateTest)
+	mock.ExpectExec(UpdateTest).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	repo := NewRepositorySQL(db)
+
+	//compruebo que existe tran
+	tranGet,err := repo.GetById(5)
+
+	assert.NoError(t, err)
+	assert.Equal(t,5,tranGet.ID)
+
+	// acutalizo tran
+	tranUpdate, err := repo.Update(transactionUpdate, context.Background())
+
+	assert.Equal(t, 5, tranUpdate.ID)
+	assert.Equal(t, transactionUpdate.Codigo, tranUpdate.Codigo)
+	assert.Equal(t, transactionUpdate.Moneda, tranUpdate.Moneda)
+	assert.Equal(t, transactionUpdate.Emisor, tranUpdate.Emisor)
+	assert.Equal(t, transactionUpdate.Receptor, tranUpdate.Receptor)
+	assert.Nil(t, err)
+}
+
+func TestDeleteMock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	columns := GetColumns()
+	rows := sqlmock.NewRows(columns)
+
+	rows.AddRow(5, "24safdsadfasdf385", "Peso Colombiano", "$8228845654645678", "Luis",
+		"Perez", "01/01/2001")
+
+	mock.ExpectQuery(GetByIdTest).WithArgs(5).WillReturnRows(rows)
+
+	prep := mock.ExpectPrepare(DeleteTest)
+	prep.ExpectExec().WithArgs(5).WillReturnResult(sqlmock.NewResult(0, 1))
+	
+	repo := NewRepositorySQL(db)
+
+	//compruebo que existe
+	tranGet,err := repo.GetById(5)
+
+	assert.NoError(t, err)
+	assert.Equal(t,5,tranGet.ID)
+
+	// elimino tran
+	err = repo.Delete(5)
+	assert.NoError(t, err)
+
+	// compruebo que no existe
+	tranGet,err = repo.GetById(5)
+	assert.Error(t, err)
+	assert.Empty(t,tranGet)
+
 }

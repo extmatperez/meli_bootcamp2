@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/cmd/server/handler"
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/docs"
-	tran "github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/internal/transaccion"
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoTarde/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoTarde/docs"
+	tran "github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoTarde/internal/transaccion"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoTarde/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
