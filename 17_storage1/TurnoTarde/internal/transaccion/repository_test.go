@@ -192,7 +192,19 @@ func TestGetAllSql(t *testing.T) {
 func TestDeletelSql(t *testing.T) {
 
 	repo := NewRepositorySQL()
-	err := repo.Delete(1)
+	transaction := models.Transaction{
+		Codigo:   "24safdsadfasdf385",
+		Moneda:   "Peso Colombiano",
+		Monto:    "$8228845654645678",
+		Emisor:   "Luis",
+		Receptor: "Perez",
+		Fecha:    "01/01/2001",
+	}
+	tranUpdate, err := repo.Store(transaction)
+	assert.Nil(t, err)
+	assert.NotNil(t,tranUpdate)
+	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
+	err = repo.Delete(tranUpdate.ID)
 
 	assert.Nil(t, err)
 }
