@@ -27,7 +27,7 @@ SELECT TITLE, RATING FROM MOVIES WHERE TITLE LIKE 'Toy Story%';
 -- 15. Mostrar a todos los actores cuyos nombres empiecen con Sam
 SELECT * FROM ACTORS WHERE FIRST_NAME LIKE 'Sam%';
 -- 16. Mostrar el título de las películas que salieron entre el 2004 y 2008.
-SELECT TITLE FROM MOVIES WHERE RELEASE_DATE BETWEEN '2004/01/01' AND '2008/12/31'
+SELECT TITLE FROM MOVIES WHERE RELEASE_DATE BETWEEN '2004/01/01' AND '2008/12/31';
 -- 17. Traer el título de las películas con el rating mayor a 3, con más de 1 premio y con fecha de lanzamiento entre el año 1988 al 2009. Ordenar los resultados por rating
 SELECT TITLE FROM MOVIES WHERE RATING > 3 AND AWARDS > 1 AND RELEASE_DATE BETWEEN '1988/01/01' AND '2009/12/31' ORDER BY RATING;
 -- 18. Traer el top 3 a partir del registro 10 de la consulta anterior.
