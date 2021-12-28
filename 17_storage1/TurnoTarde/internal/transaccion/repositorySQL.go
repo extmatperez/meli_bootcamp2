@@ -2,6 +2,7 @@ package internal
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/17_storage1/TurnoTarde/db"
@@ -12,6 +13,7 @@ type RepositorySql interface {
 	Store(transaction models.Transaction) (models.Transaction, error)
 	GetById(id int) (models.Transaction, error)
 	GetAll() ([]models.Transaction, error)
+	Delete(id int) (error)
 }
 
 type repositorySQL struct {
@@ -26,6 +28,7 @@ const (
 		"VALUES(?, ?, ?, ?, ?, ?)"
 	GetById = "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction WHERE Id=?"
 	GetAll  = "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction"
+	Delete = "DELETE FROM transaction WHERE Id=?"
 )
 
 func (r *repositorySQL) Store(transaction models.Transaction) (models.Transaction, error) {
@@ -85,5 +88,25 @@ func (r *repositorySQL) GetById(id int) (models.Transaction, error) {
 		}
 	}
 	return transaction, nil
+
+}
+func (r *repositorySQL) Delete(id int) (error) {
+	db := db.StorageDB
+	stmt, err := db.Prepare(Delete) // se prepara el SQL
+	if err != nil {
+		return err
+	}
+	defer stmt.Close() // se cierra la sentencia al terminar. Si quedan abiertas se genera consumos de memoria
+	var result sql.Result
+	result, err = stmt.Exec(id) // retorna un sql.Result y un error
+	if err != nil {
+		return err
+	}
+	filasAfectadas,_ :=result.RowsAffected() 
+	if(filasAfectadas== 0){
+		return errors.New("No se encontro el id")
+	}
+
+	return  nil
 
 }

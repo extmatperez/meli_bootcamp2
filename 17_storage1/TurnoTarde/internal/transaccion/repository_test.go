@@ -189,3 +189,10 @@ func TestGetAllSql(t *testing.T) {
 	assert.True(t, len(transUpdate) >= 0)
 	assert.Nil(t, err)
 }
+func TestDeletelSql(t *testing.T) {
+
+	repo := NewRepositorySQL()
+	err := repo.Delete(1)
+
+	assert.Nil(t, err)
+}
