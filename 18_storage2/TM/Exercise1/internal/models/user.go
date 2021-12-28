@@ -1,5 +1,11 @@
 package models
 
+type City struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	CountryName string `json:"country_name"`
+}
+
 type User struct {
 	ID          int    `json:"id"`
 	FirstName   string `json:"first_name"`
@@ -9,4 +15,5 @@ type User struct {
 	Height      int    `json:"height"`
 	Active      bool   `json:"active"`
 	CrationDate string `json:"cration_date"`
+	Address     City   `json:"address"`
 }

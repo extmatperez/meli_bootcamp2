@@ -17,6 +17,7 @@ type RepositorySQL interface {
 	GetAll() ([]models.User, error)
 	Delete(id int) error
 	GetOneWithContext(ctx context.Context, id int) (models.User, error)
+	GetFullData() ([]models.User, error)
 }
 
 type repositorySQL struct{}
@@ -137,8 +138,26 @@ func (r *repositorySQL) GetOneWithContext(ctx context.Context, id int) (models.U
 			log.Fatal(err)
 			return userRead, err
 		}
-		// // En caso de querer devolver mas de uno, por ejemplo un getFirstName
-		// myUsers = append(myUsers, userRead)
 	}
 	return userRead, nil
+}
+
+func (r *repositorySQL) GetFullData() ([]models.User, error) {
+	db := db.StorageDB
+	var myUsers []models.User
+	var userRead models.User
+	rows, err := db.Query("select u.id,u.first_name,u.last_name,u.email,u.age,u.height,u.active,u.cration_date,c.country_name,c.name from users u inner join city c on u.address = c.id")
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate, &userRead.Address.CountryName, &userRead.Address.Name)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		myUsers = append(myUsers, userRead)
+	}
+	return myUsers, nil
 }

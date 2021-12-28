@@ -13,6 +13,7 @@ type ServiceSQL interface {
 	GetAll() ([]models.User, error)
 	Delete(id int) error
 	GetOneWithContext(ctx context.Context, id int) (models.User, error)
+	GetFullData() ([]models.User, error)
 }
 
 type serviceSQL struct {
@@ -51,4 +52,8 @@ func (ser *serviceSQL) Delete(id int) error {
 
 func (ser *serviceSQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
 	return ser.repository.GetOneWithContext(ctx, id)
+}
+
+func (ser *serviceSQL) GetFullData() ([]models.User, error) {
+	return ser.repository.GetFullData()
 }

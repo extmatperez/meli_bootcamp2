@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
@@ -376,7 +377,7 @@ func TestGetAllServiceSQL(t *testing.T) {
 
 	myUsers, _ := service.GetAll()
 
-	assert.Equal(t, myUsers[16].FirstName, "Mario")
+	assert.True(t, len(myUsers) >= 0)
 }
 
 func TestDeleteServiceSQL(t *testing.T) {
@@ -399,6 +400,20 @@ func TestDeleteServiceSQL(t *testing.T) {
 	err := service.Delete(int(userCreated.ID))
 
 	assert.Nil(t, err)
+}
+
+func TestGetFullDataServiceSQL(t *testing.T) {
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	myUsers, err := service.GetFullData()
+
+	fmt.Println("EL ERROR: ", err)
+	assert.Nil(t, err)
+	assert.True(t, len(myUsers) >= 0)
+	assert.Equal(t, "Chile", myUsers[0].Address.CountryName)
+	fmt.Printf("\n%+v", myUsers)
 }
 
 func TestGetOneWithContextServiceSQL(t *testing.T) {
