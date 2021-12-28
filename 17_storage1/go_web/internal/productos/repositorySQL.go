@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"database/sql"
 	"errors"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/arevalo_ivan/17_storage1/go_web/internal/models"
@@ -12,16 +13,18 @@ type RepositorySQL interface {
 	GetById(id int) (models.Product, error)
 	Store(models.Product) (models.Product, error)
 	Update(models.Product) (models.Product, error)
+	GetByName(name string) (models.Product, error)
 	// UpdateNombrePrecio(id int, nombre string, precio float64) (models.Producto, error)
 	Delete(id int) error
 }
 
 const (
-	queryGetOne = "SELECT id, nombre, color, precio FROM productos WHERE id=?"
-	queryGetAll = "SELECT id, nombre, color, precio FROM productos"
-	queryStore  = "INSERT INTO productos(nombre, color, precio, ) VALUES(?,?,?)"
-	queryUpdate = "UPDATE productos SET nombre= ?, color= ?, precio= ? WHERE id= ?"
-	queryDelete = "DELETE from productos WHERE id = ?"
+	queryGetOne    = "SELECT id, name, type, count, price FROM productos WHERE id=?"
+	queryGetByName = "SELECT id, name, type, count, price FROM productos WHERE name=?"
+	queryGetAll    = "SELECT iid, name, type, count, price FROM productos"
+	queryStore     = "INSERT INTO productos(name, type, count, price) VALUES(?,?,?,?)"
+	queryUpdate    = "UPDATE productos SET name= ?, type= ?, count= ?, price= ? WHERE id= ?"
+	queryDelete    = "DELETE from productos WHERE id = ?"
 )
 
 type repositorySql struct{}
@@ -30,38 +33,41 @@ func NewRepositorySQL() RepositorySQL {
 	return &repositorySql{}
 }
 
-func (r *repositorySql) Store(p models.Product) (models.Product, error) {
+func (r *repositorySql) Store(prod models.Product) (models.Product, error) {
 	db := store.StorageDB
 	statement, err := db.Prepare(queryStore)
 	if err != nil {
 		return models.Product{}, err
 	}
-	result, err := statement.Exec(p.Name, p.Type, p.Count, p.Price)
+	defer statement.Close()
+
+	var result sql.Result
+	result, err = statement.Exec(prod.Name, prod.Type, prod.Count, prod.Price)
 	if err != nil {
 		return models.Product{}, err
 	}
-	defer statement.Close()
-	idCreado, _ := result.LastInsertId()
-	p.Id = int(idCreado)
-	return p, nil
+
+	insertedId, _ := result.LastInsertId()
+	prod.Id = int(insertedId)
+	return prod, nil
 
 }
 
 func (r *repositorySql) GetById(id int) (models.Product, error) {
 	db := store.StorageDB
-	var p models.Product
+	var prod models.Product
 	rows, err := db.Query(queryGetOne)
 	if err != nil {
 		return models.Product{}, err
 	}
 	for rows.Next() {
-		err = rows.Scan(&p.Id, &p.Name, &p.Type, &p.Count, &p.Price)
+		err = rows.Scan(&prod.Id, &prod.Name, &prod.Type, &prod.Count, &prod.Price)
 		if err != nil {
 			return models.Product{}, err
 		}
 
 	}
-	return p, nil
+	return prod, nil
 
 }
 
@@ -73,24 +79,24 @@ func (r *repositorySql) GetAll() ([]models.Product, error) {
 		return nil, err
 	}
 	for rows.Next() {
-		var p models.Product
-		err = rows.Scan(&p.Id, &p.Name, &p.Type, &p.Count, &p.Price)
+		var prod models.Product
+		err = rows.Scan(&prod.Id, &prod.Name, &prod.Type, &prod.Count, &prod.Price)
 		if err != nil {
 			return nil, err
 		}
-		productosLeidos = append(productosLeidos, p)
+		productosLeidos = append(productosLeidos, prod)
 
 	}
 	return productosLeidos, nil
 
 }
-func (r *repositorySql) Update(p models.Product) (models.Product, error) {
+func (r *repositorySql) Update(prod models.Product) (models.Product, error) {
 	db := store.StorageDB
 	statement, err := db.Prepare(queryUpdate)
 	if err != nil {
 		return models.Product{}, err
 	}
-	result, err := statement.Exec(p.Name, p.Type, p.Count, p.Price)
+	result, err := statement.Exec(prod.Name, prod.Type, prod.Count, prod.Price)
 	if err != nil {
 		return models.Product{}, err
 	}
@@ -100,7 +106,7 @@ func (r *repositorySql) Update(p models.Product) (models.Product, error) {
 	}
 	defer statement.Close()
 
-	return p, nil
+	return prod, nil
 
 }
 
@@ -120,5 +126,23 @@ func (r *repositorySql) Delete(id int) error {
 		return errors.New("product not found")
 	}
 	return nil
+
+}
+
+func (r *repositorySql) GetByName(name string) (models.Product, error) {
+	db := store.StorageDB
+	var p models.Product
+	rows, err := db.Query(queryGetByName)
+	if err != nil {
+		return models.Product{}, err
+	}
+	for rows.Next() {
+		err = rows.Scan(&p.Id, &p.Name, &p.Type, &p.Count, &p.Price)
+		if err != nil {
+			return models.Product{}, err
+		}
+
+	}
+	return p, nil
 
 }
