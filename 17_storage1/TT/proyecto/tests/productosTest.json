@@ -1,0 +1,102 @@
+[
+ {
+  "id": 1,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 2,
+  "nombre": "Grove",
+  "color": "Crimson",
+  "precio": "$3470.92",
+  "stock": 654,
+  "codigo": "5c62ffa5-a28a-4c08-8edf-b213d4333bb0",
+  "publicado": false,
+  "fechaCreacion": "15/08/2020"
+ },
+ {
+  "id": 3,
+  "nombre": "Timmy",
+  "color": "Violet",
+  "precio": "$2985.23",
+  "stock": 203,
+  "codigo": "f7a8b9b4-3c2d-419c-8664-93ee6022d4d4",
+  "publicado": true,
+  "fechaCreacion": "15/06/2021"
+ },
+ {
+  "id": 4,
+  "nombre": "Carlee",
+  "color": "Indigo",
+  "precio": "$3778.23",
+  "stock": 406,
+  "codigo": "786649b1-0f59-4ef9-8cee-96827b7a4d04",
+  "publicado": true,
+  "fechaCreacion": "26/04/2021"
+ },
+ {
+  "id": 5,
+  "nombre": "Marjorie",
+  "color": "Yellow",
+  "precio": "$3249.76",
+  "stock": 223,
+  "codigo": "0bf8c6c1-186c-45ef-87e8-679d4f9e60ec",
+  "publicado": true,
+  "fechaCreacion": "25/09/2020"
+ },
+ {
+  "id": 6,
+  "nombre": "Kee63",
+  "color": "Indigo",
+  "precio": "$3778.23",
+  "stock": 45,
+  "codigo": "786649b1-0f59-4ef9-8cee-96827b7a4d04",
+  "publicado": true,
+  "fechaCreacion": "26/04/2021"
+ },
+ {
+  "id": 9,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 10,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 11,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 12,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ }
+]

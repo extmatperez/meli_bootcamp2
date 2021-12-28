@@ -98,5 +98,155 @@
   "codigo": "123456R",
   "publicado": true,
   "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 13,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 14,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 15,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 16,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 17,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 18,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 19,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 20,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 21,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 22,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 23,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 24,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 25,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 26,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
+ },
+ {
+  "id": 27,
+  "nombre": "Asdf",
+  "color": "Negro",
+  "precio": "$ 50",
+  "stock": 2,
+  "codigo": "123456R",
+  "publicado": true,
+  "fechaCreacion": "01/06/1996"
  }
 ]
