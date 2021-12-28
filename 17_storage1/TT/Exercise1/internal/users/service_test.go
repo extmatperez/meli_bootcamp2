@@ -376,3 +376,25 @@ func TestGetAllServiceSQL(t *testing.T) {
 
 	assert.Equal(t, myUsers[16].FirstName, "Mario")
 }
+
+func TestDeleteServiceSQL(t *testing.T) {
+	newUser := models.User{
+		FirstName:   "Mario",
+		LastName:    "Cancino",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	userCreated, _ := service.Store(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	err := service.Delete(int(userCreated.ID))
+
+	assert.Nil(t, err)
+}

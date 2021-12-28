@@ -7,6 +7,7 @@ type ServiceSQL interface {
 	GetOne(id int) models.User
 	Update(user models.User) (models.User, error)
 	GetAll() ([]models.User, error)
+	Delete(id int) error
 }
 
 type serviceSQL struct {
@@ -37,4 +38,8 @@ func (ser *serviceSQL) Update(user models.User) (models.User, error) {
 
 func (ser *serviceSQL) GetAll() ([]models.User, error) {
 	return ser.repository.GetAll()
+}
+
+func (ser *serviceSQL) Delete(id int) error {
+	return ser.repository.Delete(id)
 }

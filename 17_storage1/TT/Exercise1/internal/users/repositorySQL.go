@@ -14,6 +14,7 @@ type RepositorySQL interface {
 	GetOne(id int) models.User
 	Update(user models.User) (models.User, error)
 	GetAll() ([]models.User, error)
+	Delete(id int) error
 }
 
 type repositorySQL struct{}
@@ -100,4 +101,22 @@ func (r *repositorySQL) GetAll() ([]models.User, error) {
 		myUsers = append(myUsers, userRead)
 	}
 	return myUsers, nil
+}
+
+func (r *repositorySQL) Delete(id int) error {
+	db := db.StorageDB
+	stmt, err := db.Prepare("DELETE FROM users WHERE id = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	partUpdate, _ := result.RowsAffected()
+	if partUpdate == 0 {
+		return errors.New("User not found")
+	}
+	return nil
 }
