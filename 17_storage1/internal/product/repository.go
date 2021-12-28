@@ -2,9 +2,9 @@ package product
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/extmatperez/meli_bootcamp2/17_storage1/internal/domain"
-	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/database"
 )
 
 var (
@@ -16,8 +16,10 @@ var (
 	DeleteStatement    = "DELETE FROM products WHERE id = ?"
 )
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db *sql.DB) Repository {
+	return &repository{
+		db: db,
+	}
 }
 
 type Repository interface {
@@ -29,12 +31,12 @@ type Repository interface {
 	Delete(ctx context.Context, id int) error
 }
 
-type repository struct{}
+type repository struct {
+	db *sql.DB
+}
 
 func (r *repository) GetAll(ctx context.Context) ([]domain.Product, error) {
-	db := database.StorageDB
-
-	rows, err := db.QueryContext(ctx, GetAllQuery)
+	rows, err := r.db.QueryContext(ctx, GetAllQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -54,11 +56,9 @@ func (r *repository) GetAll(ctx context.Context) ([]domain.Product, error) {
 }
 
 func (r *repository) Get(ctx context.Context, id int) (domain.Product, error) {
-	db := database.StorageDB
-
 	var product domain.Product
 
-	err := db.QueryRowContext(ctx, GetQuery, id).Scan(&product.Id, &product.Name, &product.Price, &product.Description)
+	err := r.db.QueryRowContext(ctx, GetQuery, id).Scan(&product.Id, &product.Name, &product.Price, &product.Description)
 	if err != nil {
 		return domain.Product{}, err
 	}
@@ -67,9 +67,7 @@ func (r *repository) Get(ctx context.Context, id int) (domain.Product, error) {
 }
 
 func (r *repository) GetByName(ctx context.Context, name string) ([]domain.Product, error) {
-	db := database.StorageDB
-
-	rows, err := db.QueryContext(ctx, "SELECT id, name, price, description FROM products WHERE LOWER(name) LIKE (\"%"+name+"%\")")
+	rows, err := r.db.QueryContext(ctx, "SELECT id, name, price, description FROM products WHERE LOWER(name) LIKE (\"%"+name+"%\")")
 	if err != nil {
 		return nil, err
 	}
@@ -89,9 +87,7 @@ func (r *repository) GetByName(ctx context.Context, name string) ([]domain.Produ
 }
 
 func (r *repository) Store(ctx context.Context, product domain.Product) (domain.Product, error) {
-	db := database.StorageDB
-
-	stmt, err := db.PrepareContext(ctx, StoreStatement)
+	stmt, err := r.db.PrepareContext(ctx, StoreStatement)
 	if err != nil {
 		return domain.Product{}, err
 	}
@@ -114,9 +110,7 @@ func (r *repository) Store(ctx context.Context, product domain.Product) (domain.
 }
 
 func (r *repository) Update(ctx context.Context, product domain.Product) (domain.Product, error) {
-	db := database.StorageDB
-
-	stmt, err := db.PrepareContext(ctx, UpdateStatement)
+	stmt, err := r.db.PrepareContext(ctx, UpdateStatement)
 	if err != nil {
 		return domain.Product{}, err
 	}
@@ -137,9 +131,7 @@ func (r *repository) Update(ctx context.Context, product domain.Product) (domain
 }
 
 func (r *repository) Delete(ctx context.Context, id int) error {
-	db := database.StorageDB
-
-	stmt, err := db.PrepareContext(ctx, DeleteStatement)
+	stmt, err := r.db.PrepareContext(ctx, DeleteStatement)
 	if err != nil {
 		return err
 	}

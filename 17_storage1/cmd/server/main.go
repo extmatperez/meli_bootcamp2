@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	"github.com/extmatperez/meli_bootcamp2/17_storage1/internal/product"
+	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/database"
 )
 
 func main() {
-	repository := product.NewRepository()
+	repository := product.NewRepository(database.StorageDB)
 	service := product.NewService(repository)
 
 	products, err := service.GetAll(context.Background())

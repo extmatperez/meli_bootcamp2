@@ -5,12 +5,13 @@ import (
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/17_storage1/internal/domain"
+	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/database"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetAll(t *testing.T) {
 	// Arrange
-	repository := NewRepository()
+	repository := NewRepository(database.StorageDB)
 	service := NewService(repository)
 
 	// Act
@@ -23,7 +24,7 @@ func TestGetAll(t *testing.T) {
 }
 func TestGet(t *testing.T) {
 	// Arrange
-	repository := NewRepository()
+	repository := NewRepository(database.StorageDB)
 	service := NewService(repository)
 	expectedResult := domain.Product{Id: 1, Name: "Mate", Price: 200.5, Description: "Para tomar mate"}
 
@@ -37,7 +38,7 @@ func TestGet(t *testing.T) {
 
 func TestGetByName(t *testing.T) {
 	// Arrange
-	repository := NewRepository()
+	repository := NewRepository(database.StorageDB)
 	service := NewService(repository)
 	expectedResult := []domain.Product{
 		{Id: 1, Name: "Mate", Price: 200.5, Description: "Para tomar mate"},
@@ -54,7 +55,7 @@ func TestGetByName(t *testing.T) {
 
 func TestStore(t *testing.T) {
 	// Arrange
-	repository := NewRepository()
+	repository := NewRepository(database.StorageDB)
 	service := NewService(repository)
 	expectedResult := domain.Product{Name: "Pelota", Price: 555.5, Description: "Para tomar jugar al futbol"}
 
@@ -73,7 +74,7 @@ func TestStore(t *testing.T) {
 
 func TestUpdate(t *testing.T) {
 	// Arrange
-	repository := NewRepository()
+	repository := NewRepository(database.StorageDB)
 	service := NewService(repository)
 
 	expectedResult := domain.Product{Id: 1, Name: "Matecito", Price: 999, Description: "El mejor matecito"}
@@ -92,7 +93,7 @@ func TestUpdate(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	// Arrange
-	repository := NewRepository()
+	repository := NewRepository(database.StorageDB)
 	service := NewService(repository)
 	productToDelete := domain.Product{Name: "Pelotita a eliminar", Price: 1.1, Description: "se va a eliminar"}
 
