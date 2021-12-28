@@ -1,0 +1,38 @@
+[
+ {
+  "id": 1,
+  "transaction_code": "68828-179",
+  "currency": "Bolivares",
+  "amount": 200,
+  "receiver": "Digneli",
+  "sender": "Maria",
+  "transaction_date": "8/11/2021"
+ },
+ {
+  "id": 2,
+  "transaction_code": "2332-3232",
+  "currency": "USD",
+  "amount": 10,
+  "receiver": "Maria",
+  "sender": "Rami",
+  "transaction_date": "12-12-21"
+ },
+ {
+  "id": 4,
+  "transaction_code": "1234-2124",
+  "currency": "$",
+  "amount": 100,
+  "receiver": "receiver",
+  "sender": "sender",
+  "transaction_date": "12/12/2021"
+ },
+ {
+  "id": 5,
+  "transaction_code": "1234-2124",
+  "currency": "$",
+  "amount": 100,
+  "receiver": "receiver",
+  "sender": "sender",
+  "transaction_date": "12/12/2021"
+ }
+]
