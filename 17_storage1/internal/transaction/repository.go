@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 
-	"github.com/extmatperez/meli_bootcamp2/12_testing3/turn_afternoon/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/store"
 )
 
 type Transaction struct {
