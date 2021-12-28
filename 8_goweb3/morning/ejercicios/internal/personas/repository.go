@@ -20,6 +20,7 @@ type Repository interface {
 	UpdateNombre(id int, nombre string) (Persona, error)
 	Delete(id int) error
 	LastId() (int, error)
+	Average() (float64, error)
 }
 
 type repository struct{
@@ -127,4 +128,21 @@ func (repo *repository) Delete(id int) error {
 	}
 
 	return fmt.Errorf("el ID: %d no existe", id)
+}
+
+func (repo *repository) Average() (float64, error) {
+	err := repo.db.Read(&personas)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(personas) == 0 {
+		return 0, nil
+	}
+
+	sum := 0.0
+	for _, v := range personas {
+		sum += float64(v.Edad)
+	}
+	return sum / float64(len(personas)), nil
 }

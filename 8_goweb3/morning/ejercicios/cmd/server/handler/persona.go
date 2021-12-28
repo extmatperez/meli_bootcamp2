@@ -25,22 +25,6 @@ func NewPersona(ser personas.Service) *Persona {
 	return &Persona{service: ser}
 }
 
-//Validar token de auth
-/* func validarToken(ctx *gin.Context) bool {
-	token := ctx.GetHeader("token")
-	if token == "" {
-		ctx.JSON(400, web.NewResponse(400, nil, "Falta token"))
-		return false
-	}
-	tokenENV := os.Getenv("TOKEN")
-	if token != tokenENV {
-		ctx.JSON(400, web.NewResponse(400, nil, "Token invalido"))
-		return false
-	}
-
-	return true
-} */
-
 // ListPersonas godoc
 // @Summary List personas
 // @Tags Personas
@@ -52,10 +36,6 @@ func NewPersona(ser personas.Service) *Persona {
 // @Router /personas [get]
 func (per *Persona) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		/* if !(validarToken(ctx)) {
-			return
-		} */
 
 		personas, err := per.service.GetAll()
 
@@ -80,10 +60,6 @@ func (per *Persona) GetAll() gin.HandlerFunc {
 func (controller *Persona) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		/* if !(validarToken(ctx)) {
-			return
-		} */
-
 		var perso request
 
 		err := ctx.ShouldBindJSON(&perso)
@@ -105,10 +81,6 @@ func (controller *Persona) Store() gin.HandlerFunc {
 func (controller *Persona) Update() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
-
-		/* if !(validarToken(ctx)) {
-			return
-		} */
 
 		var per request
 		err := ctx.ShouldBindJSON(&per)
@@ -135,10 +107,6 @@ func (controller *Persona) Update() gin.HandlerFunc {
 func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
-
-		/* if !(validarToken(ctx)) {
-			return
-		} */
 	
 		id, err_int := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
@@ -170,10 +138,6 @@ func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 func (controller *Persona) Delete() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
-
-		/* if !(validarToken(ctx)) {
-			return
-		} */
 	
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 

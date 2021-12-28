@@ -6,6 +6,7 @@ type Service interface {
 	Update(id int, nombre, apellido string, edad int) (Persona, error)
 	UpdateNombre(id int, nombre string) (Persona, error)
 	Delete(id int) error
+	Average() (float64, error)
 }
 
 type service struct {
@@ -50,4 +51,8 @@ func (ser *service) UpdateNombre(id int, nombre string) (Persona, error) {
 
 func (ser *service) Delete(id int) error {
 	return ser.repository.Delete(id)
+}
+
+func (ser *service) Average() (float64, error) {
+	return ser.repository.Average()
 }

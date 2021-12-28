@@ -1,17 +1,14 @@
-package main
+package test
 
-import (
-	"log"
-	"os"
+/* import (
+	"bytes"
+	"net/http"
+	"net/http/httptest"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/rossi_juancruz/meli_bootcamp2/8_goweb3/morning/ejercicios/cmd/server/handler"
 	personas "github.com/rossi_juancruz/meli_bootcamp2/8_goweb3/morning/ejercicios/internal/personas"
 	"github.com/rossi_juancruz/meli_bootcamp2/8_goweb3/morning/ejercicios/pkg/store"
-	"github.com/rossi_juancruz/meli_bootcamp2/8_goweb3/morning/ejercicios/docs"
-	"github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func respondWithError(c *gin.Context, code int, message interface{}) {
@@ -43,28 +40,15 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-// @title MELI Bootcamp API
-// @version 1.0
-// @description This API Handle MELI Products.
-// @termsOfService https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones
-// @contact.name API Support
-// @contact.url https://developers.mercadolibre.com.ar/support
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-func main() {
-
-	_ = godotenv.Load()
+func createServer() *gin.Engine {
 	r := gin.Default()
 
-	db := store.New(store.FileType, "./personasSalida.json")
+	db := store.New(store.FileType, "./personasSalidaTest.json")
 	repo := personas.NewRepository(db)
 	service := personas.NewService(repo)
 	controller := handler.NewPersona(service)
 
 	r.Use(TokenAuthMiddleware())
-
-	docs.SwaggerInfo.Host = os.Getenv("HOST")
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	personasEP := r.Group("/personas")
 	{
@@ -75,5 +59,13 @@ func main() {
 		personasEP.DELETE("/delete/:id", controller.Delete())
 	}
 
-	_ = r.Run()
+	return r
 }
+
+func createRequestTest(method string, url string, body string) (*http.Request, *http.Response) {
+	req := httptest.NewRequest(method, url, bytes.NewBuffer([]byte(body)))
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("token", "123456")
+
+	return req
+} */
