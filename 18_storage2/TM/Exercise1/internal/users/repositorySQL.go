@@ -29,7 +29,8 @@ func NewRepositorySQL() RepositorySQL {
 func (r *repositorySQL) Store(user models.User) (models.User, error) {
 	db := db.StorageDB
 
-	stmt, err := db.Prepare("INSERT INTO users(first_name, last_name, email, age, height, active, cration_date) VALUES(?,?,?,?,?,?,?)")
+	myQuery := "INSERT INTO users(first_name, last_name, email, age, height, active, cration_date) VALUES(?,?,?,?,?,?,?)"
+	stmt, err := db.Prepare(myQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,7 +49,8 @@ func (r *repositorySQL) Store(user models.User) (models.User, error) {
 func (r *repositorySQL) GetOne(id int) models.User {
 	db := db.StorageDB
 	var userRead models.User
-	rows, err := db.Query("SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?", id)
+	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?"
+	rows, err := db.Query(myQuery, id)
 	if err != nil {
 		log.Fatal(err)
 		return userRead
@@ -59,16 +61,14 @@ func (r *repositorySQL) GetOne(id int) models.User {
 			log.Fatal(err)
 			return userRead
 		}
-		// // En caso de querer devolver mas de uno, por ejemplo un getFirstName
-		// myUsers = append(myUsers, userRead)
 	}
 	return userRead
 }
 
 func (r *repositorySQL) Update(user models.User) (models.User, error) {
 	db := db.StorageDB
-
-	stmt, err := db.Prepare("UPDATE users SET first_name = ?, last_name = ?, email =?, age=?, height =?, active =?, cration_date=? WHERE id=?")
+	myQuery := "UPDATE users SET first_name = ?, last_name = ?, email =?, age=?, height =?, active =?, cration_date=? WHERE id=?"
+	stmt, err := db.Prepare(myQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,7 +89,8 @@ func (r *repositorySQL) GetAll() ([]models.User, error) {
 	db := db.StorageDB
 	var myUsers []models.User
 	var userRead models.User
-	rows, err := db.Query("SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users")
+	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users"
+	rows, err := db.Query(myQuery)
 	if err != nil {
 		log.Fatal(err)
 		return myUsers, err
@@ -108,7 +109,8 @@ func (r *repositorySQL) GetAll() ([]models.User, error) {
 
 func (r *repositorySQL) Delete(id int) error {
 	db := db.StorageDB
-	stmt, err := db.Prepare("DELETE FROM users WHERE id = ?")
+	myQuery := "DELETE FROM users WHERE id = ?"
+	stmt, err := db.Prepare(myQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -127,7 +129,8 @@ func (r *repositorySQL) Delete(id int) error {
 func (r *repositorySQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
 	db := db.StorageDB
 	var userRead models.User
-	rows, err := db.QueryContext(context.Background(), "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?", id)
+	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?"
+	rows, err := db.QueryContext(context.Background(), myQuery, id)
 	if err != nil {
 		log.Fatal(err)
 		return userRead, err
@@ -146,7 +149,8 @@ func (r *repositorySQL) GetFullData() ([]models.User, error) {
 	db := db.StorageDB
 	var myUsers []models.User
 	var userRead models.User
-	rows, err := db.Query("select u.id,u.first_name,u.last_name,u.email,u.age,u.height,u.active,u.cration_date,c.country_name,c.name from users u inner join city c on u.address = c.id")
+	myQuery := "select u.id,u.first_name,u.last_name,u.email,u.age,u.height,u.active,u.cration_date,c.country_name,c.name from users u inner join city c on u.address = c.id"
+	rows, err := db.Query(myQuery)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
