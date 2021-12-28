@@ -1,0 +1,33 @@
+¿A qué se denomina JOIN en una base de datos?
+-Se denomina JOIN en una base de datos a un tipo de sentencia que consiste en 
+recolectar y juntar datos en comun de una tabla a otra a partir de una o varias 
+condiciones en común.
+
+Nombre y explique 2 tipos de JOIN.
+-RIGHT JOIN: junta los datos que solamente tengan en comun ambas tablas, pero se queda 
+con la interseccion y la tabla con la que se compara.(la ultima)
+-LEFT JOIN: junta los datos que solamente tengan en comun ambas tablas, pero se queda 
+con la interseccion y la tabla principal donde se inicia la sentencia.(la primera)
+
+¿Para qué se utiliza el GROUP BY?
+-Group by se utiliza para grupar resultados según columnas indicadas, generando un solo
+registro por cada grupo de filas que comparten estas columnas,reduciendo la cantidad 
+de filas en la consulta.
+
+¿Para qué se utiliza el HAVING?
+-Having se utiliza mayormente para agregarle una condicion de filtrado o busqueda a
+los grupos obtenidos por el GROUP BY, es decir, filtra la subtabla que este genera. 
+Al contrario del WHERE que filtra o busca, previo al GROUP BY.
+
+Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+A: INNER JOIN
+B: LEFT JOIN
+
+Escriba una consulta genérica por cada uno de los diagramas a continuación:
+A: RIGHT JOIN
+
+SELECT  * FROM movies AS mo
+RIGHT JOIN actors ac ON mo.id = ac.favorite_movie_id;
+
+
+

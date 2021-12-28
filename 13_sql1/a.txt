@@ -1,0 +1,36 @@
+Que es la redundancia de datos?
+Es la duplicacion de datos para tener un respaldo en caso de que haya algun 
+error, para poder hacer un backup
+
+Que es la inconsistencia de datos?
+Esto pasa cuando dos datos redundantes difieren, es decir, no se respeta el mismo 
+valor en cada caso.
+
+Nombre al menos 2 bases de datos entre Consistencia y Tolerancia al particionamiento
+Mysql, PostgreSQL
+
+¿Qué significa SQL?
+Significa lenguaje de consulta estructurado
+
+En una tabla de datos que es la Primary Key o Llave primaria
+Es un valor que identifica de forma unica una tabla
+
+En una tabla de datos que es la Foreign Key o Llave foránea
+Es un valor de una tabla que representa a la primary key de otra tabla
+
+¿Qué significa que una relación entre dos entidades es UNO a UNO?
+Significa que una entidad A solo se relaciona con una entidad B
+
+¿Qué significa que una relación entre dos entidades es UNO a MUCHOS?
+Significa que una entidad A  se relaciona con muchas entidades B
+
+¿Qué significa que una relación entre dos entidades es MUCHOS a MUCHOS?
+Significa que muchas entidades A solo se relaciona con muchas entidades B
+
+Defina que es una base de datos
+Las bases de datos son un conjunto de datos que se encuentran almacenados 
+en un determinado lugar y de forma organizada para ser consultada y utilizada 
+de manera eficiente.
+
+Defina el concepto atributo
+Son las caracteristicas de que posee una entidad

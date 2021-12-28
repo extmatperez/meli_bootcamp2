@@ -1,0 +1,13 @@
+a.	¿Cuál es la primary key para la tabla empleados? Justificar respuesta.
+- La primary key para la tabla empleados deberia ser el id
+
+b. ¿Cuál es la primary key para la tabla departamentos? Justificar respuesta.
+-La primary key para la tabla departamentos deberia ser el id departamento
+
+c. ¿Qué relación/es existirían entre las tablas? ¿En qué tabla debería haber 
+foreign key? ¿A qué campo de qué tabla hace referencia dicha foreign key? 
+Justificar respuesta.
+
+-La relacion deberia de ser de un departamento a muchos empleados. Deberia haber 
+foreign key en la tabla de empleado, y deberia hacer referencia al id departamento de 
+la tabla departamento
