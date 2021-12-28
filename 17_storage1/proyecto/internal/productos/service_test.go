@@ -99,3 +99,17 @@ func TestStoreServiceMockErr(t *testing.T) {
 
 	assert.Equal(t, Productos{}, producto)
 }
+
+func TestStoreSqlite(t *testing.T) {
+	repo := NewRepositorySql()
+	service := NewServiceSql(repo)
+	prodCreado, _ := service.Store(5, "producto1", "negro", "5f5f", "2021-01-01", 150.5, true)
+	assert.Equal(t, prodCreado.Nombre, "producto1")
+}
+
+func TestGetByNameSqlite(t *testing.T) {
+	repo := NewRepositorySql()
+	service := NewServiceSql(repo)
+	prodCreado := service.GetByName("producto2")
+	assert.Equal(t, prodCreado.Nombre, "producto2")
+}
