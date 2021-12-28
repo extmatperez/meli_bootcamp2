@@ -280,8 +280,8 @@ func TestDeleteServiceMock(t *testing.T) {
 
 func TestStoreServiceSQL(t *testing.T) {
 	newUser := models.User{
-		FirstName:   "Juan",
-		LastName:    "Orfali",
+		FirstName:   "Mario",
+		LastName:    "Cancino",
 		Email:       "Carsan@cloudflare.com",
 		Age:         28,
 		Height:      112,
@@ -318,4 +318,26 @@ func TestGetOneServiceSQL(t *testing.T) {
 
 	assert.Equal(t, newUser.FirstName, userLoader.FirstName)
 	assert.Equal(t, newUser.LastName, userLoader.LastName)
+}
+
+func TestUpdateServiceSQL(t *testing.T) {
+	userUpdate := models.User{
+		ID:          14,
+		FirstName:   "Felipe",
+		LastName:    "Martinez",
+		Email:       "Martin@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	userLoader, _ := service.Update(userUpdate)
+
+	assert.Equal(t, userUpdate.FirstName, userLoader.FirstName)
+	assert.Equal(t, userUpdate.LastName, userLoader.LastName)
 }

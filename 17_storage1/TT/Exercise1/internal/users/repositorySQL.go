@@ -2,6 +2,7 @@ package internal
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/17_storage1/TT/Exercise1/internal/models"
@@ -11,7 +12,7 @@ import (
 type RepositorySQL interface {
 	Store(user models.User) (models.User, error)
 	GetOne(id int) models.User
-	// Update(user models.User) (models.User, error)
+	Update(user models.User) (models.User, error)
 }
 
 type repositorySQL struct{}
@@ -42,13 +43,13 @@ func (r *repositorySQL) Store(user models.User) (models.User, error) {
 func (r *repositorySQL) GetOne(id int) models.User {
 	db := db.StorageDB
 	var userRead models.User
-	rows, err := db.Query("SELECT id,first_name, last_name FROM users WHERE id = ?", id)
+	rows, err := db.Query("SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?", id)
 	if err != nil {
 		log.Fatal(err)
 		return userRead
 	}
 	for rows.Next() {
-		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName)
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
 		if err != nil {
 			log.Fatal(err)
 			return userRead
@@ -59,21 +60,22 @@ func (r *repositorySQL) GetOne(id int) models.User {
 	return userRead
 }
 
-// func (r *repositorySQL) Update(user models.User) (models.User, error) {
-// 	db := db.StorageDB
+func (r *repositorySQL) Update(user models.User) (models.User, error) {
+	db := db.StorageDB
 
-// 	stmt, err := db.Prepare("UPDATE users SET first_name=?, last_name=?")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	defer stmt.Close()
-// 	result, err := stmt.Exec(user.FirstName, user.LastName)
-// 	if err != nil {
-// 		return models.User{}, err
-// 	}
-// 	partUpdate, _ := result.RowsAffected()
-// 	if partUpdate == 0 {
-// 		return models.User{FirstName: user.FirstName, LastName: user.LastName}, nil
-// 	}
-// 	return user, nil
-// }
+	stmt, err := db.Prepare("UPDATE users SET first_name = ?, last_name = ?, email =?, age=?, height =?, active =?, cration_date=? WHERE id=?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate, user.ID)
+	if err != nil {
+		return models.User{}, err
+	}
+	partUpdate, _ := result.RowsAffected()
+	if partUpdate == 0 {
+		return models.User{}, errors.New("User not found")
+		// return models.User{FirstName: user.FirstName, LastName: user.LastName, Age: user.Age, Height: user.Height, Active: user.Active, CrationDate: user.CrationDate}, nil
+	}
+	return user, nil
+}
