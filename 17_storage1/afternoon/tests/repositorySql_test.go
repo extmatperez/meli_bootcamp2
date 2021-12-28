@@ -2,6 +2,7 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -136,5 +137,20 @@ func TestStoreMockDb(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, 1, userCreated.ID)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestDeleteMockDbFail(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+
+	mock.ExpectPrepare("DELETE FROM users").ExpectExec().WillReturnError(errors.New("cant delete"))
+	repo := users.NewRepositorySql(db)
+	defer db.Close()
+
+	deleted, err := repo.Delete(1)
+
+	assert.Error(t, err)
+	assert.False(t, deleted)
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
