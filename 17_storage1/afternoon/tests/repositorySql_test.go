@@ -11,6 +11,8 @@ import (
 	models "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/models"
 
 	basicDb "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/database"
+
+	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func testStoreSql(t *testing.T) {
@@ -110,4 +112,29 @@ func TestUpdateDeleteTrx(t *testing.T) {
 	deleted, err = repo.Delete(userInitial.ID)
 	assert.NoError(t, err)
 	assert.Equal(t, true, deleted)
+}
+
+func TestStoreMockDb(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+
+	mock.ExpectPrepare("INSERT INTO users").ExpectExec().WillReturnResult(sqlmock.NewResult(1, 1))
+
+	repo := users.NewRepositorySql(db)
+	defer db.Close()
+
+	user := models.User{
+		Name:     "Federico",
+		LastName: "Archuby",
+		Email:    "fede@hola.com",
+		Age:      32,
+		Height:   1.72,
+		Active:   true,
+		Created:  "2021-10-21",
+	}
+	userCreated, err := repo.Store(user)
+
+	assert.NoError(t, err)
+	assert.Equal(t, 1, userCreated.ID)
+	assert.NoError(t, mock.ExpectationsWereMet())
 }
