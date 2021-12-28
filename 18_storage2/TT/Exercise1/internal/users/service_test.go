@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TT/Exercise1/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TT/Exercise1/pkg/db"
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TT/Exercise1/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,6 +22,9 @@ var usersFakeService string = `[
 	{"id": 1,"first_name": "Andriette","last_name": "Sanchez","email": "jsan@cloudflare.com","age": 28,"height": 112,"active": true,"cration_date": "20/08/2021"},
 	{"id": 2,"first_name": "Jose","last_name": "Rios","email": "jrios@cloudflare.com","age": 28,"height": 112,"active": true,"cration_date": "20/08/2021"}]`
 
+//###################################################
+//################### Test Normal ###################
+//###################################################
 func (s *StubRepository) GetAll() ([]User, error) {
 	var out []User
 	err := json.Unmarshal([]byte(usersFakeService), &out)
@@ -281,6 +285,9 @@ func TestDeleteServiceMock(t *testing.T) {
 	assert.Equal(t, 1, len(allUsers))
 }
 
+//###################################################
+//#################### Test SQL #####################
+//###################################################
 func TestStoreServiceSQL(t *testing.T) {
 	newUser := models.User{
 		FirstName:   "Mario",
@@ -439,4 +446,34 @@ func TestGetOneWithContextServiceSQL(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, newUser.FirstName, userLoader.FirstName)
 	assert.Equal(t, newUser.LastName, userLoader.LastName)
+}
+
+//###################################################
+//################### Test TXDB ###################
+//###################################################
+
+func TestStoreServiceSQLTxdb(t *testing.T) {
+	newUser := models.User{
+		FirstName:   "Mario",
+		LastName:    "Cancino",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	db, err := db.InitDb()
+	assert.Nil(t, err)
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	userCreated, _ := service.Store(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.Height, newUser.Active, newUser.CrationDate)
+
+	assert.Equal(t, newUser.FirstName, userCreated.FirstName)
+	assert.Equal(t, newUser.LastName, userCreated.LastName)
+	fmt.Println(userCreated)
+	// assert.Nil(t, misPersonas)
 }

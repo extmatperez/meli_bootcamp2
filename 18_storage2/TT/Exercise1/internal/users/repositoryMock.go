@@ -7,10 +7,9 @@ import (
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TT/Exercise1/internal/models"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/TT/Exercise1/pkg/db"
 )
 
-type RepositorySQL interface {
+type RepositorySQLMock interface {
 	Store(user models.User) (models.User, error)
 	GetOne(id int) models.User
 	Update(user models.User) (models.User, error)
@@ -20,17 +19,17 @@ type RepositorySQL interface {
 	GetFullData() ([]models.User, error)
 }
 
-type repositorySQL struct{}
-
-func NewRepositorySQL() RepositorySQL {
-	return &repositorySQL{}
+type repositorySQLMock struct {
+	db *sql.DB
 }
 
-func (r *repositorySQL) Store(user models.User) (models.User, error) {
-	db := db.StorageDB
+func NewRepositorySQLMock(db *sql.DB) RepositorySQLMock {
+	return &repositorySQLMock{db}
+}
 
+func (r *repositorySQLMock) Store(user models.User) (models.User, error) {
 	myQuery := "INSERT INTO users(first_name, last_name, email, age, height, active, cration_date) VALUES(?,?,?,?,?,?,?)"
-	stmt, err := db.Prepare(myQuery)
+	stmt, err := r.db.Prepare(myQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,29 +45,52 @@ func (r *repositorySQL) Store(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func (r *repositorySQL) GetOne(id int) models.User {
-	db := db.StorageDB
+func (r *repositorySQLMock) GetOne(id int) models.User {
+
 	var userRead models.User
 	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?"
-	rows, err := db.Query(myQuery, id)
+	rows, err := r.db.Query(myQuery, id)
+
 	if err != nil {
 		log.Fatal(err)
 		return userRead
 	}
+
 	for rows.Next() {
 		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
 		if err != nil {
 			log.Fatal(err)
 			return userRead
 		}
+
 	}
 	return userRead
 }
+func (r *repositorySQLMock) GetAll() ([]models.User, error) {
+	var misUsers []models.User
+	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users"
+	var userRead models.User
+	rows, err := r.db.Query(myQuery)
 
-func (r *repositorySQL) Update(user models.User) (models.User, error) {
-	db := db.StorageDB
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	for rows.Next() {
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		misUsers = append(misUsers, userRead)
+	}
+	return misUsers, nil
+}
+
+func (r *repositorySQLMock) Update(user models.User) (models.User, error) {
 	myQuery := "UPDATE users SET first_name = ?, last_name = ?, email =?, age=?, height =?, active =?, cration_date=? WHERE id=?"
-	stmt, err := db.Prepare(myQuery)
+	stmt, err := r.db.Prepare(myQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -77,40 +99,17 @@ func (r *repositorySQL) Update(user models.User) (models.User, error) {
 	if err != nil {
 		return models.User{}, err
 	}
-	partUpdate, _ := result.RowsAffected()
-	if partUpdate == 0 {
-		return models.User{}, errors.New("User not found")
-		// return models.User{FirstName: user.FirstName, LastName: user.LastName, Age: user.Age, Height: user.Height, Active: user.Active, CrationDate: user.CrationDate}, nil
+	filasActualizadas, _ := result.RowsAffected()
+	if filasActualizadas == 0 {
+		return models.User{}, errors.New("No se encontro la user")
 	}
+
 	return user, nil
 }
 
-func (r *repositorySQL) GetAll() ([]models.User, error) {
-	db := db.StorageDB
-	var myUsers []models.User
-	var userRead models.User
-	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users"
-	rows, err := db.Query(myQuery)
-	if err != nil {
-		log.Fatal(err)
-		return myUsers, err
-	}
-	for rows.Next() {
-		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
-		if err != nil {
-			log.Fatal(err)
-			return myUsers, err
-		}
-		// En caso de querer devolver mas de uno, por ejemplo un getFirstName
-		myUsers = append(myUsers, userRead)
-	}
-	return myUsers, nil
-}
-
-func (r *repositorySQL) Delete(id int) error {
-	db := db.StorageDB
+func (r *repositorySQLMock) Delete(id int) error {
 	myQuery := "DELETE FROM users WHERE id = ?"
-	stmt, err := db.Prepare(myQuery)
+	stmt, err := r.db.Prepare(myQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,49 +118,54 @@ func (r *repositorySQL) Delete(id int) error {
 	if err != nil {
 		return err
 	}
-	partUpdate, _ := result.RowsAffected()
-	if partUpdate == 0 {
-		return errors.New("User not found")
+	filasActualizadas, _ := result.RowsAffected()
+	if filasActualizadas == 0 {
+		return errors.New("No se encontro la user")
 	}
 	return nil
 }
 
-func (r *repositorySQL) GetFullData() ([]models.User, error) {
-	db := db.StorageDB
-	var myUsers []models.User
-	var userRead models.User
+func (r *repositorySQLMock) GetFullData() ([]models.User, error) {
+	var misUsers []models.User
 	myQuery := "select u.id,u.first_name,u.last_name,u.email,u.age,u.height,u.active,u.cration_date,c.country_name,c.name from users u inner join city c on u.address = c.id"
-	rows, err := db.Query(myQuery)
+	var userRead models.User
+	rows, err := r.db.Query(myQuery)
+
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
+
 	for rows.Next() {
 		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate, &userRead.Address.CountryName, &userRead.Address.Name)
 		if err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
-		myUsers = append(myUsers, userRead)
+		misUsers = append(misUsers, userRead)
 	}
-	return myUsers, nil
+	return misUsers, nil
 }
 
-func (r *repositorySQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
-	db := db.StorageDB
+func (r *repositorySQLMock) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
+
 	var userRead models.User
 	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?"
-	rows, err := db.QueryContext(context.Background(), myQuery, id)
+	// rows, err := db.QueryContext(ctx, "select sleep(30) from dual")
+	rows, err := r.db.QueryContext(ctx, myQuery, id)
+
 	if err != nil {
 		log.Fatal(err)
 		return userRead, err
 	}
+
 	for rows.Next() {
 		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
 		if err != nil {
 			log.Fatal(err)
 			return userRead, err
 		}
+
 	}
 	return userRead, nil
 }
