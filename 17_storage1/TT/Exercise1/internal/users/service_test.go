@@ -322,8 +322,8 @@ func TestGetOneServiceSQL(t *testing.T) {
 
 func TestUpdateServiceSQL(t *testing.T) {
 	userUpdate := models.User{
-		ID:          14,
-		FirstName:   "Felipe",
+		ID:          15,
+		FirstName:   "Jaime",
 		LastName:    "Martinez",
 		Email:       "Martin@cloudflare.com",
 		Age:         28,
@@ -340,4 +340,25 @@ func TestUpdateServiceSQL(t *testing.T) {
 
 	assert.Equal(t, userUpdate.FirstName, userLoader.FirstName)
 	assert.Equal(t, userUpdate.LastName, userLoader.LastName)
+}
+
+func TestUpdateServiceSQLFail(t *testing.T) {
+	userUpdate := models.User{
+		ID:          24,
+		FirstName:   "Felipe",
+		LastName:    "Martinez",
+		Email:       "Martin@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	_, err := service.Update(userUpdate)
+
+	assert.Equal(t, "User not found", err.Error())
 }
