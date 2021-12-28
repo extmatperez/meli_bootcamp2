@@ -11,7 +11,7 @@ func main() {
 	repository := product.NewRepository()
 	service := product.NewService(repository)
 
-	products, err := service.GetByName(context.Background(), "mate")
+	products, err := service.GetAll(context.Background())
 
 	if err != nil {
 		fmt.Println(err)
