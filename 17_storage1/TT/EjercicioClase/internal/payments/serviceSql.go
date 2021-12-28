@@ -15,6 +15,7 @@ type ServiceSql interface {
 	Delete(id int) error
 	GetFullDataAllPayments() ([]models.Payment, error)
 	GetByIdWithContext(ctx context.Context, id int) (models.Payment, error)
+	UpdateWithContext(ctx context.Context, payment models.Payment) (models.Payment, error)
 }
 
 type serviceSql struct {
@@ -70,4 +71,8 @@ func (s *serviceSql) GetFullDataAllPayments() ([]models.Payment, error) {
 
 func (s *serviceSql) GetByIdWithContext(ctx context.Context, id int) (models.Payment, error) {
 	return s.repositorySql.GetByIdWithContext(ctx, id)
+}
+
+func (s *serviceSql) UpdateWithContext(ctx context.Context, payment models.Payment) (models.Payment, error) {
+	return s.repositorySql.UpdateWithContext(ctx, payment)
 }

@@ -558,3 +558,32 @@ func TestGetByIdWithContextServiceSql(t *testing.T) {
 	assert.Equal(t, newPayment.Codigo, obtainedPayment.Codigo)
 	assert.Equal(t, newPayment.Moneda, obtainedPayment.Moneda)
 }
+
+func TestUpdateWithContextServiceSql(t *testing.T) {
+	expectedPayment := models.Payment{
+		Id:       12,
+		Codigo:   "AAA002",
+		Moneda:   "R$",
+		Monto:    float64(295.25),
+		Emisor:   "Rodrigo Vega Gimenez",
+		Receptor: "Cristian Lopez Diaz",
+		Fecha:    "2021-12-28",
+	}
+
+	repo := NewRepositorySql()
+
+	service := NewServiceSql(repo)
+
+	// Definimos el context.
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	updatedPayment, err := service.UpdateWithContext(ctx, expectedPayment)
+
+	fmt.Println(err)
+
+	assert.Equal(t, expectedPayment.Moneda, updatedPayment.Moneda)
+	assert.Equal(t, expectedPayment.Monto, updatedPayment.Monto)
+	assert.Equal(t, expectedPayment.Receptor, updatedPayment.Receptor)
+	assert.Nil(t, err)
+}

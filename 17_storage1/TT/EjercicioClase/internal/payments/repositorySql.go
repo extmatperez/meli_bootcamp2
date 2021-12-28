@@ -18,6 +18,7 @@ type RepositorySql interface {
 	Delete(id int) error
 	GetFullDataAllPayments() ([]models.Payment, error)
 	GetByIdWithContext(ctx context.Context, id int) (models.Payment, error)
+	UpdateWithContext(ctx context.Context, payment models.Payment) (models.Payment, error)
 }
 
 type repositorySql struct{}
@@ -189,4 +190,22 @@ func (r *repositorySql) GetByIdWithContext(ctx context.Context, id int) (models.
 		}
 	}
 	return pay, nil
+}
+
+func (r *repositorySql) UpdateWithContext(ctx context.Context, payment models.Payment) (models.Payment, error) {
+	db := db.StorageDB
+	stmt, err := db.Prepare("UPDATE Payments SET codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.ExecContext(ctx, payment.Codigo, payment.Moneda, payment.Monto, payment.Emisor, payment.Receptor, payment.Fecha, payment.Id)
+	if err != nil {
+		return models.Payment{}, err
+	}
+	updatedRows, _ := result.RowsAffected()
+	if updatedRows == 0 {
+		return models.Payment{}, errors.New("No se encontró la transacción.")
+	}
+	return payment, nil
 }
