@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/pkg/store"
 )
 
 type Persona struct {

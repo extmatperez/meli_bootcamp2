@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/cmd/server/handler"
-	personas "github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/internal/personas"
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/cmd/server/handler"
+	personas "github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/internal/personas"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

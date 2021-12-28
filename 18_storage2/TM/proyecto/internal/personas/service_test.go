@@ -9,8 +9,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/internal/models"
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/pkg/store"
 )
 
 type StubRepository struct {
