@@ -1,27 +1,24 @@
-/* Ejercicio 1 - Mejorar el código
-Se debe utilizar Golangci-lint para detectar y corregir todos los posibles errores en el proyecto Go-Web. Para eso se deben seguir los
-siguientes pasos:
-Instalar Golangci-lint.
-Ejecutar Golangci-lint (con la configuración por defecto es suficiente).
-Si existe algún error, se debe corregir.
+/*
+Ejercicio 1 - Implementar GetByName()
+Desarrollar un método en el repositorio que permita hacer búsquedas de un producto por nombre. Para lograrlo se deberá:
+Diseñar interfaz “Repository” en la que exista un método GetByName() que reciba por parámetro un string y retorne un
+objeto del tipo Product.
+Implementar el método de forma que con el string recibido lo use para buscar en la DB por el campo “name”.
+
 
 --------------------------------------------------------------------------------------------------------------------
-Ejercicio 2 - Medir el Coverage
-
-Se debe medir el Coverage del proyecto Go - Web, para eso se deben seguir los siguientes pasos:
-Medir el code coverage del proyecto Go - Web.
-Generar el coverage report del proyecto Go - Web
-Identificar todos las partes del código que no tienen o tienen poca cobertura.
+Ejercicio 2 - Replicar Store()
+Tomar el ejemplo visto en la clase y diseñar el método Store():
+Puede tomar de ejemplo la definición del método Store visto en clase para incorporarlo en la interfaz.
+Implementar el método Store.
 
 --------------------------------------------------------------------------------------------------------------------
+Ejercicio 3 - Ejecutar Store()
+Diseñar un Test que permita ejecutar Store y comprobar la correcta inserción del registro en la tabla.
 
-Ejercicio 3 - Aumentar el Coverage
-
-Para mejorar la calidad del código se debe aumentar el coverage del proyecto Go - Web, seguir los siguientes pasos:
-
-Después de identificar las partes del código que no tienen cobertura, se debe elegir una o más partes del código donde sea razonable aumentar la cobertura.
-Aumentar la cobertura de las partes elegidas.
-Comparar el code coverage y el coverage report actual contra el anterior.
+--------------------------------------------------------------------------------------------------------------------
+Ejercicio 4 - Ejecutar GetByName()
+Diseñar un Test que permita ejecutar GetByName y comprobar que retorne el registro buscado en caso de que exista.
 */
 
 package main
