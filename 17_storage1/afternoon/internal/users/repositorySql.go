@@ -13,6 +13,7 @@ const (
 	getOneQuery = "SELECT id, name, last_name, email, age, height, active, created FROM users WHERE id = ?"
 	insertQuery = "INSERT INTO users(name, last_name, email, age, height, active, created) VALUES (?,?,?,?,?,?,?)"
 	updateQuery = "UPDATE users SET name = ?, last_name = ?, email = ?, age = ?, height = ?, active = ?, created = ? WHERE id = ?"
+	deleteQuery = "DELETE FROM users WHERE id = ?"
 )
 
 type RepositorySql interface {
@@ -20,6 +21,7 @@ type RepositorySql interface {
 	GetOne(id int) (models.User, error)
 	Store(user models.User) (models.User, error)
 	Update(user models.User, ctx context.Context) (models.User, error)
+	Delete(id int) (bool, error)
 }
 
 type repositorySql struct {
@@ -82,6 +84,8 @@ func (s *repositorySql) Store(user models.User) (models.User, error) {
 		return models.User{}, err
 	}
 
+	defer stmt.Close()
+
 	var result sql.Result
 	result, err = stmt.Exec(user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created)
 	if err != nil {
@@ -97,14 +101,31 @@ func (s *repositorySql) Update(user models.User, ctx context.Context) (models.Us
 	stmt, err := s.db.Prepare(updateQuery)
 
 	if err != nil {
-		log.Fatal(err)
 		return models.User{}, err
 	}
 
+	defer stmt.Close()
 	_, err = stmt.ExecContext(ctx, user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created, user.ID)
 	if err != nil {
 		return models.User{}, err
 	}
 
 	return user, nil
+}
+
+func (s *repositorySql) Delete(id int) (bool, error) {
+	stmt, err := s.db.Prepare(deleteQuery)
+
+	if err != nil {
+		return false, err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }

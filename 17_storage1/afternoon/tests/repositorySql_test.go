@@ -1,7 +1,9 @@
 package tests
 
 import (
+	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 
@@ -68,6 +70,44 @@ func TestStoreGetOneTrx(t *testing.T) {
 	var userObtained models.User
 	userObtained, err = repo.GetOne(userCreated.ID)
 
+	assert.NoError(t, err)
 	assert.Equal(t, userObtained.Name, userCreated.Name)
 	assert.Equal(t, userObtained.ID, userCreated.ID)
+}
+
+func TestUpdateDeleteTrx(t *testing.T) {
+	db, err := basicDb.InitDb()
+	assert.NoError(t, err)
+	repo := users.NewRepositorySql(db)
+
+	userInitial := models.User{
+		ID:       1,
+		Name:     "Juan Carlos",
+		LastName: "Perez",
+		Email:    "fede@hola.com",
+		Age:      32,
+		Height:   1.72,
+		Active:   true,
+		Created:  "2021-10-21",
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancel()
+
+	var userObtained, userEdited models.User
+	userObtained, err = repo.GetOne(userInitial.ID)
+
+	userEdited, err = repo.Update(userInitial, ctx)
+
+	userObtained, err = repo.GetOne(userInitial.ID)
+
+	assert.NoError(t, err)
+	assert.Equal(t, userObtained.Name, userEdited.Name)
+	assert.Equal(t, userObtained.ID, userEdited.ID)
+
+	var deleted bool
+	deleted, err = repo.Delete(userInitial.ID)
+	assert.NoError(t, err)
+	assert.Equal(t, true, deleted)
 }
