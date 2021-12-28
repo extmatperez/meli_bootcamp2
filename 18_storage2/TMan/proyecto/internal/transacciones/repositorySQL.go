@@ -13,6 +13,7 @@ type RepositorySQL interface{
 	GetByName(name string) models.Transaccion
 	Store(transaccion models.Transaccion) (models.Transaccion, error)
 	GetAll() []models.Transaccion
+	GetFullData() ([]models.Transaccion, error)
 
 	UpdateWithContext(ctx context.Context, transaccion models.Transaccion)(models.Transaccion, error)
 }
@@ -111,4 +112,28 @@ func (r *repositorySQL) UpdateWithContext(ctx context.Context, transaccion model
 	}
 
 	return transaccion, nil
+}
+
+
+func (r *repositorySQL) GetFullData() ([]models.Transaccion, error) {
+	db := db.StorageDB
+
+	var misTransacciones []models.Transaccion
+	var transaccionLeida models.Transaccion
+
+	rows, err := db.Query("SELECT t.id, t.codigo_transaccion, t.moneda, t.monto, t.emisor, t.receptor, t.fecha_transaccion, p.nombre, p.marca FROM transacciones t INNER JOIN productos p on t.id_producto = p.id")
+
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&transaccionLeida.ID, &transaccionLeida.CodigoTransaccion, &transaccionLeida.Moneda, &transaccionLeida.Monto, &transaccionLeida.Emisor, &transaccionLeida.Receptor, &transaccionLeida.FechaTransaccion, &transaccionLeida.Articulo.Nombre, &transaccionLeida.Articulo.Marca)
+		if err != nil {
+			log.Fatal(err)
+		}
+		misTransacciones = append(misTransacciones, transaccionLeida)
+	}
+	return misTransacciones, nil
 }
