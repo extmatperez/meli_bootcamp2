@@ -3,6 +3,7 @@ module github.com/extmatperez/meli_bootcamp2
 go 1.17
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.5 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
