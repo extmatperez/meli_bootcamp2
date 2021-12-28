@@ -18,6 +18,7 @@ type RepositorySQL interface {
 	Delete(id int) error
 	GetOneWithContext(ctx context.Context, id int) (models.User, error)
 	GetFullData() ([]models.User, error)
+	UpdateWithContext(ctx context.Context, user models.User) (models.User, error)
 }
 
 type repositorySQL struct{}
@@ -126,25 +127,6 @@ func (r *repositorySQL) Delete(id int) error {
 	return nil
 }
 
-func (r *repositorySQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
-	db := db.StorageDB
-	var userRead models.User
-	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?"
-	rows, err := db.QueryContext(context.Background(), myQuery, id)
-	if err != nil {
-		log.Fatal(err)
-		return userRead, err
-	}
-	for rows.Next() {
-		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
-		if err != nil {
-			log.Fatal(err)
-			return userRead, err
-		}
-	}
-	return userRead, nil
-}
-
 func (r *repositorySQL) GetFullData() ([]models.User, error) {
 	db := db.StorageDB
 	var myUsers []models.User
@@ -164,4 +146,42 @@ func (r *repositorySQL) GetFullData() ([]models.User, error) {
 		myUsers = append(myUsers, userRead)
 	}
 	return myUsers, nil
+}
+
+func (r *repositorySQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
+	db := db.StorageDB
+	var userRead models.User
+	myQuery := "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?"
+	rows, err := db.QueryContext(context.Background(), myQuery, id)
+	if err != nil {
+		log.Fatal(err)
+		return userRead, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
+		if err != nil {
+			log.Fatal(err)
+			return userRead, err
+		}
+	}
+	return userRead, nil
+}
+
+func (r *repositorySQL) UpdateWithContext(ctx context.Context, user models.User) (models.User, error) {
+	db := db.StorageDB
+	myQuery := "UPDATE users SET first_name = ?, last_name = ?, email =?, age=?, height =?, active =?, cration_date=? WHERE id=?"
+	stmt, err := db.PrepareContext(ctx, myQuery)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.ExecContext(ctx, user.FirstName, user.LastName, user.Email, user.Age, user.Height, user.Active, user.CrationDate, user.ID)
+	if err != nil {
+		return models.User{}, err
+	}
+	partUpdate, _ := result.RowsAffected()
+	if partUpdate == 0 {
+		return models.User{}, errors.New("User not found")
+	}
+	return user, nil
 }
