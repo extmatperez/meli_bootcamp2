@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"log"
 
-	db "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/database"
 	models "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/models"
 )
 
@@ -23,18 +22,19 @@ type RepositorySql interface {
 	Update(user models.User, ctx context.Context) (models.User, error)
 }
 
-type repositorySql struct{}
+type repositorySql struct {
+	db *sql.DB
+}
 
-func NewRepositorySql() RepositorySql {
-	return &repositorySql{}
+func NewRepositorySql(db *sql.DB) RepositorySql {
+	return &repositorySql{db: db}
 }
 
 func (s *repositorySql) GetAll() ([]models.User, error) {
 	var user models.User
 	var users []models.User
-	db := db.StorageDB
 
-	rows, err := db.Query(getAllQuery)
+	rows, err := s.db.Query(getAllQuery)
 
 	if err != nil {
 		log.Println(err)
@@ -55,9 +55,8 @@ func (s *repositorySql) GetAll() ([]models.User, error) {
 
 func (s *repositorySql) GetOne(id int) (models.User, error) {
 	var user models.User
-	db := db.StorageDB
 
-	rows, err := db.Query(getOneQuery, id)
+	rows, err := s.db.Query(getOneQuery, id)
 
 	if err != nil {
 		log.Println(err)
@@ -76,8 +75,7 @@ func (s *repositorySql) GetOne(id int) (models.User, error) {
 }
 
 func (s *repositorySql) Store(user models.User) (models.User, error) {
-	db := db.StorageDB
-	stmt, err := db.Prepare(insertQuery)
+	stmt, err := s.db.Prepare(insertQuery)
 
 	if err != nil {
 		log.Fatal(err)
@@ -96,9 +94,7 @@ func (s *repositorySql) Store(user models.User) (models.User, error) {
 }
 
 func (s *repositorySql) Update(user models.User, ctx context.Context) (models.User, error) {
-	db := db.StorageDB
-
-	stmt, err := db.Prepare(updateQuery)
+	stmt, err := s.db.Prepare(updateQuery)
 
 	if err != nil {
 		log.Fatal(err)

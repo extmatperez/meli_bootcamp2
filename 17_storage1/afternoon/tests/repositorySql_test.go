@@ -7,10 +7,13 @@ import (
 
 	users "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/internal/users"
 	models "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/models"
+
+	basicDb "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/database"
 )
 
 func testStoreSql(t *testing.T) {
-	repo := users.NewRepositorySql()
+	db := basicDb.StorageDB
+	repo := users.NewRepositorySql(db)
 	user := models.User{
 		Name:     "Federico",
 		LastName: "Archuby",
@@ -26,8 +29,9 @@ func testStoreSql(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestGetOneSql(t *testing.T) {
-	repo := users.NewRepositorySql()
+func testGetOneSql(t *testing.T) {
+	db := basicDb.StorageDB
+	repo := users.NewRepositorySql(db)
 
 	userObtained, err := repo.GetOne(1)
 	assert.Equal(t, 1, userObtained.ID)
@@ -35,10 +39,35 @@ func TestGetOneSql(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestGetAllSql(t *testing.T) {
-	repo := users.NewRepositorySql()
+func testGetAllSql(t *testing.T) {
+	db := basicDb.StorageDB
+	repo := users.NewRepositorySql(db)
 
 	users, err := repo.GetAll()
 	assert.LessOrEqual(t, 6, len(users))
 	assert.Nil(t, err)
+}
+
+func TestStoreGetOneTrx(t *testing.T) {
+	db, err := basicDb.InitDb()
+	assert.NoError(t, err)
+	repo := users.NewRepositorySql(db)
+
+	user := models.User{
+		Name:     "Federico",
+		LastName: "Archuby",
+		Email:    "fede@hola.com",
+		Age:      32,
+		Height:   1.72,
+		Active:   true,
+		Created:  "2021-10-21",
+	}
+	userCreated, err := repo.Store(user)
+	assert.NoError(t, err)
+
+	var userObtained models.User
+	userObtained, err = repo.GetOne(userCreated.ID)
+
+	assert.Equal(t, userObtained.Name, userCreated.Name)
+	assert.Equal(t, userObtained.ID, userCreated.ID)
 }
