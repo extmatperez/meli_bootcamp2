@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -12,16 +13,19 @@ var (
 )
 
 func init() {
-	dataSource := "root:root@tcp(localhost:3306)/dbproductos"
+	dataSource := "root:@tcp(localhost:3306)/dbproductos"
 
 	var err error
 
 	StorageDB, err = sql.Open("mysql", dataSource)
 
 	if err != nil {
+		fmt.Println("aqa")
 		panic(err)
 	}
 	if err = StorageDB.Ping(); err != nil {
+		fmt.Println("aqa ping")
+
 		panic(err)
 	}
 

@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"context"
+	"errors"
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/18_storage2/ProyectoEstructura/internal/models"
@@ -10,6 +12,8 @@ import (
 type RepositorySQL interface {
 	GetByName(name string) ([]models.Producto, error)
 	Store(producto models.Producto) (models.Producto, error)
+	GetAll(ctx context.Context) ([]models.Producto, error)
+	Update(ctx context.Context, producto models.Producto) (models.Producto, error)
 }
 
 type repositorySQL struct {
@@ -26,6 +30,8 @@ func (repsql *repositorySQL) Store(producto models.Producto) (models.Producto, e
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	//desp de ejecutar la fucion esto se va a ejecutar
 	defer stmt.Close()
 
 	result, errExec := stmt.Exec(producto.Nombre, producto.Color, producto.Precio, producto.Stock, producto.Codigo, producto.Publicado, producto.FechaCreacion)
@@ -59,4 +65,52 @@ func (r *repositorySQL) GetByName(name string) ([]models.Producto, error) {
 		productosSlice = append(productosSlice, prodLeido)
 	}
 	return productosSlice, nil
+}
+
+func (r *repositorySQL) GetAll(ctx context.Context) ([]models.Producto, error) {
+	var misProductos []models.Producto
+	db := db.StorageDB
+	var prodLeido models.Producto
+	query := "SELECT id, nombre,color,precio,stock,codigo,publicado,fechaCreacion FROM productos"
+	rows, err := db.QueryContext(ctx, query)
+
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&prodLeido.ID, &prodLeido.Nombre, &prodLeido.Codigo, &prodLeido.Precio, &prodLeido.Stock, &prodLeido.Codigo, &prodLeido.Publicado, &prodLeido.FechaCreacion)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		misProductos = append(misProductos, prodLeido)
+	}
+	return misProductos, nil
+}
+
+func (repsql *repositorySQL) Update(ctx context.Context, producto models.Producto) (models.Producto, error) {
+	db := db.StorageDB
+
+	query := "UPDATE  productos SET nombre = ?,color= ?,precio= ?,stock= ?,codigo= ?,publicado= ?,fechaCreacion= ? WHERE id=?"
+	stmt, err := db.Prepare(query)
+
+	if err != nil {
+		return models.Producto{}, err
+	}
+	defer stmt.Close()
+
+	result, err := stmt.ExecContext(ctx, producto.Nombre, producto.Color, producto.Precio, producto.Stock, producto.Codigo, producto.Publicado, producto.FechaCreacion, producto.ID)
+
+	if err != nil {
+		return models.Producto{}, err
+	}
+
+	filasAfectadas, _ := result.RowsAffected()
+
+	if filasAfectadas == 0 {
+		return models.Producto{}, errors.New("Niguna fila afectada, no se encontro el producto")
+	}
+	return producto, nil
 }
