@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	personas "github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/internal/personas"
-
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/proyecto/pkg/web"
 	"github.com/gin-gonic/gin"
 )
