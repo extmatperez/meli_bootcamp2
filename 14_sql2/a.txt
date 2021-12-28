@@ -1,0 +1,69 @@
+¿A qué se denomina JOIN en una base de datos?
+Es la unión de dos tablas
+
+Nombre y explique 2 tipos de JOIN.
+INNER JOIN: Solo muestra los datos del producto cruzado que cumplen la condición de selección. 
+LEFT JOIN: La sentencia LEFT JOIN combina los valores de la primera tabla con los valores de la segunda tabla. Siempre devolverá las filas de la primera tabla, incluso aunque no cumplan la condición. 
+
+¿Para qué se utiliza el GROUP BY?
+Se usa para agrupar según la columna indicada y mostrar una sola fila con el resultado de alguna operación de previa. 
+
+
+¿Para qué se utiliza el HAVING?
+El having es similar al where, que sirve para indicar algún parámetro condicional, pero se usa para aplicar el condicional luego de un GROUP BY.
+Aplica la condición sobre el resultado en las filas ya agrupadas.
+
+Dado lo siguientes diagramas indique a qué tipo de JOIN corresponde cada uno:
+
+
+Ejemplo 1 tipo de JOIN: INNER JOIN
+
+Ejemplo 2 tipos de JOIN: LEFT JOIN
+
+Escriba una consulta genérica por cada uno de los diagramas a continuación:
+Ejemplo 1: 
+ 
+SELECT campos
+FROM tabla1 INNER JOIN tabla2
+ON tabla1.campo1 operador_de_comparación tabla2.campo1;
+
+Ejemplo 2: 
+SELECT * FROM tabla1 FULL JOIN tabla2 
+WHERE tabla1.columna1 = tabla2.columna1;
+
+
+
+Mostrar el título y el nombre del género de todas las series.
+
+SELECT ge.name, se.title 
+FROM series se
+INNER JOIN genres ge
+ON se.genre_id = genre_id;
+
+Mostrar el título de los episodios, el nombre y apellido de los actores que trabajan en cada uno de ellos.
+
+SELECT e.title, a.first_name, a.last_name
+FROM episodes e 
+INNER JOIN actor_episode ae
+ON actor_id = episode_id
+INNER JOIN actors a
+ON ae.actor_id = a.id;
+
+Mostrar el título de todas las series y el total de temporadas que tiene cada una de ellas.
+
+SELECT max(number), series.title
+FROM seasons
+INNER JOIN series
+ON series.id = seasons.serie_id
+GROUP BY seasons.serie_id;
+
+Mostrar el nombre de todos los géneros y la cantidad total de películas por cada uno, siempre que sea mayor o igual a 3.
+
+SELECT genres.name, count(movies.genre_id) AS total_movies
+FROM movies 
+INNER JOIN genres
+ON movies.genre_id = genres.id
+GROUP BY genres.name
+HAVING total_movies > 3;
+
+Mostrar sólo el nombre y apellido de los actores que trabajan en todas las películas de la guerra de las galaxias y que estos no se repitan.
