@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"log"
@@ -15,6 +16,7 @@ type RepositorySQL interface {
 	Update(user models.User) (models.User, error)
 	GetAll() ([]models.User, error)
 	Delete(id int) error
+	GetOneWithContext(ctx context.Context, id int) (models.User, error)
 }
 
 type repositorySQL struct{}
@@ -119,4 +121,24 @@ func (r *repositorySQL) Delete(id int) error {
 		return errors.New("User not found")
 	}
 	return nil
+}
+
+func (r *repositorySQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
+	db := db.StorageDB
+	var userRead models.User
+	rows, err := db.QueryContext(context.Background(), "SELECT id,first_name, last_name, email, age, height, active, cration_date FROM users WHERE id = ?", id)
+	if err != nil {
+		log.Fatal(err)
+		return userRead, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&userRead.ID, &userRead.FirstName, &userRead.LastName, &userRead.Email, &userRead.Age, &userRead.Height, &userRead.Active, &userRead.CrationDate)
+		if err != nil {
+			log.Fatal(err)
+			return userRead, err
+		}
+		// // En caso de querer devolver mas de uno, por ejemplo un getFirstName
+		// myUsers = append(myUsers, userRead)
+	}
+	return userRead, nil
 }

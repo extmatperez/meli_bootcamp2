@@ -1,9 +1,11 @@
 package internal
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/Exercise1/internal/models"
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/Exercise1/pkg/store"
@@ -397,4 +399,29 @@ func TestDeleteServiceSQL(t *testing.T) {
 	err := service.Delete(int(userCreated.ID))
 
 	assert.Nil(t, err)
+}
+
+func TestGetOneWithContextServiceSQL(t *testing.T) {
+	newUser := models.User{
+		FirstName:   "Juan",
+		LastName:    "Orfali",
+		Email:       "Carsan@cloudflare.com",
+		Age:         28,
+		Height:      112,
+		Active:      true,
+		CrationDate: "20/08/2021",
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	userLoader, err := service.GetOneWithContext(ctx, 1)
+
+	assert.Nil(t, err)
+	assert.Equal(t, newUser.FirstName, userLoader.FirstName)
+	assert.Equal(t, newUser.LastName, userLoader.LastName)
 }

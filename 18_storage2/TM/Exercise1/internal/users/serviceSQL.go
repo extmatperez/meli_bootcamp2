@@ -1,6 +1,10 @@
 package internal
 
-import "github.com/extmatperez/meli_bootcamp2/18_storage2/TM/Exercise1/internal/models"
+import (
+	"context"
+
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/TM/Exercise1/internal/models"
+)
 
 type ServiceSQL interface {
 	Store(first_name, last_name, email string, age, height int, active bool, cration_date string) (models.User, error)
@@ -8,6 +12,7 @@ type ServiceSQL interface {
 	Update(user models.User) (models.User, error)
 	GetAll() ([]models.User, error)
 	Delete(id int) error
+	GetOneWithContext(ctx context.Context, id int) (models.User, error)
 }
 
 type serviceSQL struct {
@@ -42,4 +47,8 @@ func (ser *serviceSQL) GetAll() ([]models.User, error) {
 
 func (ser *serviceSQL) Delete(id int) error {
 	return ser.repository.Delete(id)
+}
+
+func (ser *serviceSQL) GetOneWithContext(ctx context.Context, id int) (models.User, error) {
+	return ser.repository.GetOneWithContext(ctx, id)
 }
