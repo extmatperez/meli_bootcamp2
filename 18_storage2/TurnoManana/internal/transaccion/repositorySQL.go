@@ -1,16 +1,18 @@
 package internal
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"log"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/17_storage1/TurnoTarde/db"
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/17_storage1/TurnoTarde/internal/transaccion/models"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/db"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/internal/transaccion/models"
 )
 
 type RepositorySql interface {
 	Store(transaction models.Transaction) (models.Transaction, error)
+	Update(transaction models.Transaction, ctx context.Context) (models.Transaction, error)
 	GetById(id int) (models.Transaction, error)
 	GetAll() ([]models.Transaction, error)
 	Delete(id int) error
@@ -29,6 +31,8 @@ const (
 	GetById = "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction WHERE Id=?"
 	GetAll  = "SELECT Id,Codigo,Moneda,Monto,Emisor,Receptor,Fecha FROM transaction"
 	Delete  = "DELETE FROM transaction WHERE Id=?"
+	Update = "UPDATE transaction SET Codigo= ?,Moneda= ?,Monto= ?,Emisor= ?,Receptor= ?,Fecha= ?" +
+	"WHERE Id= ?"
 )
 
 func (r *repositorySQL) Store(transaction models.Transaction) (models.Transaction, error) {
@@ -108,5 +112,27 @@ func (r *repositorySQL) Delete(id int) error {
 	}
 
 	return nil
+
+}
+
+
+func (r *repositorySQL) Update(transaction models.Transaction,ctx context.Context) (models.Transaction, error) {
+	db := db.StorageDB                 // se inicializa la base
+	stmt, err := db.Prepare(Update) // se prepara el SQL
+	if err != nil {
+		return models.Transaction{}, err
+	}
+	defer stmt.Close() // se cierra la sentencia al terminar. Si quedan abiertas se genera consumos de memoria
+	var result sql.Result
+	result, err = stmt.ExecContext(ctx,transaction.Codigo, transaction.Moneda, transaction.Monto, transaction.Emisor,
+		transaction.Receptor, transaction.Fecha,transaction.ID) // retorna un sql.Result y un error
+	if err != nil {
+		return models.Transaction{}, err
+	}
+	filasActualizadas, _ := result.RowsAffected()
+	if filasActualizadas == 0 {
+		return models.Transaction{}, errors.New("no se encontro la transacción")
+	}
+	return transaction, nil
 
 }

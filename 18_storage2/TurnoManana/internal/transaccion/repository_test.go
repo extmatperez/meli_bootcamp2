@@ -7,7 +7,7 @@ import (
 
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/17_storage1/TurnoTarde/internal/transaccion/models"
+	"github.com/extmatperez/meli_bootcamp2/tree/palacio_francisco/18_storage2/TurnoManana/internal/transaccion/models"
 	"github.com/stretchr/testify/assert"
 )
 
