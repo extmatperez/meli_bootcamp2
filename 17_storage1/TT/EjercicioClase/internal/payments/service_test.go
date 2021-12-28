@@ -8,8 +8,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/12_testing3/TM/Ejercicios/pkg/store"
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/17_storage1/TT/EjercicioClase/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/17_storage1/TT/EjercicioClase/pkg/db"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -200,7 +202,7 @@ func TestUpdateNotFoundMock(t *testing.T) {
 
 	service := NewService(repo)
 
-	_, err := service.Update(1, newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+	_, err := service.Update(3, newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
 	assert.Error(t, err)
 }
 
@@ -443,7 +445,7 @@ func TestGetAllPaymentsServiceSql(t *testing.T) {
 	obtainedPayments, _ := service.GetAllPayments()
 
 	assert.Equal(t, expectedPayments, obtainedPayments)
-	assert.True(t, len(obtainedPayments) >= 0)
+	assert.True(t, len(obtainedPayments) > 0)
 }
 
 func TestGetAllPaymentsServiceSql_Failed(t *testing.T) {
@@ -586,4 +588,162 @@ func TestUpdateWithContextServiceSql(t *testing.T) {
 	assert.Equal(t, expectedPayment.Monto, updatedPayment.Monto)
 	assert.Equal(t, expectedPayment.Receptor, updatedPayment.Receptor)
 	assert.Nil(t, err)
+}
+
+// ==================================================================================
+// ACA COMIENZA EL TESTING DE SQL USANDO MOCKS. INCLUYE ACTIVIDAD.
+func TestServiceSqlStore_Mock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	newPayment := models.Payment{
+		Codigo:   "AAA002",
+		Moneda:   "ARS",
+		Monto:    float64(856.34),
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Matias Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
+	rows.AddRow(1, "AAA002", "ARS", 856.34, "Rodrigo Vega", "Matias Perez", "2021-12-28")
+
+	mock.ExpectPrepare("INSERT INTO Payment")
+	mock.ExpectExec("INSERT INTO").WillReturnResult(sqlmock.NewResult(1, 1))
+	//mock.ExpectQuery("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	insertedPayment, err := service.Store(newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+
+	assert.Nil(t, err)
+	assert.Equal(t, newPayment.Codigo, insertedPayment.Codigo)
+}
+
+func TestServiceSqlStore_Mock_Error(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	newPayment := models.Payment{
+		Codigo:   "AAA003",
+		Moneda:   "ARS",
+		Monto:    float64(856.34),
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Matias Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
+	rows.AddRow(1, "AAA001", "ARS", 856.34, "Rodrigo Vega", "Matias Perez", "2021-12-28")
+	rows.AddRow(2, "AAA002", "ARS", 1856.34, "Rodrigo Vega", "Julian Mondaca", "2021-12-28")
+
+	mock.ExpectPrepare("INSERT INTO Payment")
+	mock.ExpectExec("").WillReturnError(errors.New("No se pudo registrar la transacción."))
+	//mock.ExpectQuery("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	_, err0 := service.Store(newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+
+	assert.Equal(t, "No se pudo registrar la transacción.", err0.Error())
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestServiceSqlGetById_Mock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
+	rows.AddRow(1, "AAA002", "ARS", 856.34, "Rodrigo Vega", "Matias Perez", "2021-12-28")
+
+	mock.ExpectQuery("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	obtainedPayment := service.GetById(1)
+
+	assert.NoError(t, mock.ExpectationsWereMet())
+	assert.Equal(t, "AAA002", obtainedPayment.Codigo)
+	assert.Equal(t, "ARS", obtainedPayment.Moneda)
+}
+
+func TestServiceSqlGetById_Mock_NotFound(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
+
+	mock.ExpectQuery("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+	mock.ExpectExec("").WillReturnResult(nil)
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	obtainedPayment := service.GetById(1)
+
+	assert.Equal(t, models.Payment{}, obtainedPayment)
+}
+
+func TestServiceSqlUpdate_Mock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	newPayment := models.Payment{
+		Id:       1,
+		Codigo:   "AAA002",
+		Moneda:   "R$",
+		Monto:    float64(256.34),
+		Emisor:   "Rodrigo Vega Gimenez",
+		Receptor: "Matias Agustin Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
+	rows.AddRow(1, "AAA002", "ARS", 856.34, "Rodrigo Vega", "Matias Perez", "2021-12-28")
+
+	mock.ExpectPrepare("UPDATE Payments")
+	mock.ExpectQuery("UPDATE Payments SET id = ?, codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	changedPayment, err := service.Update(newPayment)
+
+	assert.Nil(t, err)
+	assert.Equal(t, newPayment.Codigo, changedPayment.Codigo)
+	assert.Equal(t, newPayment.Moneda, changedPayment.Moneda)
+	assert.Equal(t, newPayment.Emisor, changedPayment.Emisor)
+}
+
+// ==================================================================================
+// ACA COMIENZA EL TEST USANDO LA DB COMO UNA BASE DE DATOS TRANSACCIONAL, USANDO TXDB. INCLUYE ACTIVIDAD.
+func TestServiceSqlStore_Txdb(t *testing.T) {
+	newPayment := models.Payment{
+		Codigo:   "AAA002",
+		Moneda:   "ARS",
+		Monto:    float64(856.34),
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Matias Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	// Aca abrimos la comunicacion con TXDB.
+	db, err := db.InitDb()
+	assert.Nil(t, err)
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	insertedPayment, err := service.Store(newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+
+	assert.Nil(t, err)
+	assert.Equal(t, newPayment.Codigo, insertedPayment.Codigo)
 }
