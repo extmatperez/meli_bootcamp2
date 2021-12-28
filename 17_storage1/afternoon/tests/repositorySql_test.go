@@ -9,7 +9,7 @@ import (
 	models "github.com/extmatperez/meli_bootcamp2/tree/archuby_federico/17_storage1/afternoon/pkg/models"
 )
 
-func TestStoreSql(t *testing.T) {
+func testStoreSql(t *testing.T) {
 	repo := users.NewRepositorySql()
 	user := models.User{
 		Name:     "Federico",
@@ -32,5 +32,13 @@ func TestGetOneSql(t *testing.T) {
 	userObtained, err := repo.GetOne(1)
 	assert.Equal(t, 1, userObtained.ID)
 	assert.Equal(t, "Archuby", userObtained.LastName)
+	assert.Nil(t, err)
+}
+
+func TestGetAllSql(t *testing.T) {
+	repo := users.NewRepositorySql()
+
+	users, err := repo.GetAll()
+	assert.LessOrEqual(t, 6, len(users))
 	assert.Nil(t, err)
 }

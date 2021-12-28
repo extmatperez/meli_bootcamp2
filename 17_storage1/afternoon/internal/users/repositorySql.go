@@ -12,6 +12,7 @@ const (
 	getAllQuery = "SELECT id, name, last_name, email, age, height, active, created FROM users"
 	getOneQuery = "SELECT id, name, last_name, email, age, height, active, created FROM users WHERE id = ?"
 	insertQuery = "INSERT INTO users(name, last_name, email, age, height, active, created) VALUES (?,?,?,?,?,?,?)"
+	updateQuery = "UPDATE users SET name = ?, last_name = ?, email = ?, age = ?, height = ?, active = ?, created = ? WHERE id = ?"
 )
 
 type RepositorySql interface {
@@ -39,8 +40,6 @@ func (s *repositorySql) GetAll() ([]models.User, error) {
 		return []models.User{}, err
 	}
 
-	defer db.Close()
-
 	for rows.Next() {
 		err = rows.Scan(&user.ID, &user.Name, &user.LastName, &user.Email, &user.Age, &user.Height, &user.Active, &user.Created)
 		if err != nil {
@@ -64,8 +63,6 @@ func (s *repositorySql) GetOne(id int) (models.User, error) {
 		return user, err
 	}
 
-	defer db.Close()
-
 	for rows.Next() {
 		err = rows.Scan(&user.ID, &user.Name, &user.LastName, &user.Email, &user.Age, &user.Height, &user.Active, &user.Created)
 		if err != nil {
@@ -86,8 +83,6 @@ func (s *repositorySql) Store(user models.User) (models.User, error) {
 		return models.User{}, err
 	}
 
-	defer db.Close()
-
 	var result sql.Result
 	result, err = stmt.Exec(user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created)
 	if err != nil {
@@ -96,5 +91,23 @@ func (s *repositorySql) Store(user models.User) (models.User, error) {
 
 	newId, _ := result.LastInsertId()
 	user.ID = int(newId)
+	return user, nil
+}
+
+func (s *repositorySql) Update(user models.User) (models.User, error) {
+	db := db.StorageDB
+
+	stmt, err := db.Prepare(updateQuery)
+
+	if err != nil {
+		log.Fatal(err)
+		return models.User{}, err
+	}
+
+	_, err = stmt.Exec(user.Name, user.LastName, user.Email, user.Age, user.Height, user.Active, user.Created, user.ID)
+	if err != nil {
+		return models.User{}, err
+	}
+
 	return user, nil
 }
