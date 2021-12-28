@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/internal/domain"
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/pkg/database"
 	"github.com/stretchr/testify/assert"
@@ -136,4 +137,92 @@ func TestRepositoryDelete(t *testing.T) {
 	}
 
 	assert.True(t, !deletedProductFound, "deleted product should not found")
+}
+
+func TestRepositoryMockGet(t *testing.T) {
+	// Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err, "error should be nil")
+
+	rows := mock.NewRows([]string{"id", "name", "price", "description"})
+	rows.AddRow(1, "Mate", 200.5, "Para tomar mate")
+	mock.ExpectQuery(GetQuery).WithArgs(1).WillReturnRows(rows)
+	repository := NewRepository(db)
+	expectedResult := domain.Product{
+		Id:          1,
+		Name:        "Mate",
+		Price:       200.5,
+		Description: "Para tomar mate",
+	}
+
+	// Act
+	result, err := repository.Get(context.Background(), 1)
+
+	// Assert
+	assert.Equal(t, expectedResult, result, "result should be equal to expected result")
+	assert.Nil(t, err, "error should be nil")
+}
+
+func TestRepositoryMockGetError(t *testing.T) {
+	// Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err, "error should be nil")
+
+	mock.ExpectQuery(GetQuery).WithArgs(1).WillReturnError(ErrorProductNotFound)
+	repository := NewRepository(db)
+	expectedResult := domain.Product{}
+
+	// Act
+	result, err := repository.Get(context.Background(), 1)
+
+	// Assert
+	assert.Error(t, err, "should exists an error")
+	assert.Equal(t, expectedResult, result, "result should be equal to expected result")
+}
+
+func TestRepositoryMockStore(t *testing.T) {
+	// Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err, "error should be nil")
+
+	mock.ExpectPrepare("INSERT INTO products")
+	mock.ExpectExec("INSERT INTO products").WillReturnResult(sqlmock.NewResult(10, 1))
+	repository := NewRepository(db)
+	expectedResult := domain.Product{
+		Id:          10,
+		Name:        "Matecinho",
+		Price:       1.5,
+		Description: "Para tomar Matecinho",
+	}
+
+	// Act
+	result, err := repository.Store(context.Background(), expectedResult)
+
+	// Assert
+	assert.Equal(t, expectedResult, result, "result should be equal to expected result")
+	assert.Nil(t, err, "error should be nil")
+}
+
+func TestRepositoryMockStoreErrorPrepare(t *testing.T) {
+	// Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err, "error should be nil")
+
+	mock.ExpectPrepare("INSERT INTO products")
+	mock.ExpectExec("INSERT INTO products").WillReturnError(ErrorExecStoreStatement)
+	repository := NewRepository(db)
+	newProduct := domain.Product{
+		Id:          10,
+		Name:        "Matecinho",
+		Price:       1.5,
+		Description: "Para tomar Matecinho",
+	}
+	expectedResult := domain.Product{}
+
+	// Act
+	result, err := repository.Store(context.Background(), newProduct)
+
+	// Assert
+	assert.Error(t, err, "should has an error")
+	assert.Equal(t, expectedResult, result, "result should be equal to expected result")
 }

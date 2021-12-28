@@ -3,17 +3,24 @@ package product
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/internal/domain"
 )
 
 var (
+	// Db queries & statements
 	GetAllQuery        = "SELECT id, name, price, description FROM products"
 	GetQuery           = "SELECT id, name, price, description FROM products WHERE id = ?"
 	GetByNameLikeQuery = "SELECT id, name, price, description FROM products WHERE LOWER(name) LIKE (\"%?%\")"
 	StoreStatement     = "INSERT INTO products(name, price, description) VALUES(?, ?, ?)"
 	UpdateStatement    = "UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?"
 	DeleteStatement    = "DELETE FROM products WHERE id = ?"
+
+	// Errors
+	ErrorProductNotFound             = errors.New("product not found")
+	ErrorCanNotPrepareStoreStatement = errors.New("can not prepare store statement")
+	ErrorExecStoreStatement          = errors.New("error executing store statement")
 )
 
 func NewRepository(db *sql.DB) Repository {
@@ -60,7 +67,7 @@ func (r *repository) Get(ctx context.Context, id int) (domain.Product, error) {
 
 	err := r.db.QueryRowContext(ctx, GetQuery, id).Scan(&product.Id, &product.Name, &product.Price, &product.Description)
 	if err != nil {
-		return domain.Product{}, err
+		return domain.Product{}, ErrorProductNotFound
 	}
 
 	return product, nil
@@ -89,14 +96,14 @@ func (r *repository) GetByName(ctx context.Context, name string) ([]domain.Produ
 func (r *repository) Store(ctx context.Context, product domain.Product) (domain.Product, error) {
 	stmt, err := r.db.PrepareContext(ctx, StoreStatement)
 	if err != nil {
-		return domain.Product{}, err
+		return domain.Product{}, ErrorCanNotPrepareStoreStatement
 	}
 
 	defer stmt.Close()
 
 	result, err := stmt.ExecContext(ctx, product.Name, product.Price, product.Description)
 	if err != nil {
-		return domain.Product{}, err
+		return domain.Product{}, ErrorExecStoreStatement
 	}
 
 	lastId, err := result.LastInsertId()
