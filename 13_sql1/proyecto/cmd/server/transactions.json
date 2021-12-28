@@ -1,0 +1,92 @@
+[
+	{
+		"id": 5,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "USD",
+		"monto": 23400.85,
+		"emisor": "sebac2",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 6,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 7,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 8,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 9,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 10,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 11,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 12,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 13,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	},
+	{
+		"id": 14,
+		"codigo_de_transaccion": "asd12321",
+		"moneda": "UYU",
+		"monto": 2344.8,
+		"emisor": "sebac",
+		"receptor": "rec",
+		"fecha_de_transaccion": "10/18/2021"
+	}
+]
