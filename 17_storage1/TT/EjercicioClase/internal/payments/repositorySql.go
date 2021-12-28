@@ -29,7 +29,8 @@ func NewRepositorySql() RepositorySql {
 
 func (r *repositorySql) Store(payment models.Payment) (models.Payment, error) {
 	db := db.StorageDB
-	stmt, err := db.Prepare("INSERT INTO Payments(codigo, moneda, monto, emisor, receptor, fecha) VALUES (?,?,?,?,?,?)")
+	query := "INSERT INTO Payments(codigo, moneda, monto, emisor, receptor, fecha) VALUES (?,?,?,?,?,?)"
+	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,7 +51,8 @@ func (r *repositorySql) Store(payment models.Payment) (models.Payment, error) {
 func (r *repositorySql) GetById(id int) models.Payment {
 	var pay models.Payment
 	db := db.StorageDB
-	rows, err := db.Query("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?", id)
+	query := "SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?"
+	rows, err := db.Query(query, id)
 	if err != nil {
 		log.Fatal(err)
 		return pay
@@ -90,7 +92,8 @@ func (r *repositorySql) GetByCode(codigo string) models.Payment {
 func (r *repositorySql) GetAllPayments() ([]models.Payment, error) {
 	var pays []models.Payment
 	db := db.StorageDB
-	rows, err := db.Query("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments")
+	query := "SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments"
+	rows, err := db.Query(query)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -111,7 +114,8 @@ func (r *repositorySql) GetAllPayments() ([]models.Payment, error) {
 
 func (r *repositorySql) Update(payment models.Payment) (models.Payment, error) {
 	db := db.StorageDB
-	stmt, err := db.Prepare("UPDATE Payments SET codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?")
+	query := "UPDATE Payments SET codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?"
+	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -129,7 +133,8 @@ func (r *repositorySql) Update(payment models.Payment) (models.Payment, error) {
 
 func (r *repositorySql) Delete(id int) error {
 	db := db.StorageDB
-	stmt, err := db.Prepare("DELETE FROM Payments WHERE id = ?")
+	query := "DELETE FROM Payments WHERE id = ?"
+	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -150,7 +155,8 @@ func (r *repositorySql) Delete(id int) error {
 func (r *repositorySql) GetFullDataAllPayments() ([]models.Payment, error) {
 	var pays []models.Payment
 	db := db.StorageDB
-	rows, err := db.Query("SELECT p.id, p.codigo, p.moneda, p.monto, p.emisor, p.receptor, p.fecha, b.id, b.responsable, b.fecha FROM Payments p INNER JOIN BoxClosing b ON p.box_closing_id = b.id")
+	query := "SELECT p.id, p.codigo, p.moneda, p.monto, p.emisor, p.receptor, p.fecha, b.id, b.responsable, b.fecha FROM Payments p INNER JOIN BoxClosing b ON p.box_closing_id = b.id"
+	rows, err := db.Query(query)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -175,7 +181,8 @@ func (r *repositorySql) GetFullDataAllPayments() ([]models.Payment, error) {
 func (r *repositorySql) GetByIdWithContext(ctx context.Context, id int) (models.Payment, error) {
 	var pay models.Payment
 	db := db.StorageDB
-	rows, err := db.QueryContext(ctx, "SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?", id)
+	query := "SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?"
+	rows, err := db.QueryContext(ctx, query, id)
 	if err != nil {
 		log.Fatal(err)
 		return pay, err
@@ -194,7 +201,8 @@ func (r *repositorySql) GetByIdWithContext(ctx context.Context, id int) (models.
 
 func (r *repositorySql) UpdateWithContext(ctx context.Context, payment models.Payment) (models.Payment, error) {
 	db := db.StorageDB
-	stmt, err := db.Prepare("UPDATE Payments SET codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?")
+	query := "UPDATE Payments SET codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?"
+	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
