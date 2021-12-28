@@ -1,10 +1,12 @@
 package internal
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/11_testing2/Go_Web/pkg/store"
 	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/17_storage1/Go_Web/internal/models"
@@ -289,7 +291,7 @@ func TestUpdateServiceSQL(t *testing.T) {
 	//Arrange
 	userUpdate := models.Usuario{
 		ID:            1,
-		Nombre:        "Roldan",
+		Nombre:        "Juan",
 		Apellido:      "Kevin",
 		Email:         "correo",
 		Edad:          20,
@@ -300,11 +302,44 @@ func TestUpdateServiceSQL(t *testing.T) {
 
 	repo := NewRepositorySQL()
 
-	service := NewServiceSQL(repo)
+	// service := NewServiceSQL(repo)
 
-	personaCargada, _ := service.Update(userUpdate)
-
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	personaCargada, err := repo.Update(ctx, userUpdate)
+	fmt.Println(err)
 	assert.Equal(t, userUpdate.Nombre, personaCargada.Nombre)
 	assert.Equal(t, userUpdate.Apellido, personaCargada.Apellido)
 	// assert.Nil(t, misPersonas)
+}
+
+func TestGetAllServiceSQL(t *testing.T) {
+	//Arrange
+	user := []models.Usuario{
+		{ID: 1,
+			Nombre:        "Juan",
+			Apellido:      "Kevin",
+			Email:         "correo",
+			Edad:          20,
+			Altura:        180,
+			Activo:        true,
+			FechaCreacion: "fecha"},
+		{ID: 2,
+			Nombre:        "Juan",
+			Apellido:      "Perez",
+			Email:         "correo",
+			Edad:          20,
+			Altura:        180,
+			Activo:        true,
+			FechaCreacion: "fecha"},
+	}
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	usuarios, _ := service.GetAll()
+	fmt.Println(usuarios)
+	assert.Equal(t, user, usuarios)
+
 }
