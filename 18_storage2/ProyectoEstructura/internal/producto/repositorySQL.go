@@ -8,14 +8,14 @@ import (
 )
 
 type RepositorySQL interface {
-	GetByName(name string) (models.Producto, error)
+	GetByName(name string) ([]models.Producto, error)
 	Store(producto models.Producto) (models.Producto, error)
 }
 
 type repositorySQL struct {
 }
 
-func newRespositorySQL() RepositorySQL {
+func newRepositorySQL() RepositorySQL {
 	return &repositorySQL{}
 }
 
@@ -39,22 +39,24 @@ func (repsql *repositorySQL) Store(producto models.Producto) (models.Producto, e
 
 }
 
-func (r *repositorySQL) GetByName(name string) (models.Producto, error) {
+func (r *repositorySQL) GetByName(name string) ([]models.Producto, error) {
 	db := db.StorageDB
+	var productosSlice []models.Producto
 	var prodLeido models.Producto
 	rows, err := db.Query("SELECT id, nombre,color,precio,stock,codigo,publicado,fechaCreacion FROM productos WHERE nombre = ?", name)
 
 	if err != nil {
 		log.Fatal(err)
-		return prodLeido, err
+		return nil, err
 	}
 
 	for rows.Next() {
 		err = rows.Scan(&prodLeido.ID, &prodLeido.Nombre, &prodLeido.Codigo, &prodLeido.Precio, &prodLeido.Stock, &prodLeido.Codigo, &prodLeido.Publicado, &prodLeido.FechaCreacion)
 		if err != nil {
 			log.Fatal(err)
-			return prodLeido, err
+			return nil, err
 		}
+		productosSlice = append(productosSlice, prodLeido)
 	}
-	return prodLeido, nil
+	return productosSlice, nil
 }

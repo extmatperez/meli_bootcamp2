@@ -66,80 +66,17 @@ func TestUpdateService(t *testing.T) {
 	// assert.True(t, store.SpyRead)
 }
 
-/*
-func TestStoreServiceSQL(t *testing.T) {
+func TestGetByNameServiceSQL(t *testing.T) {
 	//Arrange
-	personaNueva := models.Persona{
-		Nombre:   "Matias",
-		Apellido: "Perez",
-		Edad:     27,
-	}
+	nombreProd := "Yogurt"
 
-	repo := NewRepositorySQL()
+	repo := newRepositorySQL()
 
 	service := NewServiceSQL(repo)
 
-	personaCreada, _ := service.Store(personaNueva.Nombre, personaNueva.Apellido, personaNueva.Edad)
+	prodObtenidos, err := service.GetByName(nombreProd)
 
-	assert.Equal(t, personaNueva.Nombre, personaCreada.Nombre)
-	assert.Equal(t, personaNueva.Apellido, personaCreada.Apellido)
-	// assert.Nil(t, misPersonas)
+	assert.Error(t, err)
+	assert.True(t, len(prodObtenidos) >= 0)
+	// assert.Equal(t, .Nombre, .Nombre)
 }
-
-func TestGetOneServiceSQL(t *testing.T) {
-	//Arrange
-	personaNueva := models.Persona{
-		Nombre:   "Matias",
-		Apellido: "Perez",
-		Edad:     27,
-	}
-
-	repo := NewRepositorySQL()
-
-	service := NewServiceSQL(repo)
-
-	personaCargada := service.GetOne(2)
-
-	assert.Equal(t, personaNueva.Nombre, personaCargada.Nombre)
-	assert.Equal(t, personaNueva.Apellido, personaCargada.Apellido)
-	// assert.Nil(t, misPersonas)
-}
-
-func TestUpdateServiceSQL(t *testing.T) {
-	//Arrange
-	personaUpdate := models.Persona{
-		ID:       2,
-		Nombre:   "Juan",
-		Apellido: "Rivera",
-		Edad:     25,
-	}
-
-	repo := NewRepositorySQL()
-
-	service := NewServiceSQL(repo)
-
-	personaCargada, _ := service.Update(personaUpdate)
-
-	assert.Equal(t, personaUpdate.Nombre, personaCargada.Nombre)
-	assert.Equal(t, personaUpdate.Apellido, personaCargada.Apellido)
-	// assert.Nil(t, misPersonas)
-}
-
-func TestUpdateServiceSQL_Failed(t *testing.T) {
-	//Arrange
-	personaUpdate := models.Persona{
-		ID:       15,
-		Nombre:   "Juan",
-		Apellido: "Rivera",
-		Edad:     25,
-	}
-
-	repo := NewRepositorySQL()
-
-	service := NewServiceSQL(repo)
-
-	_, err := service.Update(personaUpdate)
-
-	assert.Equal(t, "No se encontro la persona", err.Error())
-	// assert.Nil(t, misPersonas)
-}*/

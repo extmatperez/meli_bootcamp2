@@ -6,7 +6,7 @@ import (
 
 type ServiceSQL interface {
 	Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (models.Producto, error)
-	GetByName(name string) (models.Producto, error)
+	GetByName(name string) ([]models.Producto, error)
 }
 
 type serviceSQL struct {
@@ -28,6 +28,6 @@ func (ser *serviceSQL) Store(nombre, color string, precio float64, stock int, co
 	return personaCreada, nil
 }
 
-func (ser *serviceSQL) GetByName(name string) (models.Producto, error) {
+func (ser *serviceSQL) GetByName(name string) ([]models.Producto, error) {
 	return ser.repository.GetByName(name)
 }
