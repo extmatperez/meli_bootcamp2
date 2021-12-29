@@ -11,6 +11,7 @@ type ServiceSQL interface {
 	Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error)
 	UpdateWithContext(ctx context.Context, id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error)
 	Delete(id int) error
+	GetTransactionByID(id int) (models.Transaction, error)
 }
 
 type serviceSQL struct {
@@ -48,4 +49,9 @@ func (ser *serviceSQL) UpdateWithContext(ctx context.Context, id int, codigo_de_
 func (ser *serviceSQL) Delete(id int) error {
 	err := ser.repository.Delete(id)
 	return err
+}
+
+func (ser *serviceSQL) GetTransactionByID(id int) (models.Transaction, error) {
+	tr, err := ser.repository.GetTransactionByID(id)
+	return tr, err
 }

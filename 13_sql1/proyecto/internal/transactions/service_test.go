@@ -6,7 +6,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/pkg/db"
 	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
@@ -259,4 +261,56 @@ func TestDeleteServiceSQL(t *testing.T) {
 	//Assert
 	assert.Nil(t, err)
 
+}
+
+//SQL Mock
+
+func TestServiceGetOneMockSuccess(t *testing.T) {
+	//Arrange
+	//terminal :$ mysql.server start
+	db, mock, err := sqlmock.New()
+
+	assert.Nil(t, err)
+	defer db.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "codigo_de_transaccion", "moneda", "monto", "emisor", "receptor", "fecha_de_transaccion"})
+	rows.AddRow(2, "code123456", "UYU", 12.555, "em1", "rec2", "2020-10-11 12:12:00")
+	mock.ExpectQuery("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions WHERE id = ?").WithArgs(2).WillReturnRows(rows)
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+	//Act
+	transaccion, err := service.GetTransactionByID(2)
+
+	//Assert
+	assert.Nil(t, err)
+	assert.Equal(t, "code123456", transaccion.CodigoDeTransaccion)
+}
+
+// txdb
+
+func TestStoreServiceSQLTXDB(t *testing.T) {
+
+	transactionExpected := models.Transaction{
+		ID:                  7,
+		CodigoDeTransaccion: "pruebaStore.txdb",
+		Moneda:              "MXN",
+		Monto:               123.45,
+		Emisor:              "em1",
+		Receptor:            "rec1",
+		FechaDeTransaccion:  "2020-10-10 12:12:00",
+	}
+
+	db, err := db.InitDB()
+	assert.Nil(t, err)
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+	service := NewServiceSQL(repo)
+
+	//Act
+	miTransaccion, err := service.Store(transactionExpected.CodigoDeTransaccion, transactionExpected.Moneda, transactionExpected.Monto, transactionExpected.Emisor, transactionExpected.Receptor, transactionExpected.FechaDeTransaccion)
+	transactionExpected.ID = miTransaccion.ID
+	//Assert
+	assert.Nil(t, err)
+	assert.Equal(t, transactionExpected, miTransaccion)
 }
