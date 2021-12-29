@@ -24,16 +24,18 @@ func New_repository_sql() Repository_sql {
 
 func (r *repository_sql) Store(users models.Users) (models.Users, error) {
 	db := db.Storage_DB
-	stmt, err := db.Prepare(
-		`INSERT INTO users_sql(
-			first_name, 
-			last_name, 
-			email, 
-			age, 
-			height, 
-			active, 
-			date) 
-			VALUES ( ?, ?, ?, ?, ?, ?, ?)`)
+
+	insert_user_store := `INSERT INTO users_sql(
+		first_name, 
+		last_name, 
+		email, 
+		age, 
+		height, 
+		active, 
+		date) 
+		VALUES ( ?, ?, ?, ?, ?, ?, ?)`
+
+	stmt, err := db.Prepare(insert_user_store)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,13 +52,15 @@ func (r *repository_sql) Store(users models.Users) (models.Users, error) {
 func (r *repository_sql) Get_one_user(id int) models.Users {
 	db := db.Storage_DB
 	var user_readed models.Users
-	rows, err := db.Query(`SELECT 
+
+	select_one_user := `SELECT 
 	id,
 	first_name, 
 	last_name, 
 	email, 
 	age
-	FROM users_sql WHERE id = ?`, id)
+	FROM users_sql WHERE id = ?`
+	rows, err := db.Query(select_one_user, id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -82,12 +86,14 @@ func (r *repository_sql) Get_by_name(name string) ([]models.Users, error) {
 	db := db.Storage_DB
 	var users_by_name []models.Users
 	var user_readed models.Users
-	rows, err := db.Query(`SELECT
+
+	select_by_name := `SELECT
 	first_name,
 	last_name,
 	email,
 	age
-	FROM users_sql WHERE first_name = ?`, name)
+	FROM users_sql WHERE first_name = ?`
+	rows, err := db.Query(select_by_name, name)
 
 	if err != nil {
 		log.Fatal(err)
@@ -114,12 +120,14 @@ func (r *repository_sql) Get_all_users() ([]models.Users, error) {
 	var all_users []models.Users
 	var user_readed models.Users
 
-	rows, err := db.Query(`SELECT
+	query_get_all_users := `SELECT
 	first_name,
 	last_name,
 	email,
 	age
-	FROM users_sql`)
+	FROM users_sql`
+
+	rows, err := db.Query(query_get_all_users)
 
 	if err != nil {
 		log.Fatal(err)
@@ -143,7 +151,9 @@ func (r *repository_sql) Get_all_users() ([]models.Users, error) {
 
 func (r *repository_sql) Update(users models.Users) (models.Users, error) {
 	db := db.Storage_DB
-	stmt, err := db.Prepare(`UPDATE users_sql SET first_name = ?, last_name = ?, email = ? WHERE id = ?`)
+
+	update_user := `UPDATE users_sql SET first_name = ?, last_name = ?, email = ? WHERE id = ?`
+	stmt, err := db.Prepare(update_user)
 
 	if err != nil {
 		log.Fatal(err)
