@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/18_storage2/morning_activities/Exercise_1_2_3/internal/models"
@@ -86,6 +87,19 @@ func Test_get_all_users_service_sql(t *testing.T) {
 	assert.True(t, len(all_users_db) >= 0)
 }
 
+func Test_get_full_data_service_sql(t *testing.T) {
+	repo := New_repository_sql()
+	service := New_service_sql(repo)
+
+	all_data_db, err := service.Get_full_data()
+
+	assert.Nil(t, err)
+	assert.True(t, len(all_data_db) >= 0)
+	assert.Equal(t, "Moscow", all_data_db[28].Address.CityName)
+
+	fmt.Printf("\n %+v \n", all_data_db[28])
+}
+
 func Test_update_service_sql_ok(t *testing.T) {
 	user_updated := models.Users{
 		ID:        5,
@@ -99,17 +113,17 @@ func Test_update_service_sql_ok(t *testing.T) {
 	// Esto lo hacemos con el fin de que al actualizar no me cree problemas en el siguiente test manteniendo los datos (1)
 	last_user := service.Get_one_user(user_updated.ID)
 
-	user_loaded, _ := service.Update(user_updated)
+	user_loaded, _ := service.Update_user(user_updated)
 
 	assert.Equal(t, user_updated.FirstName, user_loaded.FirstName)
 	assert.Equal(t, user_updated.LastName, user_loaded.LastName)
 
 	// Esto lo hacemos con el fin de que al actualizar no me cree problemas en el siguiente test manteniendo los datos (2)
-	_, err := service.Update(last_user)
+	_, err := service.Update_user(last_user)
 	assert.Nil(t, err)
 }
 
-func Test_update_failed(t *testing.T) {
+func Test_update_failed_service_sql(t *testing.T) {
 	user_updated := models.Users{
 		ID:        20,
 		FirstName: "Viviana",
@@ -120,7 +134,44 @@ func Test_update_failed(t *testing.T) {
 	repo := New_repository_sql()
 	service := New_service_sql(repo)
 
-	_, err := service.Update(user_updated)
+	_, err := service.Update_user(user_updated)
+
+	assert.Equal(t, "user not found", err.Error())
+}
+
+func Test_delete_user_service_sql(t *testing.T) {
+	new_users := models.Users{
+		FirstName: "first_name",
+		LastName:  "last_name",
+		Email:     "email",
+		Age:       33,
+		Height:    98,
+		Active:    true,
+		Date:      "27/12/2021",
+	}
+	repo := New_repository_sql()
+	service := New_service_sql(repo)
+
+	user_created, _ := service.Store(
+		new_users.FirstName,
+		new_users.LastName,
+		new_users.Email,
+		new_users.Age,
+		new_users.Height,
+		new_users.Active,
+		new_users.Date,
+	)
+
+	err := service.Delete_user(user_created.ID)
+
+	assert.Nil(t, err)
+}
+
+func Test_delete_user_not_found_service_sql(t *testing.T) {
+	repo := New_repository_sql()
+	service := New_service_sql(repo)
+
+	err := service.Delete_user(0)
 
 	assert.Equal(t, "user not found", err.Error())
 }
