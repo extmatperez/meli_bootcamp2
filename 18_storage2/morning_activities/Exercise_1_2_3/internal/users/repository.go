@@ -106,7 +106,7 @@ func (repo *repository) Update_users(id int, first_name string, last_name string
 			return user, nil
 		}
 	}
-	return Users{}, fmt.Errorf("The user with id %v doesn't exist.", id)
+	return Users{}, fmt.Errorf("the user with id %v doesn't exist", id)
 }
 
 // Implementamos la funcionalidad para actualizar el usuario en memoria, en caso de que coincida con el ID enviado, caso contrario retorna un error.
@@ -127,7 +127,7 @@ func (repo *repository) Update_users_first_name(id int, first_name string) (User
 			return users[i], nil
 		}
 	}
-	return Users{}, fmt.Errorf("The user with id %v doesn't exist, try with another user to change the name.", id)
+	return Users{}, fmt.Errorf("the user with id %v doesn't exist, try with another user to change the name", id)
 }
 
 // Implementamos la funcionalidad para borrar el usuario en memoria.
@@ -156,5 +156,5 @@ func (repo *repository) Delete_users(id int) error {
 			return err
 		}
 	}
-	return fmt.Errorf("The user with id %v doesn't exist.", id)
+	return fmt.Errorf("the user with id %v doesn't exist", id)
 }
