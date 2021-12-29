@@ -34,7 +34,7 @@ func Test_store_service_sql(t *testing.T) {
 
 }
 
-func Test_Get_one_user(t *testing.T) {
+func Test_Get_one_user_service_sql(t *testing.T) {
 	new_users := models.Users{
 		FirstName: "first_name",
 		LastName:  "last_name",
@@ -54,7 +54,7 @@ func Test_Get_one_user(t *testing.T) {
 	assert.Equal(t, new_users.LastName, user_loaded.LastName)
 }
 
-func Test_Get_by_name(t *testing.T) {
+func Test_Get_by_name_service_sql(t *testing.T) {
 	new_users := "Viviana"
 	/* models.Users{
 		FirstName: "Viviana",
@@ -76,7 +76,7 @@ func Test_Get_by_name(t *testing.T) {
 	/* assert.Equal(t, new_users.FirstName, user_loaded) */
 }
 
-func Test_update(t *testing.T) {
+func Test_update_service_sql(t *testing.T) {
 	user_updated := models.Users{
 		ID:        2,
 		FirstName: "Viviana",
@@ -91,6 +91,16 @@ func Test_update(t *testing.T) {
 
 	assert.Equal(t, user_updated.FirstName, user_loaded.FirstName)
 	assert.Equal(t, user_updated.LastName, user_loaded.LastName)
+}
+
+func Test_get_all_users_service_sql(t *testing.T) {
+	repo := New_repository_sql()
+	service := New_service_sql(repo)
+
+	all_users_db, err := service.Get_all_users()
+
+	assert.Nil(t, err)
+	assert.True(t, len(all_users_db) >= 0)
 }
 
 func Test_update_failed(t *testing.T) {
