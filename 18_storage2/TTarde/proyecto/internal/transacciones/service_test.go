@@ -7,6 +7,7 @@ import (
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TTarde/proyecto/pkg/db"
 	"github.com/extmatperez/meli_bootcamp2/18_storage2/TTarde/proyecto/internal/models"
 	"github.com/stretchr/testify/assert"
+	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestServiceUpdateMock(t *testing.T) {
@@ -162,5 +163,56 @@ func TestUpdateSQLTxdb(t *testing.T) {
 	per_actualizada, _ := service.Update(trNuevo)
 
 	assert.Equal(t, trNuevo, per_actualizada)
+
+}
+
+
+func TestGetByNameSQLMock(t *testing.T) {
+
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "codigo_transaccion", "moneda", "monto", "emisor", "receptor", "fecha_transaccion"})
+	rows.AddRow(1, 5444, "pesos", 5222.00, "Carlos", "Pancho", "12/05/2021")
+	mock.ExpectQuery("SELECT id, codigo_transaccion, moneda, monto, emisor, receptor, fecha_transaccion FROM transacciones WHERE emisor = ?").WithArgs("Carlos").WillReturnRows(rows)
+
+	repo := NewRepositorySQLMock(db)
+
+	service := NewServiceSQL(repo)
+
+	transaccionCargada := service.GetByName("Carlos")
+
+	assert.Equal(t, "Carlos", transaccionCargada.Emisor)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestStoreSQLMock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	trNuevo := models.Transaccion{
+		CodigoTransaccion: 556111,
+		Moneda:            "Sopes",
+		Monto:             80.00,
+		Emisor:            "LPeren",
+		Receptor:          "Daios",
+		FechaTransaccion:  "13/08/2021",
+		Articulo: models.Producto{},
+	}
+
+
+	mock.ExpectPrepare("INSERT INTO")
+	mock.ExpectExec("INSERT INTO").WillReturnResult(sqlmock.NewResult(2, 1))
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+
+	transaccionCargada, err := service.Store(trNuevo.CodigoTransaccion, trNuevo.Moneda, trNuevo.Monto, trNuevo.Emisor, trNuevo.Receptor, trNuevo.FechaTransaccion)
+
+	assert.Equal(t, 2, transaccionCargada.ID)
+	assert.NoError(t, mock.ExpectationsWereMet())
+	
 
 }
