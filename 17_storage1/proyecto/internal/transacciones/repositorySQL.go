@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	StoreTrans  = "INSERT INTO transaccion(CodigoTransaccion, Moneda, Monto, Emisor, Receptor) values(?,?,?,?,?)"
+	StoreTrans  = "INSERT INTO transaccion (CodigoTransaccion, Moneda, Monto, Emisor, Receptor) values(?,?,?,?,?)"
 	GetTrans    = "SELECT ID, CodigoTransaccion, Moneda, Monto, Emisor, Receptor, FechaCreacion FROM transaccion WHERE id = ?"
 	UpdateTrans = "UPDATE users SET nombre = ?, apellido = ?, edad = ? WHERE id = ?"
 	GetCodTrans = "SELECT ID, CodigoTransaccion, Moneda, Monto, Emisor, Receptor, FechaCreacion FROM transaccion WHERE CodigoTransaccion = ?"
@@ -22,7 +22,8 @@ type RepositorySql interface {
 	GetByCode(codeTrans string) ([]models.Transaccion, error)
 }
 
-type repositorySql struct{}
+type repositorySql struct {
+}
 
 func NewRepositorySql() RepositorySql {
 	return &repositorySql{}

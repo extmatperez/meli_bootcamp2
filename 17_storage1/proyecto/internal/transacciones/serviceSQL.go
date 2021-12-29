@@ -21,7 +21,13 @@ func NewServiceSql(repo RepositorySql) ServiceSQL {
 }
 
 func (ser *serviceSql) Store(CodigoTransaccion, Emisor, Receptor, Moneda string, Monto float64) (models.Transaccion, error) {
-	newTrans := models.Transaccion{CodigoTransaccion: CodigoTransaccion, Emisor: Emisor, Receptor: Receptor, Moneda: Moneda, Monto: Monto}
+	newTrans := models.Transaccion{
+		CodigoTransaccion: CodigoTransaccion,
+		Moneda:            Moneda,
+		Monto:             Monto,
+		Emisor:            Emisor,
+		Receptor:          Receptor,
+	}
 	transCreated, err := ser.repository.Store(newTrans)
 	if err != nil {
 		return models.Transaccion{}, nil

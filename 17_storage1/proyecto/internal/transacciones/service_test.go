@@ -155,7 +155,7 @@ func TestDeleteServiceError(t *testing.T) {
 func TestStoreServiceSQL(t *testing.T) {
 	//Arrange
 	transNueva := models.Transaccion{
-		CodigoTransaccion: "15299jdhf",
+		CodigoTransaccion: "152299jdhf",
 		Moneda:            "dollarrr",
 		Monto:             420.5,
 		Emisor:            "rodri",
@@ -166,9 +166,8 @@ func TestStoreServiceSQL(t *testing.T) {
 
 	service := NewServiceSql(repo)
 
-	transCreada, err := service.Store(transNueva.CodigoTransaccion, transNueva.Emisor, transNueva.Receptor, transNueva.Moneda, transNueva.Monto)
+	transCreada, _ := service.Store(transNueva.CodigoTransaccion, transNueva.Emisor, transNueva.Receptor, transNueva.Moneda, transNueva.Monto)
 
-	fmt.Println("LEEEEERRR", err)
 	assert.Equal(t, transNueva.Emisor, transCreada.Emisor)
 	assert.Equal(t, transNueva.Moneda, transCreada.Moneda)
 	// assert.Nil(t, misPersonas)
