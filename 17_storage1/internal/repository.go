@@ -7,7 +7,6 @@ import (
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/17_storage1/internal/models"
-	"github.com/extmatperez/meli_bootcamp2/tree/de_bonis_matias/17_storage1/pkg/db"
 )
 
 var (
@@ -30,16 +29,16 @@ type RepositorySQL interface {
 	//GetOneWithContext(ctx context.Context, id int) (models.Producto, error)
 }
 
-type repositorySQL struct{}
+type repositorySQL struct {
+	db *sql.DB
+}
 
-func NewRepositorySQL() RepositorySQL {
-	return &repositorySQL{}
+func NewRepositorySQL(dbModel *sql.DB) RepositorySQL {
+	return &repositorySQL{db: dbModel}
 }
 
 func (r *repositorySQL) Store(producto models.Producto) (models.Producto, error) {
-	db := db.StorageDB
-
-	stmt, err := db.Prepare(storeQuery)
+	stmt, err := r.db.Prepare(storeQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,9 +55,8 @@ func (r *repositorySQL) Store(producto models.Producto) (models.Producto, error)
 }
 
 func (r *repositorySQL) GetOne(id int) models.Producto {
-	db := db.StorageDB
 	var productoLeido models.Producto
-	rows, err := db.Query(getOneQuery, id)
+	rows, err := r.db.Query(getOneQuery, id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -77,9 +75,8 @@ func (r *repositorySQL) GetOne(id int) models.Producto {
 }
 func (r *repositorySQL) GetAll() ([]models.Producto, error) {
 	var misPersonas []models.Producto
-	db := db.StorageDB
 	var productoLeido models.Producto
-	rows, err := db.Query(getAllQuery)
+	rows, err := r.db.Query(getAllQuery)
 
 	if err != nil {
 		log.Fatal(err)
@@ -98,10 +95,7 @@ func (r *repositorySQL) GetAll() ([]models.Producto, error) {
 }
 
 func (r *repositorySQL) Update(ctx context.Context, producto models.Producto) (models.Producto, error) {
-
-	db := db.StorageDB
-
-	stmt, err := db.Prepare(updateQuery)
+	stmt, err := r.db.Prepare(updateQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,9 +113,7 @@ func (r *repositorySQL) Update(ctx context.Context, producto models.Producto) (m
 }
 
 func (r *repositorySQL) Delete(id int) error {
-	db := db.StorageDB
-
-	stmt, err := db.Prepare(deleteQuery)
+	stmt, err := r.db.Prepare(deleteQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -139,9 +131,8 @@ func (r *repositorySQL) Delete(id int) error {
 
 func (r *repositorySQL) GetFullData() ([]models.DTOProducto, error) {
 	var misProductos []models.DTOProducto
-	db := db.StorageDB
 	var productoLeido models.DTOProducto
-	rows, err := db.Query(getFullDataQuery)
+	rows, err := r.db.Query(getFullDataQuery)
 
 	if err != nil {
 		log.Fatal(err)
