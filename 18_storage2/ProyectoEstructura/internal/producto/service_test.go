@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/18_storage2/ProyectoEstructura/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/tree/scerca_nahuel/18_storage2/ProyectoEstructura/pkg/db"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -142,4 +143,22 @@ func TestUpdateSQLContext(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, prodActualizado == prod)
 	// assert.Equal(t, .Nombre, .Nombre)
+}
+
+func TestStoreServiceSQLTxdb(t *testing.T) {
+	//Arrange
+
+	prodParaCrear := models.Producto{Nombre: "Leche", Color: "Blanco", Precio: 100, Stock: 4, Codigo: "LEC992", Publicado: true, FechaCreacion: "28/12/2021"}
+
+	db, err := db.InitDb()
+	assert.Nil(t, err)
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	prodCreado, _ := service.Store(prodParaCrear.Nombre, prodParaCrear.Color, prodParaCrear.Precio, prodParaCrear.Stock, prodParaCrear.Codigo, prodParaCrear.Publicado, prodParaCrear.FechaCreacion)
+
+	assert.Equal(t, prodParaCrear.Nombre, prodCreado.Nombre)
+	assert.Equal(t, prodParaCrear.Color, prodCreado.Color)
 }
