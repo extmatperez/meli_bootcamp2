@@ -7,7 +7,9 @@ type Service_sql interface {
 	Get_one_user(id int) models.Users
 	Get_by_name(name string) ([]models.Users, error)
 	Get_all_users() ([]models.Users, error)
-	Update(users models.Users) (models.Users, error)
+	Get_full_data() ([]models.Users, error)
+	Update_user(users models.Users) (models.Users, error)
+	Delete_user(id int) error
 }
 
 type service_sql struct {
@@ -43,10 +45,18 @@ func (ser *service_sql) Get_by_name(name string) ([]models.Users, error) {
 	return ser.repository.Get_by_name(name)
 }
 
-func (ser *service_sql) Update(users models.Users) (models.Users, error) {
-	return ser.repository.Update(users)
-}
-
 func (ser *service_sql) Get_all_users() ([]models.Users, error) {
 	return ser.repository.Get_all_users()
+}
+
+func (ser *service_sql) Get_full_data() ([]models.Users, error) {
+	return ser.repository.Get_full_data()
+}
+
+func (ser *service_sql) Update_user(users models.Users) (models.Users, error) {
+	return ser.repository.Update_user(users)
+}
+
+func (ser *service_sql) Delete_user(id int) error {
+	return ser.repository.Delete_user(id)
 }

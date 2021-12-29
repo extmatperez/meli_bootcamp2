@@ -13,7 +13,9 @@ type Repository_sql interface {
 	Get_one_user(id int) models.Users
 	Get_by_name(name string) ([]models.Users, error)
 	Get_all_users() ([]models.Users, error)
-	Update(users models.Users) (models.Users, error)
+	Get_full_data() ([]models.Users, error)
+	Update_user(users models.Users) (models.Users, error)
+	Delete_user(id int) error
 }
 
 type repository_sql struct{}
@@ -149,7 +151,45 @@ func (r *repository_sql) Get_all_users() ([]models.Users, error) {
 	return all_users, nil
 }
 
-func (r *repository_sql) Update(users models.Users) (models.Users, error) {
+func (r *repository_sql) Get_full_data() ([]models.Users, error) {
+	db := db.Storage_DB
+	var all_users []models.Users
+	var user_readed models.Users
+	// Para hacer esta petición se relacionaron las dos tablas users_sql y city en la DB mediante sus id y fk
+	// Relación uno a muchos (a users se le agregó id city y en la pestaña fk se relacionó con id de city)
+	query_get_full_data := `SELECT 
+	us.first_name, 
+	us.last_name, 
+	us.age, 
+	c.city_name, 
+	c.country_name 
+	FROM db_users.users_sql as us 
+	INNER JOIN db_users.city AS c ON us.id_city = c.id;`
+
+	rows, err := db.Query(query_get_full_data)
+
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	for rows.Next() {
+		err = rows.Scan(
+			&user_readed.FirstName,
+			&user_readed.LastName,
+			&user_readed.Age,
+			&user_readed.Address.CityName,
+			&user_readed.Address.CountryName,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		all_users = append(all_users, user_readed)
+	}
+	return all_users, nil
+}
+
+func (r *repository_sql) Update_user(users models.Users) (models.Users, error) {
 	db := db.Storage_DB
 
 	update_user := `UPDATE users_sql SET first_name = ?, last_name = ?, email = ? WHERE id = ?`
@@ -169,4 +209,26 @@ func (r *repository_sql) Update(users models.Users) (models.Users, error) {
 		return models.Users{}, errors.New("user not found")
 	}
 	return users, nil
+}
+
+func (r *repository_sql) Delete_user(id int) error {
+	db := db.Storage_DB
+
+	delete_user := `DELETE FROM users_sql WHERE id = ?`
+	stmt, err := db.Prepare(delete_user)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	rows_updated, _ := result.RowsAffected()
+
+	if rows_updated == 0 {
+		return errors.New("user not found")
+	}
+	return nil
 }
