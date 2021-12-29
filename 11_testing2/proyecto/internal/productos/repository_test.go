@@ -19,7 +19,7 @@ var TestStorage string = `[
         "publicado": true,
         "fechaCreacion": "12/9/1999"
       },
-      {
+      
         "id": 2,
         "nombre": "termo",
         "color": "gris",
