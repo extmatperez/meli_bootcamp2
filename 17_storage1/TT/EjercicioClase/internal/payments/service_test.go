@@ -691,6 +691,8 @@ func TestServiceSqlGetById_Mock_NotFound(t *testing.T) {
 	assert.Equal(t, models.Payment{}, obtainedPayment)
 }
 
+// Ahora voy a hacer el test en conjunto que pide la actividad 2, con el Update y el Delete.
+
 func TestServiceSqlUpdate_Mock(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
@@ -706,11 +708,7 @@ func TestServiceSqlUpdate_Mock(t *testing.T) {
 		Fecha:    "2021-12-28",
 	}
 
-	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
-	rows.AddRow(1, "AAA002", "ARS", 856.34, "Rodrigo Vega", "Matias Perez", "2021-12-28")
-
-	mock.ExpectPrepare("UPDATE Payments")
-	mock.ExpectQuery("UPDATE Payments SET id = ?, codigo = ?, moneda = ?, monto = ?, emisor = ?, receptor = ?, fecha = ? WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+	mock.ExpectPrepare("UPDATE Payments").ExpectExec().WillReturnResult(sqlmock.NewResult(1, 1))
 
 	repo := NewRepositorySqlMock(db)
 	service := NewServiceSql(repo)
@@ -721,6 +719,21 @@ func TestServiceSqlUpdate_Mock(t *testing.T) {
 	assert.Equal(t, newPayment.Codigo, changedPayment.Codigo)
 	assert.Equal(t, newPayment.Moneda, changedPayment.Moneda)
 	assert.Equal(t, newPayment.Emisor, changedPayment.Emisor)
+}
+
+func TestServiceSqlDelete_Mock_Error(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	mock.ExpectPrepare("DELETE FROM Payments").ExpectExec().WillReturnError(errors.New("cant delete"))
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	err0 := service.Delete(1)
+
+	assert.Error(t, err0)
+	assert.NoError(t, mock.ExpectationsWereMet())
 }
 
 // ==================================================================================
@@ -746,4 +759,60 @@ func TestServiceSqlStore_Txdb(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, newPayment.Codigo, insertedPayment.Codigo)
+}
+
+// Aca vienen las implementaciones de los test de las actividades con TXDB.
+func TestStoreGetOneTrx(t *testing.T) {
+	db, err := db.InitDb()
+	assert.NoError(t, err)
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	newPayment := models.Payment{
+		Codigo:   "AAA002",
+		Moneda:   "ARS",
+		Monto:    float64(856.34),
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Matias Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	paymentCreated, err := service.Store(newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+	assert.NoError(t, err)
+
+	paymentObtained := service.GetById(paymentCreated.Id)
+
+	assert.NoError(t, err)
+	assert.Equal(t, paymentObtained.Codigo, paymentCreated.Codigo)
+	assert.Equal(t, paymentObtained.Moneda, paymentCreated.Moneda)
+}
+
+func TestUpdateDeleteTrx(t *testing.T) {
+	db, err := db.InitDb()
+	assert.NoError(t, err)
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	newPayment := models.Payment{
+		Id:       1,
+		Codigo:   "AAA002",
+		Moneda:   "ARS",
+		Monto:    float64(856.34),
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Matias Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	paymentObtained := service.GetById(newPayment.Id)
+
+	paymentUpdated, err := service.Update(newPayment)
+
+	paymentObtained = service.GetById(newPayment.Id)
+
+	assert.NotNil(t, paymentObtained)
+	assert.Equal(t, paymentObtained.Codigo, paymentUpdated.Codigo)
+	assert.Equal(t, paymentObtained.Moneda, paymentUpdated.Moneda)
+
+	err = service.Delete(newPayment.Id)
+	assert.Nil(t, err)
 }
