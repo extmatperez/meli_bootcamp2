@@ -1,0 +1,222 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This API Handle MELI Products.",
+        "title": "MELI Bootcamp API",
+        "termsOfService": "https://developers.mercadolibre.com.ar/es_ar/terminos-y-condiciones",
+        "contact": {
+            "name": "API Support",
+            "url": "https://developers.mercadolibre.com.ar/support"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/productos": {
+            "get": {
+                "description": "get productos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "List productos",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "store producto",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Store productos",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Product to store",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/productos/:id": {
+            "put": {
+                "description": "update producto",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Update producto",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete producto",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Delete producto",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "update Nombre and Precio of a producto",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Update(Nombre and Precio) producto",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.request": {
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "fechaCreacion": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "precio": {
+                    "type": "string"
+                },
+                "publicado": {
+                    "type": "boolean"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "web.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
