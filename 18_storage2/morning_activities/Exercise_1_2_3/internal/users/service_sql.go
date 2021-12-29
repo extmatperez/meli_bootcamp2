@@ -1,6 +1,10 @@
 package internal
 
-import "github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/18_storage2/morning_activities/Exercise_1_2_3/internal/models"
+import (
+	"context"
+
+	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/18_storage2/morning_activities/Exercise_1_2_3/internal/models"
+)
 
 type Service_sql interface {
 	Store(first_name, last_name, email string, age, height int, active bool, date string) (models.Users, error)
@@ -8,6 +12,7 @@ type Service_sql interface {
 	Get_by_name(name string) ([]models.Users, error)
 	Get_all_users() ([]models.Users, error)
 	Get_full_data() ([]models.Users, error)
+	Get_one_with_context(ctx context.Context, id int) (models.Users, error)
 	Update_user(users models.Users) (models.Users, error)
 	Delete_user(id int) error
 }
@@ -51,6 +56,10 @@ func (ser *service_sql) Get_all_users() ([]models.Users, error) {
 
 func (ser *service_sql) Get_full_data() ([]models.Users, error) {
 	return ser.repository.Get_full_data()
+}
+
+func (ser *service_sql) Get_one_with_context(ctx context.Context, id int) (models.Users, error) {
+	return ser.repository.Get_one_with_context(ctx, id)
 }
 
 func (ser *service_sql) Update_user(users models.Users) (models.Users, error) {
