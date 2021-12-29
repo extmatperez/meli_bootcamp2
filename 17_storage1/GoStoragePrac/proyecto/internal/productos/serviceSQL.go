@@ -10,7 +10,7 @@ type ServiceSQL interface {
 	GetAll() ([]models.Producto, error)
 	Update(producto models.Producto) (models.Producto, error)
 	Delete(id int) error
-	// GetByName(nombre string) models.Producto
+	GetByName(nombre string) []models.Producto
 }
 
 type serviceSQL struct {
@@ -49,6 +49,6 @@ func (ser *serviceSQL) Delete(id int) error {
 	return ser.repository.Delete(id)
 }
 
-// func (ser *serviceSQL) GetByName(nombre string) models.Producto {
-// 	return ser.repository.GetByName(nombre)
-// }
+func (ser *serviceSQL) GetByName(nombre string) []models.Producto {
+	return ser.repository.GetByName(nombre)
+}

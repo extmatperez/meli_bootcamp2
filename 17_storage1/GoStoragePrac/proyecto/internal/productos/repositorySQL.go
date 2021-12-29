@@ -15,7 +15,7 @@ type RepositorySQL interface {
 	GetAll() ([]models.Producto, error)
 	Update(producto models.Producto) (models.Producto, error)
 	Delete(id int) error
-	// GetByName(nombre string) models.Producto
+	GetByName(nombre string) []models.Producto
 }
 
 type repositorySQL struct {
@@ -133,24 +133,25 @@ func (repo *repositorySQL) Delete(id int) error {
 
 }
 
-// func (repo *repositorySQL) GetByName(nombre string) models.Producto {
+func (repo *repositorySQL) GetByName(nombre string) []models.Producto {
 
-// 	db := db.StorageDB
-// 	var productoLeido models.Producto
-// 	rows, err := db.Query("SELECT id, nombre, color, precio, stock, codigo, publicado, fechaCreacion FROM products WHERE nombre = ?", nombre)
+	db := db.StorageDB
+	var productoLeido models.Producto
+	rows, err := db.Query("SELECT id, nombre, color, precio, stock, codigo, publicado, fechaCreacion FROM products WHERE nombre = ?", nombre)
+	var sliceProductos []models.Producto
+	if err != nil {
+		log.Fatal(err)
+		return sliceProductos
+	}
 
-// 	if err != nil {
-// 		log.Fatal(err)
-// 		return productoLeido
-// 	}
+	for rows.Next() {
+		err = rows.Scan(&productoLeido.Id, &productoLeido.Nombre, &productoLeido.Color, &productoLeido.Precio, &productoLeido.Stock, &productoLeido.Codigo, &productoLeido.Publicado, &productoLeido.FechaCreacion)
+		if err != nil {
+			log.Fatal(err)
+			return sliceProductos
+		}
+		sliceProductos = append(sliceProductos, productoLeido)
+	}
+	return sliceProductos
 
-// 	for rows.Next() {
-// 		err = rows.Scan(&productoLeido.Id, &productoLeido.Nombre, &productoLeido.Color, &productoLeido.Precio, &productoLeido.Stock, &productoLeido.Codigo, &productoLeido.Publicado, &productoLeido.FechaCreacion)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 			return productoLeido
-// 		}
-// 	}
-// 	return productoLeido
-
-// }
+}

@@ -14,7 +14,7 @@ func Test_store_ok(t *testing.T) {
 		Color:         "Verde",
 		Precio:        200000,
 		Stock:         2,
-		Codigo:        "AJJ035",
+		Codigo:        "AJJ036",
 		Publicado:     true,
 		FechaCreacion: "2021-11-15",
 	}
@@ -55,7 +55,7 @@ func Test_update_ok(t *testing.T) {
 	productoActualizado := models.Producto{
 		Id:     1,
 		Nombre: "Avion",
-		Color:  "Violeta",
+		Color:  "Negro",
 		Precio: 100000000,
 	}
 
@@ -96,12 +96,23 @@ func TestDeleteServiceSQL(t *testing.T) {
 
 }
 
-// func Test_getbyname_ok(t *testing.T) {
+func Test_getbyname_ok(t *testing.T) {
 
-// 	repo := NewRepositorySQL()
-// 	service := NewServiceSQL(repo)
+	repo := NewRepositorySQL()
+	service := NewServiceSQL(repo)
 
-// 	productoBuscado := service.GetByName("Auto")
+	productoBuscado := service.GetByName("Casa")
 
-// 	assert.Equal(t, models.Producto{}, productoBuscado)
-// }
+	assert.True(t, len(productoBuscado) > 0)
+}
+
+func Test_getbyname_fail(t *testing.T) {
+
+	repo := NewRepositorySQL()
+	service := NewServiceSQL(repo)
+
+	productoBuscado := service.GetByName("Camion")
+
+	assert.True(t, len(productoBuscado) == 0)
+
+}
