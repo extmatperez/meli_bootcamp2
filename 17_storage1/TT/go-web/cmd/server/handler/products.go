@@ -28,12 +28,7 @@ type RequestPatchNamePrice struct {
 }
 
 type Product struct {
-	serv    products.Service
 	servSQL products.ServiceSQL
-}
-
-func NewProduct(s products.Service) *Product {
-	return &Product{serv: s}
 }
 
 func NewProductSQL(s products.ServiceSQL) *Product {
@@ -52,7 +47,7 @@ func NewProductSQL(s products.ServiceSQL) *Product {
 func (p *Product) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		prods, err := p.serv.GetAll()
+		prods, err := p.servSQL.GetAll()
 
 		if err != nil {
 			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
@@ -114,7 +109,7 @@ func (p *Product) FindById() gin.HandlerFunc {
 			return
 		}
 
-		prod, err := p.serv.FindById(id)
+		prod, err := p.servSQL.FindById(id)
 
 		if err != nil {
 			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
@@ -153,7 +148,7 @@ func (p *Product) Update() gin.HandlerFunc {
 			return
 		}
 
-		prod, err := p.serv.Update(id, updateRequest.Nombre, updateRequest.Color, updateRequest.Precio, updateRequest.Stock, updateRequest.Codigo, updateRequest.Publicado, updateRequest.FechaCreacion)
+		prod, err := p.servSQL.Update(c, id, updateRequest.Nombre, updateRequest.Color, updateRequest.Precio, updateRequest.Stock, updateRequest.Codigo, updateRequest.Publicado, updateRequest.FechaCreacion)
 
 		if err != nil {
 			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
@@ -174,7 +169,7 @@ func (p *Product) Delete() gin.HandlerFunc {
 			return
 		}
 
-		err = p.serv.Delete(id)
+		err = p.servSQL.Delete(id)
 		if err != nil {
 			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
@@ -182,18 +177,6 @@ func (p *Product) Delete() gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, "Eliminado exitosamente", ""))
 
-	}
-}
-
-func (p *Product) Filter() gin.HandlerFunc {
-	return func(c *gin.Context) {
-
-		prods, err := p.serv.Filter(c.Request.URL.Query())
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, err.Error()))
-			return
-		}
-		c.JSON(http.StatusOK, web.NewResponse(http.StatusOK, prods, ""))
 	}
 }
 
@@ -215,7 +198,7 @@ func (p *Product) UpdateNameAndPrice() gin.HandlerFunc {
 			return
 		}
 
-		prod, err := p.serv.UpdateNameAndPrice(id, updateRequest.Nombre, updateRequest.Precio)
+		prod, err := p.servSQL.UpdateNameAndPrice(id, updateRequest.Nombre, updateRequest.Precio)
 		if err != nil {
 			c.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
