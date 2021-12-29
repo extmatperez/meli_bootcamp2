@@ -76,23 +76,6 @@ func Test_Get_by_name_service_sql(t *testing.T) {
 	/* assert.Equal(t, new_users.FirstName, user_loaded) */
 }
 
-func Test_update_service_sql(t *testing.T) {
-	user_updated := models.Users{
-		ID:        2,
-		FirstName: "Viviana",
-		LastName:  "Valera",
-		Age:       27,
-	}
-
-	repo := New_repository_sql()
-	service := New_service_sql(repo)
-
-	user_loaded, _ := service.Update(user_updated)
-
-	assert.Equal(t, user_updated.FirstName, user_loaded.FirstName)
-	assert.Equal(t, user_updated.LastName, user_loaded.LastName)
-}
-
 func Test_get_all_users_service_sql(t *testing.T) {
 	repo := New_repository_sql()
 	service := New_service_sql(repo)
@@ -101,6 +84,29 @@ func Test_get_all_users_service_sql(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.True(t, len(all_users_db) >= 0)
+}
+
+func Test_update_service_sql_ok(t *testing.T) {
+	user_updated := models.Users{
+		ID:        5,
+		FirstName: "Viviana",
+		LastName:  "Valera",
+		Age:       27,
+	}
+
+	repo := New_repository_sql()
+	service := New_service_sql(repo)
+	// Esto lo hacemos con el fin de que al actualizar no me cree problemas en el siguiente test manteniendo los datos (1)
+	last_user := service.Get_one_user(user_updated.ID)
+
+	user_loaded, _ := service.Update(user_updated)
+
+	assert.Equal(t, user_updated.FirstName, user_loaded.FirstName)
+	assert.Equal(t, user_updated.LastName, user_loaded.LastName)
+
+	// Esto lo hacemos con el fin de que al actualizar no me cree problemas en el siguiente test manteniendo los datos (2)
+	_, err := service.Update(last_user)
+	assert.Nil(t, err)
 }
 
 func Test_update_failed(t *testing.T) {
