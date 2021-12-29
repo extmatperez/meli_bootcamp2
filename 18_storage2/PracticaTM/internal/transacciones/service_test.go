@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"database/sql/driver"
 	"encoding/json"
 	"strconv"
 	"testing"
@@ -370,3 +371,61 @@ func TestDeleteAndNotFoundSQLTxdb(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Empty(t, transaction)
 }
+
+func TestDeleteAndNotFoundSQLMock(t *testing.T) {
+	//Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	idToDelete := 99
+
+	//Delete expect mock
+	mock.ExpectPrepare("DELETE FROM transacciones")
+	mock.ExpectExec("DELETE FROM transacciones").WithArgs(idToDelete).WillReturnResult(driver.RowsAffected(1))
+
+	//Get expect mock
+	rows := sqlmock.NewRows([]string{"moneda", "monto", "emisor", "receptor"})
+	rows.AddRow("", 0, "", "")
+	mock.ExpectQuery("SELECT moneda, monto, emisor, receptor FROM transacciones WHERE idtransacciones = ?").WithArgs(idToDelete).WillReturnRows(rows)
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+
+	err = service.Delete(idToDelete)
+	transac := service.GetOne(idToDelete)
+
+	//Assert
+	assert.Nil(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+	assert.Empty(t, transac)
+}
+
+// func TestUpdateAndGetSQLMock(t *testing.T) {
+// 	//Arrange
+// 	db, mock, err := sqlmock.New()
+// 	assert.Nil(t, err)
+// 	defer db.Close()
+
+// 	transaccionModificada := models.Transaccion{
+// 		CodTransaccion: "2",
+// 		Moneda:         "Pesos",
+// 		Monto:          6500.45,
+// 		Emisor:         "Facundo2",
+// 		Receptor:       "Matias2",
+// 	}
+// 	idTransacModificada := 2
+
+// 	repo := NewRepositorySQLMock(db)
+// 	service := NewServiceSQL(repo)
+
+// 	//Act
+// 	transacResultado, err := service.Update(transaccionModificada)
+
+// 	transacObtenida := service.GetOne(idTransacModificada)
+
+// 	//Assert
+// 	assert.Equal(t, transacResultado.Emisor, transacObtenida.Emisor)
+// 	assert.Equal(t, transacResultado.Receptor, transacObtenida.Receptor)
+// 	assert.Nil(t, err)
+// }
