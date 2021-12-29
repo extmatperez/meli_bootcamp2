@@ -691,6 +691,42 @@ func TestServiceSqlGetById_Mock_NotFound(t *testing.T) {
 	assert.Equal(t, models.Payment{}, obtainedPayment)
 }
 
+// Ahora voy a hacer la combinatoria de los dos, osea, de Get by Id y del Store, en un mismo metodo que los valide al mismo tiempo.
+func TestServiceSqlGetById_Store_Mock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	newPayment := models.Payment{
+		Codigo:   "AAA001",
+		Moneda:   "ARS",
+		Monto:    float64(856.34),
+		Emisor:   "Rodrigo Vega",
+		Receptor: "Matias Perez",
+		Fecha:    "2021-12-28",
+	}
+
+	mock.ExpectPrepare("INSERT INTO Payment")
+	mock.ExpectExec("INSERT INTO").WillReturnResult(sqlmock.NewResult(7, 1))
+
+	repo := NewRepositorySqlMock(db)
+	service := NewServiceSql(repo)
+
+	insertedPayment, err := service.Store(newPayment.Codigo, newPayment.Moneda, newPayment.Emisor, newPayment.Receptor, newPayment.Fecha, newPayment.Monto)
+
+	assert.Nil(t, err)
+	assert.Equal(t, newPayment.Codigo, insertedPayment.Codigo)
+
+	rows := sqlmock.NewRows([]string{"id", "codigo", "moneda", "monto", "emisor", "receptor", "fecha"})
+	rows.AddRow(7, "AAA001", "ARS", 856.34, "Rodrigo Vega", "Matias Perez", "2021-12-28")
+	mock.ExpectQuery("SELECT id, codigo, moneda, monto, emisor, receptor, fecha FROM Payments WHERE id = ?").WithArgs(7).WillReturnRows(rows)
+
+	queriedPayment := service.GetById(7)
+
+	assert.Equal(t, queriedPayment.Codigo, insertedPayment.Codigo)
+	assert.Equal(t, queriedPayment.Moneda, insertedPayment.Moneda)
+}
+
 // Ahora voy a hacer el test en conjunto que pide la actividad 2, con el Update y el Delete.
 
 func TestServiceSqlUpdate_Mock(t *testing.T) {
@@ -762,7 +798,7 @@ func TestServiceSqlStore_Txdb(t *testing.T) {
 }
 
 // Aca vienen las implementaciones de los test de las actividades con TXDB.
-func TestStoreGetOneTrx(t *testing.T) {
+func TestServiceSqlStoreGetOne_Txdb(t *testing.T) {
 	db, err := db.InitDb()
 	assert.NoError(t, err)
 	repo := NewRepositorySqlMock(db)
@@ -787,7 +823,7 @@ func TestStoreGetOneTrx(t *testing.T) {
 	assert.Equal(t, paymentObtained.Moneda, paymentCreated.Moneda)
 }
 
-func TestUpdateDeleteTrx(t *testing.T) {
+func TestServiceSqlUpdateDelete_Txdb(t *testing.T) {
 	db, err := db.InitDb()
 	assert.NoError(t, err)
 	repo := NewRepositorySqlMock(db)
@@ -812,7 +848,4 @@ func TestUpdateDeleteTrx(t *testing.T) {
 	assert.NotNil(t, paymentObtained)
 	assert.Equal(t, paymentObtained.Codigo, paymentUpdated.Codigo)
 	assert.Equal(t, paymentObtained.Moneda, paymentUpdated.Moneda)
-
-	err = service.Delete(newPayment.Id)
-	assert.Nil(t, err)
 }
