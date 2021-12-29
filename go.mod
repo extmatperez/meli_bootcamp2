@@ -3,6 +3,7 @@ module github.com/extmatperez/meli_bootcamp2
 go 1.17
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/joho/godotenv v1.4.0
 	github.com/swaggo/gin-swagger v1.3.3
@@ -10,6 +11,7 @@ require (
 )
 
 require (
+	github.com/DATA-DOG/go-txdb v0.1.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
