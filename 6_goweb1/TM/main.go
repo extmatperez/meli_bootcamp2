@@ -58,6 +58,6 @@ func holaDiego(c *gin.Context) {
 }
 
 func productosFiltrados(c *gin.Context) {
-	products := convert_json_to_productos
+	products := convert_json_to_productos()
 	fmt.Println(products)
 }
