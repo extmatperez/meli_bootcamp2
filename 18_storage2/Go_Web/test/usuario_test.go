@@ -8,10 +8,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/17_storage1/Go_Web/cmd/server/handler"
-	usuarios "github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/17_storage1/Go_Web/internal/usuarios"
-	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/17_storage1/Go_Web/pkg/store"
-	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/8_goweb3/Go_Web/pkg/web"
+	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/cmd/server/handler"
+	usuarios "github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/internal/usuarios"
+	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/pkg/web"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )

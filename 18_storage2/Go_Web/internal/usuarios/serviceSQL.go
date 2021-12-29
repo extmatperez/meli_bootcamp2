@@ -12,6 +12,7 @@ type ServiceSQL interface {
 	Update(ctx context.Context, persona models.Usuario) (models.Usuario, error)
 	GetByName(nombre string) ([]models.Usuario, error)
 	GetAll() ([]models.Usuario, error)
+	Delete(id int) error
 }
 
 type serviceSQL struct {
@@ -55,4 +56,13 @@ func (ser *serviceSQL) GetAll() ([]models.Usuario, error) {
 	}
 
 	return usuario, nil
+}
+
+func (ser *serviceSQL) Delete(id int) error {
+	err := ser.repository.Delete(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

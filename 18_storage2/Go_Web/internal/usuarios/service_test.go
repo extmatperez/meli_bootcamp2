@@ -8,7 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/internal/models"
+	db "github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/pkg/db"
 	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
@@ -342,4 +344,207 @@ func TestGetAllServiceSQL(t *testing.T) {
 	fmt.Println(usuarios)
 	assert.Equal(t, user, usuarios)
 
+}
+
+func TestDeleteServiceSQL(t *testing.T) {
+	//Arrange
+
+	repo := NewRepositorySQL()
+
+	service := NewServiceSQL(repo)
+
+	err := service.Delete(5)
+
+	assert.Nil(t, err)
+
+}
+
+func TestGetOneServiceSQLMock1(t *testing.T) {
+	//Arrange
+	searchedUser := models.Usuario{
+		Nombre:        "Juan",
+		Apellido:      "Kevin",
+		Email:         "correo",
+		Edad:          20,
+		Altura:        180,
+		Activo:        true,
+		FechaCreacion: "fecha",
+	}
+	db := db.StorageDB
+	repo := NewRepositorySQLMock(db)
+
+	service := NewServiceSQL(repo)
+
+	personaCargada := service.GetOne(1)
+
+	assert.Equal(t, searchedUser.Nombre, personaCargada.Nombre)
+	assert.Equal(t, searchedUser.Apellido, personaCargada.Apellido)
+	// assert.Nil(t, misPersonas)
+}
+
+func TestGetOneServiceSQLMock(t *testing.T) {
+	//Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "nombre", "apellido", "email", "edad", "altura", "activo", "fecha_creacion"})
+	rows.AddRow(1, "Juan", "Kevin", "correo", 20, 180, true, "fecha")
+	mock.ExpectQuery("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users WHERE id = ?").WithArgs(1).WillReturnRows(rows)
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+
+	personaCargada := service.GetOne(1)
+
+	assert.Equal(t, "Juan", personaCargada.Nombre)
+	assert.Equal(t, "Kevin", personaCargada.Apellido)
+
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestStoreServiceSQLMock(t *testing.T) {
+	//Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	mock.ExpectPrepare("INSERT INTO")
+	mock.ExpectExec("").WillReturnResult(sqlmock.NewResult(9, 1))
+
+	usuarioNuevo := models.Usuario{Nombre: "Juan", Apellido: "Perez", Email: "correo", Edad: 20, Altura: 180, Activo: true, FechaCreacion: "fecha"}
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+
+	usuarioCreado, _ := service.Store(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.Email, usuarioNuevo.Edad, usuarioNuevo.Altura, usuarioNuevo.Activo, usuarioNuevo.FechaCreacion)
+
+	assert.Equal(t, "Juan", usuarioCreado.Nombre)
+	assert.Equal(t, "Perez", usuarioCreado.Apellido)
+	assert.Equal(t, 9, usuarioCreado.ID)
+	assert.Nil(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestStoreServiceSQLTXDB(t *testing.T) {
+	// Arrange
+	usuarioNuevo := models.Usuario{Nombre: "Juan", Apellido: "Perez", Email: "correo", Edad: 20, Altura: 180, Activo: true, FechaCreacion: "fecha"}
+
+	db, err := db.InitDB()
+	assert.Nil(t, err)
+
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	usuarioCreado, _ := service.Store(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.Email, usuarioNuevo.Edad, usuarioNuevo.Altura, usuarioNuevo.Activo, usuarioNuevo.FechaCreacion)
+	assert.Equal(t, usuarioNuevo.Nombre, usuarioCreado.Nombre)
+	assert.Equal(t, usuarioNuevo.Altura, usuarioCreado.Altura)
+	//assert.Nil(t, misUsuarios)
+}
+
+func TestStore_GetOneServiceSQLTXDB(t *testing.T) {
+	// Arrange
+	usuarioNuevo := models.Usuario{Nombre: "Juan", Apellido: "Perez", Email: "correo", Edad: 20, Altura: 180, Activo: true, FechaCreacion: "fecha"}
+
+	db, err := db.InitDB()
+	assert.Nil(t, err)
+
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	usuarioCreado, _ := service.Store(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.Email, usuarioNuevo.Edad, usuarioNuevo.Altura, usuarioNuevo.Activo, usuarioNuevo.FechaCreacion)
+	assert.Equal(t, usuarioNuevo.Nombre, usuarioCreado.Nombre)
+	assert.Equal(t, usuarioNuevo.Altura, usuarioCreado.Altura)
+
+	fmt.Println(usuarioCreado)
+
+	usuarioConsultado := service.GetOne(usuarioCreado.ID)
+
+	fmt.Println(usuarioConsultado)
+
+	assert.Equal(t, usuarioNuevo.Nombre, usuarioConsultado.Nombre)
+	assert.Equal(t, usuarioNuevo.Altura, usuarioConsultado.Altura)
+	//assert.Nil(t, misUsuarios)
+}
+
+func TestUpdate_DeleteServiceSQLTXDB(t *testing.T) {
+	// Arrange
+	usuarioUpdate := models.Usuario{ID: 4, Nombre: "Pipe", Apellido: "Roldan", Email: "correo", Edad: 20, Altura: 180, Activo: true, FechaCreacion: "fecha"}
+
+	db, err := db.InitDB()
+	assert.Nil(t, err)
+
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	usuarioActualizado, _ := service.Update(context.Background(), usuarioUpdate)
+	assert.Equal(t, usuarioUpdate.Nombre, usuarioActualizado.Nombre)
+	assert.Equal(t, usuarioUpdate.Altura, usuarioActualizado.Altura)
+
+	fmt.Println(usuarioActualizado)
+
+	usuarioConsultado := service.GetOne(4)
+
+	fmt.Println(usuarioConsultado)
+
+	assert.Equal(t, usuarioUpdate.Nombre, usuarioConsultado.Nombre)
+	assert.Equal(t, usuarioUpdate.Altura, usuarioConsultado.Altura)
+	//assert.Nil(t, misUsuarios)
+}
+func TestUpdateServiceSQLTXDB_Fail(t *testing.T) {
+	// Arrange
+	usuarioUpdate := models.Usuario{ID: 70, Nombre: "Pipe", Apellido: "Roldan", Email: "correo", Edad: 20, Altura: 180, Activo: true, FechaCreacion: "fecha"}
+
+	db, err := db.InitDB()
+	assert.Nil(t, err)
+
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	_, err = service.Update(context.Background(), usuarioUpdate)
+	assert.Error(t, err)
+
+}
+
+func TestStore_GetOneServiceSQLMock(t *testing.T) {
+	// Arrange
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	usuarioNuevo := models.Usuario{Nombre: "Juan", Apellido: "Perez", Email: "correo", Edad: 20, Altura: 180, Activo: true, FechaCreacion: "fecha"}
+
+	mock.ExpectPrepare("INSERT INTO")
+	mock.ExpectExec("INSERT INTO").WillReturnResult(sqlmock.NewResult(13, 1))
+
+	repo := NewRepositorySQLMock(db)
+	defer db.Close()
+
+	service := NewServiceSQL(repo)
+
+	usuarioCreado, _ := service.Store(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.Email, usuarioNuevo.Edad, usuarioNuevo.Altura, usuarioNuevo.Activo, usuarioNuevo.FechaCreacion)
+	assert.Equal(t, usuarioNuevo.Nombre, usuarioCreado.Nombre)
+	assert.Equal(t, usuarioNuevo.Altura, usuarioCreado.Altura)
+
+	fmt.Println(usuarioCreado)
+
+	rows := sqlmock.NewRows([]string{"id", "nombre", "apellido", "email", "edad", "altura", "activo", "fecha_creacion"})
+	rows.AddRow(13, "Juan", "Perez", "correo", 20, 180, true, "fecha")
+	mock.ExpectQuery("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users WHERE id = ?").WithArgs(13).WillReturnRows(rows)
+
+	usuarioConsultado := service.GetOne(13)
+
+	fmt.Println(usuarioConsultado)
+
+	assert.Equal(t, usuarioConsultado.Nombre, usuarioCreado.Nombre)
+	assert.Equal(t, usuarioConsultado.Altura, usuarioCreado.Altura)
+	//assert.Nil(t, misUsuarios)
 }

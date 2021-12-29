@@ -2,15 +2,15 @@ package internal
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/internal/models"
-	db "github.com/extmatperez/meli_bootcamp2/tree/aponte_nicolas/18_storage2/Go_Web/pkg/db"
 )
 
-type RepositorySQL interface {
+type RepositorySQLMock interface {
 	Store(usuario models.Usuario) (models.Usuario, error)
 	GetOne(id int) models.Usuario
 	Update(ctx context.Context, usuario models.Usuario) (models.Usuario, error)
@@ -19,15 +19,16 @@ type RepositorySQL interface {
 	Delete(id int) error
 }
 
-type repositorySQL struct{}
-
-func NewRepositorySQL() RepositorySQL {
-	return &repositorySQL{}
+type repositorySQLMock struct {
+	db *sql.DB
 }
 
-func (r *repositorySQL) Store(usuario models.Usuario) (models.Usuario, error) {
-	db := db.StorageDB
-	stmt, err := db.Prepare("INSERT INTO users(nombre, apellido, email, edad, altura, activo, fecha_creacion) values (?,?,?,?,?,?,?)")
+func NewRepositorySQLMock(db *sql.DB) RepositorySQLMock {
+	return &repositorySQLMock{db}
+}
+
+func (r *repositorySQLMock) Store(usuario models.Usuario) (models.Usuario, error) {
+	stmt, err := r.db.Prepare("INSERT INTO users(nombre, apellido, email, edad, altura, activo, fecha_creacion) values (?,?,?,?,?,?,?)")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,10 +43,9 @@ func (r *repositorySQL) Store(usuario models.Usuario) (models.Usuario, error) {
 	return usuario, nil
 }
 
-func (r *repositorySQL) GetOne(id int) models.Usuario {
-	db := db.StorageDB
+func (r *repositorySQLMock) GetOne(id int) models.Usuario {
 	var user models.Usuario
-	rows, err := db.Query("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users WHERE id = ?", id)
+	rows, err := r.db.Query("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users WHERE id = ?", id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -62,9 +62,7 @@ func (r *repositorySQL) GetOne(id int) models.Usuario {
 	return user
 }
 
-func (r *repositorySQL) Update(ctx context.Context, usuario models.Usuario) (models.Usuario, error) {
-
-	db := db.StorageDB
+func (r *repositorySQLMock) Update(ctx context.Context, usuario models.Usuario) (models.Usuario, error) {
 
 	// stmt, err := db.Prepare("UPDATE users SET nombre = ?, apellido = ?, edad = ? WHERE id = ?")
 	// if err != nil {
@@ -74,7 +72,7 @@ func (r *repositorySQL) Update(ctx context.Context, usuario models.Usuario) (mod
 	//query := "SELECT SLEEP(30) FROM DUAL"
 	query := "UPDATE users SET nombre = ?, apellido = ?, edad = ? WHERE id = ?"
 	fmt.Println(usuario.ID)
-	result, err := db.ExecContext(ctx, query, usuario.Nombre, usuario.Apellido, usuario.Edad, usuario.ID)
+	result, err := r.db.ExecContext(ctx, query, usuario.Nombre, usuario.Apellido, usuario.Edad, usuario.ID)
 	if err != nil {
 		fmt.Println(err)
 		return models.Usuario{}, err
@@ -87,11 +85,10 @@ func (r *repositorySQL) Update(ctx context.Context, usuario models.Usuario) (mod
 	return usuario, nil
 }
 
-func (r *repositorySQL) GetByName(nombre string) ([]models.Usuario, error) {
-	db := db.StorageDB
+func (r *repositorySQLMock) GetByName(nombre string) ([]models.Usuario, error) {
 
 	var users []models.Usuario
-	rows, err := db.Query("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users WHERE nombre = ?", nombre)
+	rows, err := r.db.Query("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users WHERE nombre = ?", nombre)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -109,11 +106,10 @@ func (r *repositorySQL) GetByName(nombre string) ([]models.Usuario, error) {
 	return users, nil
 }
 
-func (r *repositorySQL) GetAll() ([]models.Usuario, error) {
-	db := db.StorageDB
+func (r *repositorySQLMock) GetAll() ([]models.Usuario, error) {
 
 	var users []models.Usuario
-	rows, err := db.Query("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users")
+	rows, err := r.db.Query("SELECT id, nombre,apellido, email, edad, altura, activo,fecha_creacion FROM users")
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -131,10 +127,9 @@ func (r *repositorySQL) GetAll() ([]models.Usuario, error) {
 	return users, nil
 }
 
-func (r *repositorySQL) Delete(id int) error {
-	db := db.StorageDB
+func (r *repositorySQLMock) Delete(id int) error {
 
-	stamt, err := db.Prepare("DELETE FROM users WHERE id = ?")
+	stamt, err := r.db.Prepare("DELETE FROM users WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
