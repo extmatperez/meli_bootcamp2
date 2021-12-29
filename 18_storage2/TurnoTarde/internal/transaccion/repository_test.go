@@ -423,3 +423,70 @@ func TestGetOneMockTxdb(t *testing.T) {
 	assert.Equal(t, tranUpdate.Receptor,tranGet.Receptor)
 	assert.Nil(t, err)
 }
+
+
+
+func TestUpdateMockTxdb(t *testing.T) {
+
+	transaction := models.Transaction{
+		Codigo:   "unosss",
+		Moneda:   "Peso Colombiaaaano",
+		Monto:    "$8228845654645678",
+		Emisor:   "Luis",
+		Receptor: "Perez",
+		Fecha:    "01/01/2001",
+	}
+
+	db, err := db.InitDb()
+	assert.NoError(t, err)
+	repo := NewRepositorySQL(db)
+
+	// inserto tran
+	tranUpdate, err := repo.Store(transaction)
+	assert.Nil(t, err)
+
+	// compruebo que existe
+	tranGet, err := repo.GetById(tranUpdate.ID)
+	assert.Nil(t, err)
+	// acutalizo codigo
+	tranGet.Codigo = "nuevoCodigoPrueba"
+	tranUpdate, err = repo.Update(tranGet,context.Background())
+
+	assert.Equal(t, tranGet.ID, tranUpdate.ID)
+	assert.Equal(t, "nuevoCodigoPrueba", tranUpdate.Codigo)
+	assert.Nil(t, err)
+}
+
+func TestDeleteMockTxdb(t *testing.T) {
+	transaction := models.Transaction{
+		Codigo:   "unosss",
+		Moneda:   "Peso Colombiaaaano",
+		Monto:    "$8228845654645678",
+		Emisor:   "Luis",
+		Receptor: "Perez",
+		Fecha:    "01/01/2001",
+	}
+
+	db, err := db.InitDb()
+	assert.NoError(t, err)
+	repo := NewRepositorySQL(db)
+	
+	// inserto tran
+	tranInsert, err := repo.Store(transaction)
+	assert.Nil(t, err)
+	
+	//compruebo que existe
+	tranGet,err := repo.GetById(tranInsert.ID)
+
+	assert.NoError(t, err)
+	assert.Equal(t,tranInsert.ID,tranGet.ID)
+
+	// elimino tran
+	err = repo.Delete(tranInsert.ID)
+	assert.NoError(t, err)
+
+	// compruebo que no existe
+	tranGet,err = repo.GetById(tranInsert.ID)
+	assert.Empty(t,tranGet)
+
+}
