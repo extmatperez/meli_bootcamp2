@@ -6,6 +6,7 @@ type Service_sql interface {
 	Store(first_name, last_name, email string, age, height int, active bool, date string) (models.Users, error)
 	Get_one_user(id int) models.Users
 	Get_by_name(name string) ([]models.Users, error)
+	Get_all_users() ([]models.Users, error)
 	Update(users models.Users) (models.Users, error)
 }
 
@@ -44,4 +45,8 @@ func (ser *service_sql) Get_by_name(name string) ([]models.Users, error) {
 
 func (ser *service_sql) Update(users models.Users) (models.Users, error) {
 	return ser.repository.Update(users)
+}
+
+func (ser *service_sql) Get_all_users() ([]models.Users, error) {
+	return ser.repository.Get_all_users()
 }

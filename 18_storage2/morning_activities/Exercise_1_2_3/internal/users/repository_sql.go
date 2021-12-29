@@ -12,6 +12,7 @@ type Repository_sql interface {
 	Store(users models.Users) (models.Users, error)
 	Get_one_user(id int) models.Users
 	Get_by_name(name string) ([]models.Users, error)
+	Get_all_users() ([]models.Users, error)
 	Update(users models.Users) (models.Users, error)
 }
 
@@ -106,6 +107,38 @@ func (r *repository_sql) Get_by_name(name string) ([]models.Users, error) {
 	}
 	users_by_name = append(users_by_name, user_readed)
 	return users_by_name, nil
+}
+
+func (r *repository_sql) Get_all_users() ([]models.Users, error) {
+	db := db.Storage_DB
+	var all_users []models.Users
+	var user_readed models.Users
+
+	rows, err := db.Query(`SELECT
+	first_name,
+	last_name,
+	email,
+	age
+	FROM users_sql`)
+
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	for rows.Next() {
+		err = rows.Scan(
+			&user_readed.FirstName,
+			&user_readed.LastName,
+			&user_readed.Email,
+			&user_readed.Age,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		all_users = append(all_users, user_readed)
+	}
+	return all_users, nil
 }
 
 func (r *repository_sql) Update(users models.Users) (models.Users, error) {
