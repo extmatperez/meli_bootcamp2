@@ -377,3 +377,49 @@ func TestDeleteMock(t *testing.T) {
 	assert.Empty(t,tranGet)
 
 }
+
+func TestInsertMockTxdb(t *testing.T) {
+
+	transaction := models.Transaction{
+		Codigo:   "unosss",
+		Moneda:   "Peso Colombiaaaano",
+		Monto:    "$8228845654645678",
+		Emisor:   "Luis",
+		Receptor: "Perez",
+		Fecha:    "01/01/2001",
+	}
+	db, err := db.InitDb()
+	assert.NoError(t, err)
+	repo := NewRepositorySQL(db)
+	tranUpdate, err := repo.Store(transaction)
+	assert.Equal(t, transaction.Codigo, tranUpdate.Codigo)
+	assert.Equal(t, transaction.Moneda, tranUpdate.Moneda)
+	assert.Equal(t, transaction.Emisor, tranUpdate.Emisor)
+	assert.Equal(t, transaction.Receptor, tranUpdate.Receptor)
+	assert.Nil(t, err)
+}
+
+
+func TestGetOneMockTxdb(t *testing.T) {
+	transaction := models.Transaction{
+		Codigo:   "unosss",
+		Moneda:   "Peso Colombiaaaano",
+		Monto:    "$8228845654645678",
+		Emisor:   "Luis",
+		Receptor: "Perez",
+		Fecha:    "01/01/2001",
+	}
+	db, err := db.InitDb()
+	assert.NoError(t, err)
+	repo := NewRepositorySQL(db)
+	tranUpdate, err := repo.Store(transaction)
+	assert.Nil(t, err)
+	tranGet, err := repo.GetById(tranUpdate.ID)
+
+	assert.Equal(t,tranUpdate.ID,tranGet.ID)
+	assert.Equal(t,tranUpdate.Codigo,tranGet.Codigo)
+	assert.Equal(t,  tranUpdate.Moneda,tranGet.Moneda)
+	assert.Equal(t,  tranUpdate.Emisor,tranGet.Emisor)
+	assert.Equal(t, tranUpdate.Receptor,tranGet.Receptor)
+	assert.Nil(t, err)
+}
