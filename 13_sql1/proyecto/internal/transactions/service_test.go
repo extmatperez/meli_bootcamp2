@@ -1,9 +1,12 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"testing"
+	"time"
 
+	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/internal/models"
 	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
@@ -159,4 +162,101 @@ func TestServiceStoreError(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, Transaction{}, miTransaccion)
 	assert.True(t, dbMock.Called)
+}
+
+//SQL
+
+func TestStoreServiceSQL(t *testing.T) {
+	//Arrange
+	transactionExpected := models.Transaction{
+		ID:                  7,
+		CodigoDeTransaccion: "pruebaStore",
+		Moneda:              "MXN",
+		Monto:               123.45,
+		Emisor:              "em1",
+		Receptor:            "rec1",
+		FechaDeTransaccion:  "2020-12-12 00:00:00",
+	}
+
+	repo := NewRepositorySQL()
+	service := NewServiceSQL(repo)
+
+	//Act
+	miTransaccion, err := service.Store(transactionExpected.CodigoDeTransaccion, transactionExpected.Moneda, transactionExpected.Monto, transactionExpected.Emisor, transactionExpected.Receptor, transactionExpected.FechaDeTransaccion)
+	defer service.Delete(miTransaccion.ID)
+	transactionExpected.ID = miTransaccion.ID
+	//Assert
+	assert.Nil(t, err)
+	assert.Equal(t, transactionExpected, miTransaccion)
+}
+
+func TestUpdateWithContextServiceSQL(t *testing.T) {
+	//Arrange
+	transactionExpected := models.Transaction{
+		CodigoDeTransaccion: "testUpdatewc",
+		Moneda:              "MXN",
+		Monto:               123.45,
+		Emisor:              "em1",
+		Receptor:            "rec1",
+		FechaDeTransaccion:  "2020-12-12 00:00:00",
+	}
+
+	repo := NewRepositorySQL()
+	service := NewServiceSQL(repo)
+	recibida, _ := service.Store(transactionExpected.CodigoDeTransaccion, "UYU", 254.33, "emisor3", "rec0", transactionExpected.FechaDeTransaccion)
+	defer service.Delete(recibida.ID)
+	transactionExpected.ID = recibida.ID
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	//Act
+	miTransaccion, err := service.UpdateWithContext(ctx, transactionExpected.ID, transactionExpected.CodigoDeTransaccion, transactionExpected.Moneda, transactionExpected.Monto, transactionExpected.Emisor, transactionExpected.Receptor, transactionExpected.FechaDeTransaccion)
+	//Assert
+	assert.Nil(t, err)
+	assert.Equal(t, transactionExpected, miTransaccion)
+
+}
+
+func TestUpdateServiceSQL(t *testing.T) {
+	//Arrange
+	transactionExpected := models.Transaction{
+		CodigoDeTransaccion: "testUpdate",
+		Moneda:              "MXN",
+		Monto:               123.45,
+		Emisor:              "em1",
+		Receptor:            "rec1",
+		FechaDeTransaccion:  "2020-12-12 00:00:00",
+	}
+
+	repo := NewRepositorySQL()
+	service := NewServiceSQL(repo)
+	recibida, _ := service.Store(transactionExpected.CodigoDeTransaccion, "UYU", 254.33, "emisor3", "rec0", transactionExpected.FechaDeTransaccion)
+	defer service.Delete(recibida.ID)
+	transactionExpected.ID = recibida.ID
+	//Act
+	miTransaccion, err := service.Update(transactionExpected.ID, transactionExpected.CodigoDeTransaccion, transactionExpected.Moneda, transactionExpected.Monto, transactionExpected.Emisor, transactionExpected.Receptor, transactionExpected.FechaDeTransaccion)
+	//Assert
+	assert.Nil(t, err)
+	assert.Equal(t, transactionExpected, miTransaccion)
+
+}
+
+func TestDeleteServiceSQL(t *testing.T) {
+
+	//Arrange
+	transactionToDelete := models.Transaction{
+		CodigoDeTransaccion: "testDelete",
+		Moneda:              "MXN",
+		Monto:               123.45,
+		Emisor:              "em1",
+		Receptor:            "rec1",
+		FechaDeTransaccion:  "2020-12-12 00:00:00",
+	}
+	repo := NewRepositorySQL()
+	service := NewServiceSQL(repo)
+	recibida, _ := service.Store(transactionToDelete.CodigoDeTransaccion, transactionToDelete.Moneda, transactionToDelete.Monto, transactionToDelete.Emisor, transactionToDelete.Receptor, transactionToDelete.FechaDeTransaccion)
+	//Act
+	err := service.Delete(recibida.ID)
+	//Assert
+	assert.Nil(t, err)
+
 }

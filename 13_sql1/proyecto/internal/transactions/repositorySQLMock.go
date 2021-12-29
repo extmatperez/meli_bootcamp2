@@ -7,10 +7,9 @@ import (
 	"log"
 
 	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/internal/models"
-	"github.com/extmatperez/meli_bootcamp2/13_sql1/proyecto/pkg/db"
 )
 
-type RepositorySQL interface {
+type RepositorySQLMock interface {
 	GetAll() ([]models.Transaction, error)
 	GetTransactionByID(id int) (models.Transaction, error)
 	Store(codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error)
@@ -21,13 +20,15 @@ type RepositorySQL interface {
 	//LastId() (int, error)
 }
 
-type repositorySQL struct{}
-
-func NewRepositorySQL() RepositorySQL {
-	return &repositorySQL{}
+type repositorySQLMock struct {
+	db *sql.DB
 }
 
-func (r *repositorySQL) Store(codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error) {
+func NewRepositorySQLMock(db *sql.DB) RepositorySQL {
+	return &repositorySQLMock{db}
+}
+
+func (r *repositorySQLMock) Store(codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error) {
 	transaccion := models.Transaction{
 		CodigoDeTransaccion: codigo_de_transaccion,
 		Moneda:              moneda,
@@ -37,9 +38,7 @@ func (r *repositorySQL) Store(codigo_de_transaccion, moneda string, monto float6
 		FechaDeTransaccion:  fecha_de_transaccion,
 	}
 
-	db := db.StorageDB
-
-	stmt, err := db.Prepare("INSERT INTO transactions(codigo_de_transaccion, moneda, monto, emisor, receptor,fecha_de_transaccion) VALUES(?,?,?,?,?,?)")
+	stmt, err := r.db.Prepare("INSERT INTO transactions(codigo_de_transaccion, moneda, monto, emisor, receptor,fecha_de_transaccion) VALUES(?,?,?,?,?,?)")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,10 +54,9 @@ func (r *repositorySQL) Store(codigo_de_transaccion, moneda string, monto float6
 	return transaccion, nil
 }
 
-func (r *repositorySQL) GetTransactionByID(id int) (models.Transaction, error) {
+func (r *repositorySQLMock) GetTransactionByID(id int) (models.Transaction, error) {
 	var transaccLeida models.Transaction
-	db := db.StorageDB
-	rows, err := db.Query("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions WHERE id = ?", id)
+	rows, err := r.db.Query("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions WHERE id = ?", id)
 	if err != nil {
 		log.Fatal(err)
 		return transaccLeida, err
@@ -73,7 +71,7 @@ func (r *repositorySQL) GetTransactionByID(id int) (models.Transaction, error) {
 	return transaccLeida, nil
 }
 
-func (r *repositorySQL) Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error) {
+func (r *repositorySQLMock) Update(id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error) {
 	transaccion := models.Transaction{
 		ID:                  id,
 		CodigoDeTransaccion: codigo_de_transaccion,
@@ -84,9 +82,7 @@ func (r *repositorySQL) Update(id int, codigo_de_transaccion, moneda string, mon
 		FechaDeTransaccion:  fecha_de_transaccion,
 	}
 
-	db := db.StorageDB
-
-	stmt, err := db.Prepare("UPDATE transactions SET codigo_de_transaccion = ?, moneda = ? , monto = ? , emisor = ?, receptor = ?,fecha_de_transaccion = ? WHERE id = ?")
+	stmt, err := r.db.Prepare("UPDATE transactions SET codigo_de_transaccion = ?, moneda = ? , monto = ? , emisor = ?, receptor = ?,fecha_de_transaccion = ? WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -108,12 +104,11 @@ func (r *repositorySQL) Update(id int, codigo_de_transaccion, moneda string, mon
 	return transaccion, nil
 }
 
-func (r *repositorySQL) GetAll() ([]models.Transaction, error) {
+func (r *repositorySQLMock) GetAll() ([]models.Transaction, error) {
 	var transaccLeidas []models.Transaction
 	var transaccLeida models.Transaction
 
-	db := db.StorageDB
-	rows, err := db.Query("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions")
+	rows, err := r.db.Query("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions")
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -129,9 +124,8 @@ func (r *repositorySQL) GetAll() ([]models.Transaction, error) {
 	return transaccLeidas, nil
 }
 
-func (r *repositorySQL) Delete(id int) error {
-	db := db.StorageDB
-	stmt, err := db.Prepare("DELETE FROM transactions WHERE id = ?")
+func (r *repositorySQLMock) Delete(id int) error {
+	stmt, err := r.db.Prepare("DELETE FROM transactions WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -154,12 +148,12 @@ func (r *repositorySQL) Delete(id int) error {
 }
 
 // func (r *repositorySQL) GetByCode(code string) (models.Transaction,error){
-// 	db := db.StorageDB
-// 	db.Query("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions WHERE codigo_de_transaccion = ?", code)
+//
+// 	r.db.Query("SELECT id,codigo_de_transaccion, moneda, monto, emisor, receptor, fecha_de_transaccion FROM transactions WHERE codigo_de_transaccion = ?", code)
 
 // }
 
-func (r *repositorySQL) UpdateWithContext(ctx context.Context, id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error) {
+func (r *repositorySQLMock) UpdateWithContext(ctx context.Context, id int, codigo_de_transaccion, moneda string, monto float64, emisor, receptor, fecha_de_transaccion string) (models.Transaction, error) {
 	//La única diferencia con el Update común es que se usa PrepareContext y ExecContext en vez de Prepare y Exec
 	transaccion := models.Transaction{
 		ID:                  id,
@@ -171,9 +165,7 @@ func (r *repositorySQL) UpdateWithContext(ctx context.Context, id int, codigo_de
 		FechaDeTransaccion:  fecha_de_transaccion,
 	}
 
-	db := db.StorageDB
-
-	stmt, err := db.PrepareContext(ctx, "UPDATE transactions SET codigo_de_transaccion = ?, moneda = ? , monto = ? , emisor = ?, receptor = ?,fecha_de_transaccion = ? WHERE id = ?")
+	stmt, err := r.db.PrepareContext(ctx, "UPDATE transactions SET codigo_de_transaccion = ?, moneda = ? , monto = ? , emisor = ?, receptor = ?,fecha_de_transaccion = ? WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
