@@ -1,8 +1,9 @@
 package internal
 
 import (
-	"fmt"
+	"context"
 	"testing"
+	"time"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/montenegro_edgar/18_storage2/morning_activities/Exercise_1_2_3/internal/models"
 	"github.com/stretchr/testify/assert"
@@ -97,7 +98,31 @@ func Test_get_full_data_service_sql(t *testing.T) {
 	assert.True(t, len(all_data_db) >= 0)
 	assert.Equal(t, "Moscow", all_data_db[28].Address.CityName)
 
-	fmt.Printf("\n %+v \n", all_data_db[28])
+	/* fmt.Printf("\n %+v \n", all_data_db[28]) */
+}
+
+func Test_Get_one_with_context_service_sql(t *testing.T) {
+	new_users := models.Users{
+		FirstName: "first_name",
+		LastName:  "last_name",
+		Email:     "email",
+		Age:       33,
+		Height:    98,
+		Active:    true,
+		Date:      "27/12/2021",
+	}
+
+	repo := New_repository_sql()
+	service := New_service_sql(repo)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	user_loaded, err := service.Get_one_with_context(ctx, 1)
+
+	assert.Nil(t, err)
+	assert.Equal(t, new_users.FirstName, user_loaded.FirstName)
+	assert.Equal(t, new_users.LastName, user_loaded.LastName)
 }
 
 func Test_update_service_sql_ok(t *testing.T) {
