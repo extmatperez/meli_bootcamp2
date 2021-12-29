@@ -321,3 +321,52 @@ func TestStoreAndGetServiceFailSQLTxdb(t *testing.T) {
 	assert.NotEqual(t, transacObtenida.Monto, transacCreada.Monto)
 	assert.Empty(t, transacObtenida)
 }
+
+func TestUpdateAndGetSQLTxdb(t *testing.T) {
+	//Arrange
+	db, err := db.InitDb()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	transaccionModificada := models.Transaccion{
+		CodTransaccion: "2",
+		Moneda:         "Pesos",
+		Monto:          6500.45,
+		Emisor:         "Facundo2",
+		Receptor:       "Matias2",
+	}
+	idTransacModificada := 2
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+
+	//Act
+	transacResultado, err := service.Update(transaccionModificada)
+
+	transacObtenida := service.GetOne(idTransacModificada)
+
+	//Assert
+	assert.Equal(t, transacResultado.Emisor, transacObtenida.Emisor)
+	assert.Equal(t, transacResultado.Receptor, transacObtenida.Receptor)
+	assert.Nil(t, err)
+}
+
+func TestDeleteAndNotFoundSQLTxdb(t *testing.T) {
+	//Arrange
+	db, err := db.InitDb()
+	assert.Nil(t, err)
+	defer db.Close()
+
+	repo := NewRepositorySQLMock(db)
+	service := NewServiceSQL(repo)
+
+	idToDelete := 1
+
+	//Act
+	err = service.Delete(idToDelete)
+	transaction := service.GetOne(idToDelete)
+
+	//Assert
+	assert.Nil(t, err)
+	assert.Empty(t, transaction)
+}

@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/18_storage2/PracticaTM/internal/models"
-	"github.com/extmatperez/meli_bootcamp2/tree/bouza_facundo/18_storage2/PracticaTM/pkg/db"
 )
 
 type RepositorySQLMock interface {
@@ -72,9 +71,8 @@ func (r *repositorySQLMock) GetOne(id int) models.Transaccion {
 }
 
 func (r *repositorySQLMock) Update(transaccion models.Transaccion) (models.Transaccion, error) {
-	db := db.StorageDB
 	updateQuery := "UPDATE transacciones SET moneda = ?, monto = ?, emisor = ?, receptor = ? WHERE idtransacciones = ?"
-	stmt, err := db.Prepare(updateQuery)
+	stmt, err := r.db.Prepare(updateQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -93,9 +91,8 @@ func (r *repositorySQLMock) Update(transaccion models.Transaccion) (models.Trans
 }
 
 func (r *repositorySQLMock) GetByName(name string) []models.Transaccion {
-	db := db.StorageDB
 	selectQuery := "SELECT moneda, monto, emisor, receptor FROM transacciones WHERE emisor = ?"
-	rows, err := db.Query(selectQuery, name)
+	rows, err := r.db.Query(selectQuery, name)
 	if err != nil {
 		log.Fatal(err)
 		return []models.Transaccion{}
@@ -117,11 +114,10 @@ func (r *repositorySQLMock) GetByName(name string) []models.Transaccion {
 }
 
 func (r *repositorySQLMock) GetAll() ([]models.Transaccion, error) {
-	db := db.StorageDB
 	var transacciones []models.Transaccion
 	var transaccionLeida models.Transaccion
 	selectQuery := "SELECT moneda, monto, emisor, receptor FROM transacciones"
-	rows, err := db.Query(selectQuery)
+	rows, err := r.db.Query(selectQuery)
 	if err != nil {
 		log.Fatal(err)
 		return []models.Transaccion{}, err
@@ -141,9 +137,8 @@ func (r *repositorySQLMock) GetAll() ([]models.Transaccion, error) {
 }
 
 func (r *repositorySQLMock) Delete(id int) error {
-	db := db.StorageDB
 	deleteQuery := "DELETE FROM transacciones WHERE idtransacciones = ?"
-	stmt, err := db.Prepare(deleteQuery)
+	stmt, err := r.db.Prepare(deleteQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -162,11 +157,10 @@ func (r *repositorySQLMock) Delete(id int) error {
 }
 
 func (r *repositorySQLMock) GetFullData() ([]models.Transaccion, error) {
-	db := db.StorageDB
 	var transacciones []models.Transaccion
 	var transaccionLeida models.Transaccion
 	selectQuery := "SELECT t.moneda, t.monto, t.emisor, t.receptor, c.nombre_ciudad, c.nombre_pais FROM transacciones t INNER JOIN ciudad c on t.id_ciudad = c.idciudad"
-	rows, err := db.Query(selectQuery)
+	rows, err := r.db.Query(selectQuery)
 	if err != nil {
 		log.Fatal(err)
 		return []models.Transaccion{}, err
@@ -186,13 +180,12 @@ func (r *repositorySQLMock) GetFullData() ([]models.Transaccion, error) {
 }
 
 func (r *repositorySQLMock) GetOneWithContext(ctx context.Context, id int) (models.Transaccion, error) {
-	db := db.StorageDB
 	var transaccionLeida models.Transaccion
 	// rows, err := db.QueryContext(ctx, "SELECT moneda, monto, emisor, receptor FROM transacciones WHERE idtransacciones = ?", id)
 	// se utiliza una query que demore 30 segundos en ejecutarse
 	getQuery := "SELECT SLEEP(5) FROM DUAL where 0 < ?"
 	// ya no se usa db.Query sino db.QueryContext
-	rows, err := db.QueryContext(ctx, getQuery, id)
+	rows, err := r.db.QueryContext(ctx, getQuery, id)
 	if err != nil {
 		log.Fatal(err)
 		return models.Transaccion{}, err
@@ -211,9 +204,8 @@ func (r *repositorySQLMock) GetOneWithContext(ctx context.Context, id int) (mode
 }
 
 func (r *repositorySQLMock) UpdateWithContext(ctx context.Context, transaccion models.Transaccion) (models.Transaccion, error) {
-	db := db.StorageDB
 	updateQuery := "UPDATE transacciones SET moneda = ?, monto = ?, emisor = ?, receptor = ? WHERE idtransacciones = ?"
-	result, err := db.ExecContext(ctx, updateQuery, transaccion.Moneda, transaccion.Monto, transaccion.Emisor, transaccion.Receptor, transaccion.CodTransaccion)
+	result, err := r.db.ExecContext(ctx, updateQuery, transaccion.Moneda, transaccion.Monto, transaccion.Emisor, transaccion.Receptor, transaccion.CodTransaccion)
 	if err != nil {
 		return models.Transaccion{}, err
 	}
