@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"errors"
 	"log"
 
@@ -14,6 +15,7 @@ type Repository_sql interface {
 	Get_by_name(name string) ([]models.Users, error)
 	Get_all_users() ([]models.Users, error)
 	Get_full_data() ([]models.Users, error)
+	Get_one_with_context(ctx context.Context, id int) (models.Users, error)
 	Update_user(users models.Users) (models.Users, error)
 	Delete_user(id int) error
 }
@@ -187,6 +189,43 @@ func (r *repository_sql) Get_full_data() ([]models.Users, error) {
 		all_users = append(all_users, user_readed)
 	}
 	return all_users, nil
+}
+
+func (r *repository_sql) Get_one_with_context(ctx context.Context, id int) (models.Users, error) {
+	db := db.Storage_DB
+	var user_readed models.Users
+
+	select_one_user := `SELECT
+	id,
+	first_name,
+	last_name,
+	email,
+	age
+	FROM users_sql WHERE id = ?`
+	rows, err := db.QueryContext(ctx, select_one_user, id)
+
+	// Sentencias para probar el error si excede el tiempo de consulta
+	/* select_one_user_failed := `SELECT SLEEP(30) FROM DUAL`
+	rows, err := db.QueryContext(ctx, select_one_user_failed) */
+
+	if err != nil {
+		log.Fatal(err)
+		return user_readed, err
+	}
+	for rows.Next() {
+		err := rows.Scan(
+			&user_readed.ID,
+			&user_readed.FirstName,
+			&user_readed.LastName,
+			&user_readed.Email,
+			&user_readed.Age,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return user_readed, err
+		}
+	}
+	return user_readed, nil
 }
 
 func (r *repository_sql) Update_user(users models.Users) (models.Users, error) {
