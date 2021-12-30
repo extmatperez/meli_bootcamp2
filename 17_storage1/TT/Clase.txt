@@ -3,3 +3,52 @@ Puede generar una conexion o administrar un pool de conexiones.
 
 El context permite efectuar cancelaciones de las queries mientras estan en plena ejecucion, para administrat los tiempos de duracion y la aplicacion
 de timeouts a las consultas a la DB.
+
+SISTEMAS DISTRIBUIDOS
+Los microservicios son un enfoque arquitectonico y organizativo para el desarrollo donde el SW esta compuesto por pequeños servicios independientes
+que se comunican a traves de APIS bien definidas.
+Son autonomos y desacoplados: se ejecutan independientemente, cada uno de ellos se puede actualizar, implementar y escalar para satisfacer demandas; 
+son especializados: cada uno esta diseñado para una funcion determinada;
+y utilizan un Single source of truth (SSOT) distribuido (cada microservicio tiene su BD propia que no se comparte con otros).
+
+EJERCICIO con IGNACIO
+
+[SLA]
+	Tiempo máximo de respuesta 500 ms
+	Error rate < 0.5%
+
+
+[Servicio que consumen]
+    AVG - 100ms
+	P95 - 150ms
+	P99 - 400ms
+	Error Rate - 1%
+
+
+Consideraciones:
+	- Todos los requests son "iguales"
+
+PREGUNTAS
+	1) Qué timeout pondrían en el rest client? 410 ms
+	2) Cuántos reintentos colocarían? 2 reintentos, el primero con 350 ms estando en el P98 teoricamente y el segundo con 150 ms, cubriendo el maximo de
+    500 ms se tiempo de respuesta.
+	3) Por qué? Cuáles son los racionales? El error rate en este caso es de 0.48%
+
+    Lo correcto: 
+    Partiendo de una analogia, como si tuviera una carrera con 100 participantes, el timeout es un momento desde que corto el reloj y los que no llegaron
+    a la meta los pongo a correr de nuevo. Por eso, les pongo de nuevo un timeout de 160 ms. Tengo que responder en menos de 500 ms con un error menor
+    a 0.5%. Entonces a los 160 ms corto el reloj de nuevo. En ese tiempo, al menos 95 (P95, el 95%) llegaron a la meta. Y se hace correr a esos 5 que quedan.
+    Si se hace un nuevo reintento con esos 5 que quedan, se garantiza que en 160 ms mas el 95% (P95) de esos 5 van a llegar, osea que los unicos que no
+    llegan a la meta fuera de esos 160 ms son un 0.25% del total (que es el 5% de los 5% que quedan en relacion a los 100 que iniciaron la carrera).
+    Por lo tanto con un solo reintento con 160 ms seria suficiente para cubrir el requerimiento. 
+    Si por esas casualidades seria menor el requerimiento del error rate, se podria realizar de nuevo un retry con un timeout de 160 ms tambien, y Entonces
+    el error rate seria del 5% de ese 0.25% del total de los corredores que quedaban luego del primer reintento, por lo tanto un error rate de 0.0125%
+    A medida que se deseen menores error rates, se puede ir ajustando con el menor percentil existente y realizan retries sucesivamente, de manera que
+    tampoco se sature el tiempo limite de respuesta.
+
+    1) Qué harían con los reintentos respecto a los status codes para evitar el problema?
+    Como los unicos errores replicables son los 500, como el error propuesto es un 429 hay que hacer un Circuit Breaker y finalizar con la ejecucion.
+
+    2) Qué harían con los reintentos respecto a tiempos de reintento para evitar el problema?
+    Mantener la menor cantidad de retries posible.
+    
