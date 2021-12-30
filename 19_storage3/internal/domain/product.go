@@ -3,6 +3,7 @@ package domain
 import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Product struct {
@@ -17,6 +18,13 @@ type ProductDynamo struct {
 	Name        string  `json:"name"`
 	Price       float64 `json:"price"`
 	Description string  `json:"description"`
+}
+
+type ProductMongo struct {
+	Id          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Name        string             `json:"name"`
+	Price       float64            `json:"price"`
+	Description string             `json:"description"`
 }
 
 func DynamoItemToProduct(input map[string]*dynamodb.AttributeValue) (*ProductDynamo, error) {
