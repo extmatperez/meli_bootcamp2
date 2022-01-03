@@ -1,6 +1,6 @@
 package internal
 
-import "github.com/extmatperez/meli_bootcamp2/17_storage1/internal/models"
+import "github.com/extmatperez/meli_bootcamp2/18_storage2/internal/models"
 
 type ServiceDB interface {
 	Store(amount float64, transactionCode, currency, receiver, sender, transactionDate string) (models.Transaction, error)

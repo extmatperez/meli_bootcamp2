@@ -6,7 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/internal/models"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/pkg/store"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -152,6 +153,7 @@ func TestDeleteTransactionErrorServiceMock(t *testing.T) {
 	assert.Equal(t, newTransaction.Receiver, transactionCreated.Receiver)
 
 }*/
+
 func TestGetSenderServiceSQL(t *testing.T) {
 	//Arrange
 
@@ -164,4 +166,54 @@ func TestGetSenderServiceSQL(t *testing.T) {
 	assert.Equal(t, "Dig", transaction.Sender)
 	assert.Equal(t, "Sol", transaction.Receiver)
 
+}
+
+func TestUpdateServiceSQL(t *testing.T) {
+	//Arrange
+	transactionUpdated := models.Transaction{
+		ID:              6,
+		TransactionCode: "1234-32332",
+		Currency:        "$$",
+		Amount:          300.44,
+		Receiver:        "Rosita",
+		Sender:          "Garcia",
+		TransactionDate: "14/05/2020",
+	}
+
+	repo := NewRepositoryDB()
+
+	service := NewServiceDB(repo)
+
+	transactionBefore := service.GetOne(transactionUpdated.ID)
+
+	transactionActual, _ := service.Update(transactionUpdated)
+
+	assert.Equal(t, transactionUpdated.Sender, transactionActual.Sender)
+	assert.Equal(t, transactionUpdated.Receiver, transactionActual.Receiver)
+	// assert.Nil(t, misPersonas)
+	_, err := service.Update(transactionBefore)
+
+	assert.Nil(t, err)
+}
+
+func TestUpdateServiceSQL_Failed(t *testing.T) {
+	//Arrange
+	transactionUpdated := models.Transaction{
+		ID:              15,
+		TransactionCode: "1234-3232",
+		Currency:        "$",
+		Amount:          25.44,
+		Receiver:        "Rivera",
+		Sender:          "Soto",
+		TransactionDate: "14/05/2020",
+	}
+
+	repo := NewRepositoryDB()
+
+	service := NewServiceDB(repo)
+
+	_, err := service.Update(transactionUpdated)
+
+	assert.Equal(t, "No se encontro la transaction", err.Error())
+	// assert.Nil(t, misPersonas)
 }

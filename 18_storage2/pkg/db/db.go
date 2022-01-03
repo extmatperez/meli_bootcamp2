@@ -22,5 +22,5 @@ func init() {
 	if err = StorageDB.Ping(); err != nil {
 		panic(err)
 	}
-	log.Printf("database Configured")
+	log.Println("database Configured")
 }

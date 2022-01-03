@@ -10,10 +10,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/17_storage1/cmd/server/handler"
-	transaction "github.com/extmatperez/meli_bootcamp2/17_storage1/internal/transaction"
-	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/store"
-	"github.com/extmatperez/meli_bootcamp2/17_storage1/pkg/web"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/cmd/server/handler"
+	transaction "github.com/extmatperez/meli_bootcamp2/18_storage2/internal/transaction"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/pkg/store"
+	"github.com/extmatperez/meli_bootcamp2/18_storage2/pkg/web"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
