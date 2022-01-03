@@ -51,4 +51,88 @@ PREGUNTAS
 
     2) Qué harían con los reintentos respecto a tiempos de reintento para evitar el problema?
     Mantener la menor cantidad de retries posible.
-    
+
+FURY
+
+Tiene algunos factores importantes:
+KVS: servicio para almacenar, recuperar y gestionar estructuras de datos de tipo key value o comunmente conocidas como diccionario o hash. Es simple,
+posee alta disponibilidad y son potentes en seguridad e integridad.
+
+DS: es un motor de busquedas para el manejo de grandes volumenes de datos. Es simple, posee alta disponibilidad y posee seguridad e integridad.
+Existe una ventana de tiempo de 2 segundos desde que un documento es creado hasta que es "buscable". La infraestructura esta replicada con posibilidad
+de mover el trafico ante eventualidades.    
+Busquedas: tenemos query and fetch, count, scroll y after_search. La diferencia entre scroll y after_search, que el resultado es identico, es quen en el
+after_search es necesario que este ordenado el json de instrucciones, pero siempre es mas recomendable.
+En las queries se pueden insertar operaciones como eq, exists, in, match, range, date range, geo_distance. Se pueden combinar con operadores and, or, not.
+
+BIG QUEUE
+Funciona sobre un patron observer representado primero en un Scope que es el producer, un topico que es BigQ que es el topico A, y luego tenemos los 
+consumidores del topico. Estos mensajes son formateados en JSON.
+Comunicacion asincrona o Async Comm: es util cuando se trata de una fuente de novedades o topico hacia multiples interesados o consumers, hay un desacople
+de request con capacidad de procesarlo, se pueden controlar picos de trafico (buffers de olas de mensajes), habiendo features independientes del producer,
+por ejemplo, la capacidad de filtrar las colas de mensajes.
+En los topicos se pueden consultar el rate limit, el source o fuente, los tags, el TTL, los filters. 
+Los mensajes se pueden consultar los filters y el size.
+Los consumers poseen rate limit, reset/rewind, lag, tags, peek, filters.
+
+Los topicos pueden ser publicos o privados. Puedo producir topicos de otra app (attach) con autorizacion del dueño, y puedo crear consumers de cualquier
+topico, siempre que sea publico, o de los de mi app, nunca de topicos privados libremente, a menos que haya autorizacion del dueño del topico.
+
+Troubleshooting: en produccion, ante un problema ver el tablero completo, y es necesario ajustar timeouts acordes a "produce time", de forma que no nos 
+asustemos.
+En consumo, se puede definir un monitor para que nos enteremos cuando se llegue a un limite superior o inferior de lo definido, ya que los tiempos altos
+y errores pueden afectar la calidad de los mensajes que recibo.
+
+Hay muchas malas practicas: 
+o Topicos multiproposito: todo topico debe tener un unico proposito solamente.
+o los mensajes son muy grandes
+o los push de errores son constantes
+o no hay monitoreo
+o existen sleeps o retries en consumers
+o los rate limits son incorrectos
+o existen topicos sin consumers
+o no se taggea, por eso no hay tagging
+o calendar queues para agendar reintentos
+o acoplarse a metadata del pusher
+entre otros...
+
+Pero tambien hay buenas practicas: 
+o bibliotecas actualizadas
+o artefactos de test marcados como test (con _test al final del nombre)
+o mantenerse al tanto o actualizado
+o bulk delivery
+o comunicate, reporta issues, consultar
+
+SDKs: existen oficiales para Java, Go y Python, con sus propios core-mantainers, que ya existen y son los oficiales.
+Garantizan trazabilidad, compliance y mantenibilidad. Se usan mediante el mismo portal de Fury.
+Los snippets estan disponibles con muy pocas lineas de codigo, y existen versiones sync y async, dependiendo obviamente del lenguaje. Siempre conviene
+poner todo en async.
+
+JOBS: son procesos que son corridos en background en Fury. Es necesario definirle la criticidad, el nombre, el nombre del proceso, que permite agrupar el nombre
+todos los jobs en un mismo proceso, el endpoint de la aplicacion que ejecutara la tarea, el tiempo de ejecucion o timerule (es una cron expression)*, la cantidad
+de retries de la ejecucion, minimo 0 maximo 10, el intervalo entre los reintentos en minutos, el scope de jobs donde se debe ejecutar la tarea, el tiempo de 
+espera aproximado que sera lo que tome la tarea (expected run time), y los tags (core metric - siempre son las prioritarias- & core metric site).
+
+* La timerule es definida en crontime, tal como se muestra en esta pagina: https://crontab.guru/
+Por ejemplo, 0 2,5,6 ****
+
+Object Storage: permite guardar, obtener y gestionar cualquier tipo de objeto en un "bucket". Podemos tener objetos privados accesibles mediantes URIs firmadas
+u objetos publicos accesibles desde cualquier parte. Permite un simple acceso a traves de un SDK, teniendo metricas, controles y alertas predefinidas.
+Se crean practicamente igual que los jobs anteriores. Solo que se definen otros valores, tales como: el nombre del servicio, la descripcion, la criticidad, la
+confidencialidad, la integridad, la disponibilidad (availability), el trafico estimado de escritura (write throughput) y de lectura (read throughput), que si ambos se
+superan se devuelve un codigo de error 429. 
+
+Audits: permiten registrar acciones especificas llevadas a cabo por la aplicacion. Funcionan con el SDK para registro. Para Frontend se usa Manhattan.
+Se definen otros valores cuando es necesario crearlos.
+Estos datos son: el nombre, la nivel de criticidad (test, low, medium o high), la descripcion, la estimacion de registros a escribir por minuto 
+(write throughput), el ciclo de vida, lifecycle o es el minimo de meses de vida de la informacion, la confidencialidad y los tipos de recursos que estamos registrando.
+
+Streams: son canales de transmision continua de informacion con determinadas garantias (orden por partition key, at least once delivery).
+Para usar un stream al que tenemos acceso, podemos crear un sink HTTP para consumir sus mensajes en nuestra aplicacion. 
+Para monitorear un stream se proveen metricas y alertas predefinidas.
+Para crear un stream sink es necesario definir: nombre del sink, el stream sobre el cual se creara, el tipo (por ahora solo es HTTP y BIGQ, siendo a futuro otros tipos),
+la criticidad, y los filtros.
+
+Otras herramientas son Bazooka (permite realizar tests de perfomance y de stress), Cache (permite crear KVS cacheado), Configurations (permite manejar las configuraciones
+de la app y la definicion de despliegue), el Lock, que previene acceso concurrente u operaciones sobre recursos de acceso distribuido, y los Sequence, que proveen rangos
+de ids numericos unicos.
