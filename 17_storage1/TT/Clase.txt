@@ -136,3 +136,16 @@ la criticidad, y los filtros.
 Otras herramientas son Bazooka (permite realizar tests de perfomance y de stress), Cache (permite crear KVS cacheado), Configurations (permite manejar las configuraciones
 de la app y la definicion de despliegue), el Lock, que previene acceso concurrente u operaciones sobre recursos de acceso distribuido, y los Sequence, que proveen rangos
 de ids numericos unicos.
+
+DEV CYCLE (CICLO DE DESARROLLO)
+1) LOCAL: Programar, ejecutar test y probar docker.
+2) CI: Despues de una pull request, ejecutar pruebas (test), encuentra bugs, vulnerabilidades y smells.
+3) CD: Despues del merge de la pull request, compila el programa y creacion de version.
+4) DEPLOY: Despues del deploy, ver en ambiente de test/productivo, finish o rollback y ver logs y metricas.
+
+Estrategias de deploy
+o Blue Green: recrea una infraestructura, y si no va bien, redirige el trafico a la infra anterior, osea hay rollback rapido. Es la estrategia por default.
+o All In: nos permite configurar que porcentaje de la infraestructura va a recibir trafico.
+o Rolling Update: permite reutilizar infraestructura, deploys mas rapidos, rollbacks mas lentos y evita sobrepasar limites al duplicar infraestructura.
+o Canary: recrea menos infraestructura, se podria decir que es un primer paso del Blue Green, por lo tanto tiene menor impacto.
+o Safe: permite comparar tasa de errores, tiempo de respuesta, etc, con respecto a deploys anteriores.
