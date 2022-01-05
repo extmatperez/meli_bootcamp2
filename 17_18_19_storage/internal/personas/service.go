@@ -1,61 +1,61 @@
 package internal
 
-type Service interface {
-	GetAll() ([]Persona, error)
-	Store(nombre, apellido string, edad int) (Persona, error)
-	Update(id int, nombre, apellido string, edad int) (Persona, error)
-	UpdateNombre(id int, nombre string) (Persona, error)
+import (
+	"context"
+
+	models "github.com/extmatperez/meli_bootcamp2/17_18_19_storage/internal/model"
+)
+
+type ServiceSQL interface {
+	Store(nombre, apellido string, edad int) (models.Persona, error)
+	GetOne(id int) models.Persona
+	Update(persona models.Persona) (models.Persona, error)
+	GetAll() ([]models.Persona, error)
 	Delete(id int) error
-	Sum(prices ...float64) float64
+	GetFullData() ([]models.Persona, error)
+	GetOneWithContext(ctx context.Context, id int) (models.Persona, error)
+	//Store2(persona models.Persona) (models.Persona, error)
 }
 
-type service struct {
-	repository Repository
+type serviceSQL struct {
+	repository RepositorySQL
 }
 
-func NewService(repository Repository) Service {
-	return &service{repository: repository}
+func NewServiceSQL(repo RepositorySQL) ServiceSQL {
+	return &serviceSQL{repository: repo}
 }
 
-func (ser *service) GetAll() ([]Persona, error) {
-	personas, err := ser.repository.GetAll()
-	if err != nil {
-		return nil, err
-	}
-	return personas, nil
-}
+func (ser *serviceSQL) Store(nombre, apellido string, edad int) (models.Persona, error) {
 
-func (ser *service) Store(nombre, apellido string, edad int) (Persona, error) {
-	ultimoId, err := ser.repository.LastId()
+	newPersona := models.Persona{Nombre: nombre, Apellido: apellido, Edad: edad}
+	personaCreada, err := ser.repository.Store(newPersona)
 
 	if err != nil {
-		return Persona{}, err
+		return models.Persona{}, err
 	}
-	per, err := ser.repository.Store(ultimoId+1, nombre, apellido, edad)
-
-	if err != nil {
-		return Persona{}, err
-	}
-
-	return per, nil
+	return personaCreada, nil
 }
 
-func (ser *service) Update(id int, nombre, apellido string, edad int) (Persona, error) {
-	return ser.repository.Update(id, nombre, apellido, edad)
+func (ser *serviceSQL) GetOne(id int) models.Persona {
+	return ser.repository.GetOne(id)
 }
 
-func (ser *service) UpdateNombre(id int, nombre string) (Persona, error) {
-	return ser.repository.UpdateNombre(id, nombre)
+func (ser *serviceSQL) Update(persona models.Persona) (models.Persona, error) {
+	return ser.repository.Update(persona)
 }
 
-func (ser *service) Delete(id int) error {
+func (ser *serviceSQL) GetAll() ([]models.Persona, error) {
+	return ser.repository.GetAll()
+}
+
+func (ser *serviceSQL) Delete(id int) error {
 	return ser.repository.Delete(id)
 }
 
-func (s *service) Sum(prices ...float64) float64 {
-	var price float64
-	for _, p := range prices {
-		price += p
-	}
-	return price
+func (ser *serviceSQL) GetFullData() ([]models.Persona, error) {
+	return ser.repository.GetFullData()
+}
+
+func (ser *serviceSQL) GetOneWithContext(ctx context.Context, id int) (models.Persona, error) {
+	return ser.repository.GetOneWithContext(ctx, id)
 }

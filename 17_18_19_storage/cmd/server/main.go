@@ -4,9 +4,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/extmatperez/meli_bootcamp2/17_18_19_storage/cmd/server/handler"
 	personas "github.com/extmatperez/meli_bootcamp2/17_18_19_storage/internal/personas"
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/cmd/server/handler"
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -58,9 +57,8 @@ func main() {
 
 	router := gin.Default()
 
-	db := store.New(store.FileType, "./personasSalida.json")
-	repo := personas.NewRepository(db)
-	service := personas.NewService(repo)
+	repo := personas.NewRepositorySQL()
+	service := personas.NewServiceSQL(repo)
 	controller := handler.NewPersona(service)
 
 	//docs.SwaggerInfo.Host = os.Getenv("HOST")
@@ -71,7 +69,7 @@ func main() {
 	router.GET("/personas/get", controller.GetAll())
 	router.POST("/personas/add", controller.Store())
 	router.PUT("/personas/:id", controller.Update())
-	router.PATCH("/personas/:id", controller.UpdateNombre())
+	/* router.PATCH("/personas/:id", controller.UpdateNombre()) */
 	router.DELETE("/personas/:id", controller.Delete())
 
 	router.Run()

@@ -1,14 +1,13 @@
 package handler
 
-package handler
-
 import (
 	"fmt"
 	"os"
 	"strconv"
 
-	personas "github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/internal/personas"
-	"github.com/extmatperez/w2GoPrueba/GoStorage/Clase1TT/proyecto/pkg/web"
+	internal "github.com/extmatperez/meli_bootcamp2/17_18_19_storage/internal/model"
+	personas "github.com/extmatperez/meli_bootcamp2/17_18_19_storage/internal/personas"
+	"github.com/extmatperez/meli_bootcamp2/17_18_19_storage/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,10 +18,10 @@ type request struct {
 }
 
 type Persona struct {
-	service personas.Service
+	service personas.ServiceSQL
 }
 
-func NewPersona(ser personas.Service) *Persona {
+func NewPersona(ser personas.ServiceSQL) *Persona {
 	return &Persona{service: ser}
 }
 
@@ -54,7 +53,7 @@ func validarToken(ctx *gin.Context) bool {
 // @Router /personas/get [get]
 func (per *Persona) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-	
+
 		personas, err := per.service.GetAll()
 
 		if err != nil {
@@ -104,24 +103,14 @@ func (controller *Persona) Store() gin.HandlerFunc {
 func (controller *Persona) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		// if !validarToken(ctx) {
-		// 	return
-		// }
+		var per internal.Persona
 
-		var per request
-
-		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
-
-		if err != nil {
-			ctx.String(400, "El id es invalido")
-		}
-
-		err = ctx.ShouldBindJSON(&per)
+		err := ctx.ShouldBindJSON(&per)
 
 		if err != nil {
 			ctx.String(400, "Error en el body")
 		} else {
-			personaActualizada, err := controller.service.Update(int(id), per.Nombre, per.Apellido, per.Edad)
+			personaActualizada, err := controller.service.Update(per)
 			if err != nil {
 				ctx.JSON(400, err.Error())
 			} else {
@@ -132,12 +121,8 @@ func (controller *Persona) Update() gin.HandlerFunc {
 	}
 }
 
-func (controller *Persona) UpdateNombre() gin.HandlerFunc {
+/* func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		// if !validarToken(ctx) {
-		// 	return
-		// }
 
 		var per request
 
@@ -165,7 +150,7 @@ func (controller *Persona) UpdateNombre() gin.HandlerFunc {
 		}
 
 	}
-}
+} */
 
 func (controller *Persona) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
