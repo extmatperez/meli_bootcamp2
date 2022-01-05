@@ -1,0 +1,52 @@
+[
+ {
+  "id": 1,
+  "name": "diii",
+  "color": "Crimson",
+  "price": 10001,
+  "stock": 1,
+  "code": "50438-106",
+  "publish": true,
+  "date": "4/4/2021"
+ },
+ {
+  "id": 2,
+  "name": "fi",
+  "color": "Crimson",
+  "price": 10,
+  "stock": 1,
+  "code": "50438-106",
+  "publish": true,
+  "date": "4/4/2021"
+ },
+ {
+  "id": 4,
+  "name": "Heaven Knows, Mr. Allison",
+  "color": "Crimson",
+  "price": 12.53,
+  "stock": 1,
+  "code": "50438-106",
+  "publish": true,
+  "date": "4/4/2021"
+ },
+ {
+  "id": 5,
+  "name": "Mr. Allison",
+  "color": "cc",
+  "price": 12.53,
+  "stock": 1,
+  "code": "50438-106",
+  "publish": true,
+  "date": "4/4/2021"
+ },
+ {
+  "id": 6,
+  "name": "Mr. Allison",
+  "color": "cc",
+  "price": 12.53,
+  "stock": 1,
+  "code": "50438-106",
+  "publish": true,
+  "date": "4/4/2021"
+ }
+]
