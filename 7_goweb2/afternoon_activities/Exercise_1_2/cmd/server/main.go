@@ -1,5 +1,6 @@
 /* Ejercicio 1 - Generar paquete internal
-Se debe separar la estructura del proyecto y como primer paso generando el paquete internal, en el paquete internal deben estar todas las funcionalidades
+Se debe separar la estructura del proyecto y como primer paso generando el paquete internal, en el paquete internal deben
+estar todas las funcionalidades
 que no dependan de paquetes externos.
 
 * Dentro del paquete deben estar las capas:
@@ -20,7 +21,8 @@ Se deben implementar todos los métodos correspondientes a las operaciones a rea
 
 /*Ejercicio 2 - Generar paquete server
 
-Se debe separar la estructura del proyecto, como segundo paso se debe generar el paquete server donde se agregaran las funcionalidades del proyecto que dependan de paquetes externos y el main del programa.
+Se debe separar la estructura del proyecto, como segundo paso se debe generar el paquete server donde se agregaran las
+funcionalidades del proyecto que dependan de paquetes externos y el main del programa.
 
 Dentro del paquete deben estar:
 El main del programa.
