@@ -10,8 +10,6 @@ import (
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/hackaton/pkg/store"
 )
 
-var invoices []models.Invoice
-
 type InvoiceRepository interface {
 	ImportAllInvoices() error
 	StoreInvoice(models.Invoice) (models.Invoice, error)
@@ -89,7 +87,7 @@ func (r *repository_invoice) UpdateInvoice(invoice models.Invoice) (models.Invoi
 	}
 	updatedRows, _ := result.RowsAffected()
 	if updatedRows == 0 {
-		return models.Invoice{}, errors.New("No se encontro al customer.")
+		return models.Invoice{}, errors.New("No se encontro al invoice.")
 	}
 	return invoice, nil
 }

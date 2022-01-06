@@ -9,9 +9,7 @@ type SaveFile interface {
 	ReadLines(path string) ([]string, error)
 }
 
-type FileStoreSave struct {
-	FileName string
-}
+type FileStoreSave struct{}
 
 type TypeSave string
 
@@ -19,10 +17,10 @@ const (
 	FileTypeSave TypeSave = "file"
 )
 
-func NewSave(store TypeSave, fileName string) SaveFile {
+func NewSave(store TypeSave) SaveFile {
 	switch store {
 	case FileTypeSave:
-		return &FileStoreSave{FileName: fileName}
+		return &FileStoreSave{}
 	}
 	return nil
 }
