@@ -1,3 +1,7 @@
+/*
+	Author: AG-Meli - Andrés Ghione
+*/
+
 package handler
 
 import (
@@ -5,8 +9,6 @@ import (
 	transactions "github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/internal/transactions"
 	"github.com/extmatperez/meli_bootcamp2/tree/ghione_andres/7_goweb2/pkg/web"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	"os"
 	"strconv"
 )
 
@@ -27,15 +29,19 @@ func NewTransaction(ser transactions.Service) *Transaction {
 	return &Transaction{service: ser}
 }
 
+// GetAll
+// @Summary Get all transactions
+// @Tags Transaction
+// @Description Get all transactions
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /api/v1/warehouses/:id [get]
 func (transact *Transaction) GetAll() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
-
 		transactions, err := transact.service.GetAll()
 		if err != nil {
 			context.JSON(400, web.NewResponse(400, nil, "Hubo un error"))
@@ -45,15 +51,18 @@ func (transact *Transaction) GetAll() gin.HandlerFunc {
 	}
 }
 
+// Store
+// @Summary Create transaction
+// @Tags Transaction
+// @Description Create transaction
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
 func (transact *Transaction) Store() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
-
 		var newTransaction request
 		err := context.ShouldBindJSON(&newTransaction)
 		if err != nil {
@@ -70,15 +79,18 @@ func (transact *Transaction) Store() gin.HandlerFunc {
 	}
 }
 
+// Update
+// @Summary Update transaction
+// @Tags Transaction
+// @Description Update all fields of a transaction
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
 func (transact *Transaction) Update() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
-
 		var modTransaction request
 		err := context.ShouldBindJSON(&modTransaction)
 		if err != nil {
@@ -101,15 +113,18 @@ func (transact *Transaction) Update() gin.HandlerFunc {
 	}
 }
 
+// Delete
+// @Summary Delete transaction
+// @Tags Transaction
+// @Description Delete transaction
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
 func (transact *Transaction) Delete() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
-
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -126,15 +141,18 @@ func (transact *Transaction) Delete() gin.HandlerFunc {
 	}
 }
 
+// ModifyTransactionCode
+// @Summary Modify transaction
+// @Tags Transaction
+// @Description Update the transaction code
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
 func (transact *Transaction) ModifyTransactionCode() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
-
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -151,15 +169,18 @@ func (transact *Transaction) ModifyTransactionCode() gin.HandlerFunc {
 	}
 }
 
+// ModifyAmount
+// @Summary Modify transaction
+// @Tags Transaction
+// @Description Update amount
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
 func (transact *Transaction) ModifyAmount() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
-
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -181,14 +202,18 @@ func (transact *Transaction) ModifyAmount() gin.HandlerFunc {
 	}
 }
 
+// GetByID
+// @Summary Get transaction by id
+// @Tags Transaction
+// @Description Get transaction by id
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
 func (transact *Transaction) GetByID() gin.HandlerFunc {
 	return func(context *gin.Context) {
-
-		token := context.GetHeader("token")
-		if !validateToken(token) {
-			context.JSON(400, web.NewResponse(400, nil, "Invalid token"))
-			return
-		}
 		idStr := context.Param("ID")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -202,16 +227,4 @@ func (transact *Transaction) GetByID() gin.HandlerFunc {
 			context.JSON(200, web.NewResponse(200, transactions, ""))
 		}
 	}
-}
-
-func validateToken(token string) bool {
-	err := godotenv.Load("/Users/aghione/Desktop/repositorios/bootcamp/practicas/meli_bootcamp2/7_goweb2/cmd/server/.env")
-	if err != nil {
-		return false
-	}
-	tokenEnv := os.Getenv("MY_TOKEN")
-	if tokenEnv != token {
-		return false
-	}
-	return true
 }
