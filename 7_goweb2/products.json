@@ -1,0 +1,10 @@
+{
+    "id": 1,
+    "nombre": "tijera",
+    "color": "rojo",
+    "precio": 1200.0,
+    "stock": 3,
+    "codigo": "A15",
+    "publicado": true,
+    "created_at": "2021-29-11T12:30:05.000-3:00"
+}
