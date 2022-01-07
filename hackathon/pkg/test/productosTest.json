@@ -1,0 +1,56 @@
+[
+ {
+  "id": 1,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 2,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 3,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 4,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 5,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 6,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 7,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 8,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ },
+ {
+  "id": 9,
+  "nombre": "nuevoProducto",
+  "color": "naranja",
+  "precio": 38.9
+ }
+]

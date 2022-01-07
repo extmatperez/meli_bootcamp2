@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"context"
 	"errors"
+	"fmt"
 
 	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/12_testing3/ejTM/internal/models"
 	"github.com/extmatperez/meli_bootcamp2/tree/pescie_juan/12_testing3/ejTM/pkg/db"
@@ -9,19 +11,22 @@ import (
 
 type RepositorySQL interface {
 	GetAll() ([]models.Producto, error)
+	GetFullData() ([]models.Producto, error)
 	GetById(id int) (models.Producto, error)
 	Store(models.Producto) (models.Producto, error)
-	// GetLastId() (int, error)
 	Update(models.Producto) (models.Producto, error)
+	UpdateContext(context.Context, models.Producto) (models.Producto, error)
 	// UpdateNombrePrecio(id int, nombre string, precio float64) (models.Producto, error)
 	Delete(id int) error
 }
 
 const (
+	queryGetFullData = `SELECT p.id, p.nombre, p.color, p.precio, ciudad.nombre FROM productos as p INNER JOIN ciudades as ciudad
+	ON p.id_ciudad = ciudad.id `
 	queryGetOne = "SELECT id, nombre, color, precio FROM productos WHERE id=?"
 	queryGetAll = "SELECT id, nombre, color, precio FROM productos"
-	queryStore  = "INSERT INTO productos(nombre, color, precio, ) VALUES(?,?,?)"
-	queryUpdate = "UPDATE productos SET nombre= ?, color= ?, precio= ? WHERE id= ?"
+	queryStore  = "INSERT INTO productos(nombre, color, precio) VALUES(?,?,?)"
+	queryUpdate = "UPDATE productos SET nombre = ?, color = ?, precio = ? WHERE id= ?"
 	queryDelete = "DELETE from productos WHERE id = ?"
 )
 
@@ -33,7 +38,7 @@ func NewRepositorySQL() RepositorySQL {
 
 func (r *repositorySql) Store(p models.Producto) (models.Producto, error) {
 	db := db.StorageDB
-	statement, err := db.Prepare("INSERT INTO productos(nombre, color, precio, ) VALUES(?,?,?)")
+	statement, err := db.Prepare(queryStore)
 	if err != nil {
 		return models.Producto{}, err
 	}
@@ -50,9 +55,8 @@ func (r *repositorySql) Store(p models.Producto) (models.Producto, error) {
 
 func (r *repositorySql) GetById(id int) (models.Producto, error) {
 	db := db.StorageDB
-	query := "SELECT id, nombre, color, precio FROM productos WHERE id=?"
 	var p models.Producto
-	rows, err := db.Query(query)
+	rows, err := db.Query(queryGetOne, id)
 	if err != nil {
 		return models.Producto{}, err
 	}
@@ -66,11 +70,29 @@ func (r *repositorySql) GetById(id int) (models.Producto, error) {
 	return p, nil
 
 }
+func (r *repositorySql) GetFullData() ([]models.Producto, error) {
+	db := db.StorageDB
+	var productos []models.Producto
+	rows, err := db.Query(queryGetFullData)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var p models.Producto
+		err = rows.Scan(&p.Id, &p.Nombre, &p.Color, &p.Precio, &p.Ciudad.Nombre)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println("PRODUCTO : ", p)
+		productos = append(productos, p)
+	}
+	return productos, nil
+}
 
 func (r *repositorySql) GetAll() ([]models.Producto, error) {
 	db := db.StorageDB
 	var productosLeidos []models.Producto
-	rows, err := db.Query("SELECT id, nombre, color, precio FROM productos")
+	rows, err := db.Query(queryGetAll)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +110,7 @@ func (r *repositorySql) GetAll() ([]models.Producto, error) {
 }
 func (r *repositorySql) Update(p models.Producto) (models.Producto, error) {
 	db := db.StorageDB
-	statement, err := db.Prepare("UPDATE productos SET nombre= ?, color= ?, precio= ? WHERE id= ?")
+	statement, err := db.Prepare(queryUpdate)
 	if err != nil {
 		return models.Producto{}, err
 	}
@@ -105,10 +127,29 @@ func (r *repositorySql) Update(p models.Producto) (models.Producto, error) {
 	return p, nil
 
 }
+func (r *repositorySql) UpdateContext(ctx context.Context, p models.Producto) (models.Producto, error) {
+	db := db.StorageDB
+	statement, err := db.Prepare(queryUpdate)
+	if err != nil {
+		return models.Producto{}, err
+	}
+	result, err := statement.ExecContext(ctx, p.Nombre, p.Color, p.Precio, p.Id)
+	if err != nil {
+		return models.Producto{}, err
+	}
+	filasActualizadas, _ := result.RowsAffected()
+	if filasActualizadas == 0 {
+		return models.Producto{}, errors.New("product not found")
+	}
+	defer statement.Close()
+
+	return p, nil
+
+}
 
 func (r *repositorySql) Delete(id int) error {
 	db := db.StorageDB
-	statement, err := db.Prepare()
+	statement, err := db.Prepare(queryDelete)
 	if err != nil {
 		return err
 	}

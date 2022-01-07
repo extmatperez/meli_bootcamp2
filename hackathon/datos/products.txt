@@ -1,0 +1,100 @@
+1#$%#Mountain Dew#$%#665.85
+2#$%#Dried Apple#$%#663.3
+3#$%#Huck Towels White#$%#510.63
+4#$%#Paper - Brown Paper Mini Cups#$%#219
+5#$%#Mustard - Seed#$%#493.5
+6#$%#Oyster - In Shell#$%#373.61
+7#$%#Chocolate - Pistoles, Lactee, Milk#$%#659.21
+8#$%#Sugar - Crumb#$%#120.8
+9#$%#Bagels Poppyseed#$%#438.23
+10#$%#Bread - Italian Sesame Poly#$%#96.4
+11#$%#Juice - Propel Sport#$%#121.43
+12#$%#Lotus Root#$%#728
+13#$%#Isomalt#$%#708.04
+14#$%#Muffin - Zero Transfat#$%#268.13
+15#$%#Cake - Miini Cheesecake Cherry#$%#463.95
+16#$%#Cherries - Bing, Canned#$%#323.96
+17#$%#Pepper - Chilli Seeds Mild#$%#509.24
+18#$%#Cod - Fillets#$%#563.55
+19#$%#Table Cloth 120 Round White#$%#145.88
+20#$%#Capon - Breast, Wing On#$%#776.89
+21#$%#Yoplait Drink#$%#423.47
+22#$%#Energy Drink - Redbull 355ml#$%#203.68
+23#$%#Beef - Cooked, Corned#$%#455.75
+24#$%#Syrup - Monin - Blue Curacao#$%#498.67
+25#$%#Arctic Char - Fresh, Whole#$%#457.65
+26#$%#Aspic - Light#$%#365.3
+27#$%#Mace#$%#116.26
+28#$%#Grenadillo#$%#743.35
+29#$%#Sprouts Dikon#$%#713.27
+30#$%#Drambuie#$%#451.18
+31#$%#Dill Weed - Dry#$%#617.86
+32#$%#Grouper - Fresh#$%#306.36
+33#$%#Pork - Belly Fresh#$%#647.03
+34#$%#Kellogs Raisan Bran Bars#$%#557.09
+35#$%#Pasta - Angel Hair#$%#510.81
+36#$%#Jack Daniels#$%#159.24
+37#$%#Pepsi - 600ml#$%#780.22
+38#$%#Calaloo#$%#450.6
+39#$%#Skewers - Bamboo#$%#651.33
+40#$%#Shrimp - 150 - 250#$%#621.86
+41#$%#Tendrils - Baby Pea, Organic#$%#576.64
+42#$%#Taro Leaves#$%#557.54
+43#$%#Soy Protein#$%#171.36
+44#$%#Bread - Multigrain Oval#$%#228.1
+45#$%#Pastry - Chocolate Chip Muffin#$%#117.43
+46#$%#Gatorade - Cool Blue Raspberry#$%#269.65
+47#$%#Broom - Corn#$%#710.26
+48#$%#Appetizer - Cheese Bites#$%#103.11
+49#$%#Liquid Aminios Acid - Braggs#$%#756.17
+50#$%#Syrup - Pancake#$%#290.55
+51#$%#Chevril#$%#113.34
+52#$%#Bread - Malt#$%#163.51
+53#$%#Onions - Cooking#$%#181.61
+54#$%#Muffin Batt - Blueberry Passion#$%#384.98
+55#$%#Doilies - 10, Paper#$%#416.7
+56#$%#Wine - Alsace Riesling Reserve#$%#310.02
+57#$%#Chervil - Fresh#$%#436.53
+58#$%#Glaze - Clear#$%#742.33
+59#$%#Wine - Malbec Trapiche Reserve#$%#599.65
+60#$%#Apples - Spartan#$%#340.03
+61#$%#Pork - Butt, Boneless#$%#617.44
+62#$%#Baking Powder#$%#131.79
+63#$%#Syrup - Monin - Blue Curacao#$%#97.66
+64#$%#Oysters - Smoked#$%#598.53
+65#$%#Flounder - Fresh#$%#194.23
+66#$%#Mince Meat - Filling#$%#478.07
+67#$%#Longos - Chicken Cordon Bleu#$%#325.22
+68#$%#Cheese - Asiago#$%#118.44
+69#$%#Skirt - 24 Foot#$%#437.71
+70#$%#Flour - Chickpea#$%#844.96
+71#$%#Salmon - Fillets#$%#638.34
+72#$%#Lumpfish Black#$%#199.48
+73#$%#Sesame Seed Black#$%#815.04
+74#$%#Gherkin#$%#647.68
+75#$%#Mustard - Seed#$%#273.88
+76#$%#Vinegar - Rice#$%#757.31
+77#$%#Soup - Canadian Pea, Dry Mix#$%#698.18
+78#$%#Wine - Baron De Rothschild#$%#270.29
+79#$%#Nut - Pistachio, Shelled#$%#611.54
+80#$%#Veal - Heart#$%#722.97
+81#$%#Cookies - Englishbay Wht#$%#538.09
+82#$%#Wine - Harrow Estates, Vidal#$%#250.66
+83#$%#Pears - Fiorelle#$%#522.65
+84#$%#Cheese - Bakers Cream Cheese#$%#434.54
+85#$%#Crush - Grape, 355 Ml#$%#801.12
+86#$%#Beer - True North Lager#$%#312.08
+87#$%#Sardines#$%#556.05
+88#$%#Tomato - Green#$%#298.13
+89#$%#Tomatoes - Vine Ripe, Yellow#$%#728.56
+90#$%#Bread Foccacia Whole#$%#735.44
+91#$%#Water - Mineral, Carbonated#$%#338.45
+92#$%#Syrup - Monin, Swiss Choclate#$%#831.25
+93#$%#Nori Sea Weed#$%#661.4
+94#$%#Lychee#$%#212.56
+95#$%#Fenngreek Seed#$%#236.74
+96#$%#Marsala - Sperone, Fine, D.o.c.#$%#526.4
+97#$%#Vinegar - Balsamic#$%#503.78
+98#$%#Clementine#$%#612.18
+99#$%#Bread - White Epi Baguette#$%#448.55
+100#$%#Chocolate - Feathers#$%#646.12

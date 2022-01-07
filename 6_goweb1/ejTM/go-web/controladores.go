@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"reflect"
-	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -28,12 +27,6 @@ func GetAll(c *gin.Context) {
 	})
 
 }
-func GetFilters(c *gin.Context) {
-	var etiquetas []string
-	etiquetas = append(etiquetas, "nombre", "color")
-	var productosFiltrados []Producto
-	productosFiltrados = leer_productos("products.json")
-}
 func leer_productos(ruta string) ([]Producto, error) {
 	var productos = []Producto{}
 	file, err := os.ReadFile(ruta)
@@ -50,25 +43,30 @@ func leer_productos(ruta string) ([]Producto, error) {
 	return productos, nil
 
 }
+func GetFilters(c *gin.Context) {
+	var etiquetas []string
+	etiquetas = append(etiquetas, "nombre", "color")
+	var productosFiltrados []Producto
+	productosFiltrados, _ = leer_productos("products.json")
+}
 
-
-func filtrar(sliceProductos []Producto, campo, valor string) []Persona{
+func filtrar(sliceProductos []Producto, campo, valor string) []Producto {
 	var filtrado []Producto
-	var p Persona
+	var p Producto
 	tipos := reflect.TypeOf(p)
-	i:= 0 
-	for i= 0; i<tipos.NumField(); i++ {
-		if(strings.ToLower(tipos.Field(i).Name) == campo){
+	i := 0
+	for i = 0; i < tipos.NumField(); i++ {
+		if strings.ToLower(tipos.Field(i).Name) == campo {
 			break
 		}
 	}
-	for k,v:= range sliceProductos{
+	for _, v := range sliceProductos {
 		var cadena string
-		cadena = fmt.Sprintf("%v",reflect.ValueOf(v).Field(i).Interface())
-		if strings.Contains(cadena, valor)	
+		cadena = fmt.Sprintf("%v", reflect.ValueOf(v).Field(i).Interface())
+		if strings.Contains(cadena, valor) {
 			filtrado = append(filtrado, v)
 		}
-		
+
 	}
 
 	return filtrado
