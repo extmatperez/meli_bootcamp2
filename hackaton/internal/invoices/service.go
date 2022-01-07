@@ -6,6 +6,7 @@ type InvoiceService interface {
 	ImportAllInvoices() error
 	StoreInvoice(datetime string, id_costumer int, total float64) (models.Invoice, error)
 	UpdateInvoice(invoice models.Invoice) (models.Invoice, error)
+	UpdateTotalsOfInvoices() error
 }
 
 type service_invoice struct {
@@ -38,4 +39,8 @@ func (s *service_invoice) StoreInvoice(datetime string, id_costumer int, total f
 
 func (s *service_invoice) UpdateInvoice(invoice models.Invoice) (models.Invoice, error) {
 	return s.repository_invoice.UpdateInvoice(invoice)
+}
+
+func (s *service_invoice) UpdateTotalsOfInvoices() error {
+	return s.repository_invoice.UpdateTotalsOfInvoices()
 }

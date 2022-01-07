@@ -52,4 +52,11 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Println("Se pasaron los sales, chequear DB.")
+
+	fmt.Println("Ahora se modificaran los totales de las facturas.")
+	err = service_invoice.UpdateTotalsOfInvoices()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Se modificaron los totales de las facturas, chequear DB.")
 }

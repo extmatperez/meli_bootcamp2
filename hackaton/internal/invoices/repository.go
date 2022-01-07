@@ -14,6 +14,7 @@ type InvoiceRepository interface {
 	ImportAllInvoices() error
 	StoreInvoice(models.Invoice) (models.Invoice, error)
 	UpdateInvoice(models.Invoice) (models.Invoice, error)
+	UpdateTotalsOfInvoices() error
 }
 
 type repository_invoice struct {
@@ -75,13 +76,13 @@ func (r *repository_invoice) StoreInvoice(invoice models.Invoice) (models.Invoic
 
 func (r *repository_invoice) UpdateInvoice(invoice models.Invoice) (models.Invoice, error) {
 	db := db.StorageDB
-	query := "UPDATE Invoice SET total = ? WHERE id = ?"
+	query := "UPDATE Invoice SET `datetime` = ?, idCustomer = ?, total = ? WHERE id = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
-	result, err := stmt.Exec(invoice.Total, invoice.Id)
+	result, err := stmt.Exec(invoice.Datetime, invoice.IdCustomer, invoice.Total, invoice.Id)
 	if err != nil {
 		return models.Invoice{}, err
 	}
@@ -90,4 +91,82 @@ func (r *repository_invoice) UpdateInvoice(invoice models.Invoice) (models.Invoi
 		return models.Invoice{}, errors.New("No se encontro al invoice.")
 	}
 	return invoice, nil
+}
+
+func (r *repository_invoice) UpdateTotalsOfInvoices() error {
+	var inv []models.Invoice
+	db := db.StorageDB
+	q0 := "SELECT id, datetime, idCustomer, total FROM Invoice"
+	rows, err := db.Query(q0)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	for rows.Next() {
+		var i models.Invoice
+		err := rows.Scan(&i.Id, &i.Datetime, &i.IdCustomer, &i.Total)
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+		inv = append(inv, i)
+	}
+
+	for _, inv := range inv {
+		total := 0.00
+		// Busco la cantidad en la tabla de store para esa factura.
+		var sales []models.Sale
+		rows, err := db.Query("SELECT id, idProduct, idInvoice, quantity FROM Sale WHERE idInvoice = ?", inv.Id)
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+
+		// Se recorre el resultado de la query.
+		for rows.Next() {
+			var sale models.Sale
+			err := rows.Scan(&sale.Id, &sale.IdProduct, &sale.IdInvoice, &sale.Quantity)
+			if err != nil {
+				log.Fatal(err)
+				return err
+			}
+			sales = append(sales, sale)
+		}
+
+		for _, s := range sales {
+			var pr models.Product
+			query := "SELECT id, description, price FROM Product WHERE id = ?"
+			rows, err := db.Query(query, s.IdProduct)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			// Se recorre el resultado de la query.
+			for rows.Next() {
+				err := rows.Scan(&pr.Id, &pr.Description, &pr.Price)
+				if err != nil {
+					log.Fatal(err)
+				}
+			}
+			total = total + (float64(s.Quantity) * pr.Price)
+		}
+
+		// Ahora hago el update con la suma de los productos de las cantidades y los precios de los items de la factura.
+		q1 := "UPDATE Invoice SET total = ? WHERE id = ?"
+		stmt, err := db.Prepare(q1)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+		result, err := stmt.Exec(total, inv.Id)
+		if err != nil {
+			return err
+		}
+		updatedRows, _ := result.RowsAffected()
+		if updatedRows == 0 {
+			return errors.New("No se pudo modificar el total del registro.")
+		}
+	}
+	return nil
 }
