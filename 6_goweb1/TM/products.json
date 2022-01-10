@@ -1,0 +1,10 @@
+[{"id":1,"name":"Aurora","color":"Teal","price":62193.83,"stock":5559,"code":"B310110","published":false,"creation_date":"10/23/2021"},
+{"id":2,"name":"LS","color":"Crimson","price":26310.35,"stock":8437,"code":"F003GZZ","published":true,"creation_date":"9/24/2021"},
+{"id":3,"name":"Sierra 3500","color":"Fuscia","price":88622.31,"stock":1023,"code":"0LMS0ZZ","published":true,"creation_date":"7/11/2021"},
+{"id":4,"name":"Compass","color":"Turquoise","price":14856.31,"stock":9518,"code":"039T3ZZ","published":true,"creation_date":"7/29/2021"},
+{"id":5,"name":"Eldorado","color":"Mauv","price":12382.34,"stock":7063,"code":"05794DZ","published":false,"creation_date":"6/1/2021"},
+{"id":6,"name":"Tundra","color":"Puce","price":79503.75,"stock":5311,"code":"BQ3DZZZ","published":false,"creation_date":"4/14/2021"},
+{"id":7,"name":"Topaz","color":"Blue","price":8833.59,"stock":9563,"code":"B315YZZ","published":true,"creation_date":"10/23/2021"},
+{"id":8,"name":"Civic","color":"Puce","price":7094.14,"stock":4968,"code":"0DT24ZZ","published":true,"creation_date":"3/28/2021"},
+{"id":9,"name":"Ranger","color":"Blue","price":32659.89,"stock":6856,"code":"3E013TZ","published":false,"creation_date":"7/17/2021"},
+{"id":10,"name":"Frontier","color":"Green","price":49860.8,"stock":6838,"code":"0MBC4ZX","published":false,"creation_date":"1/26/2021"}]
