@@ -8,20 +8,20 @@ import (
 	"os"
 	"testing"
 
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/morning/go-web/cmd/server/handler"
-	internal "github.com/extmatperez/meli_bootcamp2/18_storage2/morning/go-web/internal/productos"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/morning/go-web/pkg/store"
-	"github.com/extmatperez/meli_bootcamp2/18_storage2/morning/go-web/pkg/web"
+	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/cmd/server/handler"
+	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/internal/customers"
+	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/pkg/web"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
 func createServer() *gin.Engine {
 	_ = os.Setenv("TOKEN", "123456")
-	db := store.New(store.FileType, "../cmd/server/productos.json")
-	repo := internal.NewRepository(db)
-	service := internal.NewService(repo)
-	handler := handler.NewProducto(service)
+	repo := customers.NewRepository()
+	service := customers.NewService(repo)
+	handler := handler.NewCustomer(service)
+
+	//falta modificar todo para abajo
 
 	r := gin.Default()
 

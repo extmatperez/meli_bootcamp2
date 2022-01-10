@@ -95,6 +95,9 @@ func main() {
 	filesLoader := router.Group("/filesLoader")
 	{
 		filesLoader.POST("/customers", filesLoaderHandler.StoreCustomers())
+		filesLoader.POST("/invoicers", filesLoaderHandler.StoreInvoicers())
+		filesLoader.POST("/products", filesLoaderHandler.StoreProducts())
+		filesLoader.POST("/sales", filesLoaderHandler.StoreSales())
 	}
 
 	// products = router.Group("/productos")

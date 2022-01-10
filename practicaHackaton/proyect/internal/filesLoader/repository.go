@@ -4,16 +4,16 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"strconv"
+	"strings"
 
 	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/pkg/db"
 )
 
 type Repository interface {
 	CustomersLoader() error
-	// InvoicersLoader() error
-	// ProductsLoader() error
-	// SalesLoader() error
+	InvoicersLoader() error
+	ProductsLoader() error
+	SalesLoader() error
 }
 
 type repository struct{}
@@ -22,75 +22,77 @@ func NewRepository() Repository {
 	return &repository{}
 }
 
-const (
+var (
 	insertCustomer = `
 		INSERT INTO customers (id, last_name, first_name, conditionn)
-		VALUES ( ?, ?, ?, ? )
+		VALUES 
+	`
+	insertInvoicer = `
+		INSERT INTO invoicers (id, date_time, id_customer, total)
+		VALUES
+	`
+	insertProduct = `
+		INSERT INTO products (id, description, price)
+		VALUES
+	`
+	insertSale = `
+		INSERT INTO sales (id, id_invoice, id_product, quantity)
+		VALUES
 	`
 )
 
-func (r *repository) CustomersLoader() error {
+func loader(path, insert, paramsCantity string) error {
 
 	db := db.StorageDB
 
-	file, err := os.Open("../../../HackthonGo/datos/customers.txt")
+	file, err := os.Open(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	var datafinal []interface{}
 
 	for scanner.Scan() {
+		insert += paramsCantity
+		line := scanner.Text()
+		data := strings.Split(line, "#$%#")
 
-		linea := scanner.Text()
-		var registro string
-		var contador int
-		var id int
-		var last_name string
-		var first_name string
-		var condition string
-
-		for i := 0; i < len(linea); i++ {
-
-			registro += string(linea[i])
-
-			if linea[i] == '#' && linea[i+1] == '$' && linea[i+2] == '%' && linea[i+3] == '#' {
-
-				registroDepurado := registro[0 : len(registro)-1]
-
-				if contador == 0 {
-					id, err = strconv.Atoi(registroDepurado)
-					if err != nil {
-						log.Fatal(err)
-					}
-					registro = ""
-					i += 4
-				} else if contador == 1 {
-					last_name = registroDepurado
-					registro = ""
-					i += 4
-				} else if contador == 2 {
-					first_name = registroDepurado
-					registro = ""
-					i += 4
-				}
-				contador++
-			}
+		for i := 0; i < len(data); i++ {
+			datafinal = append(datafinal, data[i])
 		}
-		condition = registro
 
-		stmt, err := db.Prepare(insertCustomer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer stmt.Close()
-
-		_, err = stmt.Exec(id, last_name, first_name, condition)
-		if err != nil {
-			return err
+		if line[len(line)-4:] == "#$%#" {
+			datafinal[len(datafinal)-1] = 0
 		}
 	}
+	insert = insert[:len(insert)-1]
+	stmt, err := db.Prepare(insert)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
 
+	_, err = stmt.Exec(datafinal...)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+func (r *repository) CustomersLoader() error {
+	return loader("../../../HackthonGo/datos/customers.txt", insertCustomer, "(?, ?, ?, ?),")
+}
+
+func (r *repository) InvoicersLoader() error {
+	return loader("../../../HackthonGo/datos/invoices.txt", insertInvoicer, "(?, ?, ?, ?),")
+}
+
+func (r *repository) ProductsLoader() error {
+	return loader("../../../HackthonGo/datos/products.txt", insertProduct, "(?, ?, ?),")
+}
+
+func (r *repository) SalesLoader() error {
+	return loader("../../../HackthonGo/datos/sales.txt", insertSale, "(?, ?, ?, ?),")
 }
