@@ -1,12 +1,11 @@
 package models
 
-type Producto struct {
-	ID            int     `json:"id"`
-	Nombre        string  `json:"nombre"`
-	Color         string  `json:"color"`
-	Precio        float64 `json:"precio"`
-	Stock         int     `json:"stock"`
-	Codigo        string  `json:"codigo"`
-	Publicado     bool    `json:"publicado"`
-	FechaCreacion string  `json:"fechaCreacion"`
+type Product struct {
+	ID          int     `json:"id"`
+	Description string  `json:"description"`
+	Price       float64 `json:"precio"`
+}
+type RequestProduct struct {
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
 }

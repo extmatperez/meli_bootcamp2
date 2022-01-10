@@ -10,6 +10,8 @@ import (
 	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/internal/customers"
 	loader "github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/internal/filesLoader"
 	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/internal/invoicers"
+	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/internal/products"
+	"github.com/extmatperez/meli_bootcamp2/practicaHackaton/proyect/internal/sales"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -63,6 +65,14 @@ func main() {
 	serviceInvoicers := invoicers.NewService(repoInvocers)
 	invoicersHandler := handler.NewInvoicer(serviceInvoicers)
 
+	repoProducts := products.NewRepository()
+	serviceProducts := products.NewService(repoProducts)
+	productsHandler := handler.NewProduct(serviceProducts)
+
+	repoSales := sales.NewRepository()
+	serviceSales := sales.NewService(repoSales)
+	salesHandler := handler.NewSale(serviceSales)
+
 	repoLoader := loader.NewRepository()
 	serviceLoader := loader.NewService(repoLoader)
 	filesLoaderHandler := handler.NewFilesLoader(serviceLoader)
@@ -92,6 +102,24 @@ func main() {
 		invoicers.DELETE("/:id", invoicersHandler.Delete())
 	}
 
+	products := router.Group("/products")
+	{
+		products.GET("/", productsHandler.GetAll())
+		products.GET("/:id", productsHandler.GetByID())
+		products.POST("/", productsHandler.Store())
+		products.PUT("/:id", productsHandler.Update())
+		products.DELETE("/:id", productsHandler.Delete())
+	}
+
+	sales := router.Group("/sales")
+	{
+		sales.GET("/", salesHandler.GetAll())
+		sales.GET("/:id", salesHandler.GetByID())
+		sales.POST("/", salesHandler.Store())
+		sales.PUT("/:id", salesHandler.Update())
+		sales.DELETE("/:id", salesHandler.Delete())
+	}
+
 	filesLoader := router.Group("/filesLoader")
 	{
 		filesLoader.POST("/customers", filesLoaderHandler.StoreCustomers())
@@ -99,24 +127,6 @@ func main() {
 		filesLoader.POST("/products", filesLoaderHandler.StoreProducts())
 		filesLoader.POST("/sales", filesLoaderHandler.StoreSales())
 	}
-
-	// products = router.Group("/productos")
-	// {
-	// 	products.GET("/", productsHandler.GetAll())
-	// 	products.GET("/:id", productsHandler.GetByID())
-	// 	products.POST("/", productsHandler.Store())
-	// 	products.PUT("/:id", productsHandler.Update())
-	// 	products.DELETE("/:id", productsHandler.Delete())
-	// }
-
-	// sales = router.Group("/sales")
-	// {
-	// 	sales.GET("/", controller.GetAll())
-	// 	sales.GET("/:id", controller.GetById())
-	// 	sales.POST("/", controller.Create())
-	// 	sales.PUT("/:id", controller.Update())
-	// 	sales.DELETE("/:id", controller.Delete())
-	// }
 
 	err = router.Run(":8080")
 
