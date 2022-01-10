@@ -9,9 +9,24 @@ type SaveFile interface {
 	ReadLines(path string) ([]string, error)
 }
 
-type FileStoreSave struct{}
+type FileStoreSave struct {
+	ArrayMock *ArrayMock
+}
 
 type TypeSave string
+
+type ArrayMock struct {
+	Data []byte
+	Err  error
+}
+
+func (fs *FileStoreSave) AddArrayMock(mock *ArrayMock) {
+	fs.ArrayMock = mock
+}
+
+func (fs *FileStoreSave) ClearArrayMock() {
+	fs.ArrayMock = nil
+}
 
 const (
 	FileTypeSave TypeSave = "file"

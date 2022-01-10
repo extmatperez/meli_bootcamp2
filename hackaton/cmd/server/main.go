@@ -9,12 +9,14 @@ import (
 	products "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/hackaton/internal/products"
 	sales "github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/hackaton/internal/sales"
 
+	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/hackaton/pkg/db"
 	"github.com/extmatperez/meli_bootcamp2/tree/vega_rodrigo/hackaton/pkg/store"
 )
 
 func main() {
 	arr_costumer := store.NewSave(store.FileTypeSave)
-	repository_costumer := customers.NewCustomerRepository(arr_costumer)
+	db_customer := db.StorageDB
+	repository_costumer := customers.NewCustomerRepository(arr_costumer, db_customer)
 	service_costumer := customers.NewCustomerService(repository_costumer)
 
 	err := service_costumer.ImportAllCustomers()

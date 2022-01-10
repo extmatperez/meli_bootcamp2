@@ -96,8 +96,7 @@ func (r *repository_invoice) UpdateInvoice(invoice models.Invoice) (models.Invoi
 func (r *repository_invoice) UpdateTotalsOfInvoices() error {
 	var inv []models.Invoice
 	db := db.StorageDB
-	q0 := "SELECT id, datetime, idCustomer, total FROM Invoice"
-	rows, err := db.Query(q0)
+	rows, err := db.Query("SELECT id, datetime, idCustomer, total FROM Invoice")
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -136,8 +135,7 @@ func (r *repository_invoice) UpdateTotalsOfInvoices() error {
 
 		for _, s := range sales {
 			var pr models.Product
-			query := "SELECT id, description, price FROM Product WHERE id = ?"
-			rows, err := db.Query(query, s.IdProduct)
+			rows, err := db.Query("SELECT id, description, price FROM Product WHERE id = ?", s.IdProduct)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -153,8 +151,7 @@ func (r *repository_invoice) UpdateTotalsOfInvoices() error {
 		}
 
 		// Ahora hago el update con la suma de los productos de las cantidades y los precios de los items de la factura.
-		q1 := "UPDATE Invoice SET total = ? WHERE id = ?"
-		stmt, err := db.Prepare(q1)
+		stmt, err := db.Prepare("UPDATE Invoice SET total = ? WHERE id = ?")
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"strings"
@@ -18,10 +19,11 @@ type CustomerRepository interface {
 
 type repository_customer struct {
 	arr store.SaveFile
+	db  *sql.DB
 }
 
-func NewCustomerRepository(arr store.SaveFile) CustomerRepository {
-	return &repository_customer{arr}
+func NewCustomerRepository(arr store.SaveFile, db *sql.DB) CustomerRepository {
+	return &repository_customer{arr: arr, db: db}
 }
 
 func (r *repository_customer) ImportAllCustomers() error {
@@ -55,17 +57,31 @@ func (r *repository_customer) ImportAllCustomers() error {
 }
 
 func (r *repository_customer) StoreCustomer(customer models.Customer) (models.Customer, error) {
+	var result sql.Result
 	db := db.StorageDB
-	query := "INSERT INTO Customer(lastName, firstName, condition) VALUES (?,?,?)"
+	query := "INSERT INTO Customer(`lastName`, `firstName`, `condition`) VALUES (?,?,?)"
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(customer.LastName, customer.FirstName, customer.Condition)
-	if err != nil {
-		return models.Customer{}, err
+	if customer.Id == 0 {
+		result, err = stmt.Exec(customer.LastName, customer.FirstName, customer.Condition)
+		if err != nil {
+			return models.Customer{}, err
+		}
+	} else {
+		query := "INSERT INTO Customer(id, `lastName`, `firstName`, `condition`) VALUES (?,?,?,?)"
+		stmt, err := db.Prepare(query)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+		result, err = stmt.Exec(customer.Id, customer.FirstName, customer.LastName, customer.Condition)
+		if err != nil {
+			return models.Customer{}, err
+		}
 	}
 
 	idCreado, _ := result.LastInsertId()
@@ -75,7 +91,7 @@ func (r *repository_customer) StoreCustomer(customer models.Customer) (models.Cu
 
 func (r *repository_customer) UpdateCustomer(customer models.Customer) (models.Customer, error) {
 	db := db.StorageDB
-	query := "UPDATE Customer SET lastName = ?, firstName = ?, condition = ? WHERE id = ?"
+	query := "UPDATE Customer SET `lastName` = ?, `firstName` = ?, `condition` = ? WHERE id = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
