@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"strings"
@@ -18,10 +19,11 @@ type ProductRepository interface {
 
 type repository_product struct {
 	arr store.SaveFile
+	db  *sql.DB
 }
 
-func NewProductRepository(arr store.SaveFile) ProductRepository {
-	return &repository_product{arr}
+func NewProductRepository(arr store.SaveFile, db *sql.DB) ProductRepository {
+	return &repository_product{arr: arr, db: db}
 }
 
 func (r *repository_product) ImportAllProducts() error {
@@ -54,6 +56,7 @@ func (r *repository_product) ImportAllProducts() error {
 }
 
 func (r *repository_product) StoreProduct(product models.Product) (models.Product, error) {
+	var result sql.Result
 	db := db.StorageDB
 	query := "INSERT INTO Product(`description`, price) VALUES (?,?)"
 	stmt, err := db.Prepare(query)
@@ -62,9 +65,22 @@ func (r *repository_product) StoreProduct(product models.Product) (models.Produc
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(product.Description, product.Price)
-	if err != nil {
-		return models.Product{}, err
+	if product.Id == 0 {
+		result, err = stmt.Exec(product.Description, product.Price)
+		if err != nil {
+			return models.Product{}, err
+		}
+	} else {
+		query := "INSERT INTO Product(id, `description`, price) VALUES (?,?,?)"
+		stmt, err := db.Prepare(query)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+		result, err = stmt.Exec(product.Id, product.Description, product.Price)
+		if err != nil {
+			return models.Product{}, err
+		}
 	}
 
 	idCreado, _ := result.LastInsertId()

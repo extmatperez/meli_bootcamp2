@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"strings"
@@ -20,10 +21,11 @@ type SaleRepository interface {
 
 type repository_sale struct {
 	arr store.SaveFile
+	db  *sql.DB
 }
 
-func NewSaleRepository(arr store.SaveFile) SaleRepository {
-	return &repository_sale{arr}
+func NewSaleRepository(arr store.SaveFile, db *sql.DB) SaleRepository {
+	return &repository_sale{arr: arr, db: db}
 }
 
 func (r *repository_sale) ImportAllSales() error {
@@ -57,6 +59,7 @@ func (r *repository_sale) ImportAllSales() error {
 }
 
 func (r *repository_sale) StoreSale(sale models.Sale) (models.Sale, error) {
+	var result sql.Result
 	db := db.StorageDB
 	query := "INSERT INTO Sale(idProduct, idInvoice, quantity) VALUES (?,?,?)"
 	stmt, err := db.Prepare(query)
@@ -65,9 +68,22 @@ func (r *repository_sale) StoreSale(sale models.Sale) (models.Sale, error) {
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(sale.IdProduct, sale.IdInvoice, sale.Quantity)
-	if err != nil {
-		return models.Sale{}, err
+	if sale.Id == 0 {
+		result, err = stmt.Exec(sale.IdProduct, sale.IdInvoice, sale.Quantity)
+		if err != nil {
+			return models.Sale{}, err
+		}
+	} else {
+		query := "INSERT INTO Sale(id, idProduct, idInvoice, quantity) VALUES (?,?,?,?)"
+		stmt, err := db.Prepare(query)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+		result, err = stmt.Exec(sale.IdProduct, sale.IdInvoice, sale.Quantity)
+		if err != nil {
+			return models.Sale{}, err
+		}
 	}
 
 	idCreado, _ := result.LastInsertId()
