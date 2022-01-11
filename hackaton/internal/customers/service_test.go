@@ -91,7 +91,7 @@ func TestServiceUpdateCustomerOk(t *testing.T) {
 	updatedCustomer := models.Customer{
 		Id:        51,
 		LastName:  "Vega",
-		FirstName: "Rodrigo Miguel",
+		FirstName: "Rodrigo",
 		Condition: "Bloqueado",
 	}
 

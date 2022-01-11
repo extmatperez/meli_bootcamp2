@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"strings"
@@ -19,10 +20,11 @@ type InvoiceRepository interface {
 
 type repository_invoice struct {
 	arr store.SaveFile
+	db  *sql.DB
 }
 
-func NewInvoiceRepository(arr store.SaveFile) InvoiceRepository {
-	return &repository_invoice{arr}
+func NewInvoiceRepository(arr store.SaveFile, db *sql.DB) InvoiceRepository {
+	return &repository_invoice{arr: arr, db: db}
 }
 
 func (r *repository_invoice) ImportAllInvoices() error {
@@ -56,6 +58,7 @@ func (r *repository_invoice) ImportAllInvoices() error {
 }
 
 func (r *repository_invoice) StoreInvoice(invoice models.Invoice) (models.Invoice, error) {
+	var result sql.Result
 	db := db.StorageDB
 	query := "INSERT INTO Invoice(`datetime`, idCustomer, total) VALUES (?,?,?)"
 	stmt, err := db.Prepare(query)
@@ -64,9 +67,22 @@ func (r *repository_invoice) StoreInvoice(invoice models.Invoice) (models.Invoic
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(invoice.Datetime, invoice.IdCustomer, invoice.Total)
-	if err != nil {
-		return models.Invoice{}, err
+	if invoice.Id == 0 {
+		result, err = stmt.Exec(invoice.Datetime, invoice.IdCustomer, invoice.Total)
+		if err != nil {
+			return models.Invoice{}, err
+		}
+	} else {
+		query := "INSERT INTO Invoice(id, `datetime`, idCustomer, total) VALUES (?,?,?,?)"
+		stmt, err := db.Prepare(query)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+		result, err = stmt.Exec(invoice.Id, invoice.Datetime, invoice.IdCustomer, invoice.Total)
+		if err != nil {
+			return models.Invoice{}, err
+		}
 	}
 
 	idCreado, _ := result.LastInsertId()
